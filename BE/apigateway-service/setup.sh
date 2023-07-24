@@ -12,7 +12,8 @@ container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
 # env file import
-run_option="-dp 8000:8000 --env-file=/jenkins/workspace/setup.env"
+run_option="-dp 8000:8000 --env-file=/home/ubuntu/setup.env"
+
 
 ############################################################
 # [docker build command]
@@ -29,7 +30,6 @@ printf "=================================================\n"
 
 $image_build_command
 
-
 ############################################################
 # [stop container by name or container-id]
 ############################################################
@@ -39,7 +39,6 @@ printf "=================================================\n"
 printf "| $stop_container_command\n"
 printf "=================================================\n"
 
-$stop_container_command
 
 
 ############################################################
@@ -50,8 +49,12 @@ printf "\n"
 printf "=================================================\n"
 printf "| $remove_container_command\n"
 printf "=================================================\n"
+{
+    $stop_container_command && $remove_container_command
+} || {
+    echo "There's no container named $container_name"
+}
 
-$remove_container_command
 
 ############################################################
 # [docker container run command]
