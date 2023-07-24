@@ -1,0 +1,34 @@
+
+server:
+  # port: 0
+  port: 9090
+
+spring:
+  application:
+    name: project-service
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: S09P12A608
+    password: asdf1234
+    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P12A608
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}.{spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone:
+        http://eureka-server:8761
+    fetch-registry: true
+    register-with-eureka: true
+
+logging:
+  level:
+    com.example.catalogservice: DEBUG
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh, health, beans, busrefresh, info, metrics, prometheus
