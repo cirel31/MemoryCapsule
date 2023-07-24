@@ -1,0 +1,43 @@
+#server:
+#  port: 9876
+#
+#spring:
+#  application:
+#    name: user-service
+#
+#  rabbitmq:
+#    host: ${SERVER_IP}
+#    port: ${RABBITMQ_PORT}
+#    username: ${RABBITMQ_ID}
+#    password: ${RABBITMQ_PWD}
+#  h2:
+#    console:
+#      enabled: true
+#      settings:
+#        web-allow-others: true
+#      path: /h2-console
+##  datasource:
+##    driver-class-name: org.h2.Driver
+##    url: jdbc:h2:mem:testdb
+##    username: sa
+##    password: 12345
+#
+#eureka:
+#  instance:
+#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+#    hostname: localhost
+#  client:
+#    service-url:
+#      defaultZone: ${DISCOVERY_URL}
+#    fetch-registry: true
+#    register-with-eureka: true
+#
+#logging:
+#  level:
+#    com.example.user-service.client: DEBUG # Feign Client Logging 설정
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh, health, beans, bus-refresh, info, metrics, prometheus # 포함시킬 내용들
