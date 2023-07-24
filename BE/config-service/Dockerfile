@@ -1,0 +1,4 @@
+FROM openjdk:11-ea-11-jdk-slim
+VOLUME /tmp
+COPY target/config-service-1.0.jar ConfigServer.jar
+ENTRYPOINT ["java","-jar","ConfigServer.jar"]
