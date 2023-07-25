@@ -1,7 +1,7 @@
 package com.santa.projectservice.repository;
 
-import com.santa.projectservice.jpa.ArticleEntity;
-import org.springframework.data.repository.CrudRepository;
+import com.santa.projectservice.jpa.Article;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ArticleRepository extends CrudRepository<ArticleEntity, Long> {
+public interface ArticleRepository extends JpaRepository<Article, Long> {
 }

@@ -1,15 +1,8 @@
 package com.santa.projectservice.dto;
 
-import com.sun.istack.NotNull;
-import org.hibernate.annotations.CreationTimestamp;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 
-public class User {
+public class UserDto {
     private Long user_idx;
     private String user_email;
     private int user_point;

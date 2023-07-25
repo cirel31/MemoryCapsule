@@ -1,7 +1,6 @@
 package com.santa.projectservice.controller;
 
-import com.netflix.discovery.converters.Auto;
-import com.santa.projectservice.jpa.UserEntity;
+import com.santa.projectservice.jpa.User;
 import com.santa.projectservice.service.UserService;
 import com.santa.projectservice.vo.ResponseUser;
 import org.modelmapper.ModelMapper;
@@ -27,7 +26,7 @@ public class tmpController {
 
     @GetMapping("/all")
     public ResponseEntity<Iterable<ResponseUser>> users(){
-        Iterable<UserEntity> userList = userService.getAllUser();
+        Iterable<User> userList = userService.getAllUser();
         List<ResponseUser> result = new ArrayList<>();
         userList.forEach(u -> {
             result.add(new ModelMapper().map(u, ResponseUser.class));

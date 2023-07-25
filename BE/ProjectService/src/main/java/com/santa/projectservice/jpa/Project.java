@@ -1,22 +1,31 @@
 package com.santa.projectservice.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
-@Table(name="project")
-public class ProjectEntity {
+@Table(name = "project")
+@NoArgsConstructor
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pjt_idx;
 
     @Column(nullable = false)
+    @NotNull
     private String pjt_title;
 
     @Column(nullable = false, length = 500)
+    @NotNull
     private String pjt_content;
 
     @Column
@@ -35,14 +44,24 @@ public class ProjectEntity {
     private String pjt_shareurl;
     @Column
     private int pjt_type;
-    @Column(length = 50)
-    private String pjt_cron;
-    @Column(columnDefinition = "TINYINT(4)")
+    @Column
     private Boolean pjt_state;
     @Column
     private String pjt_gift_url;
     @Column
     private int pjt_limit;
-    @Column(columnDefinition = "TINYINT(4)")
+    @Column
     private Boolean pjt_deleted;
+    @Column
+    private int pjt_alarm_type;
+    @Column
+    private int pjt_alarm;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<Register> registerList = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<Article> articleList = new ArrayList<>();
 }

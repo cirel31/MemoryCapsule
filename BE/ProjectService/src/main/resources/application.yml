@@ -20,8 +20,8 @@ eureka:
     service-url:
       defaultZone:
         http://eureka-server:8761
-    fetch-registry: true
-    register-with-eureka: true
+    fetch-registry: false
+    register-with-eureka: false
 
 logging:
   level:
