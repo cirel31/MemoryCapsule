@@ -1,5 +1,5 @@
 spring:
   cloud:
     config:
-      uri: http://${SERVER_IP}:${CONFIG_PORT}
+      uri: ${CONFIG_URL}
       name: apigateway

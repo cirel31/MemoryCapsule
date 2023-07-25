@@ -5,7 +5,7 @@ spring:
   application:
     name: config-service
   rabbitmq:
-    host: ${SERVER_IP}
+    host: ${RABBITMQ_URL}
     port: ${RABBITMQ_PORT}
     username: ${RABBITMQ_ID}
     password: ${RABBITMQ_PWD}
