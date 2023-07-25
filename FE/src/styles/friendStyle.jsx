@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import Theme from "../styles/theme";
 
 const AuthFormBlock = styled.div`
   h3 {
     margin: 0;
-    color: ${Theme.brand1_main};
+    color: #313a40;
     margin-bottom: 1rem;
   }
 `;
@@ -40,7 +39,7 @@ const StyledBox = styled.div`
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.025);
   padding: 2rem;
   width: 360px;
-  background: ${Theme.brand1_main};
+  background: lightpink;
   border-radius: 2px;
 `
 const WhiteBox = props => <StyledBox { ...props } />
@@ -72,7 +71,7 @@ const StyledButton = styled.button`
   outline: none;
   cursor: pointer;
   width: 100%;
-  background: ${Theme.brand2_main};
+  background: #3bc9db;
   &:hover {
     background: #66f9e8;
   }
