@@ -8,7 +8,6 @@ const FriendForm = ({ form, setForm }) => {
     const [isValidId, setIsValidId] = useState(true);
     const [isValidName, setIsValidName] = useState(true);
     const [isValidNickname, setIsValidNickname] = useState(true);
-    // let [name, nameUpdate ]
 
     form.search = "id";
 
