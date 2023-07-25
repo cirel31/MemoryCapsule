@@ -94,7 +94,7 @@ const size = [
     16,
     24,
     32,
-    /** 임시 */
+    /** 임시 설정 */
 ];
 
 export default theme;
