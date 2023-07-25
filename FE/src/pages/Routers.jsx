@@ -17,8 +17,9 @@ export default function Routers() {
       <Route path='/signup' element={<SignupPage />} />
       <Route path='/main' element={<MainPage />} />
       <Route path='/project' element={<ProjectListPage />} />
-      <Route path='/friend' element={<Friend />} />
       <Route path='/project/create' element={<ProjectCreatePage />} />
+      <Route path='/friend' element={<Friend />} />
+
 
       <Route path='/*' element={<NotFound />} />
     </Routes>

@@ -2,8 +2,8 @@ import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useRecoilState} from "recoil";
-import authState from "../store/authState";
-import userState from "../store/userState";
+import authSlice from "../store/authSlice";
+import userSlice from "../store/userSlice";
 
 export default function useAuth() {
 
