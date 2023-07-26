@@ -55,7 +55,15 @@ public class ProjectController {
     @PostMapping("/newproject")
     public Long createProject(HttpServletRequest httpRequest, @RequestBody Map<String, Object> map) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        List<Long> userList = (ArrayList<Long>)map.get("userList");
+        List<Integer> list = (ArrayList<Integer>)map.get("userList");
+        List<Long> userList = new ArrayList<>();
+        log.info(userList.toString());
+        list.forEach( L -> {
+            log.info(L + " " + L.getClass().toString());
+            Long tmp = Long.valueOf(L.toString());
+            log.info(tmp + " " + tmp.getClass().toString());
+            userList.add(tmp);
+        });
         ProjectDto project = mapper.convertValue(map.get("project"), ProjectDto.class);
         Long owner = Long.valueOf(String.valueOf(httpRequest.getHeader("userId")));
         Long projectId = projectService.createProject(project, userList, owner);

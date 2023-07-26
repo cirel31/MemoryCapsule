@@ -43,4 +43,12 @@ public class Register {
     @Column
     @DefaultValue("0")
     private Boolean rgstr_alarm;
+
+    public Register(User user, Project project, Boolean rgstr_type, Boolean rgstr_confirm, Boolean rgstr_alarm) {
+        this.user = user;
+        this.project = project;
+        this.rgstr_type = rgstr_type;
+        this.rgstr_confirm = rgstr_confirm;
+        this.rgstr_alarm = rgstr_alarm;
+    }
 }

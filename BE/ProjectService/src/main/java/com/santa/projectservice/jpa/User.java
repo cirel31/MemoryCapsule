@@ -64,4 +64,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Article> articleList = new ArrayList<>();
 
+    public User(Long userId){
+        this.id = userId;
+    }
 }

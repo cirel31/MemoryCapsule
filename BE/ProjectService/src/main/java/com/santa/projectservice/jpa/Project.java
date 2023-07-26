@@ -69,4 +69,8 @@ public class Project {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Article> articleList = new ArrayList<>();
+
+    public Project(Long id){
+        this.pjt_idx = id;
+    }
 }

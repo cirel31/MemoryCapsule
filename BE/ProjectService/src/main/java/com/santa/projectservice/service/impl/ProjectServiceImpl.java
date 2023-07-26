@@ -7,26 +7,29 @@ import com.santa.projectservice.jpa.Register;
 import com.santa.projectservice.jpa.User;
 import com.santa.projectservice.repository.ProjectRepository;
 import com.santa.projectservice.repository.RegisterRepository;
+import com.santa.projectservice.repository.UserRepository;
 import com.santa.projectservice.service.ProjectService;
-import com.sun.tools.jconsole.JConsoleContext;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class ProjectServiceImpl implements ProjectService {
+    private final UserRepository userRepository;
 
     RegisterRepository registerRepository;
     ProjectRepository projectRepository;
     ModelMapper mapper;
 
     public ProjectServiceImpl(RegisterRepository registerRepository,
-                              ProjectRepository projectRepository) {
+                              ProjectRepository projectRepository,
+                              UserRepository userRepository) {
         this.mapper = new ModelMapper();
         this.registerRepository = registerRepository;
         this.projectRepository = projectRepository;
@@ -40,6 +43,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
         };
         this.mapper.addMappings(replyMapping);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -50,10 +54,17 @@ public class ProjectServiceImpl implements ProjectService {
         log.info(projectDto.toString());
         ModelMapper tmp = new ModelMapper();
         Project project1 = tmp.map(projectDto, Project.class);;
-        log.info(project1.toString());
-
-
-        projectRepository.save(project1);
+        Project project = projectRepository.save(project1);
+        Long pjt_id = project1.getPjt_idx();
+        log.info("입력된 값 : " + project1.toString());
+        // 이부분 유저가 없을때 예외처리 해주어야 합니다.
+        // Transaction 격리 생각해야 합니다
+        userList.forEach(id -> {
+            // 이따구로짜면안댐
+            User user = userRepository.findById(id).get();
+            // rgstr_confirm은 그냥 초대를 주었다는 말이다. confirm이 true가 되어야 진짜 들어간거다
+            registerRepository.save(new Register(user, project, false, false, false));
+        });
         log.info("-------createProject함수 끝----------");
         return null;
     }
