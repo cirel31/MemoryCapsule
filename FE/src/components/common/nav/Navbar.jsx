@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 
 const SidebarNav = styled.nav`
-  background: #15171c;
+  background: #FF7474FF;
   width: 250px;
   height: 100vh;
   display: flex;
@@ -17,6 +17,10 @@ const SidebarNav = styled.nav`
   transition: 350ms;
   z-index: 10;
 `;
+
+const NavBTN = styled.nav`
+  background-image: ;
+`
 
 
 export default function Navbar() {

@@ -12,7 +12,6 @@ import TestPage from "./TestPage";
 import TestDetailPage from "./TestDetailPage";
 
 export default function Routers() {
-  const { postId } = useParams()
 
   return (
     <Routes>
