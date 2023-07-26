@@ -1,25 +1,29 @@
 package com.santa.projectservice.jpa;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.ws.rs.DefaultValue;
 
-@Data
+
 @Entity
 @Table(name = "register")
 @NoArgsConstructor
-
+@Getter
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Register {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long rgstr_idx;
 
     @JsonIgnore
-    @JoinColumn(name = "rgstr_user_idx")
+    @JoinColumn(name = "rgstr_usr_idx")
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

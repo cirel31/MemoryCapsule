@@ -2,14 +2,17 @@ package com.santa.projectservice.jpa;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@ToString
 @Table(name = "article_img")
 @NoArgsConstructor
+@Getter
 public class ArticleImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,24 +1,30 @@
 package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-@Data
+@ToString(exclude = {"registerList","projectList"})
 @Entity
 @Table(name = "user")
+@Getter
 @NoArgsConstructor
+// 필드가 없는 클래스를 직렬화 하면서 문제가 생긴다함
+// 디비에 데이터가 없어서 그런가?
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_idx;
+    @Column(name = "user_idx")
+    private Long id;
 
     @Column(unique = true)
     private String user_email;
@@ -31,12 +37,13 @@ public class User {
     @Column
     @NotNull
     private String user_pwd;
-    @Column
+//    @Column
+    @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Timestamp user_created;
-    @Column
+    private Date user_created;
+    @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Timestamp user_updated;
+    private Date user_updated;
     @Column
     private Boolean user_deleted;
     @Column
@@ -47,10 +54,12 @@ public class User {
     @Column(length = 2048)
     private String user_imgurl;
 
+    @EqualsAndHashCode.Exclude
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Register> registerList = new ArrayList<>();
 
+    @EqualsAndHashCode.Exclude
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Article> articleList = new ArrayList<>();

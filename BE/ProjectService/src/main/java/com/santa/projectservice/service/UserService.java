@@ -1,5 +1,6 @@
 package com.santa.projectservice.service;
 
+import com.santa.projectservice.dto.UserDto;
 import com.santa.projectservice.jpa.User;
 
 public interface UserService {
@@ -11,7 +12,7 @@ public interface UserService {
     Iterable<User> getAllUser();
 
     /*유저 하나의 정보를 가져옵니다*/
-    User findUserById(Long id);
+    UserDto findUserById(Long id);
 
 
 }

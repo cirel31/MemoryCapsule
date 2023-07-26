@@ -2,17 +2,20 @@ package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-@Data
+@ToString(exclude = {"registerList","articleList"})
 @Entity
+@Getter
+@Setter
 @Table(name = "project")
 @NoArgsConstructor
 public class Project {
@@ -28,18 +31,18 @@ public class Project {
     @NotNull
     private String pjt_content;
 
-    @Column
+    @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Timestamp pjt_started;
+    private Date pjt_started;
     @Column
     @CreationTimestamp
     private Timestamp pjt_ended;
-    @Column
+    @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Timestamp pjt_created;
+    private Date pjt_created;
 
     @Column(length = 2048)
-    private String imgurl;
+    private String pjt_imgurl;
     @Column(length = 2048)
     private String pjt_shareurl;
     @Column
@@ -58,10 +61,12 @@ public class Project {
     private int pjt_alarm;
 
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Register> registerList = new ArrayList<>();
 
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Article> articleList = new ArrayList<>();
 }

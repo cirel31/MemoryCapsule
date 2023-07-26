@@ -1,7 +1,9 @@
 package com.santa.projectservice.dto;
 
-import java.sql.Timestamp;
+import lombok.Data;
 
+import java.sql.Timestamp;
+@Data
 public class UserDto {
     private Long user_idx;
     private String user_email;

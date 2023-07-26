@@ -3,18 +3,22 @@ package com.santa.projectservice.jpa;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.ws.rs.DefaultValue;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-@Data
+@ToString(exclude = {"articleList"})
 @NoArgsConstructor
 @Entity
+@Getter
 @Table(name = "article")
 public class Article {
     @Id
@@ -35,9 +39,9 @@ public class Article {
     @Column
     @NotNull
     private String article_content;
-    @Column
+    @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Timestamp article_created;
+    private Date article_created;
 
     @Column
     private Integer article_stamp;

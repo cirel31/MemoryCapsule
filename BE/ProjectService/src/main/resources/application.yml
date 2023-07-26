@@ -12,6 +12,15 @@ spring:
     username: S09P12A608
     password: asdf1234
     url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P12A608
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 50
+      connection-init-sql: SELECT 1
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      auto-commit: true
+
 
 eureka:
   instance:
@@ -26,6 +35,20 @@ eureka:
 logging:
   level:
     com.example.catalogservice: DEBUG
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAQPOZGAOT652M75EC
+      secretKey: pY5bCNVqprXQiLw8THu61fe0/2CORtrBMNnby2bw
+    stack:
+      auto: false
+    s3:
+      bucket: ssafysanta
+#      bucket.url: https://ssafysanta.s3.ap-northeast-2.amazonaws.com/
+    region:
+      static: ap-northeast-2
+
 
 #management:
 #  endpoints:
