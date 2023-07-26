@@ -2,8 +2,10 @@
 import { useState } from "react";
 import Modal from "react-modal";
 import "../styles/testPage.css"
-import {post} from "axios";
+import {useNavigate } from "react-router-dom";
+
 const TestPage = () => {
+  const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(null)
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
@@ -47,7 +49,9 @@ const TestPage = () => {
       currentSection,
       (currentSection + 3),
   );
-
+  const handleProjectCreatePage = () => {
+    navigate('/project/create')
+  }
   const leftBTN = (e) => {
     setCurrentSection((prev) => Math.max(prev - 1, 0));
   };
@@ -99,7 +103,7 @@ const TestPage = () => {
         </div>
         <hr />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <button>
+          <button onClick={handleProjectCreatePage}>
             새로운 추억 생성
           </button>
         </div>

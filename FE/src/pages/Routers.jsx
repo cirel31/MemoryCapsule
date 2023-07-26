@@ -11,6 +11,7 @@ import ProjectCreatePage from "./ProjectCreatePage";
 import TestPage from "./TestPage";
 import TestDetailPage from "./TestDetailPage";
 import MyPage from "./MyPage";
+import CalendarPage from "./CalendarPage";
 
 export default function Routers() {
 
@@ -27,6 +28,7 @@ export default function Routers() {
       <Route path='/mypage' element={<MyPage />} />
       <Route path='/test' element={<TestPage />} />
       <Route path='/test/:postId' element={<TestDetailPage />} />
+      <Route path='/calendar' element={<CalendarPage />} />
       <Route path='/*' element={<NotFound />} />
     </Routes>
   )
