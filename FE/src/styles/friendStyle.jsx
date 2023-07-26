@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import theme from "./theme";
+
 
 
 const AuthFormBlock = styled.div`
@@ -64,7 +66,7 @@ export { FreindEditor }
 
 const FriendItem = styled.div`    
     .FriendItem {
-      background-color: rgb(240, 240, 240);
+      background-color: ${theme.theme.backGround_main};
       margin-bottom: 10px;
       padding: 20px;
     }
@@ -91,6 +93,19 @@ const FriendItem = styled.div`
     .FriendItem textarea {
       padding: 10px;
     }
+    
+  .FriendItem .addFriend {
+    color : ${theme.theme.brand1_main};
+    background-color : ${theme.theme.point1_main};
+    margin : 1rem;
+    height: 50px;
+  }
+  
+  .FriendItem .discardFriend {
+background-color : ${theme.theme.point1_main};
+    margin-bottom: 1rem;
+    height: 50px;
+  }
 `;
 export { FriendItem }
 
@@ -159,6 +174,26 @@ const StyledButton = styled.button`
 `
 const CustomButton = props => <StyledButton { ...props } />
 export { CustomButton }
+
+
+const StyledButtonFriend = styled.button`
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  color: white;
+  outline: none;
+  cursor: pointer;
+  width: 10rem;
+  background: ${theme.theme.point1_main};
+  &:hover {
+    background: #66f9e8;
+  }
+`
+const CustomButtonFriend = props => <StyledButtonFriend { ...props } />
+export { CustomButtonFriend }
 
 
 const CheckBox = ({ children, disabled, checked, onChange }) => {

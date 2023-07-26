@@ -1,3 +1,5 @@
+import { FriendItem, CustomButtonFriend } from "../../styles/friendStyle";
+
 const FriendInfo = ({id, name, username, email, address, phone, website}) => {
     console.log(id, name, username);
 
@@ -11,18 +13,20 @@ const FriendInfo = ({id, name, username, email, address, phone, website}) => {
     }
 
     return (
-        <div className="FriendItem">
-            <div className="info">
-                <span className="author_info">
-                  | email : {email} | name : {name} | username : {username}
-                  {
-                    (1===1)
-                    ? <button className="addFriend" value={email} onClick={addFriend}> 친구 추가 </button>
-                    : <button className="discardFriend" value={email} onClick={discardFriend}> 친구 삭제 </button>
-                  }
-                </span>
+        <FriendItem>
+            <div className="FriendItem">
+                <div className="info">
+                    <span className="author_info">
+                      | email : {email} | name : {name} | username : {username}
+                      {
+                        (1===1)
+                        ?<CustomButtonFriend className="addFriend" value={email} onClick={addFriend}> 친구 추가 </CustomButtonFriend>
+                        :<CustomButtonFriend className="discardFriend" value={email} onClick={discardFriend}> 친구 삭제 </CustomButtonFriend>
+                      }
+                    </span>
+                </div>
             </div>
-        </div>
+        </FriendItem>
     )
 }
 

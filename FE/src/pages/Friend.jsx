@@ -1,4 +1,4 @@
-import { FreindEditor, FriendList, FriendItem, AuthFormBlock, StyledInput, CustomButton, FormBody, WhiteBox } from "../styles/friendStyle";
+import { CustomButton } from "../styles/friendStyle";
 
 import React, { useState } from "react";
 import FriendForm from "../components/friend/FriendForm";
@@ -109,12 +109,6 @@ const FriendPage = () => {
                 { friends.map((friend) => (
                     <FriendInfo key={friend.id} {...friend} />
                 ))}
-
-                {/*<ul style={{textAlign: 'center'}}>*/}
-                {/*    { friends.map((friend) => (*/}
-                {/*        <li key={friend.id}> <span>friend.id = {friend.id} | friend.name = {friend.name}  | friend.username = {friend.username} </span></li>*/}
-                {/*    ))}*/}
-                {/*</ul>*/}
             </div>
         </>
     )
