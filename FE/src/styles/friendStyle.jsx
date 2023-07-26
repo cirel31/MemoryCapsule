@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 const AuthFormBlock = styled.div`
   h3 {
-    margin: 0;
     margin-bottom: 1rem;
   }
 `;
