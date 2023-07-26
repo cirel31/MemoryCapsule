@@ -10,6 +10,7 @@ import ProjectListPage from "./ProjectListPage";
 import ProjectCreatePage from "./ProjectCreatePage";
 import TestPage from "./TestPage";
 import TestDetailPage from "./TestDetailPage";
+import MyPage from "./MyPage";
 
 export default function Routers() {
 
@@ -23,6 +24,7 @@ export default function Routers() {
       <Route path='/project/create' element={<ProjectCreatePage />} />
       <Route path='/friend' element={<Friend />} />
 
+      <Route path='/mypage' element={<MyPage />} />
       <Route path='/test' element={<TestPage />} />
       <Route path='/test/:postId' element={<TestDetailPage />} />
       <Route path='/*' element={<NotFound />} />
