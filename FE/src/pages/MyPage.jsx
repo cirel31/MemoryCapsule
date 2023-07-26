@@ -1,8 +1,23 @@
-
+import CalendarPage from "./CalendarPage";
+import UserInfoHeaderPage from "./UserInfoHeaderPage";
+import AnnounceUserViewPage from "./AnnounceUserViewPage";
 
 const MyPage = () => {
+
   return (
-    <div></div>
+    <div>
+      <div>
+        <UserInfoHeaderPage />
+      </div>
+      <br/>
+      <div>
+        <CalendarPage />
+      </div>
+      <br/>
+      <div>
+        <AnnounceUserViewPage />
+      </div>
+    </div>
   )
 }
 

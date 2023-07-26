@@ -3,10 +3,12 @@ import { IconContext } from "react-icons/lib";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
+import icon01 from "../../../assets/images/nav_icon_test_01.png"
+import icon02 from "../../../assets/images/nav_icon_test_02.png"
 
 
 const SidebarNav = styled.nav`
-  background: #15171c;
+  background: #FF7474FF;
   width: 250px;
   height: 100vh;
   display: flex;
@@ -17,6 +19,30 @@ const SidebarNav = styled.nav`
   transition: 350ms;
   z-index: 10;
 `;
+
+const ImageWithText = styled.div`
+  position: relative;
+  width: 200px;
+`;
+
+const Image = styled.div`
+  background-image: url(${icon01});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  height: 100px;
+`;
+
+const Text = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: white;
+`;
+
 
 
 export default function Navbar() {
@@ -41,12 +67,15 @@ export default function Navbar() {
     <>
       <IconContext.Provider>
         <div>
-          <button onClick={showSidebar}>사이드바 테스트</button>
+          <button style={{marginTop: '2rem'}} onClick={showSidebar}>사이드바 테스트</button>
         </div>
         <SidebarNav sidebar={sidebar}>
           <nav>
-            <div>
-              <button onClick={showSidebar}>사이드바 집어넣기</button>
+            <div onClick={showSidebar} >
+              <ImageWithText>
+                <Image />
+                <Text>안녕하세요</Text>
+              </ImageWithText>
             </div>
             <div>
               <button onClick={handlePageHome}>
