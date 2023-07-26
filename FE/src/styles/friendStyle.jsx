@@ -3,9 +3,6 @@ import styled from "styled-components";
 
 const AuthFormBlock = styled.div`
   h3 {
-    margin: 0;
-    color: #313a40;
-    margin-bottom: 1rem;
   }
 `;
 export { AuthFormBlock }
