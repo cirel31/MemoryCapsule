@@ -39,7 +39,6 @@ const StyledBox = styled.div`
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.025);
   padding: 2rem;
   width: 360px;
-  background: lightpink;
   border-radius: 2px;
 `
 const WhiteBox = props => <StyledBox { ...props } />
