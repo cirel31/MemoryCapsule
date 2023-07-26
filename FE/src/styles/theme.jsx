@@ -97,5 +97,4 @@ const size = [
     /** 임시 설정 */
 ];
 
-export default theme;
-export default size;
+export default {theme, size};
