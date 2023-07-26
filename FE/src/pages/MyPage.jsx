@@ -1,6 +1,5 @@
 import CalendarPage from "./CalendarPage";
 import UserInfoHeaderPage from "./UserInfoHeaderPage";
-import AnnouncePage from "./AnnouncePage";
 import AnnounceUserViewPage from "./AnnounceUserViewPage";
 
 const MyPage = () => {
