@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+
 const AuthFormBlock = styled.div`
   h3 {
     margin: 0;
@@ -26,6 +27,88 @@ const StyledInput = styled.input`
   }
 `
 export { StyledInput }
+
+const FreindEditor = styled.div`
+    .DiaryEditor {
+      border: 1px solid gray;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .DiaryEditor input,
+    textarea {
+      margin-bottom: 20px;
+      width: 500px;
+    }
+    
+    .DiaryEditor input {
+      padding: 10px;
+    }
+    .DiaryEditor textarea {
+      padding: 10px;
+      height: 150px;
+    }
+    
+    .DiaryEditor select {
+      width: 300px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .DiaryEditor button {
+      width: 500px;
+      padding: 10px;
+      cursor: pointer;
+    }
+`
+export { FreindEditor }
+
+
+const FriendItem = styled.div`    
+    .FriendItem {
+      background-color: rgb(240, 240, 240);
+      margin-bottom: 10px;
+      padding: 20px;
+    }
+    
+    .FriendItem span {
+      margin-right: 10px;
+    }
+    
+    .FriendItem .info {
+      border-bottom: 1px solid gray;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    .FriendItem .date {
+      color: gray;
+    }
+    
+    .FriendItem .content {
+      margin-bottom: 30px;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+    
+    .FriendItem textarea {
+      padding: 10px;
+    }
+`;
+export { FriendItem }
+
+
+const FriendList = styled.div`
+    .DiaryList {
+      border: 1px solid gray;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    
+    .DiaryList h2 {
+      text-align: center;
+    }
+`
+export { FriendList }
 
 
 const StyledBox = styled.div`
