@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.model.Enum.UserRole;
 import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.User;
@@ -11,11 +12,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,8 +35,11 @@ public class UserServiceImpl implements UserService{
         if(user == null) throw new UsernameNotFoundException("Not found");
         if(!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord())) throw new Exception("Password Not Matched!");
 
+        ArrayList<SimpleGrantedAuthority> author = new ArrayList<>();
+        if(UserRole.ADMIN.equals(user.getRole())) author.add(new SimpleGrantedAuthority("ADMIN"));
+        else author.add(new SimpleGrantedAuthority("USER"));
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        Authentication auth = new UsernamePasswordAuthenticationToken(user.getIdx(), user.getPassWord());
+        Authentication auth = new UsernamePasswordAuthenticationToken(user.getIdx(), user.getPassWord(), author);
         // refresh Token && access Token 생성
         String refreshToken = tokenProvider.createRefreshToken(auth);
         String accessToken = tokenProvider.createToken(auth);

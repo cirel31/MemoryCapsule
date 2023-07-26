@@ -22,17 +22,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("JwtAuthenticationFilter.doFilterInternal");
         String token = resolveToken(request);
 
         // 유효한 토큰에 대하여 인증 정보 저장
         if(StringUtils.hasText(token) && tokenProvider.validateToken(token)){
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.debug("인증정보 저장! {} / uri = {}", authentication.getName(), request.getRequestURI());
+            log.info("인증정보 저장! {} / uri = {}", authentication.getName(), request.getRequestURI());
         }
         else{
-            log.debug("유효한 JWT 토큰이 없음, uri = {}", request.getRequestURI());
+            log.info("유효한 JWT 토큰이 없음, uri = {}", request.getRequestURI());
         }
+        filterChain.doFilter(request,response);
     }
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);

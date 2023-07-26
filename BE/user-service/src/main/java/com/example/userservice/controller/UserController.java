@@ -28,8 +28,12 @@ public class UserController {
             TokenDto result = userService.login(requestLogin);
             return ResponseEntity.status(HttpStatus.CREATED).body(result);
         }catch (Exception e){
-
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity test(){
+        return ResponseEntity.status(HttpStatus.OK).body("test success");
     }
 }

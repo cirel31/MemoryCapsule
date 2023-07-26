@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .authorizeRequests()
+                .antMatchers("/test/health-check").permitAll()
                 .antMatchers("/user/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -49,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(excetionHandling -> excetionHandling
+                .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(accessDeniedHandler)
                         .authenticationEntryPoint(authenticationEntryPoint)
                 );
@@ -61,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addExposedHeader("accessToken");
         corsConfiguration.setMaxAge(3600L);
-//        corsConfiguration.addAllowedOrigin("http://localhost:8081");
+        corsConfiguration.addAllowedOrigin("http://localhost:9876");
 
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);

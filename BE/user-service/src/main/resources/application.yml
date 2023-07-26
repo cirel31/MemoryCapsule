@@ -26,8 +26,8 @@ spring:
 #    fetch-registry: true
 #    register-with-eureka: true
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, health, beans, bus-refresh, info, metrics, prometheus # 포함시킬 내용들
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh, health, beans, bus-refresh, info, metrics, prometheus # 포함시킬 내용들
