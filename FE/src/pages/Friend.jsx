@@ -2,7 +2,7 @@ import { FreindEditor, FriendList, FriendItem, AuthFormBlock, StyledInput, Custo
 
 import React, { useState } from "react";
 import FriendForm from "../components/friend/FriendForm";
-import FriendInfo from "../components/common/FriendInfo";
+import FriendInfo from "../components/friend/FriendInfo";
 import axios from "axios";
 
 const FriendPage = () => {
