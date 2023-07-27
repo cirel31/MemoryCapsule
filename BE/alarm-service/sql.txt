@@ -1,7 +1,0 @@
-select 
-from `user` u, `project` p, `register` r, `article` a
-where u.`user_idx` = r.`rgstr_usr_idx` and r.`rgstr_pjt_idx`= p.`pjt_idx` and p.`pjt_idx` = a.`article_pjt_idx` and u.`user_idx` = a.`article_creator`
-and r.`rgstr_alarm` = 0 
-and ((p.`pjt_alarm_type` = 0 and DATEDIFF(NOW(), a.`article_created`) = p.`pjt_alarm`) 
-or (p.`pjt_alarm_type` = 1 and a.`article_created`  CURDATE() and p.`pjt_alarm` & (1  (DATE_FORMAT(NOW(), '%w') % 7)))  0)
-or 
