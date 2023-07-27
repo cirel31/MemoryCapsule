@@ -5,6 +5,7 @@ const initialState = {
   accessToken: null,
   isLoggedIn: false,
   user: null,
+  point: 100,
 }
 
 const userSlice = createSlice({
