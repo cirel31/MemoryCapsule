@@ -1,12 +1,10 @@
 package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.inject.BindingAnnotation;
 import com.santa.projectservice.dto.ArticleDto;
 import com.sun.istack.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -18,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @ToString(exclude = {"articleList"})
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
 @Table(name = "article")
@@ -39,8 +37,10 @@ public class Article {
     @JoinColumn(name = "article_creator_idx")
     private User user;
 
+    @Column(name = "article_title")
+    private String title;
     @NotNull
-    @Column(name = "article_content")
+    @Column(name = "article_content", length = 500)
     private String content;
     @Column(name = "article_created")
     @Temporal(TemporalType.TIMESTAMP)
@@ -54,4 +54,14 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<ArticleImg> articleImgList = new ArrayList<>();
 
+    @Builder
+    public Article(Long id, Project project, User user,String title, String content, Date created, Integer stamp) {
+        this.id = id;
+        this.project = project;
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.created = created;
+        this.stamp = stamp;
+    }
 }

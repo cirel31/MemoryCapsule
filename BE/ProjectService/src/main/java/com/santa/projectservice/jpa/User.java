@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 // 필드가 없는 클래스를 직렬화 하면서 문제가 생긴다함
 // 디비에 데이터가 없어서 그런가?
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

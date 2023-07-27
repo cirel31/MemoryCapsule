@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @Table(name = "project")
 @DynamicInsert //insert 시 null 인필드 제외
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

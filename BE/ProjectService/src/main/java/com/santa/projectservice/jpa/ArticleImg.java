@@ -1,10 +1,7 @@
 package com.santa.projectservice.jpa;
 
 import com.sun.istack.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -12,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @ToString
 @Table(name = "article_img")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @DynamicInsert
 public class ArticleImg {

@@ -2,13 +2,16 @@ package com.santa.projectservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.santa.projectservice.dto.ArticleDto;
 import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.dto.RegisterDto;
 import com.santa.projectservice.dto.UserDto;
+import com.santa.projectservice.jpa.Article;
 import com.santa.projectservice.jpa.Project;
 import com.santa.projectservice.jpa.User;
 import com.santa.projectservice.repository.RegisterRepository;
 import com.santa.projectservice.repository.UserRepository;
+import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +34,12 @@ public class ProjectController {
 
     private final UserService userService;
     private final ProjectService projectService;
+    private final ArticleService articleService;
 
-    public ProjectController(UserService userService, ProjectService projectService) {
+    public ProjectController(UserService userService, ProjectService projectService, ArticleService articleService) {
         this.userService = userService;
         this.projectService = projectService;
+        this.articleService = articleService;
     }
 
     @GetMapping("/{userId}")
@@ -48,7 +54,7 @@ public class ProjectController {
      * @return - 새로 만들어진 프로젝트의 ID
      * @throws JsonProcessingException - project정보가 없을 떄
      */
-    @PostMapping("/newproject")
+    @PostMapping("/create")
     public Long createProject(HttpServletRequest httpRequest, @RequestBody Map<String, Object> map) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         List<Integer> list = (ArrayList<Integer>)map.get("userList");
@@ -82,7 +88,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(registerDtoList);
     }
 
-    @PostMapping("/{projectId}/editContent")
+    @PostMapping("/update/{projectId}")
     public ResponseEntity<Boolean> editProjectContent(@PathVariable("projectId") Long projectId,@RequestBody String content, HttpServletRequest request){
         log.info("editProjectComment 호출------------------------------");
         Long id = Long.valueOf(String.valueOf(request.getHeader("userId")));
@@ -93,9 +99,24 @@ public class ProjectController {
     }
 
 
-    @PostMapping
-    public void uploadArticle(){
-
+    @PostMapping("/write/{projectId}")
+    public ResponseEntity<Boolean> writeArticle(@PathVariable("projectId") Long projectId,
+                                                    @RequestBody Map<String, String> map,
+                                                    HttpServletRequest request){
+        log.info("-----------WriteArticle-----------");
+        Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
+        String title = map.get("title");
+        String content = map.get("content");
+        ArticleDto articleDto = ArticleDto.builder()
+                .title(map.get("title"))
+                .content(map.get("content"))
+                .userId(userId)
+                .projectId(projectId)
+                .stamp(Integer.parseInt(map.get("stamp")))
+                .build();
+        Boolean result = articleService.writeArticle(articleDto, null);
+        log.info("-----------EndWriteArticle----------");
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @GetMapping("/article")
