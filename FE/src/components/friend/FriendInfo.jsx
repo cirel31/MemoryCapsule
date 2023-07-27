@@ -17,13 +17,17 @@ const FriendInfo = ({id, name, username, email, address, phone, website}) => {
             <div className="FriendItem">
                 <div className="info">
                     <span className="author_info">
-                      | email : {email} | name : {name} | username : {username}
-                      {
-                        (1===1)
-                        ?<CustomButtonFriend className="addFriend" value={email} onClick={addFriend}> 친구 추가 </CustomButtonFriend>
-                        :<CustomButtonFriend className="discardFriend" value={email} onClick={discardFriend}> 친구 삭제 </CustomButtonFriend>
-                      }
+                        email : {email}<br/>
+                        name : {name}<br/>
+                        username : {username}<br/>
                     </span>
+                    <div>
+                        {
+                            (1===1)
+                            ?<CustomButtonFriend className="CustomButtonFriend addFriend" value={email} onClick={addFriend}> 추가 </CustomButtonFriend>
+                            :<CustomButtonFriend className="CustomButtonFriend discardFriend" value={email} onClick={discardFriend}> 삭제 </CustomButtonFriend>
+                        }
+                    </div>
                 </div>
             </div>
         </FriendItem>
