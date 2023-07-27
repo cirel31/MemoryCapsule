@@ -26,33 +26,35 @@ public class User {
     @Column(name = "user_idx")
     private Long id;
 
-    @Column(unique = true)
-    private String user_email;
-    @Column
-    private int user_point;
-    @Column
-    private String user_name;
-    @Column
-    private String user_nickname;
-    @Column
+    @Column(name = "user_email", unique = true)
+    private String email;
+    @Column(name = "user_point")
+    private int point;
+    @Column(name = "user_name")
+    private String name;
+    @Column(name = "user_nickname")
+    private String nickname;
+    @Column(name = "user_pwd")
     @NotNull
-    private String user_pwd;
+    private String pwd;
 //    @Column
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "user_created")
     @CreationTimestamp
-    private Date user_created;
+    private Date created;
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "user_updated")
     @CreationTimestamp
-    private Date user_updated;
-    @Column
-    private Boolean user_deleted;
-    @Column
-    private int user_role;
-    @Column(unique = true)
+    private Date updated;
+    @Column(name = "user_deleted")
+    private Boolean deleted;
+    @Column(name = "user_role")
+    private int role;
+    @Column(name = "user_phone", unique = true)
     @NotNull
-    private String user_phone;
-    @Column(length = 2048)
-    private String user_imgurl;
+    private String phone;
+    @Column(name = "user_imgurl", length = 2048)
+    private String imgurl;
 
     @EqualsAndHashCode.Exclude
     @JsonIgnore

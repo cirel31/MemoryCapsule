@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.ws.rs.DefaultValue;
@@ -16,11 +18,17 @@ import javax.ws.rs.DefaultValue;
 @Table(name = "register")
 @NoArgsConstructor
 @Getter
+@ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@DynamicInsert  // null값이 들어가있는 객체는 insert문에 포함시키지 않고 DB에 정의된 Default값 사용
+                // 혹은 @PrePersist를 가진 함수 사용 ->  persist되기 전 실행됨
+                // https://dotoridev.tistory.com/6
+@DynamicUpdate
 public class Register {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long rgstr_idx;
+    @Column(name = "rgstr_idx")
+    private long id;
 
     @JsonIgnore
     @JoinColumn(name = "rgstr_usr_idx")
@@ -34,21 +42,25 @@ public class Register {
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
-    @Column
+    @Column(name = "rgstr_type")
     @DefaultValue("0")
-    private Boolean rgstr_type;
-    @Column
+    private Boolean type;
+    @Column(name = "rgstr_confirm")
     @DefaultValue("0")
-    private Boolean rgstr_confirm;
-    @Column
+    private Boolean confirm;
+    @Column(name = "rgstr_alarm")
     @DefaultValue("0")
-    private Boolean rgstr_alarm;
+    private Boolean alarm;
 
     public Register(User user, Project project, Boolean rgstr_type, Boolean rgstr_confirm, Boolean rgstr_alarm) {
         this.user = user;
         this.project = project;
-        this.rgstr_type = rgstr_type;
-        this.rgstr_confirm = rgstr_confirm;
-        this.rgstr_alarm = rgstr_alarm;
+        this.type = rgstr_type;
+        this.confirm = rgstr_confirm;
+        this.alarm = rgstr_alarm;
+    }
+
+    public void confirm() {
+        this.confirm = true;
     }
 }

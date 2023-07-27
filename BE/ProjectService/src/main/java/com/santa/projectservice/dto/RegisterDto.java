@@ -11,10 +11,10 @@ import javax.ws.rs.DefaultValue;
 
 @Data
 public class RegisterDto {
-    private long rgstr_idx;
-    private Long rgstr_user_idx;
-    private Long rgstr_pjt_idx;
-    private Boolean rgstr_type;
-    private Boolean rgstr_confirm;
-    private Boolean rgstr_alarm;
+    private long id;
+    private Long userId;
+    private Long pjtId;
+    private Boolean type;
+    private Boolean confirm;
+    private Boolean alarm;
 }

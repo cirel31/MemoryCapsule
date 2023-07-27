@@ -1,12 +1,14 @@
 package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.santa.projectservice.dto.ArticleDto;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import javax.ws.rs.DefaultValue;
@@ -20,11 +22,12 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "article")
+@DynamicInsert
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long article_idx;
-
+    @Column(name = "article_idx")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -36,19 +39,19 @@ public class Article {
     @JoinColumn(name = "article_creator_idx")
     private User user;
 
-    @Column
     @NotNull
-    private String article_content;
+    @Column(name = "article_content")
+    private String content;
+    @Column(name = "article_created")
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Date article_created;
+    private Date created;
 
-    @Column
-    private Integer article_stamp;
+    @Column(name = "article_stamp")
+    private Integer stamp;
 
     @JsonIgnore
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<ArticleImg> articleImgList = new ArrayList<>();
-
 
 }

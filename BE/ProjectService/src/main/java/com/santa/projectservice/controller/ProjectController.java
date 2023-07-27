@@ -2,7 +2,6 @@ package com.santa.projectservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.dto.RegisterDto;
 import com.santa.projectservice.dto.UserDto;
@@ -12,17 +11,14 @@ import com.santa.projectservice.repository.RegisterRepository;
 import com.santa.projectservice.repository.UserRepository;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.service.UserService;
-import com.santa.projectservice.vo.ResponseUser;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.spi.RegisterableService;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,11 +66,30 @@ public class ProjectController {
         return projectId;
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteProject(HttpServletRequest request, @RequestBody Map<String, Long> map){
+        Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
+        Long projectId = map.get("projectId");
+        log.info("userId: " + userId + " / projectId : " + projectId);
+        String title = projectService.deleteProject(userId, projectId);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(title);
+    }
+
     @GetMapping("/registerList/{userId}")
     public ResponseEntity<List<RegisterDto>> getRegisterById(@PathVariable("userId") Long userId){
         List<RegisterDto> registerDtoList = projectService.findRegistersByUserId(userId);
         log.info(registerDtoList.toString());
         return ResponseEntity.status(HttpStatus.OK).body(registerDtoList);
+    }
+
+    @PostMapping("/{projectId}/editContent")
+    public ResponseEntity<Boolean> editProjectContent(@PathVariable("projectId") Long projectId,@RequestBody String content, HttpServletRequest request){
+        log.info("editProjectComment 호출------------------------------");
+        Long id = Long.valueOf(String.valueOf(request.getHeader("userId")));
+        log.info(content);
+        log.info(id.toString());
+        Boolean check = projectService.editProjectContent(id, projectId, content);
+        return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
 

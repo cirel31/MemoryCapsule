@@ -26,10 +26,7 @@ public class UserServiceImpl implements UserService {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
-    @Override
-    public Iterable<User> getAllUser() {
-        return userRepository.findAll();
-    }
+
 
     @Override
     public UserDto findUserById(Long id) {

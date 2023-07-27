@@ -8,10 +8,10 @@ import java.sql.Timestamp;
 
 @Data
 public class ArticleDto {
-    private Long article_idx;
-    private Project project;
-    private User user;
-    private String article_content;
-    private Timestamp article_created;
-    private Integer article_stamp;
+    private Long idx;
+    private Long projectId;
+    private Long userId;
+    private String content;
+    private Timestamp created;
+    private Integer stamp;
 }

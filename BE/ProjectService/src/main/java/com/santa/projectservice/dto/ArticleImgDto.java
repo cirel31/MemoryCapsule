@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class ArticleImgDto {
-    private Long articleimg_img_idx;
-    private Article article;
-    private String articleimg_imgurl;
+    private Long imgIdx;
+    private long articleId;
+    private String imgurl;
 }

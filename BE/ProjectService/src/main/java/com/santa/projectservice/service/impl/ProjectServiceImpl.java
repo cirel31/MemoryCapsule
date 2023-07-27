@@ -22,10 +22,9 @@ import java.util.Optional;
 @Slf4j
 public class ProjectServiceImpl implements ProjectService {
     private final UserRepository userRepository;
-
-    RegisterRepository registerRepository;
-    ProjectRepository projectRepository;
-    ModelMapper mapper;
+    private final RegisterRepository registerRepository;
+    private final ProjectRepository projectRepository;
+    private final ModelMapper mapper;
 
     public ProjectServiceImpl(RegisterRepository registerRepository,
                               ProjectRepository projectRepository,
@@ -38,8 +37,8 @@ public class ProjectServiceImpl implements ProjectService {
         PropertyMap<Register, RegisterDto> replyMapping = new PropertyMap<Register, RegisterDto>() {
             @Override
             protected void configure() {
-                map().setRgstr_pjt_idx(source.getProject().getPjt_idx());
-                map().setRgstr_user_idx(source.getUser().getId());
+                map().setPjtId(source.getProject().getId());
+                map().setUserId(source.getUser().getId());
             }
         };
         this.mapper.addMappings(replyMapping);
@@ -55,37 +54,32 @@ public class ProjectServiceImpl implements ProjectService {
         ModelMapper tmp = new ModelMapper();
         Project project1 = tmp.map(projectDto, Project.class);;
         Project project = projectRepository.save(project1);
-        Long pjt_id = project1.getPjt_idx();
+        Long pjt_id = project1.getId();
         log.info("입력된 값 : " + project1.toString());
         // 이부분 유저가 없을때 예외처리 해주어야 합니다.
         // Transaction 격리 생각해야 합니다
+        registerRepository.save(new Register(
+                userRepository.getReferenceById(Owner), project,
+                true, false, false)
+        );
         userList.forEach(id -> {
-            // 이따구로짜면안댐
-            User user = userRepository.findById(id).get();
-            // rgstr_confirm은 그냥 초대를 주었다는 말이다. confirm이 true가 되어야 진짜 들어간거다
+            //getReferenceById를 쓰면 id로 조회하는 쿼리가 발생하지 않는다(Lazy)
+            // 입력을 할 때 대상 ID가 없으면 EntityNotFoundException을 발생시킨다.
+            User user = userRepository.getReferenceById(id);
+            // getOne, findById deprecated됨 -> getReferenceById로 대체
+            // User user = userRepository.getOne(id);
+            // User user = userRepository.findById(id).get();
             registerRepository.save(new Register(user, project, false, false, false));
         });
         log.info("-------createProject함수 끝----------");
-        return null;
+        return project.getId();
     }
 
-    @Override
-    public Boolean editProjectContent(Long id, String comment) {
-        return null;
-    }
 
     @Override
     public String pjtGiftUrl(Long id) {
         return null;
     }
-
-    @Override
-    public List<Project> projectList(User user) {
-        return null;
-    }
-
-
-
 
     public List<RegisterDto> findRegistersByUserId(Long id){
         List<Register> registerList = registerRepository.findRegistersByUser_Id(id);
@@ -94,5 +88,39 @@ public class ProjectServiceImpl implements ProjectService {
             registerDtoList.add(mapper.map(r, RegisterDto.class));
         });
         return registerDtoList;
+    }
+
+    @Override
+    public Long confirmRegister(Long userId, Long registerId) {
+        Register commitRegister = registerRepository.getReferenceById(registerId);
+        commitRegister.confirm();
+        registerRepository.save(commitRegister);
+        return registerId;
+    }
+
+    @Override
+    public Boolean editProjectContent(Long id, Long projectId, String content) {
+        Long checkOwner = registerRepository.getRegisterByUserIdAndProjectId(id, projectId);
+        // 내가 주인이 아니면 바꿀 수 없다
+        if(checkOwner == null){
+            return false;
+        }
+        // 주인일 때
+        Project project = projectRepository.getReferenceById(projectId);
+        project.editComment(content);
+        projectRepository.save(project);
+        return true;
+    }
+
+    @Override
+    public String deleteProject(Long userId, Long projectId) {
+        Long targetRegisterId = registerRepository.getRegisterByUserIdAndProjectId(userId, projectId);
+        log.info("찾은 레지스터 Id: " + targetRegisterId);
+        Optional<Project> existProject = projectRepository.findById(targetRegisterId);
+        log.info("찾은 프로젝트: " + existProject.toString());
+        Project targetProject = existProject.get();
+        targetProject.delete();
+        projectRepository.save(targetProject);
+        return targetProject.getTitle();
     }
 }

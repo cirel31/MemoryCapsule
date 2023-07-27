@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import javax.ws.rs.DefaultValue;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,50 +17,55 @@ import java.util.List;
 @ToString(exclude = {"registerList","articleList"})
 @Entity
 @Getter
-@Setter
 @Table(name = "project")
+@DynamicInsert //insert 시 null 인필드 제외
 @NoArgsConstructor
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long pjt_idx;
+    @Column(name = "pjt_idx")
+    private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "pjt_title", nullable = false)
     @NotNull
-    private String pjt_title;
+    private String title;
 
-    @Column(nullable = false, length = 500)
+    @Column(name = "pjt_content", nullable = false, length = 500)
     @NotNull
-    private String pjt_content;
+    private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "pjt_started")
     @CreationTimestamp
-    private Date pjt_started;
-    @Column
-    @CreationTimestamp
-    private Timestamp pjt_ended;
+    private Date started;
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "pjt_ended")
     @CreationTimestamp
-    private Date pjt_created;
+    private Date ended;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "pjt_created")
+    @CreationTimestamp
+    private Date created;
 
-    @Column(length = 2048)
-    private String pjt_imgurl;
-    @Column(length = 2048)
-    private String pjt_shareurl;
-    @Column
-    private int pjt_type;
-    @Column
-    private Boolean pjt_state;
-    @Column
-    private String pjt_gift_url;
-    @Column
-    private int pjt_limit;
-    @Column
-    private Boolean pjt_deleted;
-    @Column
-    private int pjt_alarm_type;
-    @Column
-    private int pjt_alarm;
+    @Column(name = "pjt_imgurl", length = 2048)
+    private String imgurl;
+    @Column(name = "pjt_shareurl", length = 2048)
+    private String shareurl;
+    @Column(name = "pjt_type")
+    private int type;
+    @Column(name = "pjt_state")
+    private Boolean state;
+    @Column(name = "pjt_gift_url")
+    private String giftUrl;
+    @Column(name = "pjt_limit")
+    private int limit;
+    @Column(name = "pjt_deleted")
+    @DefaultValue("false")
+    private Boolean deleted;
+    @Column(name = "pjt_alarm_type")
+    private int alarmType;
+    @Column(name = "pjt_alarm")
+    private int alarm;
 
     @JsonIgnore
     @EqualsAndHashCode.Exclude
@@ -70,7 +77,11 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Article> articleList = new ArrayList<>();
 
-    public Project(Long id){
-        this.pjt_idx = id;
+    public void delete() {
+        this.deleted = true;
+    }
+
+    public void editComment(String content) {
+        this.content = content;
     }
 }

@@ -5,16 +5,16 @@ import lombok.Data;
 import java.sql.Timestamp;
 @Data
 public class UserDto {
-    private Long user_idx;
-    private String user_email;
-    private int user_point;
-    private String user_name;
-    private String user_nickname;
-    private String user_pwd;
-    private Timestamp user_created;
-    private Timestamp user_updated;
-    private Timestamp user_deleted;
-    private int user_role;
-    private String user_phone;
-    private String user_imgurl;
+    private Long id;
+    private String email;
+    private int point;
+    private String name;
+    private String nickname;
+    private String pwd;
+    private Timestamp created;
+    private Timestamp updated;
+    private Timestamp deleted;
+    private int role;
+    private String phone;
+    private String imgurl;
 }

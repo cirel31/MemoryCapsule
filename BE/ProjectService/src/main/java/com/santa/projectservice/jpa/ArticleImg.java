@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
@@ -13,18 +14,16 @@ import javax.persistence.*;
 @Table(name = "article_img")
 @NoArgsConstructor
 @Getter
+@DynamicInsert
 public class ArticleImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long articleimg_img_idx;
-
+    @Column(name = "articleimg_img_idx")
+    private Long id;
     @JoinColumn(name = "article_img_idx")
     @ManyToOne(fetch = FetchType.LAZY)
     private Article article;
-
-
-    @Column(length = 2048)
-    private String articleimg_imgurl;
-
+    @Column(name = "articleimg_imgurl", length = 2048)
+    private String imgurl;
 
 }

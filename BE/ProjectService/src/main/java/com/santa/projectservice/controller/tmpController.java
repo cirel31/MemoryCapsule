@@ -24,13 +24,13 @@ public class tmpController {
         this.userService = userService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<Iterable<ResponseUser>> users(){
-        Iterable<User> userList = userService.getAllUser();
-        List<ResponseUser> result = new ArrayList<>();
-        userList.forEach(u -> {
-            result.add(new ModelMapper().map(u, ResponseUser.class));
-        });
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
+//    @GetMapping("/all")
+//    public ResponseEntity<Iterable<ResponseUser>> users(){
+//        Iterable<User> userList = userService.getAllUser();
+//        List<ResponseUser> result = new ArrayList<>();
+//        userList.forEach(u -> {
+//            result.add(new ModelMapper().map(u, ResponseUser.class));
+//        });
+//        return ResponseEntity.status(HttpStatus.OK).body(result);
+//    }
 }
