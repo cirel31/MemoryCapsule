@@ -32,8 +32,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/test")
-    public ResponseEntity test(){
-        return ResponseEntity.status(HttpStatus.OK).body("test success");
+    @GetMapping("/health-check")
+    public String getHealth() {
+        return "Hello user-service";
     }
 }
