@@ -13,7 +13,7 @@ container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
 # env file import
-run_option="-dp 8000:8000 --net santa -e PROFILE=$1"
+run_option="-dp 8000:8000 --net santa -e PROFILE=$1 --env-file=/var/jenkins_home/workspace/setup.env"
 
 
 stop_container_command="sudo docker stop $container_name"
