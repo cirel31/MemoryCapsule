@@ -1,15 +1,26 @@
 import styled from "styled-components";
 import theme from "./theme";
 
-
-
 const AuthFormBlock = styled.div`
-  h3 {
-    margin-bottom: 1rem;
+  form label {
+    color : ${theme.theme.brand3_main};
+    font-weight: bold;
+    padding : 1rem;
+  }
+  
+  select {
+    appearance:none;
+    color : ${theme.theme.brand3_main};
+    border : none;
+    background-color: ${theme.theme.backGround_main};
+    outline: none;
+    width : 5rem;
+    margin-bottom : 1rem;
+    text-align-last: center;
+    border-radius : 1rem;
   }
 `;
 export { AuthFormBlock }
-
 
 const StyledInput = styled.input`
   font-size: 1rem;
@@ -135,7 +146,6 @@ const StyledBox = styled.div`
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.025);
   padding: 2rem;
   width: 360px;
-  background: lightpink;
   border-radius: 2px;
 `
 const WhiteBox = props => <StyledBox { ...props } />
