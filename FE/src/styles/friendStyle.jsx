@@ -4,8 +4,20 @@ import theme from "./theme";
 
 
 const AuthFormBlock = styled.div`
-  h3 {
-    margin-bottom: 1rem;
+  form label {
+    color : ${theme.theme.brand3_main};
+    font-weight: bold;
+    padding : 1rem;
+  }
+  
+  select {
+    appearance:none;
+    color : ${theme.theme.brand3_main};
+    border : none;
+    background-color: ${theme.theme.backGround_main};
+    outline: none;
+    width : 5rem;
+    margin-bottom : 1rem;
   }
 `;
 export { AuthFormBlock }
@@ -177,7 +189,6 @@ const StyledBox = styled.div`
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.025);
   padding: 2rem;
   background: ${theme.theme.brand1_3};
-  border-radius: 1rem;
 `
 const WhiteBox = props => <StyledBox { ...props } />
 export { WhiteBox }

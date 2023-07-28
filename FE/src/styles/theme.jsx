@@ -6,10 +6,13 @@
     - 모든 컴포넌트를 ThemeProvider에 연결해야 합니다
     - 컴포넌트에 props로 글로벌 정의한 스타일을 가져옵니다
 */
+import styled from "styled-components";
+
 const theme = {
     //Black & white
     black: "#000000FF",
     white: "#FFFFFFFF",
+    transpar : "#FFFFFF00",
 
     // backGround
     backGround_1: "#F8F4F0FF",
@@ -79,7 +82,7 @@ const theme = {
     point1_5: "#9675E5FF",
     point1_main: "#7D5BDFFF",
 
-    //etc.
+//etc.
     main: "#FF599FFF",
     main_3: "#FFDEDEFF",
     main_color: "#FF7474FF",
