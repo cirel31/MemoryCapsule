@@ -1,9 +1,0 @@
-diff a/FE/src/styles/friendStyle.jsx b/FE/src/styles/friendStyle.jsx	(rejected hunks)
-@@ -3,7 +3,6 @@
- 
- const AuthFormBlock = styled.div`
-   h3 {
--    margin: 0;
-     margin-bottom: 1rem;
-   }
- `;

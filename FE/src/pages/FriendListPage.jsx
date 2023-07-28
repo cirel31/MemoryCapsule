@@ -19,8 +19,7 @@ const FriendListPage = () => {
         const sendSearch = form.search;
 
         if (sendId.length > 0) {
-            console.log(sendId);
-            console.log(sendSearch);
+            console.log(sendId, " : ", sendSearch);
         } else {
             console.log("한 글자라도 입력해주십시오");
         }
@@ -64,12 +63,11 @@ const FriendListPage = () => {
         console.log("sendId", sendId);
         if (sendId === "") {
             getFriends(sendId, sendSearch);
-            console.log("  ", friends);
             for (let i = 0; i < friends.length; i++) {
                 console.log(friends[i].name);
             }
         } else {
-            console.log("friends -", friends);
+            console.log("[제작예정] 불러온 친구 리스트 내부에서 sort");
             // for (let i = 0; i < friends.length; i++) {
             //     if(form.id === friends[i].name){
             //         setFriends([friends[i]]);

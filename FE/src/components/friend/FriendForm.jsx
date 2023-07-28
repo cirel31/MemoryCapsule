@@ -1,4 +1,5 @@
-import { FriendItem, AuthFormBlock, StyledInput, CustomButton, FormBody, WhiteBox } from "../../styles/friendStyle";
+import { AuthFormBlock, FormBody, WhiteBox } from "../../styles/friendStyle";
+// import {StyledSearchBar} from "../../styles/searchBarStyle";
 
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
@@ -13,25 +14,23 @@ const FriendForm = ({form, setForm}) => {
 
     const handleChange = (e) => {
         const { value } = e.target;
-        console.log(e.target);
-        console.log("handleChange : ");
-        const nextForm = {
+            const nextForm = {
             ...form,
             "search" : value,
         };
         setForm(nextForm);
-        console.log(form);
+        console.log("handleChange : ", form);
     };
 
     const valueChange = (e) => {
         const { value } = e.target;
-        console.log("valueChange : ");
         const nextForm = {
             ...form,
             "id" : value?value:"",
         };
         setForm(nextForm);
-        console.log(form);
+        console.log("valueChange : ", form);
+
     };
 
     return (
@@ -42,17 +41,18 @@ const FriendForm = ({form, setForm}) => {
                         <form>
                             <label htmlFor="search">친구찾기 페이지</label>
                             <select id="search" name="search" onChange={handleChange}>
-                                <option value={"id"}>id(e-mail)</option>
+                                <option value={"id"}>e-mail</option>
                                 <option value={"name"}>name</option>
                                 <option value={"nickname"}>nickname</option>
                             </select>
-                            <StyledInput
-                                id="id"
-                                placeholder="여기에 입력하세요"
-                                value={form.id}
-                                onChange={valueChange}
-                                required
-                            />
+
+                            {/*<StyledSearchBar*/}
+                            {/*    id="id"*/}
+                            {/*    placeholder="여기에 입력하세요"*/}
+                            {/*    value={form.id}*/}
+                            {/*    onChange={valueChange}*/}
+                            {/*    required*/}
+                            {/*/>*/}
                         </form>
                     </AuthFormBlock>
                 </WhiteBox>

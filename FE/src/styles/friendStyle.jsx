@@ -185,7 +185,7 @@ export { WhiteBox }
 
 const StyledBlock = styled.div`
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns: 1fr minmax(500px, 3fr) 1fr;
   gap: 1rem;
 `
 const FormBody = props => <StyledBlock { ...props } />
@@ -214,11 +214,11 @@ export { CustomButton }
 
 const StyledButtonFriend = styled.button`
   border: none;
+  text-align : center;
+  padding : auto;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
   color: white;
   outline: none;
   cursor: pointer;
