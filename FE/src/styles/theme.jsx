@@ -12,6 +12,7 @@ const theme = {
     //Black & white
     black: "#000000FF",
     white: "#FFFFFFFF",
+    transpar : "#FFFFFF00",
 
     // backGround
     backGround_1: "#F8F4F0FF",

@@ -1,14 +1,26 @@
 import styled from "styled-components";
+import theme from "./theme";
 
 const AuthFormBlock = styled.div`
-  h3 {
-    margin: 0;
-    color: #313a40;
-    margin-bottom: 1rem;
+  form label {
+    color : ${theme.theme.brand3_main};
+    font-weight: bold;
+    padding : 1rem;
+  }
+  
+  select {
+    appearance:none;
+    color : ${theme.theme.brand3_main};
+    border : none;
+    background-color: ${theme.theme.backGround_main};
+    outline: none;
+    width : 5rem;
+    margin-bottom : 1rem;
+    text-align-last: center;
+    border-radius : 1rem;
   }
 `;
 export { AuthFormBlock }
-
 
 const StyledInput = styled.input`
   font-size: 1rem;
