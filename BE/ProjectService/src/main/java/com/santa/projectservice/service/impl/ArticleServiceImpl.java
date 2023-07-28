@@ -42,6 +42,11 @@ public class ArticleServiceImpl implements ArticleService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * @param articleDto - 아티클 정보
+     * @param images     - 업로드 이미지들
+     * @return
+     */
     @Override
     public Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) {
         // 내가 하고있는 프로젝트가 맞는지 체크를 하고
@@ -52,8 +57,9 @@ public class ArticleServiceImpl implements ArticleService {
                 .title(articleDto.getTitle())
                 .stamp(articleDto.getStamp())
                 .build();
-        log.info(article.toString());
-        // 예외처리 필요
+//        이걸 쓰니까 lazy가 걸려있는 article을 조회하게 되므로  select 쿼리가 날라가게 됩니다.
+//        log.info(article.toString());
+//         예외처리 필요
         articleRepository.save(article);
         // 프로젝트에 내 이름이 있으면 글을 씁니다
         return true;

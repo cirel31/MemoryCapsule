@@ -19,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
+@Setter
 @Table(name = "article")
 @DynamicInsert
 public class Article {

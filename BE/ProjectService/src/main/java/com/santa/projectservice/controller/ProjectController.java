@@ -99,7 +99,7 @@ public class ProjectController {
     }
 
 
-    @PostMapping("/write/{projectId}")
+    @PostMapping("/article/write/{projectId}")
     public ResponseEntity<Boolean> writeArticle(@PathVariable("projectId") Long projectId,
                                                     @RequestBody Map<String, String> map,
                                                     HttpServletRequest request){
