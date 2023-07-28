@@ -2,4 +2,4 @@ spring:
   cloud:
     config:
       uri: ${CONFIG_URL}
-      profile: prod
+      profile: local
