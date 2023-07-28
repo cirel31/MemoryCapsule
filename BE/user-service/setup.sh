@@ -12,7 +12,7 @@ container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
 # env file import
-run_option="-dp 8000:8000 --env-file=/jenkins/workspace/setup.env"
+run_option="-d --net santa --env-file=/jenkins/workspace/setup.env"
 
 ############################################################
 # [docker build command]
