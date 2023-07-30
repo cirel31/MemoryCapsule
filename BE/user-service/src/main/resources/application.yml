@@ -1,30 +1,67 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   application:
     name: user-service
 
-  rabbitmq:
-    host: ${SERVER_IP}
-    port: ${RABBITMQ_PORT}
-    username: ${RABBITMQ_ID}
-    password: ${RABBITMQ_PWD}
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test
-    username: sa
-    password: 12345
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:33060/santa
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  redis:
+    host: localhost
+    port: 6379
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 	946886
+            client-secret: asdf1234
+            redirect-uri: {baseUrl}/{action}/oauth2/code/{registrationId}
+            authorization-grant-type: test
+            client-authentication-method: test
+            client-name: test
+            scope:
+              - profile
+              - account_email
+        provider:
+          kakao:
+            authorization-uri: test
+            token-uri: test
+            user-info-uri: test
+            user-name-attribute: response
+
+
+
 
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    hostname: user-service
+    hostname: ${MY_IP_ADDRESS}
   client:
     service-url:
-      defaultZone: ${DISCOVERY_URL}
+      defaultZone: http://i9a608.p.ssafy.io:8761/eureka
     fetch-registry: true
     register-with-eureka: true
+
+
+
+logging:
+  level:
+    com.example.user-service.client: DEBUG # Feign Client Logging 설정
+
+jwt:
+  secret: asdfghjklqwertyuiopzxcvbnmasdfasdfweasdfwbzzgoooodItstootireddgdsasdfsawherhdsfbdfsgsadfsadvsvethegwfsdavbdfh
+  token-validity-in-milliseconds: 100000000
+  refresh-token: 987654321987654321
 
 management:
   endpoints:

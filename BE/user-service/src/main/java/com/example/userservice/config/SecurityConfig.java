@@ -3,6 +3,8 @@ package com.example.userservice.config;
 import com.example.userservice.exception.JwtAccessDeniedHandler;
 import com.example.userservice.exception.JwtAuthenticationEntryPoint;
 import com.example.userservice.filter.JwtAuthenticationFilter;
+import com.example.userservice.model.handler.OAuth2FailHandler;
+import com.example.userservice.model.handler.OAuth2SuccessHandler;
 import com.example.userservice.service.UserService;
 import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +24,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
@@ -42,8 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/test/health-check").permitAll()
+                .antMatchers("/user/health-check").permitAll()
                 .antMatchers("/user/login").permitAll()
+                .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -54,6 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .accessDeniedHandler(accessDeniedHandler)
                         .authenticationEntryPoint(authenticationEntryPoint)
                 );
+//                .oauth2Login().successHandler(new OAuth2SuccessHandler())
+//                .failureHandler(new OAuth2FailHandler());
     }
 
     /* Cors Setting */
