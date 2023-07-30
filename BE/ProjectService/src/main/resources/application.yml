@@ -48,6 +48,7 @@ logging:
 cloud:
   aws:
     credentials:
+#      jaehyoni 계정
       accessKey: AKIAQPOZGAOT652M75EC
       secretKey: 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
     stack:

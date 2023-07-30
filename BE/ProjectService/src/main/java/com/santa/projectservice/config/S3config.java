@@ -10,11 +10,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class S3config {
-
-    @Value("${cloud.aws.credentials.access-key}")
+    /*
+    jaehyoni 보안 유저를 통해서만 PutObject 가능
+    그 외 유저는 읽기만 가능
+     */
+    @Value("${cloud.aws.credentials.accessKey}")
     private String accessKey;
 
-    @Value("${cloud.aws.credentials.secret-key}")
+    @Value("${cloud.aws.credentials.secretKey}")
     private String secretKey;
 
     @Value("${cloud.aws.region.static}")

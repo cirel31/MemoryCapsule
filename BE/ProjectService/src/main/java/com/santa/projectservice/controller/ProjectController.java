@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +104,7 @@ public class ProjectController {
     @PostMapping("/article/write/{projectId}")
     public ResponseEntity<Boolean> writeArticle(@PathVariable("projectId") Long projectId,
                                                     @RequestBody Map<String, String> map,
-                                                    HttpServletRequest request){
+                                                    HttpServletRequest request) throws IOException {
         log.info("-----------WriteArticle-----------");
         Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
         String title = map.get("title");
@@ -124,16 +125,5 @@ public class ProjectController {
     public void getArticle(){
 
     }
-
-//    @PutMapping("")
-//    public ResponseEntity<?> modify(@ModelAttribute BoardDto boardDto, @RequestParam(value = "upfile", required = false) MultipartFile[] files, HttpSession session) throws Exception {
-//        if(files[0] != null) {
-//            String fileUrl = s3FileUploadService.upload(files[0]);
-//            boardDto.setFileURL(fileUrl);
-//        }
-//        boardService.modifyArticle(boardDto);
-//        return new ResponseEntity<String>("success", HttpStatus.OK);
-//    }
-
 
 }

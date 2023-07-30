@@ -37,14 +37,17 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public String upload(MultipartFile file) throws IOException {
-        System.out.println("uplodaOnS3도 옴");
         String[] type = file.getOriginalFilename().split("[.]");
         String fileName = getUuid() +"." + type[type.length-1];
         log.info(fileName);
         try {
+            // 메타데이터 설정
+            // 해당 설정이 없으면 "application/octet-stream"으로 설정되어 객체에 접근할때 다운로드 페이지가 뜬다
+            // ContentType을 반드시 사진에서 추출해서 사용하도록 하자
+            ObjectMetadata om = new ObjectMetadata();
+            om.setContentType(file.getContentType());
             PutObjectResult result = amazonS3.putObject(
-                    new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
-                            .withCannedAcl(CannedAccessControlList.PublicRead)
+                    new PutObjectRequest(bucket, fileName, file.getInputStream(), om)
             );
         } catch (Exception e){
             log.error(e.toString());
