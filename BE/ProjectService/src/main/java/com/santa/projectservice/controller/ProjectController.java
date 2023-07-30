@@ -81,7 +81,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(title);
     }
 
-    @GetMapping("/registerList/{userId}")
+    @GetMapping("/list/{userId}")
     public ResponseEntity<List<RegisterDto>> getRegisterById(@PathVariable("userId") Long userId){
         List<RegisterDto> registerDtoList = projectService.findRegistersByUserId(userId);
         log.info(registerDtoList.toString());
@@ -90,11 +90,12 @@ public class ProjectController {
 
     @PostMapping("/update/{projectId}")
     public ResponseEntity<Boolean> editProjectContent(@PathVariable("projectId") Long projectId,@RequestBody String content, HttpServletRequest request){
-        log.info("editProjectComment 호출------------------------------");
+        log.info("-----------------------------editProjectComment 호출------------------------------");
         Long id = Long.valueOf(String.valueOf(request.getHeader("userId")));
         log.info(content);
         log.info(id.toString());
         Boolean check = projectService.editProjectContent(id, projectId, content);
+        log.info("--------------------edit project comment 끝 --------------------");
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 

@@ -54,7 +54,6 @@ cloud:
       auto: false
     s3:
       bucket: ssafysanta
-#      bucket.url: https://ssafysanta.s3.ap-northeast-2.amazonaws.com/
     region:
       static: ap-northeast-2
 
