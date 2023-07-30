@@ -4,4 +4,4 @@ spring:
       uri: http://i9a608.p.ssafy.io:8888
       name: apigateway
   profile: 
-    active: ${PROFILE_ACTIVE:dev}
+    active: ${PROFILE:dev}
