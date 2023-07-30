@@ -23,4 +23,10 @@ public class ArticleImg {
     @Column(name = "articleimg_imgurl", length = 2048)
     private String imgurl;
 
+    @Builder
+    public ArticleImg(Long id, Article article, String imgurl) {
+        this.id = id;
+        this.article = article;
+        this.imgurl = imgurl;
+    }
 }

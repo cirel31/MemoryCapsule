@@ -6,6 +6,7 @@ import com.santa.projectservice.jpa.ArticleImg;
 import com.santa.projectservice.jpa.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ArticleService {
@@ -17,7 +18,7 @@ public interface ArticleService {
      * @return - 아티클의 ID
      */
     // 아티클을 작성하는데 아티클을 생성하고 그 아이디로 사진을 전부 넣어줘야 함
-    Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images);
+    Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) throws IOException;
 
     /**
      * 한 아티클의 이미지 리스트를 가져옴
