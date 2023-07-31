@@ -6,11 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RegisterRepository extends JpaRepository<Register, Long> {
     List<Register> findRegistersByUser_Id(Long id);
-    // N+1 문제 발생
-    Register findRegisterByUser_IdAndProject_Id(Long user_Id, Long project_Id);
 
     /* N+1문제가 터져서 쿼리 직접 작성 */
     @Query("select r.project.id, r.confirm " +
@@ -18,6 +17,7 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
             "where r.project.id = :projectId " +
             "  and r.user.id = :userId " +
             "  and r.type = true ")
-    Long getRegisterByUserIdAndProjectId(@Param("userId") Long userId, @Param("projectId") Long projectId);
+    Optional<Long> getOwnerRegisterByUserIdAndProjectId(@Param("userId") Long userId, @Param("projectId") Long projectId);
 
+    Optional<Register> findByUser_IdAndProject_Id(Long userId, Long projectId);
 }

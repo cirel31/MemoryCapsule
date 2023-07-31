@@ -3,6 +3,7 @@ package com.santa.projectservice.service;
 import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.dto.RegisterDto;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
+import com.santa.projectservice.exception.project.ProjectNotFullfillException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
 import com.santa.projectservice.jpa.Project;
 import com.santa.projectservice.jpa.Register;
@@ -19,14 +20,14 @@ public interface ProjectService {
      * @param Owner - 프로젝트 주인
      * @return
      */
-    Long  createProject(ProjectDto project, List<Long> userList, Long Owner)  throws RegisterMakeException;
+    Long  createProject(ProjectDto project, List<Long> userList, Long Owner)  throws RegisterMakeException, ProjectNotFullfillException;
 
     /**
      * @param id - 프로젝트 id
      * @param comment - 수정할 코멘트 내용
      * @return - 성공여부 리턴
      */
-    Boolean editProjectContent(Long id, Long projectId, String comment);
+    Boolean editProjectContent(Long id, Long projectId, String comment) ;
 
     /**
      * @param id - 프로젝트 id
@@ -56,7 +57,12 @@ public interface ProjectService {
      * @param projectId - 삭제할 프로젝트 아이디
      * @return - 삭제한 프로젝트 타이틀
      */
-    String deleteProject(Long userId, Long projectId);
+    String deleteProject(Long userId, Long projectId) throws ProjectNotFoundException;
 
     ProjectDto findProjectById(Long id) throws ProjectNotFoundException;
+
+    List<ProjectDto> getAll();
+
+    ProjectDto findProjectByProjectId(Long id) throws ProjectNotFoundException;
+    ProjectDto findProjectByProjectIdAndUserId(Long userId, Long projectId) throws ProjectNotFoundException;
 }

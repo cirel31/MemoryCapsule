@@ -1,6 +1,7 @@
 package com.santa.projectservice.service;
 
 import com.santa.projectservice.dto.ArticleDto;
+import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
 import com.santa.projectservice.jpa.Article;
 import com.santa.projectservice.jpa.ArticleImg;
 import com.santa.projectservice.jpa.User;
@@ -33,4 +34,8 @@ public interface ArticleService {
      * @return - 그 사람이 작성한 모든 아티클
      */
     List<Article> articleList(Long id);
+
+    List<ArticleDto> allProjectArticleList(Long userId, Long projectId);
+
+    ArticleDto recentProjectArticleByUserId(Long userId, Long projectId) throws ArticleProjectNotFoundException;
 }

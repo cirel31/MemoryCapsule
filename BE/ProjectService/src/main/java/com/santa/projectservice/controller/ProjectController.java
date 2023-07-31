@@ -7,7 +7,10 @@ import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.dto.RegisterDto;
 import com.santa.projectservice.dto.UserDto;
 import com.santa.projectservice.exception.User.UserNotFoundException;
+import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
+import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
+import com.santa.projectservice.jpa.Article;
 import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.service.UserService;
@@ -36,18 +39,41 @@ public class ProjectController {
         this.projectService = projectService;
         this.articleService = articleService;
     }
+    @GetMapping("/all")
+    public ResponseEntity<List<ProjectDto>> getAllProject(){
+        return ResponseEntity.status(HttpStatus.OK).body(projectService.getAll());
+    }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("userId") Long userId) {
-        try {
-            log.info(userService.findUserById(userId).toString());
-            return ResponseEntity.status(HttpStatus.OK).body(userService.findUserById(userId));
-        } catch (UserNotFoundException e) {
-            log.info(e.getMessage());
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+    @GetMapping("/root/{projectid}")
+    public ResponseEntity<ProjectDto> getProjectByRoot(@PathVariable Integer projectid) throws ProjectNotFoundException {
+        Long projectId = Long.valueOf(projectid.toString());
+        ProjectDto projectDto = projectService.findProjectByProjectId(projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(projectDto);
+    }
+
+    @GetMapping("/{projectid}")
+    public ResponseEntity<ProjectDto> getProjectById(@PathVariable Integer projectid, HttpServletRequest request) throws UserNotFoundException, ProjectNotFoundException {
+        Long userId, projectId;
+        try{
+            userId = Long.valueOf(request.getHeader("userId").toString());
+            projectId = Long.valueOf(projectid.toString());
+            ProjectDto projectDto = projectService.findProjectByProjectIdAndUserId(userId, projectId);
+            return ResponseEntity.status(HttpStatus.OK).body(projectDto);
+        } catch (NullPointerException e) {
+            throw new UserNotFoundException("인증정보를 가져올 수 없습니다");
         }
     }
 
+//    @GetMapping("/user/{userId}")
+//    public ResponseEntity<UserDto> getUser(@PathVariable("userId") Long userId) {
+//        try {
+//            log.info(userService.findUserById(userId).toString());
+//            return ResponseEntity.status(HttpStatus.OK).body(userService.findUserById(userId));
+//        } catch (UserNotFoundException e) {
+//            log.info(e.getMessage());
+//            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+//        }
+//    }
 
     /**
      * @param httpRequest - header에서 아이디 가져옵니다
@@ -55,17 +81,10 @@ public class ProjectController {
      * @throws JsonProcessingException - project정보가 없을 떄
      */
     @PostMapping("/create")
-    public ResponseEntity<Object> createProject(HttpServletRequest httpRequest, @RequestBody Map<String, Object> map) throws JsonProcessingException, RegisterMakeException {
-        ObjectMapper mapper = new ObjectMapper();
+    public ResponseEntity<Object> createProject(HttpServletRequest httpRequest, @RequestBody Map<String, Object> map) throws RegisterMakeException {
         List<Integer> list = (ArrayList<Integer>) map.get("userList");
         List<Long> userList = new ArrayList<>();
-        log.info(userList.toString());
-        list.forEach(L -> {
-            log.info(L + " " + L.getClass().toString());
-            Long tmp = Long.valueOf(L.toString());
-            log.info(tmp + " " + tmp.getClass().toString());
-            userList.add(tmp);
-        });
+        list.forEach(L -> {userList.add(Long.valueOf(L.toString()));});
         Map<String, String> pro = (Map<String, String>) map.get("project");
         String title = pro.get("title"), content = pro.get("content");
         if (title == null || content == null) {
@@ -80,13 +99,13 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(projectId);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteProject(HttpServletRequest request, @RequestBody Map<String, Long> map) {
+    @DeleteMapping("/{projectid}")
+    public ResponseEntity<String> deleteProject(HttpServletRequest request, @PathVariable Integer projectid) throws ProjectNotFoundException {
         Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
-        Long projectId = map.get("projectId");
+        Long projectId = Long.valueOf(projectid.toString());
         log.info("userId: " + userId + " / projectId : " + projectId);
         String title = projectService.deleteProject(userId, projectId);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(title);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("[" + title + "] : 삭제성공");
     }
 
     @GetMapping("/list/{userId}")
@@ -96,15 +115,12 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(registerDtoList);
     }
 
-    @PostMapping("/update/{projectId}")
+    @PutMapping("/{projectId}")
     public ResponseEntity<Boolean> editProjectContent(@PathVariable("projectId") Long projectId, @RequestBody String content, HttpServletRequest request) {
         Long id = Long.valueOf(String.valueOf(request.getHeader("userId")));
-        log.info(content);
-        log.info(id.toString());
         Boolean check = projectService.editProjectContent(id, projectId, content);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
-
 
     @PostMapping("/article/write/{projectId}")
     public ResponseEntity<Boolean> writeArticle(@PathVariable("projectId") Long projectId,
@@ -124,9 +140,21 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @GetMapping("/article")
-    public void getArticle() {
-
+    @GetMapping("/{projectid}/article")
+    public ResponseEntity<List<ArticleDto>> getProjectArticles(@PathVariable("projectid") Integer projectid,
+                                                         HttpServletRequest request){
+        Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
+        Long projectId = Long.valueOf(projectid.toString());
+        List<ArticleDto> articleDtos = articleService.allProjectArticleList(userId, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(articleDtos);
     }
 
+    @GetMapping("/{projectid}/latestarticle")
+    public ResponseEntity<ArticleDto> getRecentArticles(@PathVariable("projectid") Integer projectid,
+                                                              HttpServletRequest request) throws ArticleProjectNotFoundException {
+        Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
+        Long projectId = Long.valueOf(projectid.toString());
+        ArticleDto articleDto = articleService.recentProjectArticleByUserId(userId, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(articleDto);
+    }
 }

@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Aspect
 @Component
 @Service
@@ -35,6 +37,10 @@ public class ServiceAspectConfig {
         System.out.println("+++++++++++++++++++++++++++++++++++");
         long start = System.currentTimeMillis();
         System.out.println(joinPoint.getSignature().getName() + " 시작");
+        Object[] methodArguments = joinPoint.getArgs();
+        for (Object argument : methodArguments) {
+            System.out.println("Arg: " + argument);
+        }
         System.out.println("+++++++++++++++++++++++++++++++++++");
 
         Object proceed = joinPoint.proceed();

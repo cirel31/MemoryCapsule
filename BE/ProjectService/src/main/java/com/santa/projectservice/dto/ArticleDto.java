@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 public class ArticleDto {
@@ -14,11 +15,11 @@ public class ArticleDto {
     private Long userId;
     private String title;
     private String content;
-    private Timestamp created;
+    private Date created;
     private Integer stamp;
 
     @Builder
-    public ArticleDto(Long idx, Long projectId, Long userId, String title, String content, Timestamp created, Integer stamp) {
+    public ArticleDto(Long idx, Long projectId, Long userId, String title, String content, Date created, Integer stamp) {
         this.idx = idx;
         this.projectId = projectId;
         this.userId = userId;

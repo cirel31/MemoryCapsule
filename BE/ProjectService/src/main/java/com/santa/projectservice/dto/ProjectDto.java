@@ -21,14 +21,14 @@ public class ProjectDto {
     private String shareurl;
     private int type;
     private Boolean state;
-    private String gift_url;
+    private String gifturl;
     private int limit;
     private Boolean deleted;
     private int alarm_type;
     private int alarm;
 
     @Builder
-    public ProjectDto(Long idx, String title, String content, Date started, Date ended, Date created, String imgurl, String shareurl, int type, Boolean state, String gift_url, int limit, Boolean deleted, int alarm_type, int alarm) {
+    public ProjectDto(Long idx, String title, String content, Date started, Date ended, Date created, String imgurl, String shareurl, int type, Boolean state, String gifturl, int limit, Boolean deleted, int alarm_type, int alarm) {
         this.idx = idx;
         this.title = title;
         this.content = content;
@@ -39,7 +39,7 @@ public class ProjectDto {
         this.shareurl = shareurl;
         this.type = type;
         this.state = state;
-        this.gift_url = gift_url;
+        this.gifturl = gifturl;
         this.limit = limit;
         this.deleted = deleted;
         this.alarm_type = alarm_type;

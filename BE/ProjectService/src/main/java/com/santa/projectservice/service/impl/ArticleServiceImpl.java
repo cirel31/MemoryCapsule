@@ -1,8 +1,11 @@
 package com.santa.projectservice.service.impl;
 
 import com.santa.projectservice.dto.ArticleDto;
+import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
+import com.santa.projectservice.exception.project.ProjectNotAuthorizedException;
 import com.santa.projectservice.jpa.Article;
 import com.santa.projectservice.jpa.ArticleImg;
+import com.santa.projectservice.jpa.Project;
 import com.santa.projectservice.repository.ArticleImgRepository;
 import com.santa.projectservice.repository.ArticleRepository;
 import com.santa.projectservice.repository.ProjectRepository;
@@ -15,8 +18,12 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class ArticleServiceImpl implements ArticleService {
@@ -45,8 +52,12 @@ public class ArticleServiceImpl implements ArticleService {
      * @return
      */
     @Override
-    public Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) throws IOException {
-        // 내가 하고있는 프로젝트가 맞는지 체크를 하고
+    @Transactional
+    public Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) throws ProjectNotAuthorizedException {
+        Optional<Project> project = projectRepository.findById(articleDto.getProjectId());
+        if(!project.isPresent()){
+            throw new ProjectNotAuthorizedException("권한이 없는 프로젝트이거나 없는 프로젝트입니다");
+        }
         Article article = Article.builder()
                 .project(projectRepository.getReferenceById(articleDto.getProjectId()))
                 .user(userRepository.getReferenceById(articleDto.getUserId()))
@@ -54,23 +65,21 @@ public class ArticleServiceImpl implements ArticleService {
                 .title(articleDto.getTitle())
                 .stamp(articleDto.getStamp())
                 .build();
-//        이걸 쓰니까 lazy가 걸려있는 article을 조회하게 되므로  select 쿼리가 날라가게 됩니다.
-//        log.info(article.toString());
-//         예외처리 필요
         Article writeArticle = articleRepository.save(article);
-        images.forEach(file -> {
-            try {
-                String url = fileUploadService.upload(file);
-                articleImgRepository.save(ArticleImg.builder()
-                        .article(writeArticle)
-                        .imgurl(url)
-                        .build()
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        // 프로젝트에 내 이름이 있으면 글을 씁니다
+        if(images != null) {
+            images.forEach(file -> {
+                try {
+                    String url = fileUploadService.upload(file);
+                    articleImgRepository.save(ArticleImg.builder()
+                            .article(writeArticle)
+                            .imgurl(url)
+                            .build()
+                    );
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
         return true;
     }
 
@@ -86,5 +95,39 @@ public class ArticleServiceImpl implements ArticleService {
         // 특정 유저가 적은 모든 아티클을 가져옵니다
         List<Article> allByUser_id = articleRepository.findAllByUser_Id(id);
         return allByUser_id;
+    }
+
+    @Override
+    public List<ArticleDto> allProjectArticleList(Long userId, Long projectId) {
+        List<Article> articleList = articleRepository.findByUser_IdAndProject_Id(userId, projectId);
+        List<ArticleDto> resultList = new ArrayList<>();
+        for(Article article : articleList){
+            resultList.add(ArticleDto.builder()
+                            .userId(article.getId())
+                            .projectId(article.getProject().getId())
+                            .stamp(article.getStamp())
+                            .content(article.getContent())
+                            .title(article.getTitle())
+                            .created(article.getCreated())
+                    .build());
+        }
+        return resultList;
+    }
+
+    @Override
+    public ArticleDto recentProjectArticleByUserId(Long userId, Long projectId) throws ArticleProjectNotFoundException {
+        Optional<Article> article = articleRepository.findFirstByUser_IdAndProject_IdOrderByCreatedDesc(userId, projectId);
+        if(!article.isPresent()){
+            throw new ArticleProjectNotFoundException("게시글이 없습니다");
+        }
+        ArticleDto articleDto = ArticleDto.builder()
+                .userId(article.get().getId())
+                .projectId(article.get().getProject().getId())
+                .stamp(article.get().getStamp())
+                .content(article.get().getContent())
+                .title(article.get().getTitle())
+                .created(article.get().getCreated())
+                .build();
+        return articleDto;
     }
 }
