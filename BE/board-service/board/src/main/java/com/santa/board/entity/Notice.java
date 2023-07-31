@@ -2,8 +2,8 @@ package com.santa.board.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "notice")
@@ -13,4 +13,24 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Notice {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long noticeIdx;
+
+    private Long noticeCreatorIdx;
+    private String noticeTitle;
+    private String noticeContent;
+    private String noticeImgurl;
+    private Boolean noticeDeleted;
+    private Timestamp noticeCreated;
+    private Timestamp noticeUpdated;
+    private Integer noticeHit;
+
+
+    // 필수 필드를 갖는 생성자
+    public Notice(Long noticeCreatorIdx, String noticeTitle, String noticeContent) {
+        this.noticeCreatorIdx = noticeCreatorIdx;
+        this.noticeTitle = noticeTitle;
+        this.noticeContent = noticeContent;
+    }
 }
