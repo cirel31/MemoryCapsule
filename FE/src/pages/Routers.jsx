@@ -6,6 +6,7 @@ import SignupPage from "./SignupPage";
 import MainPage from "./MainPage";
 import NotFound from "./NotFound";
 import FriendListPage from "./FriendListPage";
+import NoticeListPage from "./NoticeListPage";
 import ProjectListPage from "./ProjectListPage";
 import ProjectCreatePage from "./ProjectCreatePage";
 import TestPage from "./TestPage";
@@ -24,6 +25,7 @@ export default function Routers() {
       <Route path='/project' element={<ProjectListPage />} />
       <Route path='/project/create' element={<ProjectCreatePage />} />
       <Route path='/friend' element={<FriendListPage />} />
+      <Route path='/notice' element={<NoticeListPage />} />
 
       <Route path='/mypage' element={<MyPage />} />
       <Route path='/test' element={<TestPage />} />
