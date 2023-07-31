@@ -45,7 +45,7 @@ const NoticeListPage = () => {
         }
     };
 
-    //test data
+    //test data 받아오기
     function getNotices(searchValue) {
         console.log("getNotices");
             fetch("https://jsonplaceholder.typicode.com/posts")
@@ -104,9 +104,9 @@ const NoticeListPage = () => {
                 </div>
             </AuthFormGrid>
             <AuthFormGrid>
-                {
-                    console.log("notices", notices)
-                }
+
+                {/*여기서 두 번 log 찍히는 문제 발생*/}
+                {console.log("여기서 두 번 동작하는 문제 발생 - 결과는 잘 나오지만, 리로딩되면서 다시 초기값으로 변경됨")}
                 {
                     notices.length === 0
                         ?
