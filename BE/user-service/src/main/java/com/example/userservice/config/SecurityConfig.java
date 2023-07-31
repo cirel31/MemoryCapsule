@@ -5,6 +5,7 @@ import com.example.userservice.exception.JwtAuthenticationEntryPoint;
 import com.example.userservice.filter.JwtAuthenticationFilter;
 import com.example.userservice.model.handler.OAuth2FailHandler;
 import com.example.userservice.model.handler.OAuth2SuccessHandler;
+import com.example.userservice.service.CustomOAuth2UserService;
 import com.example.userservice.service.UserService;
 import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -32,6 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final OAuth2FailHandler oAuth2FailHandler;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
@@ -46,9 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .authorizeRequests()
+                .antMatchers("/favicon**").permitAll()
                 .antMatchers("/user/health-check").permitAll()
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -58,9 +66,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(accessDeniedHandler)
                         .authenticationEntryPoint(authenticationEntryPoint)
-                );
-//                .oauth2Login().successHandler(new OAuth2SuccessHandler())
-//                .failureHandler(new OAuth2FailHandler());
+                )
+                .oauth2Login()
+                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2UserService))
+                .failureHandler(oAuth2FailHandler)
+                .successHandler(oAuth2SuccessHandler);
+
     }
 
     /* Cors Setting */

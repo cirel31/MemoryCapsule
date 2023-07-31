@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8001
 
 spring:
   application:
@@ -23,22 +23,24 @@ spring:
       client:
         registration:
           kakao:
-            client-id: 	946886
-            client-secret: asdf1234
-            redirect-uri: {baseUrl}/{action}/oauth2/code/{registrationId}
-            authorization-grant-type: test
-            client-authentication-method: test
-            client-name: test
+            client-id: 50389ab406794f10677cfc8b7e3bcf4d
+            client-secret: bz2JnPOVnr8G9y907sRzdQIWGLcTbAr3
+#            redirect-uri: https://i9a608.p.ssafy.io.8000/kakao/test
+            redirect-uri: http://localhost:8001/login/oauth2/code/kakao
+            client-authentication-method: POST # 카카오 접근시 고정값
+            authorization-grant-type: authorization_code
+            client-name: Kakao
             scope:
-              - profile
+              - profile_nickname
+              - profile_image
               - account_email
         provider:
           kakao:
-            authorization-uri: test
-            token-uri: test
-            user-info-uri: test
-            user-name-attribute: response
-
+            authorization-uri: https://kauth.kakao.com/oauth/authorize  # 인가 코드
+            token-uri: https://kauth.kakao.com/oauth/token              # 토큰 받기
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+#            logout-uri: https://kapi.kakao.com/v1/user/logout
 
 
 
