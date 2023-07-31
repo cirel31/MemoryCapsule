@@ -2,6 +2,8 @@ package com.santa.projectservice.service.impl;
 
 import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.dto.RegisterDto;
+import com.santa.projectservice.exception.project.ProjectNotFoundException;
+import com.santa.projectservice.exception.register.RegisterMakeException;
 import com.santa.projectservice.jpa.Project;
 import com.santa.projectservice.jpa.Register;
 import com.santa.projectservice.jpa.User;
@@ -10,10 +12,13 @@ import com.santa.projectservice.repository.RegisterRepository;
 import com.santa.projectservice.repository.UserRepository;
 import com.santa.projectservice.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.PropertyValueException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +37,6 @@ public class ProjectServiceImpl implements ProjectService {
         this.mapper = new ModelMapper();
         this.registerRepository = registerRepository;
         this.projectRepository = projectRepository;
-
-        // Register(Entity) -> RegisterDto 매핑 규칙 추가
         PropertyMap<Register, RegisterDto> replyMapping = new PropertyMap<Register, RegisterDto>() {
             @Override
             protected void configure() {
@@ -46,32 +49,49 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Long createProject(ProjectDto projectDto, List<Long> userList, Long Owner) {
-        log.info("-------createProject함수----------");
+    @Transactional(rollbackOn =  RegisterMakeException.class)
+    public Long createProject(ProjectDto projectDto, List<Long> userList, Long Owner) throws RegisterMakeException{
         log.info(userList.toString());
         log.info(Owner.toString());
         log.info(projectDto.toString());
         ModelMapper tmp = new ModelMapper();
-        Project project1 = tmp.map(projectDto, Project.class);;
-        Project project = projectRepository.save(project1);
-        Long pjt_id = project1.getId();
+        Project project1 = Project.builder()
+                .content(projectDto.getContent())
+                .title(projectDto.getTitle())
+                .build();
+        log.info(project1.toString());
+        Project project = null;
+        try {
+            project = projectRepository.save(project1);
+        } catch (PropertyValueException e){
+            log.error("TItle 혹은 Content가 비어있습니다.");
+            log.error(e.getMessage());
+            throw e;
+        } catch (RuntimeException e) {
+            log.error("무결성을 만족하지 못하는 요청입니다. ");
+            log.error(e.getMessage());
+            throw e;
+        }
         log.info("입력된 값 : " + project1.toString());
-        // 이부분 유저가 없을때 예외처리 해주어야 합니다.
-        // Transaction 격리 생각해야 합니다
-        registerRepository.save(new Register(
-                userRepository.getReferenceById(Owner), project,
-                true, false, false)
-        );
-        userList.forEach(id -> {
-            //getReferenceById를 쓰면 id로 조회하는 쿼리가 발생하지 않는다(Lazy)
-            // 입력을 할 때 대상 ID가 없으면 EntityNotFoundException을 발생시킨다.
-            User user = userRepository.getReferenceById(id);
-            // getOne, findById deprecated됨 -> getReferenceById로 대체
-            // User user = userRepository.getOne(id);
-            // User user = userRepository.findById(id).get();
-            registerRepository.save(new Register(user, project, false, false, false));
-        });
-        log.info("-------createProject함수 끝----------");
+        try{
+            Register register = new Register(
+                    userRepository.getReferenceById(Owner),
+                    project,
+                    true, false, false
+            );
+            registerRepository.save(register);
+            final Project regiProject = project;
+            userList.forEach(id -> {
+                //getReferenceById를 쓰면 id로 조회하는 쿼리가 발생하지 않는다(Lazy)
+                // 입력을 할 때 대상 ID가 없으면 EntityNotFoundException을 발생시킨다.
+                User user = userRepository.getReferenceById(id);
+                registerRepository.save(new Register(user, regiProject, false, false, false));
+            });
+        } catch (DataAccessException e){
+            String msg = "프로젝트 유저들을 초기화하는데 문제가 발생했습니다";
+            System.out.println(msg);
+            throw new RegisterMakeException(msg, e);
+        }
         return project.getId();
     }
 
@@ -122,5 +142,27 @@ public class ProjectServiceImpl implements ProjectService {
         targetProject.delete();
         projectRepository.save(targetProject);
         return targetProject.getTitle();
+    }
+
+    @Override
+    public ProjectDto findProjectById(Long id) throws ProjectNotFoundException {
+        Optional<Project> project = projectRepository.findById(id);
+        try{
+            Project result = project.get();
+            ProjectDto projectDto = ProjectDto.builder()
+                    .title(result.getTitle())
+                    .idx(result.getId())
+                    .content(result.getContent())
+                    .alarm(result.getAlarm())
+                    .alarm_type(result.getAlarmType())
+                    .deleted(result.getDeleted())
+                    .state(result.getState())
+                    .created(result.getCreated())
+                    .build();
+            return projectDto;
+        } catch (Exception e){
+            log.info(e.getMessage());
+            throw new ProjectNotFoundException();
+        }
     }
 }

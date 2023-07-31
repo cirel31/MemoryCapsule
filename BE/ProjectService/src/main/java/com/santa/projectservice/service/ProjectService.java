@@ -2,6 +2,8 @@ package com.santa.projectservice.service;
 
 import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.dto.RegisterDto;
+import com.santa.projectservice.exception.project.ProjectNotFoundException;
+import com.santa.projectservice.exception.register.RegisterMakeException;
 import com.santa.projectservice.jpa.Project;
 import com.santa.projectservice.jpa.Register;
 import com.santa.projectservice.jpa.User;
@@ -17,7 +19,7 @@ public interface ProjectService {
      * @param Owner - 프로젝트 주인
      * @return
      */
-    Long createProject(ProjectDto project, List<Long> userList, Long Owner);
+    Long  createProject(ProjectDto project, List<Long> userList, Long Owner)  throws RegisterMakeException;
 
     /**
      * @param id - 프로젝트 id
@@ -56,5 +58,5 @@ public interface ProjectService {
      */
     String deleteProject(Long userId, Long projectId);
 
-
+    ProjectDto findProjectById(Long id) throws ProjectNotFoundException;
 }

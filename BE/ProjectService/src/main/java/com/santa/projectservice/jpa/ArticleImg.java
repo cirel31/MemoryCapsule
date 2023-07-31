@@ -1,10 +1,11 @@
 package com.santa.projectservice.jpa;
 
-import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @ToString
@@ -22,11 +23,16 @@ public class ArticleImg {
     private Article article;
     @Column(name = "articleimg_imgurl", length = 2048)
     private String imgurl;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "article_created")
+    @CreationTimestamp
+    private Date created;
 
     @Builder
-    public ArticleImg(Long id, Article article, String imgurl) {
+    public ArticleImg(Long id, Article article, String imgurl, Date created) {
         this.id = id;
         this.article = article;
         this.imgurl = imgurl;
+        this.created = created;
     }
 }

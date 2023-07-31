@@ -1,15 +1,14 @@
 package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.inject.BindingAnnotation;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import javax.ws.rs.DefaultValue;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.List;
 @Table(name = "project")
 @DynamicInsert //insert 시 null 인필드 제외
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,5 +83,24 @@ public class Project {
 
     public void editComment(String content) {
         this.content = content;
+    }
+
+    @Builder
+    public Project(Long id, String title, String content, Date started, Date ended, Date created, String imgurl, String shareurl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.started = started;
+        this.ended = ended;
+        this.created = created;
+        this.imgurl = imgurl;
+        this.shareurl = shareurl;
+        this.type = type;
+        this.state = state;
+        this.giftUrl = giftUrl;
+        this.limit = limit;
+        this.deleted = deleted;
+        this.alarmType = alarmType;
+        this.alarm = alarm;
     }
 }

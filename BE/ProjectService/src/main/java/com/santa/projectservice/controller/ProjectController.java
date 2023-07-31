@@ -6,23 +6,17 @@ import com.santa.projectservice.dto.ArticleDto;
 import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.dto.RegisterDto;
 import com.santa.projectservice.dto.UserDto;
-import com.santa.projectservice.jpa.Article;
-import com.santa.projectservice.jpa.Project;
-import com.santa.projectservice.jpa.User;
-import com.santa.projectservice.repository.RegisterRepository;
-import com.santa.projectservice.repository.UserRepository;
+import com.santa.projectservice.exception.User.UserNotFoundException;
+import com.santa.projectservice.exception.register.RegisterMakeException;
 import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +38,14 @@ public class ProjectController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getUser(@PathVariable("userId") Long userId){
-        log.info(userService.findUserById(userId).toString());
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findUserById(userId));
+    public ResponseEntity<UserDto> getUser(@PathVariable("userId") Long userId) {
+        try {
+            log.info(userService.findUserById(userId).toString());
+            return ResponseEntity.status(HttpStatus.OK).body(userService.findUserById(userId));
+        } catch (UserNotFoundException e) {
+            log.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+        }
     }
 
 
@@ -56,25 +55,33 @@ public class ProjectController {
      * @throws JsonProcessingException - project정보가 없을 떄
      */
     @PostMapping("/create")
-    public Long createProject(HttpServletRequest httpRequest, @RequestBody Map<String, Object> map) throws JsonProcessingException {
+    public ResponseEntity<Object> createProject(HttpServletRequest httpRequest, @RequestBody Map<String, Object> map) throws JsonProcessingException, RegisterMakeException {
         ObjectMapper mapper = new ObjectMapper();
-        List<Integer> list = (ArrayList<Integer>)map.get("userList");
+        List<Integer> list = (ArrayList<Integer>) map.get("userList");
         List<Long> userList = new ArrayList<>();
         log.info(userList.toString());
-        list.forEach( L -> {
+        list.forEach(L -> {
             log.info(L + " " + L.getClass().toString());
             Long tmp = Long.valueOf(L.toString());
             log.info(tmp + " " + tmp.getClass().toString());
             userList.add(tmp);
         });
-        ProjectDto project = mapper.convertValue(map.get("project"), ProjectDto.class);
+        Map<String, String> pro = (Map<String, String>) map.get("project");
+        String title = pro.get("title"), content = pro.get("content");
+        if (title == null || content == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("title 혹은 content가 비어있습니다");
+        }
+        ProjectDto projectDto = ProjectDto.builder()
+                .content(content)
+                .title(title)
+                .build();
         Long owner = Long.valueOf(String.valueOf(httpRequest.getHeader("userId")));
-        Long projectId = projectService.createProject(project, userList, owner);
-        return projectId;
+        Long projectId = projectService.createProject(projectDto, userList, owner);
+        return ResponseEntity.status(HttpStatus.OK).body(projectId);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteProject(HttpServletRequest request, @RequestBody Map<String, Long> map){
+    public ResponseEntity<String> deleteProject(HttpServletRequest request, @RequestBody Map<String, Long> map) {
         Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
         Long projectId = map.get("projectId");
         log.info("userId: " + userId + " / projectId : " + projectId);
@@ -83,29 +90,26 @@ public class ProjectController {
     }
 
     @GetMapping("/list/{userId}")
-    public ResponseEntity<List<RegisterDto>> getRegisterById(@PathVariable("userId") Long userId){
+    public ResponseEntity<List<RegisterDto>> getRegisterById(@PathVariable("userId") Long userId) {
         List<RegisterDto> registerDtoList = projectService.findRegistersByUserId(userId);
         log.info(registerDtoList.toString());
         return ResponseEntity.status(HttpStatus.OK).body(registerDtoList);
     }
 
     @PostMapping("/update/{projectId}")
-    public ResponseEntity<Boolean> editProjectContent(@PathVariable("projectId") Long projectId,@RequestBody String content, HttpServletRequest request){
-        log.info("-----------------------------editProjectComment 호출------------------------------");
+    public ResponseEntity<Boolean> editProjectContent(@PathVariable("projectId") Long projectId, @RequestBody String content, HttpServletRequest request) {
         Long id = Long.valueOf(String.valueOf(request.getHeader("userId")));
         log.info(content);
         log.info(id.toString());
         Boolean check = projectService.editProjectContent(id, projectId, content);
-        log.info("--------------------edit project comment 끝 --------------------");
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
 
     @PostMapping("/article/write/{projectId}")
     public ResponseEntity<Boolean> writeArticle(@PathVariable("projectId") Long projectId,
-                                                    @RequestBody Map<String, String> map,
-                                                    HttpServletRequest request) throws IOException {
-        log.info("-----------WriteArticle-----------");
+                                                @RequestBody Map<String, String> map,
+                                                HttpServletRequest request) throws IOException {
         Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
         String title = map.get("title");
         String content = map.get("content");
@@ -117,12 +121,11 @@ public class ProjectController {
                 .stamp(Integer.parseInt(map.get("stamp")))
                 .build();
         Boolean result = articleService.writeArticle(articleDto, null);
-        log.info("-----------EndWriteArticle----------");
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @GetMapping("/article")
-    public void getArticle(){
+    public void getArticle() {
 
     }
 

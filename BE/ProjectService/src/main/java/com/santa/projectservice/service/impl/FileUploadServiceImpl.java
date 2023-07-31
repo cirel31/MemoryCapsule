@@ -1,23 +1,18 @@
 package com.santa.projectservice.service.impl;
 
-import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.Upload;
 import com.santa.projectservice.service.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 @Service
 @Slf4j
@@ -34,7 +29,6 @@ public class FileUploadServiceImpl implements FileUploadService {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-
     @Override
     public String upload(MultipartFile file) throws IOException {
         String[] type = file.getOriginalFilename().split("[.]");
@@ -46,11 +40,16 @@ public class FileUploadServiceImpl implements FileUploadService {
             // ContentType을 반드시 사진에서 추출해서 사용하도록 하자
             ObjectMetadata om = new ObjectMetadata();
             om.setContentType(file.getContentType());
+            om.setContentLength(file.getBytes().length);
             PutObjectResult result = amazonS3.putObject(
                     new PutObjectRequest(bucket, fileName, file.getInputStream(), om)
             );
-        } catch (Exception e){
-            log.error(e.toString());
+        } catch (AmazonServiceException e){
+            log.error(e.getMessage());
+            return "FAIL";
+        } catch (SdkClientException e) {
+            log.error(e.getMessage());
+            return "FAIL";
         }
         return fileName;
     }

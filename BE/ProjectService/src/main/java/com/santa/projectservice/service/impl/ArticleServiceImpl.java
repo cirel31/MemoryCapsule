@@ -35,9 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
         this.fileUploadService = fileUploadService;
         this.mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        // 매퍼를 통해서 설정해야 하지만 엔티티에 세터가 필요하게 되므로 <- 없다? 생성자로 해주는듯
-        // 그냥 생성자를 통해서 Article을 생성해주는게 조금 더 나을 것 같다.
-        // 그냥 빌더쓰자
+
         this.userRepository = userRepository;
     }
 

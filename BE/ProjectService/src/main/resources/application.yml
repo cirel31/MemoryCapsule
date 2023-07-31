@@ -1,6 +1,5 @@
 
 server:
-  # port: 0
   port: 9090
 
 spring:
@@ -30,6 +29,11 @@ spring:
 eureka:
   instance:
     instance-id: ${spring.application.name}.{spring.application.instance_id:${random.value}}
+    # 기본값 - 윈도우: 컴퓨터 이름, Mac/Linux: localhost
+    # 원하는 도메인을 적어도 작동한다.
+    # ip주소로 하고싶으면 ip주소를 직접 명시하거나,
+    # ip-address 을 적고  prefer-ip-address: true 를 적으면 된다.
+    # hostname: localhost
   client:
     service-url:
       defaultZone:
@@ -39,6 +43,7 @@ eureka:
 
 logging:
   level:
+    root:
     org:
       hibernate:
         type:
@@ -47,8 +52,8 @@ logging:
 
 cloud:
   aws:
+#      IAM : jaehyoni
     credentials:
-#      jaehyoni 계정
       accessKey: AKIAQPOZGAOT652M75EC
       secretKey: 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
     stack:
