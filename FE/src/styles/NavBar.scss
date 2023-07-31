@@ -1,0 +1,17 @@
+@import "theme.css";
+
+.nav_bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 452.231px;
+  height: 1080px;
+  flex-shrink: 0;
+  z-index: 10;
+  background: var(--main_2, linear-gradient(360deg, #FF9E9E 0%, #FF5A9E 100%));
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 200px 417px 280px 185px;
+  justify-items: center;
+  align-content: center;
+}

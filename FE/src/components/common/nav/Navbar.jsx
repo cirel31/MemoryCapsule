@@ -71,7 +71,7 @@ export default function Navbar() {
         </div>
         <SidebarNav sidebar={sidebar}>
           <nav>
-            <div onClick={showSidebar} >
+            <div onClick={showSidebar}>
               <ImageWithText>
                 <Image />
                 <Text>안녕하세요</Text>
