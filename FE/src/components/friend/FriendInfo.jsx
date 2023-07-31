@@ -1,8 +1,6 @@
 import { FriendItem, CustomButtonFriend } from "../../styles/friendStyle";
 
 const FriendInfo = ({id, name, username, email, address, phone, website}) => {
-    console.log(id, name, username);
-
     const addFriend = (e) => {
         const {value} = e.target;
         console.log(value);
@@ -17,13 +15,17 @@ const FriendInfo = ({id, name, username, email, address, phone, website}) => {
             <div className="FriendItem">
                 <div className="info">
                     <span className="author_info">
-                      | email : {email} | name : {name} | username : {username}
-                      {
-                        (1===1)
-                        ?<CustomButtonFriend className="addFriend" value={email} onClick={addFriend}> 친구 추가 </CustomButtonFriend>
-                        :<CustomButtonFriend className="discardFriend" value={email} onClick={discardFriend}> 친구 삭제 </CustomButtonFriend>
-                      }
+                        e-mail : {email}<br/>
+                        name : {name}<br/>
+                        nickname : {username}<br/>
                     </span>
+                    <div>
+                        {
+                            (1 === 1)
+                            ?<CustomButtonFriend className="CustomButtonFriend addFriend" value={email} onClick={addFriend}> + </CustomButtonFriend>
+                            :<CustomButtonFriend className="CustomButtonFriend discardFriend" value={email} onClick={discardFriend}> - </CustomButtonFriend>
+                        }
+                    </div>
                 </div>
             </div>
         </FriendItem>

@@ -1,25 +1,17 @@
-import { CustomButton } from "../styles/friendStyle";
+import { NoFriendList, AuthFormGrid, CustomButton } from "../styles/friendStyle";
 
 import React, { useState } from "react";
 import FriendForm from "../components/friend/FriendForm";
 import FriendInfo from "../components/friend/FriendInfo";
 import axios from "axios";
 
-const FriendPage = () => {
+const FriendListPage = () => {
     const [form, setForm] = useState({
         id: "",
         search : 'id',
     });
 
-    const [friends, setFriends] = useState([{
-        id : "test",
-        name : "test",
-        username : "test",
-        email : "test@test.com",
-        address : "test",
-        phone : "010-0000-0000",
-        website : "test",
-    }]);
+    const [friends, setFriends] = useState([]);
 
     const sendFriendDataServer = (e) => {
         e.preventDefault();
@@ -27,8 +19,7 @@ const FriendPage = () => {
         const sendSearch = form.search;
 
         if (sendId.length > 0) {
-            console.log(sendId);
-            console.log(sendSearch);
+            console.log(sendId, " : ", sendSearch);
         } else {
             console.log("한 글자라도 입력해주십시오");
         }
@@ -72,12 +63,11 @@ const FriendPage = () => {
         console.log("sendId", sendId);
         if (sendId === "") {
             getFriends(sendId, sendSearch);
-            console.log("  ", friends);
             for (let i = 0; i < friends.length; i++) {
                 console.log(friends[i].name);
             }
         } else {
-            console.log("friends -", friends);
+            console.log("[제작예정] 불러온 친구 리스트 내부에서 sort");
             // for (let i = 0; i < friends.length; i++) {
             //     if(form.id === friends[i].name){
             //         setFriends([friends[i]]);
@@ -97,21 +87,38 @@ const FriendPage = () => {
             <div>
                 <FriendForm form={form} setForm={setForm} onChange={handleChange} />
             </div>
-            <div>
-                <CustomButton style={{ marginTop: '1rem' }} onClick={sendFriendDataServer}>
-                    서버에서 찾기
-                </CustomButton>
-                <CustomButton style={{ marginTop: '1rem' }} onClick={handleFriendData}>
-                    내부에서 찾기
-                </CustomButton>
-            </div>
-            <div>
-                { friends.map((friend) => (
-                    <FriendInfo key={friend.id} {...friend} />
-                ))}
-            </div>
+            <AuthFormGrid>
+                <div className="AuthFormGrid">
+                    <CustomButton onClick={sendFriendDataServer}>
+                        서버에서 찾기
+                    </CustomButton>
+                    <CustomButton onClick={handleFriendData}>
+                        내부에서 찾기
+                    </CustomButton>
+                </div>
+            </AuthFormGrid>
+            <AuthFormGrid>
+                {
+                    friends.length === 0
+                        ?
+                        <NoFriendList>
+                            <div className="NoFriendList">
+                                <div className="textBlock">
+                                    새로운 친구를 찾아보세요
+                                </div>
+                            </div>
+                        </NoFriendList>
+                        :<div className="AuthFormGrid">
+                            { friends.map((friend) => (
+                                <FriendInfo key={friend.id} {...friend} />
+                            ))}
+                        </div>
+                }
+                
+                
+            </AuthFormGrid>
         </>
     )
 }
 
-export default FriendPage;
+export default FriendListPage;
