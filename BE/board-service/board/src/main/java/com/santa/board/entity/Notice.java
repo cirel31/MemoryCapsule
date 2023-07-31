@@ -3,7 +3,7 @@ package com.santa.board.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "notice")
@@ -22,8 +22,8 @@ public class Notice {
     private String noticeContent;
     private String noticeImgurl;
     private Boolean noticeDeleted;
-    private Timestamp noticeCreated;
-    private Timestamp noticeUpdated;
+    private Date noticeCreated;
+    private Date noticeUpdated;
     private Integer noticeHit;
 
 

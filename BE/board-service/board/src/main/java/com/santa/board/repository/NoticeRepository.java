@@ -1,6 +1,6 @@
 package com.santa.board.repository;
 
-import com.santa.board.Dto.NoticeDto;
+import com.santa.board.Dto.NoticeDTO;
 import com.santa.board.entity.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,10 +13,10 @@ import java.util.List;
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     // 모든 Notice 조회
-    List<NoticeDto.NoticeResponseDTO> findByNoticeDeletedFalse();
+    List<NoticeDTO.ResponseDTO> findByNoticeDeletedFalse();
     
     // notice_idx 를 통해 notice 정보 조회
-    NoticeDto.NoticeResponseDTO findByNoticeIdx(Long noticeIdx);
+    NoticeDTO.ResponseDTO findByNoticeIdx(Long noticeIdx);
 
     // 공지사항의 notice_hit 값을 1 증가시킴
     @Modifying
@@ -39,7 +39,10 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
     // 공지사항 글을 수정한다.
     @Modifying
-    @Query("UPDATE Notice n SET n.noticeTitle = :noticeTitle, n.noticeContent = :noticeContent, n.noticeImgurl = :noticeImgUrl WHERE n.noticeIdx = :noticeIdx")
+    @Query("UPDATE Notice n " +
+            "SET n.noticeTitle = :noticeTitle, n.noticeContent = :noticeContent, " +
+            "n.noticeImgurl = :noticeImgUrl, n.noticeUpdated = CURRENT_TIMESTAMP " +
+            "WHERE n.noticeIdx = :noticeIdx")
     int modifyNoticeByNoticeIdx(@Param("noticeTitle") String noticeTitle,
                                 @Param("noticeContent") String noticeContent,
                                 @Param("noticeImgUrl") String noticeImgUrl,

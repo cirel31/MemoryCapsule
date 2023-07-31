@@ -1,13 +1,13 @@
 package com.santa.board.service;
 
-import com.santa.board.Dto.NoticeDto;
+import com.santa.board.Dto.NoticeDTO;
 
 import java.util.List;
 
 public interface NoticeService {
-    List<NoticeDto.NoticeResponseDTO> getNoticeList();
-    NoticeDto.NoticeResponseDTO getNoticeById(Long noticeIdx);
+    List<NoticeDTO.ResponseDTO> getNoticeList();
+    NoticeDTO.ResponseDTO getNoticeById(Long noticeIdx);
     boolean deleteNoticeById(Long noticeIdx);
-    boolean insertNotice(NoticeDto.NoticeRequestDTO noticeRequestDTO);
-    boolean modifyNoticeById(NoticeDto.NoticeRequestDTO noticeRequestDTO);
+    boolean insertNotice(NoticeDTO.RequestDTO requestDTO);
+    boolean modifyNoticeById(NoticeDTO.RequestDTO requestDTO);
 }

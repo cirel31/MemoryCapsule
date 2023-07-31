@@ -1,7 +1,8 @@
 package com.santa.board.service;
 
-import com.santa.board.Dto.NoticeDto;
+import com.santa.board.Dto.NoticeDTO;
 import com.santa.board.repository.NoticeRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -9,20 +10,17 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeRepository noticeRepository;
-
-    public NoticeServiceImpl(NoticeRepository noticeRepository) {
-        this.noticeRepository = noticeRepository;
-    }
 
     /**
      * 공지사항 전체 List 를 반환한다.
      * @return List<NoticeDto>
      */
     @Override
-    public List<NoticeDto.NoticeResponseDTO> getNoticeList() {
+    public List<NoticeDTO.ResponseDTO> getNoticeList() {
         return noticeRepository.findByNoticeDeletedFalse();
     }
 
@@ -32,23 +30,23 @@ public class NoticeServiceImpl implements NoticeService {
      * @return NoticeDto
      */
     @Override
-    public NoticeDto.NoticeResponseDTO getNoticeById(Long noticeIdx) {
+    public NoticeDTO.ResponseDTO getNoticeById(Long noticeIdx) {
         noticeRepository.incrementNoticeHit(noticeIdx);
         return noticeRepository.findByNoticeIdx(noticeIdx);
     }
 
     /**
      * 공지사항 새로운 글을 등록한다.
-     * @param noticeRequestDTO
+     * @param requestDTO
      * @return 성공 여부를 반환한다.
      */
     @Override
-    public boolean insertNotice(NoticeDto.NoticeRequestDTO noticeRequestDTO) {
+    public boolean insertNotice(NoticeDTO.RequestDTO requestDTO) {
         return noticeRepository.insertNewNotice
-                (noticeRequestDTO.getIdx(),
-                        noticeRequestDTO.getNoticeTitle(),
-                        noticeRequestDTO.getNoticeContent(),
-                        noticeRequestDTO.getNoticeImgurl()
+                (requestDTO.getIdx(),
+                        requestDTO.getNoticeTitle(),
+                        requestDTO.getNoticeContent(),
+                        requestDTO.getNoticeImgurl()
                 ) > 0 ? true : false;
     }
 
@@ -62,12 +60,17 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeRepository.deleteNoticeByNoticeIdx(noticeIdx) == 1 ? true : false;
     }
 
+    /**
+     * 공지사항 글 수정한다.
+     * @param requestDTO
+     * @return 성공 여부를 반환한다.
+     */
     @Override
-    public boolean modifyNoticeById(NoticeDto.NoticeRequestDTO noticeRequestDTO) {
+    public boolean modifyNoticeById(NoticeDTO.RequestDTO requestDTO) {
         return noticeRepository.modifyNoticeByNoticeIdx
-                (noticeRequestDTO.getNoticeTitle(),
-                        noticeRequestDTO.getNoticeContent(),
-                        noticeRequestDTO.getNoticeImgurl(),
-                        noticeRequestDTO.getIdx()) == 1 ? true : false;
+                (requestDTO.getNoticeTitle(),
+                        requestDTO.getNoticeContent(),
+                        requestDTO.getNoticeImgurl(),
+                        requestDTO.getIdx()) == 1 ? true : false;
     }
 }

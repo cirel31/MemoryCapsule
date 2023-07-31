@@ -2,16 +2,16 @@ package com.santa.board.Dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
-public class NoticeDto {
+public class NoticeDTO {
     @Getter
     @Setter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
-    public static class NoticeRequestDTO {
+    public static class RequestDTO {
         private Long idx;
         private String noticeTitle;
         private String noticeContent;
@@ -24,12 +24,12 @@ public class NoticeDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
-    public static class NoticeResponseDTO {
+    public static class ResponseDTO {
         private Long noticeIdx;
         private String noticeTitle;
         private String noticeContent;
         private String noticeImgurl;
-        private LocalDateTime noticeCreated;
+        private Date noticeCreated;
         private Integer noticeHit;
     }
 }
