@@ -4,10 +4,13 @@ import React, { useState } from "react";
 import NoticeInfo from "../components/notice/NoticeInfo";
 import SearchBar from "../components/SearchBar"
 import axios from "axios";
+import PaginationList from "../components/common/PaginationList";
 
 const NoticeListPage = () => {
+    // 검색어 저장
     const [search, setSearch] = useState("");
 
+    // 현재 띄워줄 공지사항 리스트
     const [notices, setNotices] = useState([
         // {
         //     title: "",
@@ -19,6 +22,7 @@ const NoticeListPage = () => {
         // }
     ]);
 
+    // 서버와 통신
     const sendNoticesDataServer = (e) => {
         e.preventDefault();
         const sendSearch = search;
@@ -83,6 +87,7 @@ const NoticeListPage = () => {
 
     const handleChange = (updatedSearch) => {
         setSearch(updatedSearch);
+        handleNoticeData();
     };
 
     return (
@@ -101,7 +106,6 @@ const NoticeListPage = () => {
                 </div>
             </AuthFormGrid>
             <AuthFormGrid>
-
                 {
                     notices.length === 0
                     ?
@@ -112,11 +116,13 @@ const NoticeListPage = () => {
                             </div>
                         </div>
                     </NoFriendList>
-                    :<div className="AuthFormGrid">
-                        { notices.map((notice) => (
-                            <NoticeInfo key={notice.id} {...notice} />
-                        ))}
-                    </div>
+                    :<PaginationList notices={notices} itemsPerPage={5} />
+                    // 모든 리스트 출력
+                    // :<div className="AuthFormGrid">
+                    //     { notices.map((notice) => (
+                    //         <NoticeInfo key={notice.id} {...notice} />
+                    //     ))}
+                    // </div>
                 }
             </AuthFormGrid>
         </>

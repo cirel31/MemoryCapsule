@@ -33,9 +33,16 @@ const NoticeInfo = ({userId, id, title, body}) => {
             </div>
             {/* 모달 창 */}
             <Modal isOpen={noticeModalIsOpen !== 0}>
-                <div style={{width:'100%', height:'100%'}} onClick={() => setNoticeModalIsOpen(0)}>
+                <div style={{width:'100%', height:'100%'}}>
+                    <div onClick={() => setNoticeModalIsOpen(0)}>
+                        ✖
+                    </div>
                     <div>
                         title : {title}
+                    </div>
+                    <div>
+                        createdAt :
+                        | updatedAt :
                     </div>
                     <div>
                         body : {body}
