@@ -1,9 +1,16 @@
 import {NoticeItem} from "../../styles/noticeStyle";
+import Modal from "react-modal";
+import React, {useState} from "react";
 
 const NoticeInfo = ({userId, id, title, body}) => {
+    const [noticeModalIsOpen, setNoticeModalIsOpen] = useState(0);
+
+    const noticeDetailModal = (e) => {
+        setNoticeModalIsOpen(id);
+    }
     return (
         <NoticeItem>
-            <div className="NoticeItem">
+            <div className="NoticeItem" onClick={noticeDetailModal}>
                 <div className="info">
                     <span className="author_info">
                         {/*userId : {userId} |*/}
@@ -24,6 +31,17 @@ const NoticeInfo = ({userId, id, title, body}) => {
                     </div>
                 </div>
             </div>
+            {/* 모달 창 */}
+            <Modal isOpen={noticeModalIsOpen !== 0}>
+                <div style={{width:'100%', height:'100%'}} onClick={() => setNoticeModalIsOpen(0)}>
+                    <div>
+                        title : {title}
+                    </div>
+                    <div>
+                        body : {body}
+                    </div>
+                </div>
+            </Modal>
         </NoticeItem>
     )
 }
