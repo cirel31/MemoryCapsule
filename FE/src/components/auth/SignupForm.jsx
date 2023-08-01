@@ -2,19 +2,24 @@ import {AuthFormBlock, StyledInput, CustomButton, FormBody, WhiteBox} from "../.
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import Modal from "react-modal";
-import axios from "axios";
+import useSignup from "../../hooks/useSignup";
 
 const SignupForm = ({ form, setForm,  }) => {
   const navigate = useNavigate()
-  const [isValidEmail, setIsValidEmail] = useState(true);
   const [policyModalIsOpen, setPolicyModalIsOpen] = useState(false)
+  const {
+    isChecked,
+    isValidEmail,
+    setIsValidEmail,
+    validateEmail,
+    handleCheckBoxChange,
+    passwordChecking,
+    sendSignupDataServer,
+  } = useSignup()
   const handleLoginPage = () => {
     navigate('/login')
   }
-  const validateEmail = (email) => {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailPattern.test(email);
-  };
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setForm({ ...form, [id]: value });
@@ -27,16 +32,7 @@ const SignupForm = ({ form, setForm,  }) => {
     e.preventDefault();
     setPolicyModalIsOpen(true);
   }
-  const passwordChecking = () => {
-    const pw1 = form.password
-    const pw2 = form.passwordCheck
-    return pw1 === pw2;
-  }
-  const [isChecked, setIsChecked] = useState(false);
-  const handleCheckBoxChange = (event) => {
-    setIsChecked(event.target.checked);
-  }
-  const sendSignupDataServer = (e) => {
+  const sendSignupData = (e) => {
     e.preventDefault()
     console.log(form.id, form.nickname, form.password, form.passwordCheck, isChecked)
     const signupData = {
@@ -44,30 +40,13 @@ const SignupForm = ({ form, setForm,  }) => {
       nickname: form.nickname,
       password: form.password,
     }
-    if ((form.id.length > 0 && isValidEmail) && (form.nickname.length > 1) && (form.password === form.passwordCheck) && isChecked) {
-      // 실제 배포는 8000
-      // 테스트 및 개발 서버는 7000
-      axios.post("http://localhost:7000/signup", signupData)
-        .then((response) => {
-          console.log(response.data)
-          const loginData = {
-            id: form.id,
-            password: form.password,
-          }
-          axios.post("http://localhost:7000/login", loginData)
-            .then((response) => {
-              console.log(response.data)
-              const jwtTokenFromServer = response.data.jwtToken;
-              sessionStorage.setItem("jwtToken", jwtTokenFromServer);
-              navigate("/main");
-            })
-            .catch((error) => {
-              console.error("로그인 에러 발생", error)
-            })
-        })
-        .catch((error) => {
-          console.error("회원가입 에러 발생", error)
-        })
+    if (
+      (form.id.length > 0 && isValidEmail) &&
+      (form.nickname.length > 1) &&
+      (form.password === form.passwordCheck) &&
+      isChecked
+    ) {
+      sendSignupDataServer(signupData)
       navigate("/main");
     }
   }
@@ -127,7 +106,7 @@ const SignupForm = ({ form, setForm,  }) => {
               약관에 동의합니다.
             </label>
 
-            <CustomButton style={{ marginTop: '1rem' }} onClick={sendSignupDataServer}>
+            <CustomButton style={{ marginTop: '1rem' }} onClick={sendSignupData}>
               회원가입
             </CustomButton>
           </form>
@@ -137,8 +116,8 @@ const SignupForm = ({ form, setForm,  }) => {
       <Modal isOpen={policyModalIsOpen}>
         <div style={{width:'100%', height:'100%'}} onClick={() => setPolicyModalIsOpen(false)}>
           회원 가입 약관 페이지
-          본 과정은 삼성 청년 소프트웨어 아카데미(SSAFY)
-          의 일환으로 만들어진 것입니다.
+
+          본 과정은 삼성 청년 소프트웨어 아카데미(SSAFY)의 일환으로 만들어진 것입니다.
         </div>
       </Modal>
     </FormBody>
