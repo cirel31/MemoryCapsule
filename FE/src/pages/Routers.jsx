@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Routes, useParams} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
@@ -13,6 +13,8 @@ import TestPage from "./TestPage";
 import TestDetailPage from "./TestDetailPage";
 import MyPage from "./MyPage";
 import CalendarPage from "./CalendarPage";
+import ArticleCreatePage from "./ArticleCreatePage";
+import ProjectDetailPage from "./ProjectDetailPage";
 
 export default function Routers() {
 
@@ -24,13 +26,16 @@ export default function Routers() {
       <Route path='/main' element={<MainPage />} />
       <Route path='/project' element={<ProjectListPage />} />
       <Route path='/project/create' element={<ProjectCreatePage />} />
-      <Route path='/friend' element={<FriendListPage />} />
-      <Route path='/notice' element={<NoticeListPage />} />
+      <Route path='/project/:projectId' element={<ProjectDetailPage />} />
+      <Route path='/project/:projectId/create' element={<ArticleCreatePage />} />
+        <Route path='/friend' element={<FriendListPage />} />
+        <Route path='/notice' element={<NoticeListPage />} />
 
       <Route path='/mypage' element={<MyPage />} />
       <Route path='/test' element={<TestPage />} />
       <Route path='/test/:postId' element={<TestDetailPage />} />
       <Route path='/calendar' element={<CalendarPage />} />
+
       <Route path='/*' element={<NotFound />} />
     </Routes>
   )
