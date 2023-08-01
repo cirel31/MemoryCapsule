@@ -28,6 +28,13 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "WHERE r.reviewIdx = :reviewIdx")
     ReviewResponseDTO findReviewWithIsLikedByReviewIdxAndUserIdx(@Param("userIdx") Long userIdx, @Param("reviewIdx") Long reviewIdx);
 
+    //hit + 1
+    @Modifying
+    @Query("UPDATE Review r " +
+            "SET r.reviewHit = r.reviewHit + 1 " +
+            "WHERE r.reviewIdx = :reviewIdx")
+    int incrementReviewHit(@Param("reviewIdx") Long reviewIdx);
+
     //리뷰 글 등록하기
     @Modifying
     @Query(value = "INSERT INTO Review (review_title, review_content, review_imgurl, review_usr_idx) " +
@@ -52,4 +59,33 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                                 @Param("reviewContent") String reviewContent,
                                 @Param("reviewImgUrl") String reviewImgUrl,
                                 @Param("reviewIdx") Long reviewIdx);
+
+    // 좋아요 누르기
+    @Modifying
+    @Query(value = "INSERT INTO Liked (liked_review_idx, liked_usr_idx) " +
+            "VALUES (:reviewIdx, :userIdx)", nativeQuery = true)
+    int likedReview(@Param("reviewIdx") Long reviewIdx,
+                     @Param("userIdx") Long userIdx);
+
+    //review에 like + 1
+    @Modifying
+    @Query("UPDATE Review r " +
+            "SET r.reviewLike = r.reviewLike + 1 " +
+            "WHERE r.reviewIdx = :reviewIdx")
+    int incrementReviewLike(@Param("reviewIdx") Long reviewIdx);
+
+    //좋아요 취소
+    @Modifying
+    @Query(value = "DELETE FROM Review r " +
+            "WHERE r.reviewIdx = :reviewIdx " +
+            "AND r.user.userIdx = :userIdx")
+    int unlikedReview(@Param("reviewIdx") Long reviewIdx,
+                    @Param("userIdx") Long userIdx);
+
+    //review에 like - 1
+    @Modifying
+    @Query("UPDATE Review r " +
+            "SET r.reviewLike = r.reviewLike - 1 " +
+            "WHERE r.reviewIdx = :reviewIdx")
+    int reductionReviewLike(@Param("reviewIdx") Long reviewIdx);
 }
