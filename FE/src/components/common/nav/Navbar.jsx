@@ -114,6 +114,13 @@ export default function Navbar() {
               </Link>
             </div>
             <div>
+              <Link to='/friend'>
+                <button>
+                  friend
+                </button>
+              </Link>
+            </div>
+            <div>
               <Link to='/announce'>
                 <button>
                   announce

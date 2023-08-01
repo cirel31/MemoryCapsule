@@ -5,7 +5,7 @@ import LoginPage from "./LoginPage";
 import SignupPage from "./SignupPage";
 import MainPage from "./MainPage";
 import NotFound from "./NotFound";
-import Friend from "./Friend";
+import FriendListPage from "./FriendListPage";
 import ProjectListPage from "./ProjectListPage";
 import ProjectCreatePage from "./ProjectCreatePage";
 import TestPage from "./TestPage";
