@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.util.OAuth2Attribute;
 import lombok.RequiredArgsConstructor;
@@ -32,19 +33,27 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // TODO: ACCESS TOKEN 을 이용해 서드파티 서버로부터 사용자 정보를 받아온다.
         //  - 이미 회원가입 되어있는지 check
         //  - 비회원은 가입처리
-        //  -
         OAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(oAuth2UserRequest);
         String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId(); // Kakao 인지 google인지 확인하는 코드
         String clientId = oAuth2UserRequest.getClientRegistration().getClientId();
         String userNameAttributeName = oAuth2UserRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-
-        log.info("This is CustomOAuth2UserService!!!!!!!!!!!!!!!!!!!!!!!");
-        log.info("registrationId = {}", registrationId);
-        log.info("userNameAttributeName = {}", userNameAttributeName);
+        Map properties = (Map) oAuth2User.getAttribute("properties");
 
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
+
+        // 등록된 회원이지 check 후, 미가입자 회원가입처리
+        User byEmail = userRepository.findByEmail((String) memberAttribute.get("email"));
+        if(byEmail == null){
+            userRepository.save(User.builder()
+                            .nickName((String) memberAttribute.get("name"))
+                            .email((String) memberAttribute.get("email"))
+                            .passWord("")
+                            .imgUrl((String) memberAttribute.get("picture"))
+                            .oAuthUser(true)
+                    .build());
+        }
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),

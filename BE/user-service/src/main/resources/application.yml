@@ -25,7 +25,6 @@ spring:
           kakao:
             client-id: 50389ab406794f10677cfc8b7e3bcf4d
             client-secret: bz2JnPOVnr8G9y907sRzdQIWGLcTbAr3
-#            redirect-uri: https://i9a608.p.ssafy.io.8000/kakao/test
             redirect-uri: http://localhost:8001/login/oauth2/code/kakao
             client-authentication-method: POST # 카카오 접근시 고정값
             authorization-grant-type: authorization_code
@@ -40,7 +39,6 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token              # 토큰 받기
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-#            logout-uri: https://kapi.kakao.com/v1/user/logout
 
 
 
@@ -64,7 +62,7 @@ jwt:
   secret: asdfghjklqwertyuiopzxcvbnmasdfasdfweasdfwbzzgoooodItstootireddgdsasdfsawherhdsfbdfsgsadfsadvsvethegwfsdavbdfh
   token-validity-in-milliseconds: 100000000
   refresh-token: 987654321987654321
-
+  refresh-token-limit-days: 1
 management:
   endpoints:
     web:

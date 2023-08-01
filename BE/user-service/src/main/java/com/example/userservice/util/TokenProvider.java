@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.mariadb.jdbc.plugin.codec.LocalDateTimeCodec;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientPropertiesRegistrationAdapter;
@@ -15,6 +16,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -33,6 +38,9 @@ public class TokenProvider implements InitializingBean {
 
     @Value("${jwt.refresh-token}")
     private long refreshTokenTime;
+
+    @Value("${jwt.refresh-token-limit-days}")
+    private long limitDays;
 
     private Key key;
 
@@ -70,6 +78,19 @@ public class TokenProvider implements InitializingBean {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
+    }
+
+    public String refreshCheckExpire(String token, Authentication authentication){
+        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+
+        // 현재 시간 갖고 오기
+        LocalDateTime d_day = LocalDateTime.now().minusDays(limitDays);
+        if (claimsJws.getBody().getExpiration().after(Timestamp.valueOf(d_day))) {
+            log.info("refreshToken low expiration - regenerate refresh-token");
+            return createRefreshToken(authentication);
+        } else {
+            return token;
+        }
     }
 
     public Authentication getAuthentication(String token) {
