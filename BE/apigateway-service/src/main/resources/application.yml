@@ -7,16 +7,13 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: ${DISCOVERY_URL}
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    hostname: localhost
 
 spring:
   application:
     name: apigateway-service
-
-
-
-token:
-  expiration_time: 86400000
-  secret: user_token
 
 management:
   endpoints:
