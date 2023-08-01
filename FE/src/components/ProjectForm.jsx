@@ -48,7 +48,7 @@ const ProjectForm = () => {
       'started': `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`,
       'ended': `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`,
     }
-    const user = [selectedUsers]
+    const user = selectedUsers.map((id) => parseInt(id))
     const formData = {
       'project': project,
       'userList': user,
@@ -58,6 +58,7 @@ const ProjectForm = () => {
     // const accessToken = sessionStorage.getItem("accessToken")
     // console.log(accessToken)
     const jsonData = JSON.stringify(formData);
+    console.log(SubmitURL)
     try {
       axios.post(`${SubmitURL}`, jsonData, {
         headers: {
@@ -72,6 +73,7 @@ const ProjectForm = () => {
         })
         .catch((err) => {
           console.log(err, "프로젝트 생성 실패")
+          console.log(err.config)
         })
     } catch (error) {
       console.log(error, "오류 발생");

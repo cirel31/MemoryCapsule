@@ -24,7 +24,7 @@ const LoginForm = ({ form, setForm }) => {
 
   const TEST_URL = 'http://i9a608.p.ssafy.io:8000/oauth2/authorization/kakao'
   const testFunc = async () => {
-    axios.get('/oauth2/authorization/kakao')
+    axios.get('http://i9a608.p.ssafy.io:8000/oauth2/authorization/kakao')
       .then((res) => {
         console.log('성공')
         console.log(res)
