@@ -21,6 +21,14 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("/lock/health-check")
+    public String lockedHealth() { return "Hello user-service with locked";}
+
+    @GetMapping("/health-check")
+    public String getHealth() {
+        return "Hello user-service";
+    }
+
     @PostMapping("/login")
     public ResponseEntity userLogin(@RequestBody UserDto.RequestLogin requestLogin){
         log.info("user-login");
@@ -32,8 +40,5 @@ public class UserController {
         }
     }
 
-    @GetMapping("/health-check")
-    public String getHealth() {
-        return "Hello user-service";
-    }
+
 }
