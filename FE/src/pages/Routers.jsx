@@ -28,8 +28,8 @@ export default function Routers() {
       <Route path='/project/create' element={<ProjectCreatePage />} />
       <Route path='/project/:projectId' element={<ProjectDetailPage />} />
       <Route path='/project/:projectId/create' element={<ArticleCreatePage />} />
-        <Route path='/friend' element={<FriendListPage />} />
-        <Route path='/notice' element={<NoticeListPage />} />
+      <Route path='/friend' element={<FriendListPage />} />
+      <Route path='/notice' element={<NoticeListPage />} />
 
       <Route path='/mypage' element={<MyPage />} />
       <Route path='/test' element={<TestPage />} />

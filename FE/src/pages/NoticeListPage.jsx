@@ -21,12 +21,12 @@ const NoticeListPage = () => {
 
     const sendNoticesDataServer = (e) => {
         e.preventDefault();
-        const sendSearch = search.search;
+        const sendSearch = search;
 
-        if (sendSearch.length > 0) {
-            console.log(sendSearch);
-        } else {
+        if (!sendSearch) {
             console.log("한 글자라도 입력해주십시오");
+        } else {
+            console.log(sendSearch);
         }
 
         if (sendSearch.length > 0) {
@@ -40,47 +40,44 @@ const NoticeListPage = () => {
                     console.log(response.data)
                 })
                 .catch((error) => {
-                    console.error("에러 발생", error)
+                    console.error("Notice List 호출 과정에서 에러 발생", error)
                 })
         }
     };
 
-    //test data 받아오기
+    // 공지사항 데이터 수신
     function getNotices(searchValue) {
-        console.log("getNotices");
-            fetch("https://jsonplaceholder.typicode.com/posts")
+        if (!searchValue){
+            //test data 받아오기
+            console.log("NoSearchValue");
+        } else {
+            console.log("HasSearchValue : ", searchValue);
+        }
+        fetch("https://jsonplaceholder.typicode.com/posts")
             .then(response => response.json())
             .then((json) => {
                 setNotices(json);
             });
-        console.log(searchValue);
         console.log(notices);
     }
 
     // 검색
     const handleNoticeData = (e) => {
         e.preventDefault();
+
+        // 공지사항 데이터 호출
         getNotices(search);
+
+        // 전체 리스트에서 FE 자체 검색
         const sendSearch = search.toLowerCase();
 
-        console.log(sendSearch);
         if (!sendSearch) {
             console.log("SearchAll :", notices.length);
         } else {
             const searchNotice = notices.filter((notice) =>
-                console.log("notice - " , notice)
+                notice.title.includes(sendSearch)
             );
-
-            for (let i = 0; i < notices.length; i++) {
-                const title = notices[i].title;
-
-                if(notices[i].title.includes(sendSearch)){
-                    searchNotice.push(notices[i]);
-                    // console.log(searchNotice.length);
-                }
-            }
             setNotices(searchNotice);
-            // console.log("notices : ", notices);
         }
     };
 
@@ -105,23 +102,21 @@ const NoticeListPage = () => {
             </AuthFormGrid>
             <AuthFormGrid>
 
-                {/*여기서 두 번 log 찍히는 문제 발생*/}
-                {console.log("여기서 두 번 동작하는 문제 발생 - 결과는 잘 나오지만, 리로딩되면서 다시 초기값으로 변경됨")}
                 {
                     notices.length === 0
-                        ?
-                        <NoFriendList>
-                            <div className="NoFriendList">
-                                <div className="textBlock">
-                                    등록된 공지사항이 없습니다.
-                                </div>
+                    ?
+                    <NoFriendList>
+                        <div className="NoFriendList">
+                            <div className="textBlock">
+                                등록된 공지사항이 없습니다.
                             </div>
-                        </NoFriendList>
-                        :<div className="AuthFormGrid">
-                            { notices.map((notice) => (
-                                <NoticeInfo key={notice.id} {...notice} />
-                            ))}
                         </div>
+                    </NoFriendList>
+                    :<div className="AuthFormGrid">
+                        { notices.map((notice) => (
+                            <NoticeInfo key={notice.id} {...notice} />
+                        ))}
+                    </div>
                 }
             </AuthFormGrid>
         </>

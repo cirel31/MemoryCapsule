@@ -121,6 +121,13 @@ export default function Navbar() {
               </Link>
             </div>
             <div>
+              <Link to='/notice'>
+                <button>
+                  notice
+                </button>
+              </Link>
+            </div>
+            <div>
               <Link to='/announce'>
                 <button>
                   announce
