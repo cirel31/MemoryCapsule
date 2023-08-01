@@ -36,11 +36,9 @@ public class Project {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "pjt_started")
-    @CreationTimestamp
     private Date started;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "pjt_ended")
-    @CreationTimestamp
     private Date ended;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "pjt_created")

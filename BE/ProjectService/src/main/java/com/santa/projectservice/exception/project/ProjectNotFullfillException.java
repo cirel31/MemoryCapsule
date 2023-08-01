@@ -10,4 +10,7 @@ public class ProjectNotFullfillException extends RuntimeException {
         this.propertyName = propertyName;
     }
 
+    public ProjectNotFullfillException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

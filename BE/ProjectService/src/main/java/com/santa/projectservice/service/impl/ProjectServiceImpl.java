@@ -56,7 +56,10 @@ public class ProjectServiceImpl implements ProjectService {
         Project project1 = Project.builder()
                 .content(projectDto.getContent())
                 .title(projectDto.getTitle())
+                .started(projectDto.getStarted())
+                .ended(projectDto.getEnded())
                 .build();
+        log.info(project1.toString());
         Project project = null;
         try {
             project = projectRepository.save(project1);

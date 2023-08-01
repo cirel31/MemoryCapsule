@@ -9,6 +9,7 @@ import com.santa.projectservice.dto.UserDto;
 import com.santa.projectservice.exception.User.UserNotFoundException;
 import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
+import com.santa.projectservice.exception.project.ProjectNotFullfillException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
 import com.santa.projectservice.jpa.Article;
 import com.santa.projectservice.service.ArticleService;
@@ -21,7 +22,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -81,19 +88,31 @@ public class ProjectController {
      * @throws JsonProcessingException - project정보가 없을 떄
      */
     @PostMapping("/create")
-    public ResponseEntity<Object> createProject(HttpServletRequest httpRequest, @RequestBody Map<String, Object> map) throws RegisterMakeException {
+    public ResponseEntity<Object> createProject(HttpServletRequest httpRequest, @RequestBody Map<String, Object> map) throws RegisterMakeException, ParseException {
         List<Integer> list = (ArrayList<Integer>) map.get("userList");
         List<Long> userList = new ArrayList<>();
         list.forEach(L -> {userList.add(Long.valueOf(L.toString()));});
         Map<String, String> pro = (Map<String, String>) map.get("project");
         String title = pro.get("title"), content = pro.get("content");
+
+        LocalDateTime start = LocalDateTime.parse(pro.get("started").toString(), DateTimeFormatter.ISO_DATE_TIME);
+        LocalDateTime end = LocalDateTime.parse(pro.get("ended").toString(), DateTimeFormatter.ISO_DATE_TIME);
+        Date started = Date.from(start.atZone(ZoneId.systemDefault()).toInstant());
+        Date ended = Date.from(end.atZone(ZoneId.systemDefault()).toInstant());
         if (title == null || content == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("title 혹은 content가 비어있습니다");
         }
-        ProjectDto projectDto = ProjectDto.builder()
-                .content(content)
-                .title(title)
-                .build();
+        ProjectDto projectDto = null;
+        try {
+            projectDto = ProjectDto.builder()
+                    .content(content)
+                    .title(title)
+                    .started(started)
+                    .ended(ended)
+                    .build();
+        } catch(Exception e){
+            throw new ProjectNotFullfillException("인자가 부족하네요!", e);
+        }
         Long owner = Long.valueOf(String.valueOf(httpRequest.getHeader("userId")));
         Long projectId = projectService.createProject(projectDto, userList, owner);
         return ResponseEntity.status(HttpStatus.OK).body(projectId);
