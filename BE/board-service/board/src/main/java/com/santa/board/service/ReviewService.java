@@ -3,11 +3,11 @@ package com.santa.board.service;
 import com.santa.board.Dto.ReviewForListResponseDTO;
 import com.santa.board.Dto.ReviewRequestDTO;
 import com.santa.board.Dto.ReviewResponseDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ReviewService {
-    List<ReviewForListResponseDTO> getReviewList();
+    Page<ReviewForListResponseDTO> getReviewList(Pageable pageable);
     ReviewResponseDTO getReviewByReviewId(Long userIdx, Long reviewIdx);
     boolean insertReview(ReviewRequestDTO.InsertDto requestDTO, Long userIdx);
     boolean deleteReview(long reviewIdx);

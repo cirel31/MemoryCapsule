@@ -2,18 +2,18 @@ package com.santa.board.repository;
 
 import com.santa.board.Dto.NoticeDTO;
 import com.santa.board.entity.Notice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     // 모든 Notice 조회
-    List<NoticeDTO.ResponseDTO> findByNoticeDeletedFalse();
+    Page<NoticeDTO.ResponseDTO> findByNoticeDeletedFalse(Pageable pageable);
     
     // notice_idx 를 통해 notice 정보 조회
     NoticeDTO.ResponseDTO findByNoticeIdx(Long noticeIdx);

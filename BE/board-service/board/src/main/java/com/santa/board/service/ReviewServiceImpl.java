@@ -6,10 +6,10 @@ import com.santa.board.Dto.ReviewResponseDTO;
 import com.santa.board.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -22,8 +22,8 @@ public class ReviewServiceImpl implements ReviewService {
      * @return 리뷰 리스트
      */
     @Override
-    public List<ReviewForListResponseDTO> getReviewList() {
-        return reviewRepository.findAllReviewData();
+    public Page<ReviewForListResponseDTO> getReviewList(Pageable pageable) {
+        return reviewRepository.findAllReviewData(pageable);
     }
 
     /**
@@ -52,7 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
                         requestDTO.getReviewContent(),
                         requestDTO.getReviewImgUrl(),
                         userIdx
-                ) > 0 ? true : false;
+                ) > 0;
     }
 
     /**
@@ -62,7 +62,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Override
     public boolean deleteReview(long reviewIdx) {
-        return reviewRepository.deleteReviewByReviewIdx(reviewIdx) == 1 ? true : false;
+        return reviewRepository.deleteReviewByReviewIdx(reviewIdx) == 1;
     }
 
     /**
@@ -76,7 +76,7 @@ public class ReviewServiceImpl implements ReviewService {
                 (requestDTO.getReviewTitle(),
                         requestDTO.getReviewContent(),
                         requestDTO.getReviewImgUrl(),
-                        requestDTO.getReviewIdx()) == 1 ? true : false;
+                        requestDTO.getReviewIdx()) == 1;
     }
 
     /**
@@ -89,19 +89,19 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public boolean likedReviewByReviewId(Long reviewIdx, Long userIdx) {
         reviewRepository.incrementReviewLike(reviewIdx);
-        return reviewRepository.likedReview(reviewIdx, userIdx) > 0 ? true : false;
+        return reviewRepository.likedReview(reviewIdx, userIdx) > 0;
     }
 
     /**
      * 리뷰에 좋아요 누른 것을 취소한다. table에서 delete, like - 1
-     * @param reviewIdx
-     * @param userIdx
+     * @param reviewIdx 리뷰 idx
+     * @param userIdx 유저 idx
      * @return 성공유무
      */
     @Transactional(rollbackFor={Exception.class})
     @Override
     public boolean unlikedReviewByReviewId(Long reviewIdx, Long userIdx) {
         reviewRepository.reductionReviewLike(reviewIdx);
-        return reviewRepository.unlikedReview(reviewIdx, userIdx) > 0 ? true : false;
+        return reviewRepository.unlikedReview(reviewIdx, userIdx) > 0;
     }
 }

@@ -11,6 +11,18 @@ public class NoticeDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
+    public static class RequestInsertDTO {
+        private String noticeTitle;
+        private String noticeContent;
+        private String noticeImgurl;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
     public static class RequestDTO {
         private Long idx;
         private String noticeTitle;

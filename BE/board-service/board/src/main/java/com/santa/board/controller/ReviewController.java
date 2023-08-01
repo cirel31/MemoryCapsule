@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +25,8 @@ public class ReviewController {
 
     @ApiOperation(value = "리뷰 목록", notes = "리뷰 리스트들을 반환한다.", response = ReviewResponseDTO.class)
     @GetMapping("/list")
-    public ResponseEntity<ReviewForListResponseDTO> getReviewList() {
-        return new ResponseEntity(reviewService.getReviewList(), HttpStatus.OK);
+    public ResponseEntity<ReviewForListResponseDTO> getReviewList(Pageable pageable) {
+        return new ResponseEntity(reviewService.getReviewList(pageable).getContent(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "리뷰 상세보기", notes = "리뷰 id를 통해 리뷰 상세정보를 가져온다. 또한 로그인한 유저 id를 통해 리뷰의 좋아요 유무도 포함되어있다.", response = ReviewResponseDTO.class)
@@ -34,7 +34,7 @@ public class ReviewController {
     public ResponseEntity<ReviewResponseDTO> getReviewById
             (@PathVariable("review_idx") @ApiParam(value = "리뷰 번호", required = true) Long review_idx, HttpServletRequest request) {
         Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
-        return new ResponseEntity(reviewService.getReviewByReviewId(user_idx, review_idx), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.getReviewByReviewId(user_idx, review_idx), HttpStatus.OK);
     }
 
     @ApiOperation(value = "리뷰 등록하기", notes = "리뷰 글을 등록한다. 성공 유무 반환", response = String.class)
