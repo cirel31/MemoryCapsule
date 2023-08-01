@@ -109,6 +109,10 @@ const FriendListPage = () => {
                 </div>
             </AuthFormGrid>
             <div>
+                <div>등록된 친구</div>
+                <div>{friends.length}</div>
+            </div>
+            <div>
                 {
                     !select.id
                     ?
@@ -119,7 +123,7 @@ const FriendListPage = () => {
                                 </div>
                             </div>
                         </NoFriendList>
-                    :<FriendDetail select={select}/>
+                    :<FriendDetail select={select} setSelect={setSelect}/>
                 }
             </div>
             <AuthFormGrid>
