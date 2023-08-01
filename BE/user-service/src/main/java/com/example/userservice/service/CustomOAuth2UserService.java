@@ -41,6 +41,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String userNameAttributeName = oAuth2UserRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         Map properties = (Map) oAuth2User.getAttribute("properties");
 
+
+        log.info("ClientId = {}", clientId);
+        log.info("properties = {}", (String)properties.get("email"));
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
 
