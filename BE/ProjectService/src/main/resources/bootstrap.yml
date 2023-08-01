@@ -1,8 +1,7 @@
 spring:
   cloud:
     config:
-      uri: i9a608.p.ssafy.io:8888
+      uri: http://i9a608.p.ssafy.io:8888
       name: projectservice
   profiles:
-    active: dev
-#    active: ${PROFILE:default}
+    active: ${PROFILE:default}

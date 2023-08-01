@@ -11,11 +11,11 @@ spring:
         show_sql: true
         format_sql: true
 
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: guest
-#    password: guest
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -30,8 +30,8 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
       auto-commit: true
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+#  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
 
 
 eureka:
@@ -71,8 +71,4 @@ cloud:
     region:
       static: ap-northeast-2
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, health, beans, httptrace, busrefresh, info, metrics, prometheus, env
+#
