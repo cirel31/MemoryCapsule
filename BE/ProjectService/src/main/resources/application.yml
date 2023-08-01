@@ -45,7 +45,7 @@ eureka:
   client:
     service-url:
       defaultZone:
-        http://eureka-server:8761
+        http://localhost:8761
     fetch-registry: false
     register-with-eureka: false
 
@@ -72,12 +72,7 @@ cloud:
       static: ap-northeast-2
 
 management:
-  health:
-    rabbit:
-      enabled: false
-#
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: refresh, health, beans, httptrace, busrefresh, info, metrics, prometheus
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace, busrefresh, info, metrics, prometheus, env
