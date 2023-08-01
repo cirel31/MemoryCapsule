@@ -5,10 +5,28 @@ import '../styles/Calendar.css'
 import Modal from "react-modal";
 import axios from "axios";
 import ProjectAddFriends from "../pages/ProjectAddFriends";
+import {useDispatch, useSelector} from "react-redux";
+import {removeAll} from "../store/selectFriendSlice";
 
+const customModalStyles = {
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    zIndex: 1000,
+  },
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    transform: "translate(-50%, -50%)",
+    borderRadius: "10px",
+    padding: "20px",
+    width: "80%",
+    maxWidth: "400px",
+  },
+};
 
 const ProjectForm = () => {
-  const [selectedUsers, setSelectedUsers] = useState([])
   const formRef = useRef(null)
   const navigate = useNavigate()
   const [showStartDateModal, setShowStartDateModal] = useState(false);
@@ -16,26 +34,48 @@ const ProjectForm = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [multiplayModal, setMultiplayModal] = useState(false);
+  const dispatch = useDispatch()
+  const selectedUsers = useSelector((state) => state.friend.selectedPeople)
 
-  const SubmitURL = ""
+  const SubmitURL = "http://i9a608.p.ssafy.io:8000/project/create"
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log('제출 버튼 누름')
-    const formData = new FormData(formRef.current)
-    console.log(formData, formRef.current)
-    const accessToken = sessionStorage.getItem("accessToken")
-    axios.post(SubmitURL, formData, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then((res) => {
-        console.log(res, "프로젝트 생성 성공")
-        navigate('/project')
+
+    const project = {
+      'title': formRef.current.querySelector('.title').value,
+      'content': formRef.current.querySelector('.example').value,
+      'started': `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`,
+      'ended': `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`,
+    }
+    const user = [selectedUsers]
+    const formData = {
+      'project': project,
+      'userList': user,
+    }
+
+    console.log(formData)
+    // const accessToken = sessionStorage.getItem("accessToken")
+    // console.log(accessToken)
+    const jsonData = JSON.stringify(formData);
+    try {
+      axios.post(`${SubmitURL}`, jsonData, {
+        headers: {
+          // Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          "userId": "1001",
+        },
       })
-      .catch((err) => {
-        console.log(err, "프로젝트 생성 실패")
-      })
+        .then((res) => {
+          console.log(res, "프로젝트 생성 성공")
+          navigate('/project')
+        })
+        .catch((err) => {
+          console.log(err, "프로젝트 생성 실패")
+        })
+    } catch (error) {
+      console.log(error, "오류 발생");
+    }
   }
   const handleStartDateChange = (date) => {
     setStartDate(date);
@@ -55,7 +95,8 @@ const ProjectForm = () => {
             <br/>
             <input
               id="title"
-              required
+              className="title"
+              // required
             />
           </div>
           <br/>
@@ -68,7 +109,7 @@ const ProjectForm = () => {
                 type="text"
                 onClick={() => setShowStartDateModal(true)}
                 value={startDate ? startDate.toLocaleDateString() : ""}
-                required
+                // required
                 readOnly
               />
               <Modal isOpen={showStartDateModal} onRequestClose={() => setShowStartDateModal(false)}>
@@ -87,7 +128,7 @@ const ProjectForm = () => {
                 type="text"
                 onClick={() => setShowEndDateModal(true)}
                 value={endDate ? endDate.toLocaleDateString() : ""}
-                required
+                // required
                 readOnly
               />
               <Modal isOpen={showEndDateModal} onRequestClose={() => setShowEndDateModal(false)}>
@@ -106,14 +147,22 @@ const ProjectForm = () => {
           <div>
             <label id="example">캡슐설명</label>
             <br/>
-            <textarea id="example" required />
+            <textarea id="example" className='example'
+                      // required
+            />
           </div>
           <br/>
+          <div style={{display:'none'}}>
+            <input
+              className="selectedUsers"
+              value={selectedUsers}
+            />
+          </div>
         </form>
         <div>
           {/* 지금은 버튼으로 만들어둠 나충에 이미지로 바꾸십시오 */}
           <div>
-            <button>
+            <button onClick={() => dispatch(removeAll())}>
               혼자 할거야!
             </button>
           </div>
@@ -121,16 +170,15 @@ const ProjectForm = () => {
             <button onClick={() => setMultiplayModal(true)}>
               여러명이서 할거야!
             </button>
-            <Modal isOpen={multiplayModal} onRequestClose={() => setMultiplayModal(false)}>
-              <ProjectAddFriends selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />
+            <Modal isOpen={multiplayModal} onRequestClose={() => setMultiplayModal(false)} style={customModalStyles}>
+              <ProjectAddFriends />
             </Modal>
           </div>
         </div>
       </div>
 
       <div>
-        참여자 애들 얼굴 띄울 거
-        <h1>12e1e</h1>
+        <h3>참여자 애들 프로필 사진 띄울 거</h3>
         <div>
           {selectedUsers.map((userId) => (
             <p key={userId}>{userId}</p>

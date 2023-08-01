@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { login } from '../store/userSlice';
@@ -6,6 +6,13 @@ import { login } from '../store/userSlice';
 const useLoginEmail = () => {
   const dispatch = useDispatch();
   const [isValidEmail, setIsValidEmail] = useState(true);
+  //
+  // useEffect(() => {
+  //   axios.get("")
+  //     .then((res) => {
+  //       console.log('1')
+  //     })
+  // })
 
   // 백 서버 통신을 통한 로그인 처리
   const loginUser = async (loginData) => {

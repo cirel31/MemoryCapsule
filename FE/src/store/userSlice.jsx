@@ -19,16 +19,15 @@ const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.isLoggedIn = true;
-      state.accessToken = action.payload.accessToken;
-      state.redirectToken = action.payload.redirectToken;
-      console.log('이메일 로그인 성공', state.accessToken, state.redirectToken);
+      console.log('이메일 로그인 성공');
     },
     logout: (state) => {
       state.isLoggedIn = false;
       state.accessToken = null;
       state.redirectToken = null;
       console.log('이메일 로그아웃 성공');
-    },ser: (state, action) => {
+    },
+    setUser: (state, action) => {
       state.user = action.payload
       console.log(state.user)
     }
