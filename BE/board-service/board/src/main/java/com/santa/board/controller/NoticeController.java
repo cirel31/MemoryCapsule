@@ -58,7 +58,7 @@ public class NoticeController {
     }
 
     @ApiOperation(value = "공지사항 수정하기", notes = "공지사항 글을 수정한다. 성공 유무 반환", response = String.class)
-    @PutMapping("/")
+    @PutMapping("")
     public ResponseEntity<String> modifyNotice
             (@RequestBody NoticeDTO.RequestDTO requestDTO) {
         if (noticeService.modifyNoticeById(requestDTO)) {

@@ -21,6 +21,7 @@ public class ReviewServiceImpl implements ReviewService {
      * 전체 리뷰 리스트를 얻는다.
      * @return 리뷰 리스트
      */
+    @Transactional(readOnly = true)
     @Override
     public Page<ReviewForListResponseDTO> getReviewList(Pageable pageable) {
         return reviewRepository.findAllReviewData(pageable);
@@ -45,6 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @param userIdx 작성자(로그인한 유저)의 idx
      * @return 성공 유무 
      */
+    @Transactional
     @Override
     public boolean insertReview(ReviewRequestDTO.InsertDto requestDTO, Long userIdx) {
         return reviewRepository.insertReview
@@ -60,6 +62,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @param reviewIdx 삭제할 리뷰 idx
      * @return 성공유무
      */
+    @Transactional
     @Override
     public boolean deleteReview(long reviewIdx) {
         return reviewRepository.deleteReviewByReviewIdx(reviewIdx) == 1;
@@ -70,6 +73,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @param requestDTO 수정할 리뷰의 idx
      * @return 성공 유무
      */
+    @Transactional
     @Override
     public boolean modifyReviewById(ReviewRequestDTO.ModifyDto requestDTO) {
         return reviewRepository.modifyNoticeByNoticeIdx

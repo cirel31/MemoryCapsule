@@ -4,25 +4,25 @@
 #      enabled: true
 #
 spring:
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/realtest?serverTimezone=UTC&characterEncoding=UTF-8
-#    username: root
-#    password: ssafy
-
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: S09P12A608
-    password: asdf1234
-    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P12A608
-    hikari:
-      maximum-pool-size: 50
-      minimum-idle: 50
-      connection-init-sql: SELECT 1
-      connection-timeout: 5000
-      idle-timeout: 600000
-      max-lifetime: 1800000
-      auto-commit: true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/realtest?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: ssafy
+
+#  datasource:
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    username: S09P12A608
+#    password: asdf1234
+#    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P12A608
+#    hikari:
+#      maximum-pool-size: 50
+#      minimum-idle: 50
+#      connection-init-sql: SELECT 1
+#      connection-timeout: 5000
+#      idle-timeout: 600000
+#      max-lifetime: 1800000
+#      auto-commit: true
 
   jpa:
     database: mysql

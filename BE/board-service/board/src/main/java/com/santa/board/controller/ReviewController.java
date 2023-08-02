@@ -59,7 +59,7 @@ public class ReviewController {
     }
 
     @ApiOperation(value = "리뷰 수정하기", notes = "리뷰 글을 수정한다. 성공 유무 반환", response = String.class)
-    @PutMapping("/")
+    @PutMapping("")
     public ResponseEntity<String> modifyReview
             (@RequestBody ReviewRequestDTO.ModifyDto requestDTO) {
 

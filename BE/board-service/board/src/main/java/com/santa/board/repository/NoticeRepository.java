@@ -1,6 +1,5 @@
 package com.santa.board.repository;
 
-import com.santa.board.Dto.NoticeDTO;
 import com.santa.board.entity.Notice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +12,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     // 모든 Notice 조회
-    Page<NoticeDTO.ResponseDTO> findByNoticeDeletedFalse(Pageable pageable);
+    Page<Notice> findByNoticeDeletedFalse(Pageable pageable);
     
     // notice_idx 를 통해 notice 정보 조회
-    NoticeDTO.ResponseDTO findByNoticeIdx(Long noticeIdx);
+    Notice findByNoticeIdx(Long noticeIdx);
 
     // 공지사항의 notice_hit 값을 1 증가시킴
     @Modifying

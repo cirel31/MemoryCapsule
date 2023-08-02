@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -19,9 +20,12 @@ public class NoticeServiceImpl implements NoticeService {
      * 공지사항 전체 List 를 반환한다.
      * @return List<NoticeDto>
      */
+    @Transactional(readOnly = true)
     @Override
     public Page<NoticeDTO.ResponseDTO> getNoticeList(Pageable pageable) {
-        return noticeRepository.findByNoticeDeletedFalse(pageable);
+        Page<NoticeDTO.ResponseDTO> responseDTOPage = new NoticeDTO.ResponseDTO().toDtoList(noticeRepository.findByNoticeDeletedFalse(pageable));
+        log.info(String.format("getNoticeList %s", responseDTOPage.toString()));
+        return responseDTOPage;
     }
 
     /**
@@ -29,10 +33,13 @@ public class NoticeServiceImpl implements NoticeService {
      * @param noticeIdx 공지사항 번호
      * @return NoticeDto
      */
+    @Transactional
     @Override
     public NoticeDTO.ResponseDTO getNoticeById(Long noticeIdx) {
         noticeRepository.incrementNoticeHit(noticeIdx);
-        return noticeRepository.findByNoticeIdx(noticeIdx);
+        NoticeDTO.ResponseDTO responseDTO = new NoticeDTO.ResponseDTO().toDto(noticeRepository.findByNoticeIdx(noticeIdx));
+        log.info(String.format("getNoticeById id:%d %s", noticeIdx, responseDTO.toString()));
+        return responseDTO;
     }
 
     /**
@@ -40,10 +47,12 @@ public class NoticeServiceImpl implements NoticeService {
      * @param requestDTO 새로운 글의 정보
      * @return 성공 여부를 반환한다.
      */
+    @Transactional
     @Override
-    public boolean insertNotice(NoticeDTO.RequestInsertDTO requestDTO, Long UserIdx) {
+    public boolean insertNotice(NoticeDTO.RequestInsertDTO requestDTO, Long userIdx) {
+        log.info(String.format("insert Notice userIdx:%d %s", userIdx, requestDTO.toString()));
         return noticeRepository.insertNewNotice
-                (UserIdx,
+                (userIdx,
                         requestDTO.getNoticeTitle(),
                         requestDTO.getNoticeContent(),
                         requestDTO.getNoticeImgurl()
@@ -55,8 +64,10 @@ public class NoticeServiceImpl implements NoticeService {
      * @param noticeIdx 삭제할 공지사항 idx
      * @return 성공 여부를 반환한다.
      */
+    @Transactional
     @Override
     public boolean deleteNoticeById(Long noticeIdx) {
+        log.info(String.format("delete Notice noticeIdx:%d", noticeIdx));
         return noticeRepository.deleteNoticeByNoticeIdx(noticeIdx) == 1;
     }
 
@@ -65,8 +76,10 @@ public class NoticeServiceImpl implements NoticeService {
      * @param requestDTO 수정한 글의 정보
      * @return 성공 여부를 반환한다.
      */
+    @Transactional
     @Override
     public boolean modifyNoticeById(NoticeDTO.RequestDTO requestDTO) {
+        log.info(String.format("modify Notice %s", requestDTO.toString()));
         return noticeRepository.modifyNoticeByNoticeIdx
                 (requestDTO.getNoticeTitle(),
                         requestDTO.getNoticeContent(),
