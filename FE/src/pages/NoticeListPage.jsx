@@ -1,6 +1,6 @@
 import { NoFriendList, AuthFormGrid, CustomButton } from "../styles/friendStyle";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import NoticeInfo from "../components/notice/NoticeInfo";
 import SearchBar from "../components/SearchBar"
 import axios from "axios";
@@ -44,6 +44,11 @@ const NoticeListPage = () => {
          */
     ]);
 
+    // 처음 한 번 실행해서, 모든 공지사항 불러오기
+    useEffect(() => {
+        console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
+        getNotices("");
+     }, []);
 
     /**
      * 1. 전체 공지사항 [get]
@@ -72,39 +77,6 @@ const NoticeListPage = () => {
     }
 
     /**
-     * 3. 공지사항 작성 [post]
-     * http://localhost:8080/notice
-     *{
-     *  "noticeTitle" : "테스트",
-     *  "noticeContent" : "테스트content",
-     *  "noticeImgurl" : null
-     *}
-     */
-
-    const [formData, setFormData] = useState({
-        noticeTitle: '',
-        noticeContent: '',
-        noticeImgurl: '',
-    });
-
-    const postNoticesDataCreateServer = (e) => {
-        console.log("[postNoticesDataCreateServer]");
-        e.preventDefault();
-
-        if (checkUserRole()) {
-            // 실제 배포는 8000
-            // 테스트 및 개발 서버는 7000
-            axios.post("http://localhost:8080/notice/", formData)
-                    .then((response) => {
-                        console.log('게시글 작성 POST successful : ', response.data);
-                    })
-                    .catch((error) => {
-                        console.error('게시글 작성 POST fail : ', error);
-                    });
-        }
-    }
-
-    /**
      * 4. 공지사항 삭제 [delete]
      *http://localhost:8080/notice/2
      */
@@ -120,31 +92,6 @@ const NoticeListPage = () => {
             //     .catch((error) => {
             //         console.error('게시글 삭제 Delete fail : ', error);
             //     });
-        }
-    }
-
-    /**
-     * 5. 공지사항 수정 [put]
-     *http://localhost:8080/notice
-     * {
-     *  "idx" : "3",
-     *  "noticeTitle" : "테스트수정",
-     *  "noticeContent" : "테스트content",
-     *  "noticeImgurl" : null
-     * }
-     */
-    const putNoticesDataEditServer = (e) => {
-        console.log("[putNoticesDataEditServer]");
-        e.preventDefault();
-
-        if (checkUserRole()) {
-            axios.put("http://localhost:8080/notice/", formData)
-                .then((response) => {
-                    console.log('게시글 수정 PUT successful : ', response.data);
-                })
-                .catch((error) => {
-                    console.error('게시글 수정 PUT fail : ', error);
-                });
         }
     }
 
@@ -212,6 +159,9 @@ const NoticeListPage = () => {
                 }
         );
         console.log(notices);
+
+        // 성공했다면
+        return true;
     }
 
     // 검색
@@ -236,6 +186,7 @@ const NoticeListPage = () => {
     };
 
     const handleChange = (updatedSearch) => {
+        console.log([handleChange]);
         setSearch(updatedSearch);
         handleNoticeData();
     };
@@ -261,6 +212,7 @@ const NoticeListPage = () => {
                     ?
                     <NoFriendList>
                         <div className="NoFriendList">
+                            {/*on load는 시작하자마자 게시글을 불러오기 위해서 임시로 작성*/}
                             <div className="textBlock">
                                 등록된 공지사항이 없습니다.
                             </div>
