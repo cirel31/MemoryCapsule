@@ -1,0 +1,195 @@
+@import "theme.css";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
+
+.big_body {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  background-color: var(--backGround_1);
+
+}
+
+.mypage_layout {
+  width: 840px;
+  display: grid;
+
+  grid-template-columns: 1fr;
+  justify-items: center;
+  background-color: var(--backGround_1);
+  filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.25));
+
+}
+.mypage_header {
+  width: 840px;
+  height: 200px;
+  background-color: var(--main_3);
+  display: grid;
+  justify-items: center;
+  align-items: center;
+
+  .header_sets {
+    width: 800px;
+    height: 160px;
+    background-color: var(--backGround_1);
+    border-radius: 1em;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 180px 240px 200px 160px;
+    justify-items: left;
+    align-items: center;
+
+    filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.25));
+  }
+  .header_image {
+    width: 110px;
+    height: 110px;
+    border-radius: 100%;
+    border: solid var(--point1_4) 3pt;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    margin-left: 30px;
+    .header_profile_img {
+      width: 110px;
+      clip-path: circle(55px);
+      background-color: white;
+      overflow: hidden;
+    }
+  }
+
+  .header_user_info1 {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 30px 30px;
+    align-items: center;
+  }
+  .header_user_name {
+    font-family: "IBM Plex Sans KR";
+    font-size: 12pt;
+    color: var(--font_gray_main);
+    font-weight: 700;
+    text-align: left;
+  }
+  .header_user_email {
+    font-family: "Inconsolata";
+    font-size: 13pt;
+    color: var(--font_gray_main);
+    font-weight: 500;
+    text-align: left;
+  }
+  .header_user_friend {
+    display: grid;
+    grid-template-columns: 140px 60px;
+    align-items: center;
+    text-decoration: none;
+
+    .header_friend_btn {
+      width: 140px;
+      height: 30px;
+      background-color: var(--brand3_main);
+      border-radius: 4em;
+      display: grid;
+      grid-template-columns: 30px 90px;
+      justify-items: center;
+      justify-content: center;
+      align-items: center;
+    }
+    .header_user_friend_txt {
+      font-family: "IBM Plex Sans KR";
+      font-size: 10pt;
+      color: var(--white);
+      font-weight: 700;
+      text-align: left;
+      margin: 0;
+
+    }
+
+    .header_user_friend_txt2 {
+      font-family: "IBM Plex Sans KR";
+      font-size: 15pt;
+      color: var(--font_gray_main);
+      font-weight: 700;
+      text-align: right;
+    }
+  }
+  .header_edit_profile_btn {
+    height: 30px;
+    width: 130px;
+    margin-left: 30px;
+    background-color: var(--brand3_main);
+    border-radius: 4em;
+    display: grid;
+    grid-template-columns: 85px 23px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    .profile_edit_txt{
+      font-family: "IBM Plex Sans KR";
+      font-weight: 700;
+      color: var(--white);
+      margin: 0;
+      font-size: 10pt;
+    }
+    .profile_edit_picto{
+      width: 15px;
+    }
+  }
+}
+.mypage_calenders {
+  width: 840px;
+  height: 400px;
+  display: grid;
+  grid-template-columns: 450px 340px;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  .mypage_shorts_info {
+    font-family: "IBM Plex Sans KR";
+    font-weight: 700;
+    width: 320px;
+    height: 400px;
+    background-color: var(--backGround_1);
+    border-radius: 2rem;
+    filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.15));
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    justify-content: center;
+    display: grid;
+    grid-template-rows: 80px 80px 80px;
+    .mypage_txt_group1{
+      display: grid;
+      grid-template-columns: 100px 180px;
+      text-align: left;
+      align-items: center;
+      margin-left: 20px;
+    }
+    .mypage_txt_group2{
+      display: grid;
+      grid-template-columns: 50px 220px;
+      text-align: left;
+      align-items: center;
+      margin-left: 20px;
+    }
+    .mypage_txt_group3{
+      display: grid;
+      grid-template-columns: 50px 220px;
+      text-align: left;
+      align-items: center;
+      margin-left: 20px;
+    }
+    .mypage_shorts_highlight{
+      font-size: 20pt;
+      color: var(--font_burgundy_100);
+      font-weight: 700;
+    }
+    .mypage_shorts_txt{
+      font-size: 14pt;
+      color: var(--font_gray_main);
+      font-weight: 600;
+    }
+  }
+}
+

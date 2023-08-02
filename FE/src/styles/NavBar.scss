@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
 
 .nav_bar_active_btn {
+  position: fixed;
   width: 67px;
   height: 56px;
   border: none;
@@ -19,6 +20,7 @@
   }
 }
 .nav_bar_active_btn2 {
+
   z-index: 7;
   width: 67px;
   height: 56px;
@@ -35,8 +37,9 @@
       rotate: 90deg;
     }
   }
-
 }
+
+
 .nav_bar {
   margin: 0;
   width: 26%;
@@ -76,7 +79,7 @@
   display: grid;
   height: 245px;
   grid-template-columns: 1fr;
-  grid-template-rows: 55% 15% 15% 10%;
+  grid-template-rows: 55% 13% 13% 15%;
 
   align-items: start;
   justify-items: center;
@@ -88,6 +91,9 @@
     overflow: hidden;
   }
   .profile_img_setting{
+    display: grid;
+    justify-items: center;
+    align-items: center;
     width: 110px;
     height: 110px;
     border-radius: 100%;
@@ -105,6 +111,35 @@
     color: var(--white);
     font-size: 12pt;
   }
+  .point_box {
+    width: 220px;
+    height: 32px;
+    border-radius: 4em;
+    background-color: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+
+    .point_box_txt {
+      width: 100%;
+      text-align: right;
+      color: var(--brand2_5);
+      font-weight: 600;
+      font-size: 14pt;
+      margin: 0;
+    }
+    .point_box_txt2 {
+      font-family: "IBM Plex Sans KR";
+      width: 90%;
+      text-align: center;
+      color: var(--brand2_5);
+      font-weight: 600;
+      font-size: 14pt;
+      margin: 0;
+    }
+  }
+
 }
 
 //nav_button
