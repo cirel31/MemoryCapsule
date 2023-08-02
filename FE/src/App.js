@@ -1,14 +1,14 @@
 import {BrowserRouter} from "react-router-dom";
 import Navbar from "./components/common/nav/Navbar";
 import Routers from "./pages/Routers";
-import Header from "./components/common/Header";
+// import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
 
 function App() {
   return (
     <div>
         <BrowserRouter>
-          <Header />
+          {/*<Header />*/}
           <div>
             <Navbar />
             <div>
