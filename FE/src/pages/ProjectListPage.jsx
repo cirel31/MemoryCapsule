@@ -41,10 +41,10 @@ const ProjectListPage = () => {
             <ul>
               {/* 스토리지에 저장된 user.id 이용해 참여자에 있는 프로젝트만 뽑아낼 예정 */}
               {projects.map((project) => (
-                  <li key={project.id}>
+                  <li key={project.idx}>
                     {/* 주소 어떻게 할당 할 지 토의 후 갱신 예정 */}
-                    <Link to={`/project/${project.id}`}>
-                      <strong>{project.title}</strong>
+                    <Link to={`/project/${project.idx}`}>
+                      {project.title}
                     </Link>
                   </li>
               ))}

@@ -7,6 +7,7 @@ import axios from "axios";
 import ProjectAddFriends from "../pages/ProjectAddFriends";
 import {useDispatch, useSelector} from "react-redux";
 import {removeAll} from "../store/selectFriendSlice";
+import moment from "moment";
 
 const customModalStyles = {
   overlay: {
@@ -45,8 +46,8 @@ const ProjectForm = () => {
     const project = {
       'title': formRef.current.querySelector('.title').value,
       'content': formRef.current.querySelector('.example').value,
-      'started': `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`,
-      'ended': `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`,
+      'started': moment(startDate).format("YYYY-MM-DD[T]00:00:00"),
+      'ended': moment(endDate).format("YYYY-MM-DD[T]00:00:00"),
     }
     const user = selectedUsers.map((id) => parseInt(id))
     const formData = {
