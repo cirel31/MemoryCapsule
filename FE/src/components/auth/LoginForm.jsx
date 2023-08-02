@@ -7,6 +7,7 @@ import Modal from "react-modal";
 // import { login } from "../../store/authSlice"
 import useLoginEmail from "../../hooks/useLoginEmail";
 import kakao_login_img from "../../assets/images/kakao_login.png"
+import axios from "axios";
 
 const LoginForm = ({ form, setForm }) => {
   const navigate = useNavigate();
@@ -16,13 +17,22 @@ const LoginForm = ({ form, setForm }) => {
   // 나중에 키값 입력할 것
   const API_KEY_KAKAO = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
   // 로그인 후 연동될 주소
-  const REDIRECT_URI_SITE = 'localhost/3001/login'
+  const REDIRECT_URI_SITE = 'http://localhost/3000/login'
   // 카카오 로그인 버튼 클릭 시 카카오 로그인 페이지로 이동
   // 키 갱신 안하면 로그인 페이지는 뜨지만 로그인이 안됨
   const OAUTH_KAKAO = `https://kauth.kakao.com/oauth/authorize?client_id=${API_KEY_KAKAO}&redirect_uri=${REDIRECT_URI_SITE+'kakao'}&response_type=code`
 
-
-
+  const TEST_URL = 'http://i9a608.p.ssafy.io:8000/oauth2/authorization/kakao'
+  const testFunc = async () => {
+    axios.get('http://i9a608.p.ssafy.io:8000/oauth2/authorization/kakao')
+      .then((res) => {
+        console.log('성공')
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   const handleSignupPage = () => {
     navigate('/signup');
   };
@@ -109,6 +119,7 @@ const LoginForm = ({ form, setForm }) => {
       <Modal isOpen={passModalIsOpen}>
         <div style={{width:'100%', height:'100%'}} onClick={() => setPassModalIsOpen(false)}>비밀번호 길이는 4자 이상입니다.</div>
       </Modal>
+      <button onClick={testFunc}>테스트 버튼</button>
     </FormBody>
   );
 };
