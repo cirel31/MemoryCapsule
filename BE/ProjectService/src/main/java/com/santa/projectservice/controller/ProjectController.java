@@ -36,7 +36,6 @@
     import java.util.Map;
 
     @RestController
-    @RequestMapping("/project")
     @Slf4j
     public class ProjectController {
 
