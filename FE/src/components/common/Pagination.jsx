@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import NoticeInfo from "../notice/NoticeInfo";
 
-const PaginationList = ({ itemsPerPage, notices }) => {
-    const [currentPage, setCurrentPage] = useState(1);
+const Pagination = ({ itemsPerPage, notices, currentPage, setCurrentPage }) => {
 
     // Calculate the total number of pages
     const totalPages = Math.ceil(notices.length / itemsPerPage);
@@ -19,10 +18,31 @@ const PaginationList = ({ itemsPerPage, notices }) => {
     };
 
     const pageIndex = () => {
-        const indexOfMinPage = currentPage-2 < 0 ? 5 : currentPage-2;
-        const indexOfMaxPage = currentPage+2 >= totalPages ? totalPages-5 : currentPage+2;
+        const range = 2; // 앞뒤로 보여줄 페이지 개수
+        // const indexOfMinPage = Math.max(0, currentPage - range);
+        // const indexOfMaxPage = Math.min(totalPages, currentPage + range+1);
+        let indexOfMinPage = currentPage-range -1 < 0 ? 0 : currentPage-range -1;
+        let indexOfMaxPage;
+        if (indexOfMinPage === 0) {
+            indexOfMaxPage = (totalPages < range*2+1 ? totalPages : range*2+1);
+        } else {
+            indexOfMaxPage = (currentPage+range >= totalPages ? totalPages : currentPage+range);
+        }
 
-        const showIndexList = Array(indexOfMinPage, indexOfMaxPage).map(i => i);
+        if (indexOfMaxPage === totalPages) {
+            indexOfMinPage = (totalPages - (range*2+1) >= 0 ? totalPages - (range*2+1) : 0);
+        }
+
+        console.log(indexOfMinPage, indexOfMaxPage);
+
+        // 보여줄 페이지 리스트
+        const showIndexList = [];
+
+        //보여줄 페이지 저장
+        for (let i = indexOfMinPage ; i < indexOfMaxPage ; i++) {
+            showIndexList.push(i);
+        }
+
         console.log("showIndexList : ", showIndexList);
         return showIndexList;
     }
@@ -36,21 +56,16 @@ const PaginationList = ({ itemsPerPage, notices }) => {
                 </div>
             ))}
 
-            {/* Pagination buttons */}
+            {/* 페이지네이션 */}
             <div>
-                {Array.from({ length: totalPages }).map((_, index) => (
+                {Array.from(pageIndex()).map((index) => (
                     <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
                         {index + 1}
                     </button>
                 ))}
-                {/*{Array.from(pageIndex()).map((_, index) => (*/}
-                {/*    <button key={index + 1} onClick={() => handlePageChange(index + 1)}>*/}
-                {/*        {index + 1}*/}
-                {/*    </button>*/}
-                {/*))}*/}
             </div>
         </div>
     );
 };
 
-export default PaginationList;
+export default Pagination;

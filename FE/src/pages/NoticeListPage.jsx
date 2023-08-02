@@ -1,14 +1,17 @@
 import { NoFriendList, AuthFormGrid, CustomButton } from "../styles/friendStyle";
 
 import React, { useState } from "react";
-import NoticeInfo from "../components/notice/NoticeInfo";
+// import NoticeInfo from "../components/notice/NoticeInfo";
 import SearchBar from "../components/SearchBar"
 import axios from "axios";
-import PaginationList from "../components/common/PaginationList";
+import Pagination from "../components/common/Pagination";
 
 const NoticeListPage = () => {
     // 검색어 저장
     const [search, setSearch] = useState("");
+
+    // 페이지네이션 페이지 저장
+    const [currentPage, setCurrentPage] = useState(1);
 
     // 현재 띄워줄 공지사항 리스트
     const [notices, setNotices] = useState([
@@ -54,8 +57,22 @@ const NoticeListPage = () => {
         if (!searchValue){
             //test data 받아오기
             console.log("NoSearchValue");
+            axios.get("http://localhost:7000/friend/search/{user_id}")
+                .then((response) => {
+                    console.log(response.data)
+                })
+                .catch((error) => {
+                    console.error("Notice List 호출 과정에서 에러 발생", error)
+                })
         } else {
             console.log("HasSearchValue : ", searchValue);
+            axios.get("http://localhost:7000/friend/search/{user_id}", searchValue)
+                .then((response) => {
+                    console.log(response.data)
+                })
+                .catch((error) => {
+                    console.error("Notice List 호출 과정에서 에러 발생", error)
+                })
         }
         fetch("https://jsonplaceholder.typicode.com/posts")
             .then(response => response.json())
@@ -82,6 +99,7 @@ const NoticeListPage = () => {
                 notice.title.includes(sendSearch)
             );
             setNotices(searchNotice);
+            setCurrentPage(1);
         }
     };
 
@@ -116,7 +134,7 @@ const NoticeListPage = () => {
                             </div>
                         </div>
                     </NoFriendList>
-                    :<PaginationList notices={notices} itemsPerPage={5} />
+                    :<Pagination notices={notices} itemsPerPage={5} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
                     // 모든 리스트 출력
                     // :<div className="AuthFormGrid">
                     //     { notices.map((notice) => (
