@@ -1,9 +1,13 @@
 package com.example.userservice.model.entity;
 
+import lombok.Getter;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
+@Getter
 @Table(name = "access")
 public class Access {
     @Id
@@ -16,5 +20,5 @@ public class Access {
     private User user;
 
     @Column(name = "access_date")
-    private ZonedDateTime accessedAt;
+    private LocalDateTime accessedAt;
 }

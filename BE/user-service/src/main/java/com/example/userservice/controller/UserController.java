@@ -21,8 +21,11 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
 
+
     @GetMapping("/lock/health-check")
-    public String lockedHealth() { return "Hello user-service with locked";}
+    public String lockedHealth() {
+        return "Hello user-service with locked";
+    }
 
     @GetMapping("/health-check")
     public String getHealth() {
@@ -30,15 +33,55 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity userLogin(@RequestBody UserDto.RequestLogin requestLogin){
+    public ResponseEntity userLogin(@RequestBody UserDto.RequestLogin requestLogin) {
         log.info("user-login");
-        try{
+        try {
             TokenDto result = userService.login(requestLogin);
             return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity userLogout() {
+        return null;
+    }
+
+    @PutMapping("/change")
+    public ResponseEntity userChangeInfo() {
+        return null;
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity userDelete() {
+        return null;
+    }
+
+    @GetMapping("/find_id")
+    public ResponseEntity findId() {
+        return null;
+    }
+
+    @GetMapping("/find_password")
+    public ResponseEntity findPwd() {
+        return null;
+    }
+
+    @GetMapping("/{userId}/detail")
+    public ResponseEntity getUserDetail(
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "year", required = false, defaultValue = "0") int year,
+            @RequestParam(value = "month", required = false, defaultValue = "0") int month
+    ) {
+        UserDto.Detail userDetail = null;
+        try {
+            userDetail = userService.getUserDetail(userId, year, month);
+            return ResponseEntity.status(HttpStatus.OK).body(userDetail);
+        } catch(Exception e){
+            log.error("Error - userDetail : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 
 }

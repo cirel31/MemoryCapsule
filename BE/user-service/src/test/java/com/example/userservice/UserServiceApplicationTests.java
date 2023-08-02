@@ -2,6 +2,7 @@ package com.example.userservice;
 
 import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.UserRepository;
+import com.example.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
+import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -20,6 +24,9 @@ class UserServiceApplicationTests {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Test
     void contextLoads() {
@@ -38,5 +45,11 @@ class UserServiceApplicationTests {
         Assertions.assertThat(byId.get().isOAuthUser()).isEqualTo(false);
     }
 
-
+    @Test
+    @Transactional
+    void TestingFriend(){
+        List<User> reqFriendList = userRepository.findById(1L).get().getReqFriendList();
+        log.info(reqFriendList.toString());
+//        Assertions.assertThat(friendList.size()).isEqualTo(2);
+    }
 }
