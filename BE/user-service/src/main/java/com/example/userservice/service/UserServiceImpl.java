@@ -80,10 +80,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(Authentication authentication) {
-        String principal = (String) authentication.getPrincipal();
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        String userIdx = principal.getUsername();
         // 유효 회원 check
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        log.info("user logout - {}", ops.getAndDelete(principal));
+        ops.getAndDelete(userIdx)
+        log.info("user logout - {}", userIdx);
     }
 
     @Override
