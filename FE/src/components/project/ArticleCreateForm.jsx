@@ -5,10 +5,17 @@ const ArticleCreateForm = () => {
   const [photos, setPhotos] = useState([])
   const [text, setText] = useState("");
   const userPoint = useSelector((state) => state.userState.point);
+  const articleId = window.location.href.replace(window.location.origin, "")
+  const stamps = [
+
+  ]
 
   useEffect(() => {
     console.log(userPoint);
   });
+  useEffect(() => {
+    console.log(articleId)
+  })
 
   const handleImage = (e) => {
     const imageLists = [...e.target.files];
@@ -75,8 +82,9 @@ const ArticleCreateForm = () => {
             </div>
             <div>
               <div>
+                <div style={{width:'50px', height:'50px', border: 'solid 1px black'}}></div>
                 <h4>오늘의 기분 도장 찍기</h4>
-                <div style={{width:'100px', height:'100px', border: 'solid 1px black'}}></div>
+                <input type="number"/>
               </div>
               <textarea
                 value={text}

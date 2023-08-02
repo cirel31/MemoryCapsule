@@ -65,7 +65,7 @@ const ProjectForm = () => {
         headers: {
           // Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
-          "userId": "1001",
+          "userId": 1001,
         },
       })
         .then((res) => {

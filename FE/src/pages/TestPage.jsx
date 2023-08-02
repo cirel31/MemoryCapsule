@@ -120,8 +120,10 @@ const TestPage = () => {
         </Modal>
         <div style={{ display: 'flex', justifyContent: "space-between", marginTop: '1rem' }}>
           <div ></div>
+          <button onClick={leftBTN}>◀◀</button>
           <button onClick={leftBTN}>◀</button>
           <button onClick={rightBTN}>▶</button>
+          <button onClick={rightBTN}>▶▶</button>
           <div></div>
         </div>
         <hr />
