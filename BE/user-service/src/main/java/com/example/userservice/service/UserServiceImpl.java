@@ -20,8 +20,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final AccessRepository accessRepository;
 
     @Override
+    @Transactional
     public TokenDto login(UserDto.RequestLogin requestLogin) throws Exception {
         User user = userRepository.findByEmail(requestLogin.getEmail());
         if (user == null) throw new UsernameNotFoundException("Not found");
@@ -55,6 +59,18 @@ public class UserServiceImpl implements UserService {
 
         // Redis 저장
         ops.set(user.getIdx().toString(), refreshToken);
+
+        // Logging 처리
+
+        LocalDate now = LocalDateTime.now().toLocalDate();
+
+        List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByIdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
+        if(byIdxAndAccessedAtIsBetween == null || byIdxAndAccessedAtIsBetween.isEmpty()){
+            accessRepository.save(Access.builder()
+                            .user(user)
+                            .accessedAt(LocalDateTime.now())
+                    .build());
+        }
 
         return TokenDto.builder()
                 .accessToken(accessToken)
