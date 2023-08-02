@@ -3,6 +3,9 @@ package com.example.userservice.config;
 import com.example.userservice.exception.JwtAccessDeniedHandler;
 import com.example.userservice.exception.JwtAuthenticationEntryPoint;
 import com.example.userservice.filter.JwtAuthenticationFilter;
+import com.example.userservice.model.handler.OAuth2FailHandler;
+import com.example.userservice.model.handler.OAuth2SuccessHandler;
+import com.example.userservice.service.CustomOAuth2UserService;
 import com.example.userservice.service.UserService;
 import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -11,16 +14,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
@@ -28,6 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final OAuth2FailHandler oAuth2FailHandler;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
@@ -42,8 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .authorizeRequests()
-                .antMatchers("/test/health-check").permitAll()
+                .antMatchers("/favicon**").permitAll()
+                .antMatchers("/user/health-check").permitAll()
                 .antMatchers("/user/login").permitAll()
+                .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
@@ -53,7 +66,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(accessDeniedHandler)
                         .authenticationEntryPoint(authenticationEntryPoint)
-                );
+                )
+                .oauth2Login()
+                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2UserService))
+                .failureHandler(oAuth2FailHandler)
+                .successHandler(oAuth2SuccessHandler);
+
     }
 
     /* Cors Setting */
@@ -62,7 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addExposedHeader("accessToken");
         corsConfiguration.setMaxAge(3600L);
-        corsConfiguration.addAllowedOrigin("http://localhost:9876");
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.addAllowedOrigin("**");
 
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
