@@ -1,7 +1,6 @@
 package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.inject.BindingAnnotation;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,6 +19,7 @@ import java.util.List;
 @DynamicInsert //insert 시 null 인필드 제외
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +46,9 @@ public class Project {
     private Date created;
 
     @Column(name = "pjt_imgurl", length = 2048)
-    private String imgurl;
+    private String imgUrl;
     @Column(name = "pjt_shareurl", length = 2048)
-    private String shareurl;
+    private String shareUrl;
     @Column(name = "pjt_type")
     private int type;
     @Column(name = "pjt_state")
@@ -91,8 +91,8 @@ public class Project {
         this.started = started;
         this.ended = ended;
         this.created = created;
-        this.imgurl = imgurl;
-        this.shareurl = shareurl;
+        this.imgUrl = imgurl;
+        this.shareUrl = shareurl;
         this.type = type;
         this.state = state;
         this.giftUrl = giftUrl;
