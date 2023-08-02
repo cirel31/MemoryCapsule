@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ToString
-@Builder(access = AccessLevel.PRIVATE)
+@Builder
 @Getter
 public class OAuth2Attribute {
     private Map<String, Object> attributes;
