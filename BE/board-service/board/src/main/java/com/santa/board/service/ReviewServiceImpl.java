@@ -2,8 +2,10 @@ package com.santa.board.service;
 
 import com.santa.board.Dto.InsertDto;
 import com.santa.board.Dto.ModifyDto;
-import com.santa.board.Dto.ReviewForListResponseDTO;
 import com.santa.board.Dto.ReviewResponseDTO;
+import com.santa.board.entity.Liked;
+import com.santa.board.entity.LikedId;
+import com.santa.board.repository.LikeRepository;
 import com.santa.board.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
+    private final LikeRepository likeRepository;
 
     /**
      * 전체 리뷰 리스트를 얻는다.
@@ -24,8 +27,10 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Transactional(readOnly = true)
     @Override
-    public Page<ReviewForListResponseDTO> getReviewList(Pageable pageable) {
-        return reviewRepository.findAllReviewData(pageable);
+    public Page<ReviewResponseDTO> getReviewList(Pageable pageable) {
+        Page<ReviewResponseDTO> responseDTOPage = new ReviewResponseDTO().toDtoList(reviewRepository.findByReviewDeletedFalse(pageable));
+
+        return responseDTOPage;
     }
 
     /**
@@ -38,6 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewResponseDTO getReviewByReviewId(Long userIdx, Long reviewIdx) {
         reviewRepository.incrementReviewHit(reviewIdx);
+//        ReviewResponseDTO responseDTO = new ReviewResponseDTO().toDto(reviewRepository.findReviewWithIsLikedByReviewIdxAndUserIdx(userIdx, reviewIdx));
         return reviewRepository.findReviewWithIsLikedByReviewIdxAndUserIdx(userIdx, reviewIdx);
     }
 
@@ -93,8 +99,15 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional(rollbackFor={Exception.class})
     @Override
     public boolean likedReviewByReviewId(Long reviewIdx, Long userIdx) {
+        LikedId likedId = new LikedId();
+        likedId.setLikedReviewIdx(reviewIdx);
+        likedId.setLikedUsrIdx(userIdx);
+
+        Liked liked = new Liked();
+        liked.setId(likedId);
         reviewRepository.incrementReviewLike(reviewIdx);
-        return reviewRepository.likedReview(reviewIdx, userIdx) > 0;
+        likeRepository.save(liked);
+        return true;
     }
 
     /**

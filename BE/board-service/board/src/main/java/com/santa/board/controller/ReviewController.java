@@ -2,7 +2,6 @@ package com.santa.board.controller;
 
 import com.santa.board.Dto.InsertDto;
 import com.santa.board.Dto.ModifyDto;
-import com.santa.board.Dto.ReviewForListResponseDTO;
 import com.santa.board.Dto.ReviewResponseDTO;
 import com.santa.board.Enum.ResponseStatus;
 import com.santa.board.service.ReviewService;
@@ -26,7 +25,7 @@ public class ReviewController {
 
     @ApiOperation(value = "리뷰 목록", notes = "리뷰 리스트들을 반환한다.", response = ReviewResponseDTO.class)
     @GetMapping("/list")
-    public ResponseEntity<ReviewForListResponseDTO> getReviewList(Pageable pageable) {
+    public ResponseEntity<ReviewResponseDTO> getReviewList(Pageable pageable) {
         return new ResponseEntity(reviewService.getReviewList(pageable).getContent(), HttpStatus.OK);
     }
 

@@ -45,5 +45,8 @@ public class Review {
 
     @Column(name = "review_updated", nullable = false)
     private Date reviewUpdated;
+
+    @Transient
+    private boolean isLike;
 }
 
