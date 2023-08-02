@@ -1,0 +1,15 @@
+.normal {
+    font-size: 18px;
+    border: 1px solid black;
+    width: 150px;
+    height: 300px;
+    margin-right: 1rem;
+}
+
+.chosen {
+    font-size: 36px;
+    border: 2px solid lightpink;
+    width: 180px;
+    height: 360px;
+    margin-right: 1rem;
+}

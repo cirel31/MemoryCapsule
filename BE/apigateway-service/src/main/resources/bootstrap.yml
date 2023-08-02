@@ -1,5 +1,7 @@
 spring:
   cloud:
     config:
-      uri: ${CONFIG_URL}
+      uri: http://i9a608.p.ssafy.io:8888
       name: apigateway
+  profile: 
+    active: ${PROFILE:dev}

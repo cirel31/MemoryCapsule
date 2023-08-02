@@ -1,6 +1,7 @@
 #!/bin/bash
 # Edited by yimo22
 # Usage
+# $1 : profile
 # - change name below
 # - change run_option below
 # result 
@@ -12,7 +13,7 @@ container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
 # env file import
-run_option="-dp 8000:8000 --net santa --env-file=/var/jenkins_home/workspace/setup.env"
+run_option="-dp 8000:8000 --net santa -e PROFILE=$1 --env-file=/var/jenkins_home/workspace/setup.env"
 
 
 stop_container_command="sudo docker stop $container_name"
