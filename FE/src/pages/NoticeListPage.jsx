@@ -15,14 +15,30 @@ const NoticeListPage = () => {
 
     // 현재 띄워줄 공지사항 리스트
     const [notices, setNotices] = useState([
-        // {
-        //     title: "",
-        //     content : 'id',
-        //     url : "test.com",
-        //     deleted : "",
-        //     createdAt : "",
-        //     updatedAt : ""
-        // }
+        /** Notice "TEST" Data Format
+         {
+            title: "",
+            content : 'id',
+            url : "test.com",
+            deleted : "",
+            createdAt : "",
+            updatedAt : ""
+        }
+         */
+
+        /** Notice Data Format
+        {
+            notice_idx : "BIGINT(20)",
+            notice_creator_idx : "BIGINT(20)",
+            notice_title : "VARCHAR(255)",
+            notice_content : "VARCHAR(5000)",
+            notice_imgurl : "VARCHAR(2048)",
+            notice_deleted : "TINYINT(1)",
+            notice_created : "TIMESTAMP",
+            notice_updated : "TIMESTAMP",
+            notice_hit : "INT(11)",
+        }
+         */
     ]);
 
     // 서버와 통신
@@ -54,10 +70,11 @@ const NoticeListPage = () => {
 
     // 공지사항 데이터 수신
     function getNotices(searchValue) {
+        console.log("[getNotices]");
         if (!searchValue){
             //test data 받아오기
             console.log("NoSearchValue");
-            axios.get("http://localhost:7000/friend/search/{user_id}")
+            axios.get("http://localhost:7000/friend/search")
                 .then((response) => {
                     console.log(response.data)
                 })
@@ -66,19 +83,24 @@ const NoticeListPage = () => {
                 })
         } else {
             console.log("HasSearchValue : ", searchValue);
-            axios.get("http://localhost:7000/friend/search/{user_id}", searchValue)
+            axios.get("http://localhost:7000/friend/find", {
+                    params : {
+                        user_id : searchValue
+                    }
+                })
                 .then((response) => {
                     console.log(response.data)
                 })
                 .catch((error) => {
                     console.error("Notice List 호출 과정에서 에러 발생", error)
                 })
-        }
-        fetch("https://jsonplaceholder.typicode.com/posts")
-            .then(response => response.json())
-            .then((json) => {
-                setNotices(json);
-            });
+            }
+            fetch("https://jsonplaceholder.typicode.com/posts")
+                .then(response => response.json())
+                .then((json) => {
+                    setNotices(json);
+                }
+        );
         console.log(notices);
     }
 
