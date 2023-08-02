@@ -2,4 +2,6 @@ spring:
   cloud:
     config:
       name: user
-      uri: https://i9a608.p.ssafy.io:8888
+      uri: http://i9a608.p.ssafy.io:8888
+      enabled: true
+
