@@ -10,7 +10,9 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   rabbitmq:
     host: localhost
     port: 5672
@@ -47,14 +49,14 @@ eureka:
     fetch-registry: false
     register-with-eureka: false
 
-logging:
-  level:
-    root:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
+#logging:
+#  level:
+#    root:
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql: trace
 
 cloud:
   aws:

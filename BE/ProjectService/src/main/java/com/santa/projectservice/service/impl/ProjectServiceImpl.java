@@ -181,8 +181,8 @@ public class ProjectServiceImpl implements ProjectService {
                             .state(pjt.getState())
                             .type(pjt.getType())
                             .limit(pjt.getLimit())
-                            .shareurl(pjt.getShareurl())
-                            .imgurl(pjt.getImgurl())
+                            .shareurl(pjt.getShareUrl())
+                            .imgurl(pjt.getImgUrl())
                     .build());
         });
         return resultList;
@@ -206,8 +206,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .state(project.get().getState())
                 .type(project.get().getType())
                 .limit(project.get().getLimit())
-                .shareurl(project.get().getShareurl())
-                .imgurl(project.get().getImgurl())
+                .shareurl(project.get().getShareUrl())
+                .imgurl(project.get().getImgUrl())
                 .build();
         return projectDto;
     }
@@ -231,8 +231,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .state(project.getState())
                 .type(project.getType())
                 .limit(project.getLimit())
-                .shareurl(project.getShareurl())
-                .imgurl(project.getImgurl())
+                .shareurl(project.getShareUrl())
+                .imgurl(project.getImgUrl())
                 .build();
         return projectDto;
     }
