@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
-import '../styles/Calendar.css'
+import '../styles/Calendar.scss'
 import moment from "moment";
 import axios from "axios";
 import {useSelector} from "react-redux";
@@ -52,8 +52,9 @@ const CalendarPage = () => {
   const countProject = 0
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
+      <div className="mypage_calenders">
         <Calendar
+          locale="en-US"
           onChange={onChange}
           value={value}
           tileClassName={({ date, view }) => {
@@ -63,18 +64,18 @@ const CalendarPage = () => {
             }
           }}
         />
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
-            <h3>{username}  </h3>
-            <p>  님은 지금까지</p>
+        <div className="mypage_shorts_info">
+          <div className="mypage_txt_group1">
+            <p className="mypage_shorts_highlight">{username}  </p>
+            <p className="mypage_shorts_txt">  님은 지금까지</p>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
-            <h3>{countMemory}  </h3>
-            <p>  개의 추억을 기록하고 </p>
+          <div className="mypage_txt_group2">
+            <p className="mypage_shorts_highlight">{countMemory}  </p>
+            <p className="mypage_shorts_txt">  개의 추억을 기록하고 </p>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
-            <h3>{countProject}  </h3>
-            <p> 개의 캡슐을 제작하셨어요!</p>
+          <div className="mypage_txt_group3">
+            <p className="mypage_shorts_highlight">{countProject}  </p>
+            <p className="mypage_shorts_txt"> 개의 캡슐을 제작하셨어요!</p>
           </div>
         </div>
       </div>

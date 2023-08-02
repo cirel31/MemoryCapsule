@@ -128,7 +128,7 @@ export default function Navbar() {
                 </div>
                 <div className="nav_btn_group">
                   <div>
-                    <Link to='/main' className="link_txt" >
+                    <Link to='/mypage' className="link_txt" >
                       <button className="nav_button" >
                         <img src={btn_deco} className="button_deco"/>
                         <p>MY PAGE</p>

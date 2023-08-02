@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
 
 .nav_bar_active_btn {
+  position: fixed;
   width: 67px;
   height: 56px;
   border: none;
@@ -19,6 +20,7 @@
   }
 }
 .nav_bar_active_btn2 {
+
   z-index: 7;
   width: 67px;
   height: 56px;
@@ -89,6 +91,9 @@
     overflow: hidden;
   }
   .profile_img_setting{
+    display: grid;
+    justify-items: center;
+    align-items: center;
     width: 110px;
     height: 110px;
     border-radius: 100%;
