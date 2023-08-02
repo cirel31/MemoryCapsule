@@ -10,6 +10,7 @@ import com.example.userservice.repository.UserRepository;
 import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +44,9 @@ public class UserServiceImpl implements UserService {
     private final TokenProvider tokenProvider;
     private final AccessRepository accessRepository;
     private final FileService fileService;
+
+    @Value("${S3Url}")
+    private String defaultUrl;
 
     @Override
     @Transactional
@@ -103,7 +107,7 @@ public class UserServiceImpl implements UserService {
         // User ImgURl 처리
         if(multipartFile != null){
             String fileName = fileService.upload(multipartFile);
-            imgUrl = "https://ssafysanta.s3.ap-northeast-2.amazonaws.com/" + fileName;
+            imgUrl = defaultUrl + fileName;
         }
 
         // 회원가입 처리

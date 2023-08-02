@@ -80,5 +80,5 @@ cloud:
       bucket: ssafysanta
     region:
       static: ap-northeast-2
-
+S3Url: https://ssafysanta.s3.ap-northeast-2.amazonaws.com/
 

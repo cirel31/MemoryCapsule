@@ -1,7 +1,7 @@
 spring:
   cloud:
     config:
-      name: user
+      name: user,s3Config
       uri: http://i9a608.p.ssafy.io:8888
       enabled: true
 
