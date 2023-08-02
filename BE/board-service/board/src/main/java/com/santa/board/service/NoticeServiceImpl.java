@@ -1,6 +1,8 @@
 package com.santa.board.service;
 
-import com.santa.board.Dto.NoticeDTO;
+import com.santa.board.Dto.InsertDto;
+import com.santa.board.Dto.ModifyDto;
+import com.santa.board.Dto.NoticeResponseDto;
 import com.santa.board.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +24,8 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Transactional(readOnly = true)
     @Override
-    public Page<NoticeDTO.ResponseDTO> getNoticeList(Pageable pageable) {
-        Page<NoticeDTO.ResponseDTO> responseDTOPage = new NoticeDTO.ResponseDTO().toDtoList(noticeRepository.findByNoticeDeletedFalse(pageable));
+    public Page<NoticeResponseDto> getNoticeList(Pageable pageable) {
+        Page<NoticeResponseDto> responseDTOPage = new NoticeResponseDto().toDtoList(noticeRepository.findByNoticeDeletedFalse(pageable));
         log.info(String.format("getNoticeList %s", responseDTOPage.toString()));
         return responseDTOPage;
     }
@@ -35,27 +37,27 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Transactional
     @Override
-    public NoticeDTO.ResponseDTO getNoticeById(Long noticeIdx) {
+    public NoticeResponseDto getNoticeById(Long noticeIdx) {
         noticeRepository.incrementNoticeHit(noticeIdx);
-        NoticeDTO.ResponseDTO responseDTO = new NoticeDTO.ResponseDTO().toDto(noticeRepository.findByNoticeIdx(noticeIdx));
+        NoticeResponseDto responseDTO = new NoticeResponseDto().toDto(noticeRepository.findByNoticeIdx(noticeIdx));
         log.info(String.format("getNoticeById id:%d %s", noticeIdx, responseDTO.toString()));
         return responseDTO;
     }
 
     /**
      * 공지사항 새로운 글을 등록한다.
-     * @param requestDTO 새로운 글의 정보
+     * @param insertDto 새로운 글의 정보
      * @return 성공 여부를 반환한다.
      */
     @Transactional
     @Override
-    public boolean insertNotice(NoticeDTO.RequestInsertDTO requestDTO, Long userIdx) {
-        log.info(String.format("insert Notice userIdx:%d %s", userIdx, requestDTO.toString()));
+    public boolean insertNotice(InsertDto insertDto, Long userIdx) {
+        log.info(String.format("insert Notice userIdx:%d %s", userIdx, insertDto.toString()));
         return noticeRepository.insertNewNotice
                 (userIdx,
-                        requestDTO.getNoticeTitle(),
-                        requestDTO.getNoticeContent(),
-                        requestDTO.getNoticeImgurl()
+                        insertDto.getTitle(),
+                        insertDto.getContent(),
+                        insertDto.getImgurl()
                 ) > 0;
     }
 
@@ -73,17 +75,17 @@ public class NoticeServiceImpl implements NoticeService {
 
     /**
      * 공지사항 글 수정한다.
-     * @param requestDTO 수정한 글의 정보
+     * @param modifyDto 수정한 글의 정보
      * @return 성공 여부를 반환한다.
      */
     @Transactional
     @Override
-    public boolean modifyNoticeById(NoticeDTO.RequestDTO requestDTO) {
-        log.info(String.format("modify Notice %s", requestDTO.toString()));
+    public boolean modifyNoticeById(ModifyDto modifyDto) {
+        log.info(String.format("modify Notice %s", modifyDto.toString()));
         return noticeRepository.modifyNoticeByNoticeIdx
-                (requestDTO.getNoticeTitle(),
-                        requestDTO.getNoticeContent(),
-                        requestDTO.getNoticeImgurl(),
-                        requestDTO.getIdx()) == 1;
+                (modifyDto.getTitle(),
+                        modifyDto.getContent(),
+                        modifyDto.getImgurl(),
+                        modifyDto.getIdx()) == 1;
     }
 }

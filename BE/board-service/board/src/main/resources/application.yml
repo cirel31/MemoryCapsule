@@ -4,35 +4,38 @@
 #      enabled: true
 #
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/realtest?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: ssafy
-
 #  datasource:
-#    driver-class-name: org.mariadb.jdbc.Driver
-#    username: S09P12A608
-#    password: asdf1234
-#    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P12A608
-#    hikari:
-#      maximum-pool-size: 50
-#      minimum-idle: 50
-#      connection-init-sql: SELECT 1
-#      connection-timeout: 5000
-#      idle-timeout: 600000
-#      max-lifetime: 1800000
-#      auto-commit: true
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/realtest?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: root
+#    password: ssafy
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: dev
+    password: dev
+    url: jdbc:mariadb://i9a608.p.ssafy.io:3306/santa
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 50
+      connection-init-sql: SELECT 1
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      auto-commit: true
 
   jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    show-sql: true
+#    database: mysql
+#    database-platform: org.hibernate.dialect.MySQL8Dialect
+#    show-sql: true
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
-        format_sql: true
+        show-sql: true
+#        format_sql: true
+
+
 
 
   mvc:
@@ -48,9 +51,15 @@ spring:
 #        show_sql: true
 #    defer-datasource-initialization: true
 
+#logging:
+#  level:
+#    #    me.silvernine: DEBUG
+#    org.hibernate.SQL: debug
+#    org.hibernate.type: trace
+
+
 logging:
   level:
-    #    me.silvernine: DEBUG
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
-
+    org.hibernate:
+      type.descriptor.sql: trace #show parameter binding
+      SQL: DEBUG

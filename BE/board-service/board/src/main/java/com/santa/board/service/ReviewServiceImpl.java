@@ -1,7 +1,8 @@
 package com.santa.board.service;
 
+import com.santa.board.Dto.InsertDto;
+import com.santa.board.Dto.ModifyDto;
 import com.santa.board.Dto.ReviewForListResponseDTO;
-import com.santa.board.Dto.ReviewRequestDTO;
 import com.santa.board.Dto.ReviewResponseDTO;
 import com.santa.board.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,17 +43,17 @@ public class ReviewServiceImpl implements ReviewService {
 
     /**
      * 새로운 리뷰 글을 작성한다.
-     * @param requestDTO 작성한 리뷰 글에 대한 정보
+     * @param insertDto 작성한 리뷰 글에 대한 정보
      * @param userIdx 작성자(로그인한 유저)의 idx
      * @return 성공 유무 
      */
     @Transactional
     @Override
-    public boolean insertReview(ReviewRequestDTO.InsertDto requestDTO, Long userIdx) {
+    public boolean insertReview(InsertDto insertDto, Long userIdx) {
         return reviewRepository.insertReview
-                (requestDTO.getReviewTitle(),
-                        requestDTO.getReviewContent(),
-                        requestDTO.getReviewImgUrl(),
+                (insertDto.getTitle(),
+                        insertDto.getContent(),
+                        insertDto.getImgurl(),
                         userIdx
                 ) > 0;
     }
@@ -70,17 +71,17 @@ public class ReviewServiceImpl implements ReviewService {
 
     /**
      * 리뷰 글을 수정한다.
-     * @param requestDTO 수정할 리뷰의 idx
+     * @param modifyDto 수정할 리뷰의 idx
      * @return 성공 유무
      */
     @Transactional
     @Override
-    public boolean modifyReviewById(ReviewRequestDTO.ModifyDto requestDTO) {
+    public boolean modifyReviewById(ModifyDto modifyDto) {
         return reviewRepository.modifyNoticeByNoticeIdx
-                (requestDTO.getReviewTitle(),
-                        requestDTO.getReviewContent(),
-                        requestDTO.getReviewImgUrl(),
-                        requestDTO.getReviewIdx()) == 1;
+                (modifyDto.getTitle(),
+                        modifyDto.getContent(),
+                        modifyDto.getImgurl(),
+                        modifyDto.getIdx()) == 1;
     }
 
     /**

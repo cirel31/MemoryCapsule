@@ -1,7 +1,8 @@
 package com.santa.board.controller;
 
+import com.santa.board.Dto.InsertDto;
+import com.santa.board.Dto.ModifyDto;
 import com.santa.board.Dto.ReviewForListResponseDTO;
-import com.santa.board.Dto.ReviewRequestDTO;
 import com.santa.board.Dto.ReviewResponseDTO;
 import com.santa.board.Enum.ResponseStatus;
 import com.santa.board.service.ReviewService;
@@ -40,9 +41,9 @@ public class ReviewController {
     @ApiOperation(value = "리뷰 등록하기", notes = "리뷰 글을 등록한다. 성공 유무 반환", response = String.class)
     @PostMapping("")
     public ResponseEntity<String> writeReview
-            (@RequestBody ReviewRequestDTO.InsertDto requestDTO, HttpServletRequest request) {
+            (@RequestBody InsertDto insertDto, HttpServletRequest request) {
         Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
-        if (reviewService.insertReview(requestDTO, user_idx)) {
+        if (reviewService.insertReview(insertDto, user_idx)) {
             return new ResponseEntity(com.santa.board.Enum.ResponseStatus.SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity(com.santa.board.Enum.ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
@@ -61,9 +62,9 @@ public class ReviewController {
     @ApiOperation(value = "리뷰 수정하기", notes = "리뷰 글을 수정한다. 성공 유무 반환", response = String.class)
     @PutMapping("")
     public ResponseEntity<String> modifyReview
-            (@RequestBody ReviewRequestDTO.ModifyDto requestDTO) {
+            (@RequestBody ModifyDto modifyDto) {
 
-        if (reviewService.modifyReviewById(requestDTO)) {
+        if (reviewService.modifyReviewById(modifyDto)) {
             return new ResponseEntity(com.santa.board.Enum.ResponseStatus.SUCCESS, HttpStatus.OK);
         }
         return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
