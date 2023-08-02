@@ -19,16 +19,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +42,12 @@ public class UserServiceImpl implements UserService {
     private final RedisTemplate<String, String> redisTemplate;
     private final TokenProvider tokenProvider;
     private final AccessRepository accessRepository;
+    private final FileService fileService;
 
     @Override
     @Transactional
     public TokenDto login(UserDto.RequestLogin requestLogin) throws Exception {
-        User user = userRepository.findByEmail(requestLogin.getEmail());
-        if (user == null) throw new UsernameNotFoundException("Not found");
+        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Not found"));
         if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
             throw new Exception("Password Not Matched!");
 
@@ -84,8 +87,47 @@ public class UserServiceImpl implements UserService {
         String userIdx = principal.getUsername();
         // 유효 회원 check
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        ops.getAndDelete(userIdx)
+        ops.getAndDelete(userIdx);
         log.info("user logout - {}", userIdx);
+    }
+
+    @Override
+    public UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile multipartFile) throws Exception {
+        //TODO: User 회원가입
+        // - 이메일 중복체크
+        userRepository.findByEmail(signUpDto.getEmail()).ifPresent(m -> {
+            throw new IllegalStateException("이미 존재하는 회원");
+        });
+
+        String imgUrl = "https://www.computerhope.com/jargon/g/guest-user.png"; // Default Img
+        // User ImgURl 처리
+        if(multipartFile != null){
+            String fileName = fileService.upload(multipartFile);
+            imgUrl = "https://ssafysanta.s3.ap-northeast-2.amazonaws.com/" + fileName;
+        }
+
+        // 회원가입 처리
+        User saved = userRepository.save(
+                User.builder()
+                        .email(signUpDto.getEmail())
+                        .name(signUpDto.getName())
+                        .nickName(signUpDto.getNickName())
+                        .phone(signUpDto.getPhone())
+                        .point(0L)
+                        .role(UserRole.USER)
+                        .createdAt(ZonedDateTime.now())
+                        .updatedAt(ZonedDateTime.now())
+                        .imgUrl(imgUrl)
+                        .passWord(passwordEncoder.encode(signUpDto.getPassword()))
+                        .build()
+        );
+
+        return UserDto.Basic.builder()
+                .idx(saved.getIdx())
+                .email(saved.getEmail())
+                .nickname(saved.getNickName())
+                .name(saved.getName())
+                .build();
     }
 
     @Override
@@ -152,8 +194,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(userEmail);
-        if (user == null) throw new UsernameNotFoundException("user Not found");
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("user Not found"));
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getName())
                 .accountExpired(user.isDeleted())

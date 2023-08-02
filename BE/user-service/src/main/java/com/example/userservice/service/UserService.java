@@ -5,6 +5,7 @@ import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,6 +14,9 @@ public interface UserService extends UserDetailsService {
     TokenDto login(UserDto.RequestLogin requestLogin) throws Exception;
     // User 로그아웃
     void logout(Authentication authentication);
+    // User 회원가입
+    UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile file) throws Exception;
+
     // User 친구 삭제
     // User 출석체크
     // User 비밀번호 찾기

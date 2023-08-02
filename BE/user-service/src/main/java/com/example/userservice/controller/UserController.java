@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -19,9 +20,32 @@ import java.util.Optional;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 @Slf4j
+
+/*
+{
+    "email" : "test5@naver.com",
+    "nickName" : "test",
+    "name" : "test",
+    "password" : "asdf1234",
+    "phone" : "01012341234",
+    "imgUrl" : "1234"
+}
+ */
 public class UserController {
     private final UserService userService;
 
+    @PostMapping(value = "/signup")
+    public ResponseEntity userSignup(
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @ModelAttribute UserDto.SignUp signUpDto
+        ){
+        try{
+            UserDto.Basic signup = userService.signup(signUpDto, file);
+            return ResponseEntity.status(HttpStatus.CREATED).body(signup);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러입니다. 관리자에게 문의해주세요");
+        }
+    }
 
     @GetMapping("/lock/health-check")
     public String lockedHealth() {
