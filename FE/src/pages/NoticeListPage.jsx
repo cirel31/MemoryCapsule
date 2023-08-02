@@ -5,8 +5,11 @@ import React, { useState } from "react";
 import SearchBar from "../components/SearchBar"
 import axios from "axios";
 import Pagination from "../components/common/Pagination";
+import PostCreateForm from "../components/notice/PostCreateForm";
+import {Link} from "react-router-dom";
 
 const NoticeListPage = () => {
+
     // 검색어 저장
     const [search, setSearch] = useState("");
 
@@ -41,6 +44,110 @@ const NoticeListPage = () => {
          */
     ]);
 
+
+    /**
+     * 1. 전체 공지사항 [get]
+     * http://localhost:8080/notice/list?page=0&size=10
+     * */
+    const getAllNoticesDataServer = (e) => {
+        console.log("[getAllNoticesDataServer]");
+        e.preventDefault();
+
+        // 실제 배포는 8000
+        // 테스트 및 개발 서버는 7000
+        //axios.get("http://localhost:8080/notice/list", page, size)
+    };
+
+    /**
+     * 2. 공지사항 자세하게 보기 [get]
+     * http://localhost:8080/notice/2
+     * */
+    const getNoticesDataDetailServer = (e) => {
+        console.log("[getNoticesDataDetailServer]");
+        e.preventDefault();
+
+        // 실제 배포는 8000
+        // 테스트 및 개발 서버는 7000
+        //axios.get("http://localhost:8080/notice/", id)
+    }
+
+    /**
+     * 3. 공지사항 작성 [post]
+     * http://localhost:8080/notice
+     *{
+     *  "noticeTitle" : "테스트",
+     *  "noticeContent" : "테스트content",
+     *  "noticeImgurl" : null
+     *}
+     */
+
+    const [formData, setFormData] = useState({
+        noticeTitle: '',
+        noticeContent: '',
+        noticeImgurl: '',
+    });
+
+    const postNoticesDataCreateServer = (e) => {
+        console.log("[postNoticesDataCreateServer]");
+        e.preventDefault();
+
+        if (checkUserRole()) {
+            // 실제 배포는 8000
+            // 테스트 및 개발 서버는 7000
+            axios.post("http://localhost:8080/notice/", formData)
+                    .then((response) => {
+                        console.log('게시글 작성 POST successful : ', response.data);
+                    })
+                    .catch((error) => {
+                        console.error('게시글 작성 POST fail : ', error);
+                    });
+        }
+    }
+
+    /**
+     * 4. 공지사항 삭제 [delete]
+     *http://localhost:8080/notice/2
+     */
+    const deleteNoticesDataServer = (e) => {
+        console.log("[deleteNoticesDataServer]");
+        e.preventDefault();
+
+        if (checkUserRole()) {
+            // axios.delete("http://localhost:8080/notice/", id)
+            //     .then((response) => {
+            //         console.log('게시글 삭제 Delete successful : ', response.data);
+            //     })
+            //     .catch((error) => {
+            //         console.error('게시글 삭제 Delete fail : ', error);
+            //     });
+        }
+    }
+
+    /**
+     * 5. 공지사항 수정 [put]
+     *http://localhost:8080/notice
+     * {
+     *  "idx" : "3",
+     *  "noticeTitle" : "테스트수정",
+     *  "noticeContent" : "테스트content",
+     *  "noticeImgurl" : null
+     * }
+     */
+    const putNoticesDataEditServer = (e) => {
+        console.log("[putNoticesDataEditServer]");
+        e.preventDefault();
+
+        if (checkUserRole()) {
+            axios.put("http://localhost:8080/notice/", formData)
+                .then((response) => {
+                    console.log('게시글 수정 PUT successful : ', response.data);
+                })
+                .catch((error) => {
+                    console.error('게시글 수정 PUT fail : ', error);
+                });
+        }
+    }
+
     // 서버와 통신
     const sendNoticesDataServer = (e) => {
         e.preventDefault();
@@ -56,17 +163,20 @@ const NoticeListPage = () => {
             const noticeData = {
                 search: sendSearch
             }
-            // 실제 배포는 8000
-            // 테스트 및 개발 서버는 7000
-            axios.post("http://localhost:7000/", noticeData)
-                .then((response) => {
-                    console.log(response.data)
-                })
-                .catch((error) => {
-                    console.error("Notice List 호출 과정에서 에러 발생", error)
-                })
+
         }
     };
+
+    // 공지사항 데이터 접근자가 관리자인지 확인
+    function checkUserRole() {
+        console.log("[checkUserRole]");
+        if (true) {
+            return true;
+        } else {
+            console.log("관리자 권한이 없습니다.");
+            return false;
+        }
+    }
 
     // 공지사항 데이터 수신
     function getNotices(searchValue) {
@@ -165,6 +275,11 @@ const NoticeListPage = () => {
                     // </div>
                 }
             </AuthFormGrid>
+            <Link to='/notice/postcreate'>
+                <CustomButton>
+                    글작성
+                </CustomButton>
+            </Link>
         </>
     )
 }
