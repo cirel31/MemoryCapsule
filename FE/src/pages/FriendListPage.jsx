@@ -1,6 +1,6 @@
 import { NoFriendList, AuthFormGrid, CustomButton } from "../styles/friendStyle";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FriendForm from "../components/friend/FriendForm";
 import FriendInfo from "../components/friend/FriendInfo";
 import FriendDetail from "../components/friend/FriendDetail";
@@ -18,6 +18,12 @@ const FriendListPage = () => {
     });
 
     const [friends, setFriends] = useState([]);
+
+    // 처음 한 번 실행해서, 모든 공지사항 불러오기
+    useEffect(() => {
+        console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
+        getFriends("", "");
+    }, []);
 
     const sendFriendDataServer = (e) => {
         console.log("[sendFriendDataServer]");
