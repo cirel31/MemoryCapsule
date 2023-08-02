@@ -17,8 +17,8 @@ const FriendDetail = ({select, setSelect}) => {
         } else {
             console.log("FAIL");
         }
-
     }
+
     const discardFriend = (e) => {
         const {value} = e.target;
         console.log("[discardFriend] : ", value);

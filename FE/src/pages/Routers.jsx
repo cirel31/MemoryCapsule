@@ -6,6 +6,7 @@ import SignupPage from "./SignupPage";
 import MainPage from "./MainPage";
 import NotFound from "./NotFound";
 import FriendListPage from "./FriendListPage";
+import FriendSearchPage from "./FriendSearchPage";
 import NoticeListPage from "./NoticeListPage";
 import ProjectListPage from "./ProjectListPage";
 import ProjectCreatePage from "./ProjectCreatePage";
@@ -29,6 +30,7 @@ export default function Routers() {
       <Route path='/project/:projectId' element={<ProjectDetailPage />} />
       <Route path='/project/:projectId/create' element={<ArticleCreatePage />} />
       <Route path='/friend' element={<FriendListPage />} />
+      <Route path='/friend/search' element={<FriendSearchPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
 
       <Route path='/mypage' element={<MyPage />} />

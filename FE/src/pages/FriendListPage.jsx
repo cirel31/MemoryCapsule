@@ -5,6 +5,7 @@ import FriendForm from "../components/friend/FriendForm";
 import FriendInfo from "../components/friend/FriendInfo";
 import FriendDetail from "../components/friend/FriendDetail";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 const FriendListPage = () => {
     const [form, setForm] = useState({
@@ -95,17 +96,20 @@ const FriendListPage = () => {
 
     return (
         <>
+            <div>내 친구 page</div>
             <div>
                 <FriendForm form={form} setForm={setForm} onChange={handleChange} />
             </div>
             <AuthFormGrid>
                 <div className="AuthFormGrid">
-                    <CustomButton onClick={sendFriendDataServer}>
-                        서버에서 찾기
-                    </CustomButton>
                     <CustomButton onClick={handleFriendData}>
                         내부에서 찾기
                     </CustomButton>
+                    <Link to={`/friend/search`}>
+                        <CustomButton>
+                            <strong>친구찾기</strong>
+                        </CustomButton>
+                    </Link>
                 </div>
             </AuthFormGrid>
             <div>
