@@ -107,7 +107,12 @@ export default function Navbar() {
                   {/*example@kakao.com 부분 이메일 뜨게*/}
                   <p className="profile_email">example@kakao.com</p>
 
+                  <div className="point_box">
+                    <p className="point_box_txt"> my points</p>
 
+                    {/*이 아래껀 포인트 떠야함*/}
+                    <p className="point_box_txt2">44444</p>
+                  </div>
                   {/*<div>*/}
                   {/*  <Link to='/login'>*/}
                   {/*    <button>*/}
