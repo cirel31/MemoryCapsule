@@ -16,7 +16,7 @@ public class GatewayConfig {
 
         // Configure CORS parameters
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
+        config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
