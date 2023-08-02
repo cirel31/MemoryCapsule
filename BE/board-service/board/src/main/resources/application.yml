@@ -1,45 +1,28 @@
-#server:
-#  port: 8081
-
-#spring:
-#  # 이메일 설정
-#  mail:
-##    protocol: smtps
-#    port: 587
-#    host: smtp.gmail.com
-#    username: memoryrevive608@gmail.com
-#    password: xmluoinhdtlviydr
-#    properties:
-#      mail:
-##        port: 587
-#        smtp.auth: true
-#        smtp.starttls.enable: true
-##        smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
 
 #  h2:
 #    console:
 #      enabled: true
 #
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/realtest?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: ssafy
-
 #  datasource:
-#    driver-class-name: org.mariadb.jdbc.Driver
-#    username: S09P12A608
-#    password: asdf1234
-#    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P12A608
-#    hikari:
-#      maximum-pool-size: 50
-#      minimum-idle: 50
-#      connection-init-sql: SELECT 1
-#      connection-timeout: 5000
-#      idle-timeout: 600000
-#      max-lifetime: 1800000
-#      auto-commit: true
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/realtest?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: root
+#    password: ssafy
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: S09P12A608
+    password: asdf1234
+    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P12A608
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 50
+      connection-init-sql: SELECT 1
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      auto-commit: true
 
   jpa:
     database: mysql

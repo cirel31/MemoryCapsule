@@ -21,6 +21,8 @@ public class Notice {
     private String noticeTitle;
     private String noticeContent;
     private String noticeImgurl;
+
+    @Column(columnDefinition = "bit")
     private Boolean noticeDeleted;
     private Date noticeCreated;
     private Date noticeUpdated;
