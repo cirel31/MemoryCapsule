@@ -41,14 +41,16 @@ public class User {
     @Column(name = "user_updated")
     private ZonedDateTime updatedAt;
     @Column(name = "user_deleted")
-    private Boolean deleted;
+    private boolean deleted;
     @Column(name = "user_role")
     @Enumerated(EnumType.ORDINAL)
     private UserRole role;
-    @Column(name = "user_phone", unique = true, length = 10)
+    @Column(name = "user_phone", length = 10)
     private String phone;
     @Column(name = "user_imgurl", length = 2048)
     private String imgUrl;
+    @Column(name = "user_isoauth")
+    private boolean oAuthUser;
 
     // User (1) : Access (N)
     // 주인 Access
