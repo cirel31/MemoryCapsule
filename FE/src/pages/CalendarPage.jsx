@@ -9,7 +9,7 @@ import {useSelector} from "react-redux";
 const CalendarPage = () => {
   // const navigate = useNavigate()
   const isLoggedIn = useSelector((state) => state.userState.isLoggedIn)
-  console.log(isLoggedIn)
+  console.log('로그인 상태 : ', isLoggedIn)
 
   // 로그인 되지 않은 상태에서는 접근할 수 없는 페이지
   // 추후 로그인 기능 활성화 시 주석 해제할 것
@@ -29,22 +29,22 @@ const CalendarPage = () => {
     "2023-07-15",
     "2023-07-21",
     "2023-07-25",
+    "2023-08-01",
   ])
-
-  useEffect(() => {
-    // 출석 날짜 정보를 서버에서 가져와서 state에 저장
-    const fetchAttendanceDates = async () => {
-      try {
-        // 서버 api 주소는 변경 예정
-        const response = await axios.get('/localhost:8000/api/getAttendanceDates');
-        // data 받는 변수 이름도 변경 예정
-        setAttendanceDates(response.data.attendanceDates);
-      } catch (error) {
-        console.error('서버와 통신 에러 - 출석 데이터 받지 못함:', error);
-      }
-    };
-    fetchAttendanceDates();
-  }, []);
+  // useEffect(() => {
+  //   // 출석 날짜 정보를 서버에서 가져와서 state에 저장
+  //   const fetchAttendanceDates = async () => {
+  //     try {
+  //       // 서버 api 주소는 변경 예정
+  //       const response = await axios.get('/localhost:8000/api/getAttendanceDates');
+  //       // data 받는 변수 이름도 변경 예정
+  //       setAttendanceDates(response.data.attendanceDates);
+  //     } catch (error) {
+  //       console.error('서버와 통신 에러 - 출석 데이터 받지 못함:', error);
+  //     }
+  //   };
+  //   fetchAttendanceDates();
+  // }, []);
 
   const [value, onChange] = useState(new Date())
   const username = '김싸피'
@@ -79,14 +79,6 @@ const CalendarPage = () => {
           </div>
         </div>
       </div>
-      {/*<style>*/}
-      {/*  {`*/}
-      {/*  .highlight2 {*/}
-      {/*    background-image: url(${backImg});*/}
-      {/*    background-size: 10px 10px; */}
-      {/*  }*/}
-      {/*  `}*/}
-      {/*</style>*/}
   </div>
   )
 }

@@ -11,13 +11,22 @@ const ProjectListPage = () => {
   const [isHovered, setIsHovered] = useState(null)
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
-  const API = 'http://i9a608.p.ssafy.io:8000/project/all'
-  const [projects, setProjects] = useState([]);
+  // const API = 'http://i9a608.p.ssafy.io:8000/project/all'
+  const API = '/project/all'
+  const [projects, setProjects] = useState([
+
+  ]);
 
   useEffect(() => {
     // 서버로부터 프로젝트 가져오기
     // 전체 프로젝트를 가져오고 선별 예정
-    axios.get(`${API}`) // 추후 주소 갱신 예정
+    axios.get(`${API}`
+    //   , {
+    //   headers: {
+    //     userId: 1001,
+    //   }
+    // }
+    ) // 추후 주소 갱신 예정
         .then((response) => {
           console.log('성공')
           console.log(API)
