@@ -11,9 +11,14 @@ import {Link} from "react-router-dom";
 
 const NoticeListPage = () => {
 
+    const API = '/notice'
     // 검색어 저장
     const [search, setSearch] = useState("");
 
+
+
+    // 페이지네이션마다 보여줄 페이지 개수
+    const [itemsPerPage, setItemsPerPage] = useState(10);
     // 페이지네이션 페이지 저장
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -31,24 +36,41 @@ const NoticeListPage = () => {
          */
 
         /** Notice Data Format
-        {
-            notice_idx : "BIGINT(20)",
-            notice_creator_idx : "BIGINT(20)",
-            notice_title : "VARCHAR(255)",
-            notice_content : "VARCHAR(5000)",
-            notice_imgurl : "VARCHAR(2048)",
-            notice_deleted : "TINYINT(1)",
-            notice_created : "TIMESTAMP",
-            notice_updated : "TIMESTAMP",
-            notice_hit : "INT(11)",
+         {
+            idx : "BIGINT(20)",
+            creator_idx : "BIGINT(20)",
+            title : "VARCHAR(255)",
+            content : "VARCHAR(5000)",
+            imgurl : "VARCHAR(2048)",
+            deleted : "TINYINT(1)",
+            created : "TIMESTAMP",
+            updated : "TIMESTAMP",
+            hit : "INT(11)",
         }
          */
     ]);
 
+    const [noticeDetail, setNoticeDetail] = useState({
+        /** Notice Data Format
+         {
+            idx : "BIGINT(20)",
+            creator_idx : "BIGINT(20)",
+            title : "VARCHAR(255)",
+            content : "VARCHAR(5000)",
+            imgurl : "VARCHAR(2048)",
+            deleted : "TINYINT(1)",
+            created : "TIMESTAMP",
+            updated : "TIMESTAMP",
+            hit : "INT(11)",
+        }
+         */
+    });
+
     // 처음 한 번 실행해서, 모든 공지사항 불러오기
     useEffect(() => {
         console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
-        getNotices("");
+        getAllNotices();
+        //getAllNoticesDataServer();
      }, []);
 
     /**
@@ -61,7 +83,19 @@ const NoticeListPage = () => {
 
         // 실제 배포는 8000
         // 테스트 및 개발 서버는 7000
-        //axios.get("http://localhost:8080/notice/list", page, size)
+        //axios.get(`${API}/list`,
+        //       params:{
+        //         page : currentPage,
+        //         size : itemsPerPage
+        //       }
+        //     });
+        //     .then((response) => {
+        //         console.log('게시글 전체 (All) successful : ', response.data);
+        //         setNoticeDetail(response.data);
+        //     })
+        //     .catch((error) => {
+        //         console.error('게시글 전체 (All) fail : ', error);
+        //     });
     };
 
     /**
@@ -74,94 +108,47 @@ const NoticeListPage = () => {
 
         // 실제 배포는 8000
         // 테스트 및 개발 서버는 7000
-        //axios.get("http://localhost:8080/notice/", id)
+        //axios.get(`${API}/`,
+        //       params:{
+        //         id: 12345
+        //       }
+        //     });
+        //     .then((response) => {
+        //         console.log('게시글 자세하게 (Detail) successful : ', response.data);
+        //         setNoticeDetail(response.data);
+        //     })
+        //     .catch((error) => {
+        //         console.error('게시글 자세하게 (Detail) fail : ', error);
+        //     });
     }
 
-    /**
-     * 4. 공지사항 삭제 [delete]
-     *http://localhost:8080/notice/2
-     */
-    const deleteNoticesDataServer = (e) => {
-        console.log("[deleteNoticesDataServer]");
-        e.preventDefault();
 
-        if (checkUserRole()) {
-            // axios.delete("http://localhost:8080/notice/", id)
-            //     .then((response) => {
-            //         console.log('게시글 삭제 Delete successful : ', response.data);
-            //     })
-            //     .catch((error) => {
-            //         console.error('게시글 삭제 Delete fail : ', error);
-            //     });
-        }
-    }
-
-    // 서버와 통신
-    const sendNoticesDataServer = (e) => {
-        e.preventDefault();
-        const sendSearch = search;
-
-        if (!sendSearch) {
-            console.log("한 글자라도 입력해주십시오");
-        } else {
-            console.log(sendSearch);
-        }
-
-        if (sendSearch.length > 0) {
-            const noticeData = {
-                search: sendSearch
-            }
-
-        }
-    };
-
-    // 공지사항 데이터 접근자가 관리자인지 확인
-    function checkUserRole() {
-        console.log("[checkUserRole]");
-        if (true) {
-            return true;
-        } else {
-            console.log("관리자 권한이 없습니다.");
-            return false;
-        }
-    }
 
     // 공지사항 데이터 수신
-    function getNotices(searchValue) {
+    function getAllNotices() {
         console.log("[getNotices]");
-        if (!searchValue){
-            //test data 받아오기
-            console.log("NoSearchValue");
-            axios.get("http://localhost:7000/friend/search")
-                .then((response) => {
-                    console.log(response.data)
-                })
-                .catch((error) => {
-                    console.error("Notice List 호출 과정에서 에러 발생", error)
-                })
-        } else {
-            console.log("HasSearchValue : ", searchValue);
-            axios.get("http://localhost:7000/friend/find", {
-                    params : {
-                        user_id : searchValue
-                    }
-                })
-                .then((response) => {
-                    console.log(response.data)
-                })
-                .catch((error) => {
-                    console.error("Notice List 호출 과정에서 에러 발생", error)
-                })
-            }
-            fetch("https://jsonplaceholder.typicode.com/posts")
-                .then(response => response.json())
-                .then((json) => {
-                    setNotices(json);
-                }
-        );
+        //test data 받아오기
+        /*
+        axios.get(`${API}/list?page=0&size=10`)
+            .then((response) => {
+                console.log("response.data : ", response.data)
+                setNotices(response.data);
+            })
+            .catch((error) => {
+                console.error("Notice List 호출 과정에서 에러 발생", error)
+            })
+        */
+
+        // ========== ERASE ==========
+        fetch("https://jsonplaceholder.typicode.com/posts")
+            .then(response => response.json())
+            .then((json) => {
+                setNotices(json);
+            });
+        // ========== //ERASE ==========
+
         console.log(notices);
 
-        // 성공했다면
         return true;
     }
 
@@ -170,7 +157,7 @@ const NoticeListPage = () => {
         e.preventDefault();
 
         // 공지사항 데이터 호출
-        getNotices(search);
+        getAllNotices();
 
         // 전체 리스트에서 FE 자체 검색
         const sendSearch = search.toLowerCase();
@@ -194,19 +181,6 @@ const NoticeListPage = () => {
 
     return (
         <>
-            <div>
-                <SearchBar search={search} setSearch={setSearch} onChange={handleChange} />
-            </div>
-            <AuthFormGrid>
-                <div className="AuthFormGrid">
-                    <CustomButton onClick={sendNoticesDataServer}>
-                        서버에서 찾기
-                    </CustomButton>
-                    <CustomButton onClick={handleNoticeData}>
-                        내부에서 찾기
-                    </CustomButton>
-                </div>
-            </AuthFormGrid>
             <AuthFormGrid>
                 {
                     notices.length === 0
@@ -219,7 +193,7 @@ const NoticeListPage = () => {
                             </div>
                         </div>
                     </NoFriendList>
-                    :<Pagination notices={notices} itemsPerPage={5} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+                    :<Pagination notices={notices} itemsPerPage={itemsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
                     // 모든 리스트 출력
                     // :<div className="AuthFormGrid">
                     //     { notices.map((notice) => (

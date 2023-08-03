@@ -1,10 +1,17 @@
-import PostCreateForm from "../components/notice/PostCreateForm";
-import {useState} from "react";
+import PostCreateForm from "../components/post/PostCreateForm";
+import {useEffect, useState} from "react";
 import axios from "axios";
 
 const PostCreatePage = () => {
 
-    let pageLabel = "";
+    const API = '/notice';
+
+    const [pageLabel, setPageLabel] = useState("");
+
+    useEffect(() => {
+        console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
+        checkUserRole();
+    }, []);
 
     /**
      * 3. 공지사항 작성 [post]
@@ -17,9 +24,9 @@ const PostCreatePage = () => {
      */
 
     const [formData, setFormData] = useState({
-        noticeTitle: '',
-        noticeContent: '',
-        noticeImgurl: '',
+        title: '',
+        content: '',
+        imgurl: '',
     });
 
     const postNoticesDataCreateServer = (e) => {
@@ -29,7 +36,7 @@ const PostCreatePage = () => {
         if (checkUserRole()) {
             // 실제 배포는 8000
             // 테스트 및 개발 서버는 7000
-            axios.post("http://localhost:8080/notice/", formData)
+            axios.post(`${API}/`, formData)
                 .then((response) => {
                     console.log('게시글 작성 POST successful : ', response.data);
                 })
@@ -55,7 +62,7 @@ const PostCreatePage = () => {
         e.preventDefault();
 
         if (checkUserRole()) {
-            axios.put("http://localhost:8080/notice/", formData)
+            axios.put(`${API}/`, formData)
                 .then((response) => {
                     console.log('게시글 수정 PUT successful : ', response.data);
                 })
@@ -70,18 +77,17 @@ const PostCreatePage = () => {
     function checkUserRole() {
         console.log("[checkUserRole]");
         if (true) {
-            pageLabel = "notice";
+            setPageLabel("notice");
         } else {
-            pageLabel = "review";
+            setPageLabel("review");
         }
-
         console.log(pageLabel);
     }
 
     return (
         <>
             <div>
-                <PostCreateForm pageLabel={pageLabel} />
+                <PostCreateForm pageDetail={formData} pageLabel={pageLabel} staus="create"/>
             </div>
         </>
     )

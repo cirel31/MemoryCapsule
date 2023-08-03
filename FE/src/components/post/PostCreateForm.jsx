@@ -1,24 +1,18 @@
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 
-const PostCreateForm = (pageLabel) => {
-
+const PostCreateForm = (pageDetail, pageLabel, staus) => {
+  const [page, setPage] = useState(pageDetail);
+  const currentPageLabel = pageLabel.pageLabel === "notice" ? "공지사항" : "리뷰";
+  const currentStaus = (staus==="create"?"생성":"수정");
+  const isCreateNew = (currentStaus === "생성");
   const [photos, setPhotos] = useState([])
   const [text, setText] = useState("");
   const userPoint = useSelector((state) => state.userState.point);
 
-  useEffect(() => {
-    console.log(userPoint);
-  });
-
   const handleImage = (e) => {
     const imageLists = [...e.target.files];
     const newImageUrlLists = [...photos];
-
-    if (newImageUrlLists.length + imageLists.length > 4) {
-      alert("이미지는 최대 4개까지만 업로드할 수 있습니다.");
-      return;
-    }
 
     imageLists.forEach((key) => {
       if (!newImageUrlLists.some((photo) => photo === URL.createObjectURL(key))) {
@@ -37,21 +31,22 @@ const PostCreateForm = (pageLabel) => {
   }
 
   const handleTextChange = (e) => {
-    console.log("[handleTextChange]");
-    if (e.target.value.length > 5000) {
-      setText(e.target.value.slice(0, 5000));
+    const value = e.target.value;
+    console.log("[handleTextChange] : ", value);
+    if (value.length > 5000) {
+      setText(value.slice(0, 5000));
     } else {
-      setText(e.target.value);
+      setText(value);
     }
   }
 
-  const createArticle = () => {
+  const createArticle = (e) => {
+    e.preventDefault();
     console.log("[createArticle]");
-    console.log("Not yet");
 
-    if (pageLabel === "notice") {
+    if (pageLabel.pageLabel === "notice") {
       console.log("Create notice Post");
-    } else if (pageLabel === "review") {
+    } else if (pageLabel.pageLabel === "review") {
       console.log("Create review Post");
     } else {
       console.log("잘못된 요청입니다.");
@@ -61,12 +56,15 @@ const PostCreateForm = (pageLabel) => {
   return (
     <>
       <div>
-        <h3>{pageLabel === "notice" ? "공지사항" : "리뷰"} 생성 페이지</h3>
+        <h3>{currentPageLabel} {currentStaus} 페이지</h3>
         <form onSubmit={createArticle} >
-          <div style={{display: "flex" }}>
+          <div>
             <div>
-              <p>현재 업로드 된 사진 수 : {photos.length} </p>
-
+              <input>
+              {page.title}
+              </input>
+            </div>
+            <div>
               <label>
                 이미지 업로드:
                 <br/>
@@ -95,7 +93,7 @@ const PostCreateForm = (pageLabel) => {
               <div>글자 수 : {text.length} / 5000</div>
             </div>
           </div>
-          <button type="submit">공지사항 등록</button>
+          <button type="submit">{currentPageLabel} {currentStaus}</button>
         </form>
       </div>
     </>

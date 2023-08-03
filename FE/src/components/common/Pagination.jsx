@@ -52,7 +52,7 @@ const Pagination = ({ itemsPerPage, notices, currentPage, setCurrentPage }) => {
             {/* 자체 페이지네이션 */}
             {currentItems.map((notice) => (
                 <div className="AuthFormGrid">
-                    <NoticeInfo key={notice.id} {...notice} />
+                    <NoticeInfo key={notice.id} notice={notice} />
                 </div>
             ))}
 
