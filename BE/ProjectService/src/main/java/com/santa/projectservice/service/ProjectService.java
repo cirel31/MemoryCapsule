@@ -65,4 +65,10 @@ public interface ProjectService {
 
     ProjectDto findProjectByProjectId(Long id) throws ProjectNotFoundException;
     ProjectDto findProjectByProjectIdAndUserId(Long userId, Long projectId) throws ProjectNotFoundException;
+
+    List<ProjectDto> findProjectByUserId(Long userId);
+
+    Long projectArticleNum(Long projectId);
+
+    Long projectNum(Long userId);
 }

@@ -1,6 +1,7 @@
 package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.santa.projectservice.dto.ProjectDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -100,5 +101,25 @@ public class Project {
         this.deleted = deleted;
         this.alarmType = alarmType;
         this.alarm = alarm;
+    }
+
+    public ProjectDto toDto(){
+        return  ProjectDto.builder()
+                .title(title)
+                .alarm(alarm)
+                .alarm_type(alarmType)
+                .content(content)
+                .created(created)
+                .deleted(deleted)
+                .ended(ended)
+                .gifturl(giftUrl)
+                .idx(id)
+                .started(started)
+                .state(state)
+                .type(type)
+                .limit(limit)
+                .shareurl(shareUrl)
+                .imgurl(imgUrl)
+                .build();
     }
 }

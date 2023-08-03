@@ -1,4 +1,4 @@
 package com.santa.projectservice.mapper;
 
-public class ArticleImgMapper {
+public interface ArticleImgMapper {
 }

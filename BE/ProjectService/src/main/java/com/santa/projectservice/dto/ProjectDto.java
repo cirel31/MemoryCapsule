@@ -1,5 +1,6 @@
 package com.santa.projectservice.dto;
 
+import com.santa.projectservice.vo.ProjectInfo;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,5 +43,9 @@ public class ProjectDto {
         this.deleted = deleted;
         this.alarmType = alarm_type;
         this.alarm = alarm;
+    }
+
+    public ProjectInfo toInfo(Long num){
+        return new ProjectInfo(this, num);
     }
 }

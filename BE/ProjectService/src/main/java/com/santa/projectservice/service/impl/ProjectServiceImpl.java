@@ -9,6 +9,7 @@ import com.santa.projectservice.exception.register.RegisterMakeException;
 import com.santa.projectservice.jpa.Project;
 import com.santa.projectservice.jpa.Register;
 import com.santa.projectservice.jpa.User;
+import com.santa.projectservice.repository.ArticleRepository;
 import com.santa.projectservice.repository.ProjectRepository;
 import com.santa.projectservice.repository.RegisterRepository;
 import com.santa.projectservice.repository.UserRepository;
@@ -24,6 +25,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,10 +34,12 @@ public class ProjectServiceImpl implements ProjectService {
     private final RegisterRepository registerRepository;
     private final ProjectRepository projectRepository;
     private final ModelMapper mapper;
+    private final ArticleRepository articleRepository;
 
     public ProjectServiceImpl(RegisterRepository registerRepository,
                               ProjectRepository projectRepository,
-                              UserRepository userRepository) {
+                              UserRepository userRepository, ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
         this.mapper = new ModelMapper();
         this.registerRepository = registerRepository;
         this.projectRepository = projectRepository;
@@ -145,16 +149,7 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<Project> project = projectRepository.findById(id);
         try{
             Project result = project.get();
-            ProjectDto projectDto = ProjectDto.builder()
-                    .title(result.getTitle())
-                    .idx(result.getId())
-                    .content(result.getContent())
-                    .alarm(result.getAlarm())
-                    .alarm_type(result.getAlarmType())
-                    .deleted(result.getDeleted())
-                    .state(result.getState())
-                    .created(result.getCreated())
-                    .build();
+            ProjectDto projectDto = result.toDto();
             return projectDto;
         } catch (Exception e){
             log.info(e.getMessage());
@@ -167,23 +162,7 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> list = projectRepository.findAll();
         List<ProjectDto> resultList = new ArrayList<>();
         list.forEach(pjt -> {
-            resultList.add(ProjectDto.builder()
-                            .title(pjt.getTitle())
-                            .alarm(pjt.getAlarm())
-                            .alarm_type(pjt.getAlarmType())
-                            .content(pjt.getContent())
-                            .created(pjt.getCreated())
-                            .deleted(pjt.getDeleted())
-                            .ended(pjt.getEnded())
-                            .gifturl(pjt.getGiftUrl())
-                            .idx(pjt.getId())
-                            .started(pjt.getStarted())
-                            .state(pjt.getState())
-                            .type(pjt.getType())
-                            .limit(pjt.getLimit())
-                            .shareurl(pjt.getShareUrl())
-                            .imgurl(pjt.getImgUrl())
-                    .build());
+            resultList.add(pjt.toDto());
         });
         return resultList;
     }
@@ -192,23 +171,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDto findProjectByProjectId(Long id) throws ProjectNotFoundException {
         Optional<Project> project = projectRepository.findById(id);
         if(!project.isPresent()) throw new ProjectNotFoundException("해당하는 Id의 프로젝트를 찾을 수 없습니다");
-        ProjectDto projectDto = ProjectDto.builder()
-                .title(project.get().getTitle())
-                .alarm(project.get().getAlarm())
-                .alarm_type(project.get().getAlarmType())
-                .content(project.get().getContent())
-                .created(project.get().getCreated())
-                .deleted(project.get().getDeleted())
-                .ended(project.get().getEnded())
-                .gifturl(project.get().getGiftUrl())
-                .idx(project.get().getId())
-                .started(project.get().getStarted())
-                .state(project.get().getState())
-                .type(project.get().getType())
-                .limit(project.get().getLimit())
-                .shareurl(project.get().getShareUrl())
-                .imgurl(project.get().getImgUrl())
-                .build();
+        ProjectDto projectDto = project.get().toDto();
         return projectDto;
     }
 
@@ -217,25 +180,33 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<Register> register = registerRepository.findByUser_IdAndProject_Id(userId, projectId);
         Project project = register.map(Register::getProject).orElse(null);
         if(project == null) throw new ProjectNotFoundException("프로젝트에 참여하지 않거나 없는 프로젝트입니다");
-        ProjectDto projectDto = ProjectDto.builder()
-                .title(project.getTitle())
-                .alarm(project.getAlarm())
-                .alarm_type(project.getAlarmType())
-                .content(project.getContent())
-                .created(project.getCreated())
-                .deleted(project.getDeleted())
-                .ended(project.getEnded())
-                .gifturl(project.getGiftUrl())
-                .idx(project.getId())
-                .started(project.getStarted())
-                .state(project.getState())
-                .type(project.getType())
-                .limit(project.getLimit())
-                .shareurl(project.getShareUrl())
-                .imgurl(project.getImgUrl())
-                .build();
+        ProjectDto projectDto = project.toDto();
         return projectDto;
     }
 
+    @Override
+    @Transactional
+    public List<ProjectDto> findProjectByUserId(Long userId){
+        List<Register> registers = registerRepository.findRegistersByUser_Id(userId);
+        List<Project> projects = registers.stream()
+                .map(Register::getProject)
+                .collect(Collectors.toList());
+        List<ProjectDto> projectDtos = new ArrayList<>();
+        projects.forEach(project -> {
+            if(!project.getDeleted()) {
+                projectDtos.add(project.toDto());
+            }
+        });
+        return projectDtos;
+    }
+    @Override
+    public Long projectArticleNum(Long projectId){
+        return articleRepository.countByProjectId(projectId);
+    }
+
+    @Override
+    public Long projectNum(Long userId){
+        return registerRepository.countByUser_Id(userId);
+    }
 
 }

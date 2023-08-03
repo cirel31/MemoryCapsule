@@ -20,4 +20,6 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     Optional<Long> getOwnerRegisterByUserIdAndProjectId(@Param("userId") Long userId, @Param("projectId") Long projectId);
 
     Optional<Register> findByUser_IdAndProject_Id(Long userId, Long projectId);
+
+    Long countByUser_Id(Long userId);
 }
