@@ -2,6 +2,6 @@ spring:
   cloud:
     config:
       uri: http://i9a608.p.ssafy.io:8888
-      name: projectservice, s3Config
+      name: projectservice, CommonConfig
   profiles:
     active: ${PROFILE:default}
