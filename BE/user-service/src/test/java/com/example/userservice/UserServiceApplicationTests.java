@@ -46,7 +46,6 @@ class UserServiceApplicationTests {
     }
 
     @Test
-    @Transactional
     void TestingFriend(){
         boolean b = userService.deleteFirend(1L, 3L);
         log.info(b ? "true" : "false");

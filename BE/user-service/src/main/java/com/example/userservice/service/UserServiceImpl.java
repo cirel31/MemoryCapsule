@@ -5,6 +5,7 @@ import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.Access;
 import com.example.userservice.model.entity.ConnectId;
+import com.example.userservice.model.entity.Connected;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.AccessRepository;
 import com.example.userservice.repository.ConnectedRepository;
@@ -147,36 +148,58 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean deleteFirend(Long hostId, Long guestId) {
-        ConnectId connectId = new ConnectId();
-        connectId.setRequesterId(hostId);
-        connectId.setRequesteeId(guestId);
-
-        boolean present = connectedRepository.findById(connectId).isPresent();
-        log.info("첫번째 {}", present);
-        if(present){
-            log.info("분기는 탄다");
-            connectedRepository.deleteById(connectId);
-            log.info("딜리트 됐나?");
-        }
-        connectId.setRequesterId(guestId);
-        connectId.setRequesteeId(hostId);
-        boolean present1 = connectedRepository.findById(connectId).isPresent();
-        log.info("두번쨰 {}", present1);
-        if(present1){
-            connectedRepository.deleteById(connectId);
-        }
-//        connectedRepository.deleteConnection(connectId);
+        connectedRepository.disconnectFriend(hostId, guestId);
+        connectedRepository.disconnectFriend(guestId, hostId);
+//        ConnectId connectId = new ConnectId();
+//        connectId.setRequesterId(hostId);
+//        connectId.setRequesteeId(guestId);
+//
+//        boolean present = connectedRepository.findById(connectId).isPresent();
+//        log.info("첫번째 {}", present);
+//        if(present){
+//            log.info("분기는 탄다");
+//            connectedRepository.deleteById(connectId);
+//            log.info("딜리트 됐나?");
+//        }
+//        connectId.setRequesterId(guestId);
+//        connectId.setRequesteeId(hostId);
+//        boolean present1 = connectedRepository.findById(connectId).isPresent();
+//        log.info("두번쨰 {}", present1);
+//        if(present1){
+//            connectedRepository.deleteById(connectId);
+//        }
+////        connectedRepository.deleteConnection(connectId);
         return true;
     }
 
     @Override
     public boolean userAddFriend(Long hostId, Long guestId) {
-        return false;
+        connectedRepository.save(Connected.builder()
+                        .connectId(ConnectId.builder()
+                                .requesterId(hostId)
+                                .requesteeId(guestId)
+                                .build())
+                        .confirm(false)
+                .build());
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean userConfirmFriend(Long hostId, Long guestId) {
+        connectedRepository.updateConfirmStateByerIdAndeeId(hostId, guestId, true);
+        connectedRepository.save(Connected.builder()
+                        .connectId(ConnectId.builder()
+                                .requesterId(guestId)
+                                .requesteeId(hostId)
+                                .build())
+                .build());
+        return true;
     }
 
     @Override
     public boolean checkEmailDuplicated(String email) throws Exception {
-        return false;
+        return userRepository.findByEmail(email).isPresent();
     }
 
     @Override
