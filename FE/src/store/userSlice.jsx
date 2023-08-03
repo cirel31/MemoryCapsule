@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
-const BASE_URL = ''
-const USER_URL = ''
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   userId: null,
   isLoggedIn: false,
+  accessToken: null,
   user: null,
   point: 100,
 }
@@ -17,7 +16,7 @@ const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.isLoggedIn = true;
-      console.log('이메일 로그인 성공');
+      console.log('이메일 로그인 성공')
     },
     logout: (state) => {
       state.isLoggedIn = false;
@@ -26,25 +25,18 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload
       console.log(state.user)
+    },
+    renewToken: (state, action) => {
+      state.accessToken = action.payload
     }
   }
 })
 
-export const { login, logout  , setUser} = userSlice.actions
-
-// 비동기 액션
-export const fetchUser = (token) => async (dispatch) => {
-  try {
-    const response = await axios.get(USER_URL, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const userData = response.data;
-    dispatch(setUser(userData));
-  } catch (error) {
-    console.error('유저 정보를 가져오지 못함:', error);
-  }
-};
+export const {
+  login,
+  logout  ,
+  setUser,
+  renewToken,
+} = userSlice.actions
 
 export default userSlice.reducer
