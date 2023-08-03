@@ -9,10 +9,13 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.cloud.gateway.support.ipresolver.RemoteAddressResolver;
 import org.springframework.cloud.gateway.support.ipresolver.XForwardedRemoteAddressResolver;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -33,6 +36,28 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
             if (config.isPreLogger()) {
                 log.info("Global Filter Start: request id -> {}", request.getId());
             }
+
+            if(config.isRequestLogger()) {
+                log.warn("요청이 들어와서 로깅을 시작합니다.");
+
+                log.info("메서드 정보 " + request.getMethod().toString());
+                log.info("요청 Id : " + request.getId().toString());
+
+                HttpHeaders headers = request.getHeaders();
+                log.info("Headers: {}", headers);
+
+                MultiValueMap<String, HttpCookie> cookies = request.getCookies();
+                log.info("Cookies: {}", cookies);
+
+                MultiValueMap<String, String> queryParams = request.getQueryParams();
+                log.info("Request Parameters: {}", queryParams);
+
+                log.info("URI: {}", request.getURI().toString());
+                log.info("LocalAddress: {}", request.getLocalAddress().toString());
+                log.info("RequestPath: {}", request.getPath().toString());
+                log.info("SSLInfo: {}", request.getSslInfo().toString());
+                log.info("RemoteAddress: {}", request.getRemoteAddress().toString());
+            }
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
                     log.info("Global Filter End: response code -> {}", response.getStatusCode());
@@ -46,5 +71,6 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
         private String baseMessage;
         private boolean preLogger;
         private boolean postLogger;
+        private boolean requestLogger;
     }
 }

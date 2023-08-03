@@ -39,6 +39,7 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
             ServerHttpResponse response = exchange.getResponse();
 
             log.info("Logging Filter baseMessage: {}", config.getBaseMessage());
+            log.info("요청에 대한 정보를 확인 여부 : {}", config.isRequestLogger());
             if (config.isPreLogger()) {
                 log.info("Logging PRE Filter: request id -> {}", request.getId());
             }
@@ -57,5 +58,6 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
         private String baseMessage;
         private boolean preLogger;
         private boolean postLogger;
+        private boolean requestLogger;
     }
 }
