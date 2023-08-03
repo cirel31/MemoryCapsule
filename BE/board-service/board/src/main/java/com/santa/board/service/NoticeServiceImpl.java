@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeRepository noticeRepository;
+    private final FileService fileService;
+
 
     /**
      * 공지사항 전체 List 를 반환한다.
@@ -26,7 +29,7 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Transactional(readOnly = true)
     @Override
-    public Page<NoticeResponseDto> getNoticeList(Pageable pageable) {
+    public Page<NoticeResponseDto> getNoticeList(Pageable pageable) throws Exception {
         Page<NoticeResponseDto> responseDTOPage = new NoticeResponseDto().toDtoList(noticeRepository.findByNoticeDeletedFalse(pageable));
         log.info(LogMessageEnum.TOTAL_LIST_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, responseDTOPage));
         return responseDTOPage;
@@ -39,7 +42,7 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Transactional
     @Override
-    public NoticeResponseDto getNoticeById(Long noticeIdx) {
+    public NoticeResponseDto getNoticeById(Long noticeIdx) throws Exception  {
         noticeRepository.incrementNoticeHit(noticeIdx);
         NoticeResponseDto responseDTO = new NoticeResponseDto().toDto(noticeRepository.findByNoticeIdx(noticeIdx));
         log.info(LogMessageEnum.FIND_BY_IDX_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, responseDTO));
@@ -53,13 +56,13 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Transactional
     @Override
-    public boolean insertNotice(InsertDto insertDto, Long userIdx) {
+    public boolean insertNotice(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception  {
         log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, insertDto, userIdx));
         return noticeRepository.insertNewNotice
                 (userIdx,
                         insertDto.getTitle(),
                         insertDto.getContent(),
-                        insertDto.getImgurl()
+                        fileService.getFileName(file)
                 ) > 0;
     }
 
@@ -70,7 +73,7 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Transactional
     @Override
-    public boolean deleteNoticeById(Long noticeIdx) {
+    public boolean deleteNoticeById(Long noticeIdx) throws Exception  {
         log.info(LogMessageEnum.DELETE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, noticeIdx));
         return noticeRepository.deleteNoticeByNoticeIdx(noticeIdx) == 1;
     }
@@ -82,12 +85,12 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Transactional
     @Override
-    public boolean modifyNoticeById(ModifyDto modifyDto) {
+    public boolean modifyNoticeById(ModifyDto modifyDto, MultipartFile file) throws Exception  {
         log.info(LogMessageEnum.MODIFY_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, modifyDto));
         return noticeRepository.modifyNoticeByNoticeIdx
                 (modifyDto.getTitle(),
                         modifyDto.getContent(),
-                        modifyDto.getImgurl(),
+                        fileService.getFileName(file),
                         modifyDto.getIdx()) == 1;
     }
 }

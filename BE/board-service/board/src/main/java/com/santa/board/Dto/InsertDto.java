@@ -11,5 +11,4 @@ import lombok.*;
 public class InsertDto {
     private String title;
     private String content;
-    private String imgurl;
 }

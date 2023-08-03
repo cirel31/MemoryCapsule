@@ -12,5 +12,4 @@ public class ModifyDto {
     private Long idx;
     private String Title;
     private String Content;
-    private String Imgurl;
 }

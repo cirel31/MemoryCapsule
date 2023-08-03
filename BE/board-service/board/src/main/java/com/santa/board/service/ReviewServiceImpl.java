@@ -1,6 +1,5 @@
 package com.santa.board.service;
 
-import com.mysql.cj.log.Log;
 import com.santa.board.Dto.InsertDto;
 import com.santa.board.Dto.ModifyDto;
 import com.santa.board.Dto.ReviewResponseDTO;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final LikeRepository likeRepository;
+    private final FileService fileService;
 
     /**
      * 전체 리뷰 리스트를 얻는다.
@@ -30,7 +31,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Transactional(readOnly = true)
     @Override
-    public Page<ReviewResponseDTO> getReviewList(Pageable pageable) {
+    public Page<ReviewResponseDTO> getReviewList(Pageable pageable) throws Exception {
         Page<ReviewResponseDTO> responseDTOPage = new ReviewResponseDTO().toDtoList(reviewRepository.findByReviewDeletedFalse(pageable));
         log.info(LogMessageEnum.TOTAL_LIST_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, responseDTOPage));
         return responseDTOPage;
@@ -44,7 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Transactional(rollbackFor={Exception.class})
     @Override
-    public ReviewResponseDTO getReviewByReviewId(Long userIdx, Long reviewIdx) {
+    public ReviewResponseDTO getReviewByReviewId(Long userIdx, Long reviewIdx) throws Exception {
         reviewRepository.incrementReviewHit(reviewIdx);
         ReviewResponseDTO responseDTO = reviewRepository.findReviewWithIsLikedByReviewIdxAndUserIdx(userIdx, reviewIdx);
         log.info(LogMessageEnum.FIND_BY_IDX_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
@@ -59,12 +60,12 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Transactional
     @Override
-    public boolean insertReview(InsertDto insertDto, Long userIdx) {
+    public boolean insertReview(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
         log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, insertDto, userIdx));
         return reviewRepository.insertReview
                 (insertDto.getTitle(),
                         insertDto.getContent(),
-                        insertDto.getImgurl(),
+                        fileService.getFileName(file),
                         userIdx
                 ) > 0;
     }
@@ -76,7 +77,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Transactional
     @Override
-    public boolean deleteReview(long reviewIdx) {
+    public boolean deleteReview(long reviewIdx) throws Exception {
         log.info(LogMessageEnum.DELETE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx));
         return reviewRepository.deleteReviewByReviewIdx(reviewIdx) == 1;
     }
@@ -88,12 +89,12 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Transactional
     @Override
-    public boolean modifyReviewById(ModifyDto modifyDto) {
+    public boolean modifyReviewById(ModifyDto modifyDto, MultipartFile file) throws Exception {
         log.info(LogMessageEnum.MODIFY_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, modifyDto));
         return reviewRepository.modifyNoticeByNoticeIdx
                 (modifyDto.getTitle(),
                         modifyDto.getContent(),
-                        modifyDto.getImgurl(),
+                        fileService.getFileName(file),
                         modifyDto.getIdx()) == 1;
     }
 
@@ -126,7 +127,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Transactional(rollbackFor={Exception.class})
     @Override
-    public boolean unlikedReviewByReviewId(Long reviewIdx, Long userIdx) {
+    public boolean unlikedReviewByReviewId(Long reviewIdx, Long userIdx) throws Exception {
         reviewRepository.reductionReviewLike(reviewIdx);
         likeRepository.deleteByIdLikedReviewIdxAndIdLikedUsrIdx(reviewIdx, userIdx);
         log.info(LogMessageEnum.UNLIKE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
