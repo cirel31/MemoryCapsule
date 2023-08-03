@@ -38,7 +38,7 @@
 
   grid-template-columns: 1fr;
   justify-items: center;
-  background-color: var(--backGround_1);
+  background-color: var(--backGround_0);
   filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.25));
 
 }
@@ -53,7 +53,7 @@
   .header_sets {
     width: 800px;
     height: 160px;
-    background-color: var(--backGround_1);
+    background-color: var(--backGround_0);
     border-radius: 1em;
     display: grid;
     grid-template-rows: 1fr;
@@ -163,6 +163,7 @@
   height: 400px;
   display: grid;
   grid-template-columns: 450px 340px;
+
   align-items: center;
   justify-content: center;
   justify-items: center;
@@ -171,7 +172,7 @@
     font-weight: 700;
     width: 320px;
     height: 420px;
-    background-color: var(--backGround_1);
+    background-color: var(--backGround_0);
     border-radius: 2rem;
     filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.15));
     align-items: center;
