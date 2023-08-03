@@ -18,20 +18,7 @@ const FriendListPage = () => {
 
     const [friends, setFriends] = useState([]);
 
-
-
-
-    //test data
-    // function getFriends(searchId, searchValue) {
-    //     console.log("[getFriends]");
-    //     fetch("https://jsonplaceholder.typicode.com/users")
-    //         .then(response => response.json())
-    //         .then((json) => {
-    //             setFriends(json);
-    //         });
-    //     console.log(searchId, searchValue);
-    //     console.log(friends);
-    // }
+    const [isValidSearch, setIsValidSearch] = useState(true);
 
     //test data
     function getFriends(searchId, searchValue) {
@@ -45,7 +32,6 @@ const FriendListPage = () => {
         console.log(friends);
     }
 
-
     const sendFriendDataServer = (e) => {
         console.log("[sendFriendDataServer]");
 
@@ -56,22 +42,25 @@ const FriendListPage = () => {
 
         if (sendId.length > 0) {
             console.log(sendId, " : ", sendSearch);
-            getFriends()
+            getFriends();
         } else {
             console.log("한 글자라도 입력해주십시오");
             console.log("getAllFriends")
+            setIsValidSearch(false);
         }
+    };
 
-        if (sendId.length > 0) {
-            const friendData = {
-                id: sendId,
-                search: sendSearch
-            }
-            // 실제 배포는 8000
-            // 테스트 및 개발 서버는 7000
 
+    const validateSearchValue = (searchValue) => {
+        console.log("[validateSearchValue]");
+
+        if (!searchValue) {
+            console.log("!searchValue ", searchValue);
+            return false;
         }
-    };  
+        const pattern = /^[a-zA-Z0-9._%+-]/;
+        return pattern.test(searchValue);
+    };
 
     const handleChange = (updatedForm) => {
         console.log("[handleChange]");
@@ -82,7 +71,7 @@ const FriendListPage = () => {
         <>
             <div>친구찾기 page</div>
             <div>
-                <FriendForm form={form} setForm={setForm} onChange={handleChange} />
+                <FriendForm form={form} setForm={setForm} onChange={handleChange} isValidSearch={isValidSearch} setIsValidSearch={setIsValidSearch} />
             </div>
             <AuthFormGrid>
                 <div className="AuthFormGrid">
@@ -91,24 +80,6 @@ const FriendListPage = () => {
                     </CustomButton>
                 </div>
             </AuthFormGrid>
-            <div>
-                <div>등록된 친구</div>
-                <div>{friends.length}</div>
-            </div>
-            <div>
-                {
-                    !select.id
-                        ?
-                        <NoFriendList>
-                            <div className="NoFriendList">
-                                <div className="textBlock">
-                                    <h1>선택된 친구가 없습니다.</h1>
-                                </div>
-                            </div>
-                        </NoFriendList>
-                        :<FriendDetail select={select} setSelect={setSelect}/>
-                }
-            </div>
             <AuthFormGrid>
                 {
                     friends.length === 0

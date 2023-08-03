@@ -6,8 +6,11 @@ import FriendInfo from "../../components/friend/FriendInfo";
 import FriendDetail from "../../components/friend/FriendDetail";
 import {Link} from "react-router-dom";
 
-
 const FriendListPage = () => {
+    const API = '/friend/search';
+    const [rowFriends, setRowFriends] = useState([]);
+    const [friends, setFriends] = useState([]);
+
     const [form, setForm] = useState({
         id: "",
         search : 'id',
@@ -17,81 +20,78 @@ const FriendListPage = () => {
         id: "",
     });
 
-    const [friends, setFriends] = useState([]);
+    const closeFriendDetail = () => {
+        setSelect({id : ""});
+    }
 
-    // 처음 한 번 실행해서, 모든 공지사항 불러오기
+    //======== Erase ========
+    // 처음 한 번 실행 시, 내 친구 전부 불러오기
+    // useEffect(() => {
+    //     console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
+    //     getFriends("", "");
+    // }, []);
+    //======== //Erase ========
+
+    // 처음 한 번 실행 시, 내 친구 전부 불러오기
     useEffect(() => {
-        console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
-        getFriends("", "");
+        console.log("[useEffect]");
+        getFriends("id", "");
     }, []);
 
-    const sendFriendDataServer = (e) => {
-        console.log("[sendFriendDataServer]");
 
-        e.preventDefault();
-
-        const sendId = form.id;
-        const sendSearch = form.search;
-
-        if (sendId.length > 0) {
-            console.log(sendId, " : ", sendSearch);
-        } else {
-            console.log("한 글자라도 입력해주십시오");
-            console.log("getAllFriends")
-        }
-
-        if (sendId.length > 0) {
-            const friendData = {
-                id: sendId,
-                search: sendSearch
-            }
-            // 실제 배포는 8000
-            // 테스트 및 개발 서버는 7000
-            axios.post("http://localhost:7000/", friendData)
-                .then((response) => {
-                    console.log(response.data)
-                })
-                .catch((error) => {
-                    console.error("에러 발생", error)
-                })
-        }
-    };
-
-    //test data
     function getFriends(searchId, searchValue) {
         console.log("[getFriends]");
+
+        // 서버로부터 내 친구목록 가져오기
+        // axios.get(`${API}/${user_id}`
+        // axios.get(`${API}/jdragon@ssafy.com`)
+        //     .then((response) => {
+        //         console.log('서버로부터 친구목록 가져오기 성공');
+        //         console.log(API);
+        //         console.log(response.data);
+        //         setFriends(response.data);
+        //     })
+        //     .catch((error) => {
+        //         console.error("서버로부터 친구목록 가져오기 실패", error);
+        //         console.error(error.code);
+        //     });
+
+        //======== Erase ========
+        //test 데이터
         fetch("https://jsonplaceholder.typicode.com/users")
             .then(response => response.json())
             .then((json) => {
-                setFriends(json);
-            });
-        console.log(searchId, searchValue);
-        console.log(friends);
-    }
+                    setRowFriends(json);
+                    setFriends(json);
+                }
+            );
+        //======== //Erase ========
 
+        console.log(searchId, searchValue);
+    }
 
     // 검색
     const handleFriendData = (e) => {
         console.log("[handleFriendData]");
         e.preventDefault();
-        const sendId = form.id;
-        const sendSearch = form.search;
+        const id = form.id.toLowerCase();
+        const search = form.search;
 
-        console.log("sendId", sendId);
-        if (sendId === "") {
-            getFriends(sendId, sendSearch);
-            for (let i = 0; i < friends.length; i++) {
-                console.log(friends[i].name);
+        console.log("sendId", id);
+        if (id === "") {
+            for (let i = 0; i < rowFriends.length; i++) {
+                console.log(rowFriends[i].name);
             }
+            setFriends(rowFriends);
         } else {
-            console.log("[제작예정] 불러온 친구 리스트 내부에서 sort");
-            // for (let i = 0; i < friends.length; i++) {
-            //     if(form.id === friends[i].name){
-            //         setFriends([friends[i]]);
-            //         console.log("setFriends", friends.length);
-            //         break;
-            //     }
-            // }
+            console.log("[제작예정] 불러온 친구 리스트 내부에서 검색");
+            let searchFriend = [];
+
+            searchFriend = rowFriends.filter((rowFriend) =>
+                rowFriend.email.toLowerCase().includes(id)
+            )
+            console.log(searchFriend);
+            setFriends(searchFriend);
         }
     };
 
@@ -122,20 +122,6 @@ const FriendListPage = () => {
                 <div>등록된 친구</div>
                 <div>{friends.length}</div>
             </div>
-            <div>
-                {
-                    !select.id
-                    ?
-                        <NoFriendList>
-                            <div className="NoFriendList">
-                                <div className="textBlock">
-                                    <h1>선택된 친구가 없습니다.</h1>
-                                </div>
-                            </div>
-                        </NoFriendList>
-                    :<FriendDetail select={select} setSelect={setSelect}/>
-                }
-            </div>
             <AuthFormGrid>
                 {
                     friends.length === 0
@@ -154,6 +140,24 @@ const FriendListPage = () => {
                     </div>
                 }
             </AuthFormGrid>
+            <div>
+                {
+                    !select.id
+                        ?
+                        <NoFriendList>
+                            <div className="NoFriendList">
+                                <div className="textBlock">
+                                    <img src="../UserImg" alt="로고"/>
+                                </div>
+                            </div>
+                        </NoFriendList>
+                        :
+                        // 스크롤 구현해야 하는 부분
+                        <div>
+                            <FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
+                        </div>
+                }
+            </div>
         </>
     )
 }
