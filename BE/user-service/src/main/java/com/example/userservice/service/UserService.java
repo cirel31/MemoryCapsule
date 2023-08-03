@@ -17,20 +17,13 @@ public interface UserService extends UserDetailsService {
     // User 회원가입
     UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile file) throws Exception;
 
-    // User 친구 삭제
-    // User 출석체크
-    // User 비밀번호 찾기
-    // 회원탈퇴
-    // 회원정보수정
-    // 유저 상세정보 조회
-    // 친구조회
-    List<User> findByAllFriends(Long userId, int type) throws Exception;
+    List<User> findByAllFriends(Long userId) throws Exception;
     // 친구삭제
     boolean deleteFirend(Long hostId, Long guestId);
     // 친구추가
     boolean userAddFriend(Long hostId, Long guestId);
     // 이메일로 유저 찾기
-    User findByUserId(Long hostId);
+    boolean checkEmailDuplicated(final String email) throws Exception;
 
     UserDto.Detail getUserDetail(Long userId, int year, int month) throws Exception;
     UserDto.Detail getUserDetail(Long userId) throws Exception;

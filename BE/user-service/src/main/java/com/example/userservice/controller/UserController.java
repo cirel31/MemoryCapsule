@@ -20,17 +20,6 @@ import java.util.Optional;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 @Slf4j
-
-/*
-{
-    "email" : "test5@naver.com",
-    "nickName" : "test",
-    "name" : "test",
-    "password" : "asdf1234",
-    "phone" : "01012341234",
-    "imgUrl" : "1234"
-}
- */
 public class UserController {
     private final UserService userService;
 
@@ -81,11 +70,6 @@ public class UserController {
 
     @DeleteMapping("/delete")
     public ResponseEntity userDelete() {
-        return null;
-    }
-
-    @GetMapping("/find_id")
-    public ResponseEntity findId() {
         return null;
     }
 
