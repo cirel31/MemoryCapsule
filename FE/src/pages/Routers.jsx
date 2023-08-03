@@ -9,6 +9,7 @@ import MyPage from "./user/MyPage";
 import CalendarForm from "../components/user/CalendarForm";
 import FriendListPage from "./friend/FriendListPage";
 import NoticeListPage from "./notice/NoticeListPage";
+import PostCreatePage from "./PostCreatePage";
 import ArticleCreatePage from "./project/ArticleCreatePage";
 import ProjectDetailPage from "./project/ProjectDetailPage";
 import ProjectListPage from "./project/ProjectListPage";
