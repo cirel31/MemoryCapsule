@@ -152,6 +152,14 @@ export default function Navbar() {
                     </Link>
                   </div>
                   <div>
+                    <Link to='/friend' className="link_txt">
+                      <button className="nav_button" >
+                        <img src={btn_deco} className="button_deco"/>
+                        <p>REVIEW</p>
+                      </button>
+                    </Link>
+                  </div>
+                  <div>
                     <Link to='/announce' className="link_txt">
                       <button className="nav_button" >
                         <img src={btn_deco} className="button_deco"/>

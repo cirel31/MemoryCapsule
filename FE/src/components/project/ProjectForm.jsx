@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import {useRef, useState} from "react";
 import Calendar from "react-calendar";
-import '../../styles/Calendar.css'
+import '../../styles/Calendar.scss'
 import Modal from "react-modal";
 import axios from "axios";
 import ProjectAddFriends from "../../components/project/ProjectAddFriends";
