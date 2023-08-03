@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .authorizeRequests()
                 .antMatchers("/favicon**").permitAll()
-                .antMatchers("/user/health-check").permitAll()
+                .antMatchers("/*/health-check").permitAll()
                 .antMatchers("/user/login").permitAll()
                 .antMatchers("/user/signup").permitAll()
                 .antMatchers("/actuator/**").permitAll()
