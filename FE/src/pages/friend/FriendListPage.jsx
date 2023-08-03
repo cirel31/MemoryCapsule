@@ -6,9 +6,10 @@ import FriendInfo from "../../components/friend/FriendInfo";
 import FriendDetail from "../../components/friend/FriendDetail";
 import {Link} from "react-router-dom";
 
-
 const FriendListPage = () => {
     const API = '/friend/search';
+    const [rowFriends, setRowFriends] = useState([]);
+    const [friends, setFriends] = useState([]);
 
     const [form, setForm] = useState({
         id: "",
@@ -19,8 +20,9 @@ const FriendListPage = () => {
         id: "",
     });
 
-    const [rowFriends, setRowFriends] = useState([]);
-    const [friends, setFriends] = useState([]);
+    const closeFriendDetail = () => {
+        setSelect({id : ""});
+    }
 
     //======== Erase ========
     // 처음 한 번 실행 시, 내 친구 전부 불러오기
@@ -33,10 +35,10 @@ const FriendListPage = () => {
     // 처음 한 번 실행 시, 내 친구 전부 불러오기
     useEffect(() => {
         console.log("[useEffect]");
-        getFriends(form.id, form.search);
+        getFriends("id", "");
     }, []);
 
-    //test data
+
     function getFriends(searchId, searchValue) {
         console.log("[getFriends]");
 
@@ -60,11 +62,13 @@ const FriendListPage = () => {
             .then(response => response.json())
             .then((json) => {
                 setRowFriends(json);
+                setFriends(rowFriends);
             });
         //======== //Erase ========
 
         console.log(searchId, searchValue);
         console.log(rowFriends);
+        console.log(friends);
     }
 
     // 검색
@@ -148,9 +152,21 @@ const FriendListPage = () => {
                                 </div>
                             </div>
                         </NoFriendList>
-                        :<FriendDetail select={select} setSelect={setSelect}/>
+                        :<FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
                 }
             </div>
+            {/*/!* 모달 창 *!/*/}
+            {/*<Modal isOpen={friendModalIsOpen !== 0}>*/}
+            {/*    {*/}
+            {/*        <div style={{width:'100%', height:'100%'}} onClick={() => setFriendModalIsOpen(0)}>*/}
+            {/*            {*/}
+            {/*                friendModalIsOpen === 1*/}
+            {/*                    ?"친구 추가 요청이 처리되었습니다."*/}
+            {/*                    :"친구 삭제 요청이 처리되었습니다."*/}
+            {/*            }*/}
+            {/*        </div>*/}
+            {/*    }*/}
+            {/*</Modal>*/}
         </>
     )
 }

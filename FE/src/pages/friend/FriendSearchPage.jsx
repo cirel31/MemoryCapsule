@@ -18,9 +18,6 @@ const FriendListPage = () => {
 
     const [friends, setFriends] = useState([]);
 
-
-
-
     //test data
     // function getFriends(searchId, searchValue) {
     //     console.log("[getFriends]");
@@ -91,24 +88,6 @@ const FriendListPage = () => {
                     </CustomButton>
                 </div>
             </AuthFormGrid>
-            <div>
-                <div>등록된 친구</div>
-                <div>{friends.length}</div>
-            </div>
-            <div>
-                {
-                    !select.id
-                        ?
-                        <NoFriendList>
-                            <div className="NoFriendList">
-                                <div className="textBlock">
-                                    <h1>선택된 친구가 없습니다.</h1>
-                                </div>
-                            </div>
-                        </NoFriendList>
-                        :<FriendDetail select={select} setSelect={setSelect}/>
-                }
-            </div>
             <AuthFormGrid>
                 {
                     friends.length === 0

@@ -1,6 +1,11 @@
 import { FriendItem } from "../../styles/friendStyle";
+import FriendAddDeleteButton from "./FriendAddDeleteButton";
+import {useState} from "react";
 
 const FriendInfo = ({select, setSelect, id, name, username, email, address, phone, website}) => {
+    // 친구인지 여부
+    const isFriend = true;
+
     const selectFriend = () => {
         const selected = {
             "id" : email,
@@ -18,7 +23,13 @@ const FriendInfo = ({select, setSelect, id, name, username, email, address, phon
                         name : {name}<br/>
                         nickname : {username}<br/>
                     </span>
-                    <div onClick={selectFriend}> 자세히보기 </div>
+                    {
+                        // 처음 로딩 시 친구여야 자세히보기 제공
+                        isFriend
+                        ?<div onClick={selectFriend}> 자세히보기 </div>
+                        :<FriendAddDeleteButton select={select}/>
+                    }
+
                 </div>
             </div>
         </FriendItem>
