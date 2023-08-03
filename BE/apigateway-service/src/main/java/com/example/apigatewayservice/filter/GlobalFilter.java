@@ -51,12 +51,21 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
 
                 MultiValueMap<String, String> queryParams = request.getQueryParams();
                 log.info("Request Parameters: {}", queryParams);
-
-                log.info("URI: {}", request.getURI().toString());
-                log.info("LocalAddress: {}", request.getLocalAddress().toString());
-                log.info("RequestPath: {}", request.getPath().toString());
-                log.info("SSLInfo: {}", request.getSslInfo().toString());
-                log.info("RemoteAddress: {}", request.getRemoteAddress().toString());
+                if(request.getURI() != null) {
+                    log.info("URI: {}", request.getURI().toString());
+                }
+                if (null != request.getLocalAddress()) {
+                    log.info("LocalAddress: {}", request.getLocalAddress().toString());
+                }
+                if(request.getPath() != null) {
+                    log.info("RequestPath: {}", request.getPath().toString());
+                }
+                if(request.getSslInfo() != null) {
+                    log.info("SSLInfo: {}", request.getSslInfo().toString());
+                }
+                if(request.getRemoteAddress() != null) {
+                    log.info("RemoteAddress: {}", request.getRemoteAddress().toString());
+                }
             }
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 if (config.isPostLogger()) {
