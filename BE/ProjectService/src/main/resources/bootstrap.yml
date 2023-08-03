@@ -4,4 +4,4 @@ spring:
       uri: http://i9a608.p.ssafy.io:8888
       name: projectservice
   profiles:
-    active: ${PROFILE:default}
+    active: ${PROFILE:local}

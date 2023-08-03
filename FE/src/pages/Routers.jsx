@@ -28,7 +28,7 @@ export default function Routers() {
       <Route path='/project' element={<ProjectListPage />} />
       <Route path='/project/create' element={<ProjectCreatePage />} />
       <Route path='/project/:projectId' element={<ProjectDetailPage />} />
-      <Route path='/project/:projectId/create' element={<ArticleCreatePage />} />
+      <Route path='/project/article/write/:projectId' element={<ArticleCreatePage />} />
       <Route path='/friend' element={<FriendListPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
       <Route path='/notice/postcreate' element={<PostCreatePage />} />
