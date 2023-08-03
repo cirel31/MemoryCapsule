@@ -43,7 +43,7 @@ public class UserController {
             UserDto.Basic signup = userService.signup(signUpDto, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(signup);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러입니다. 관리자에게 문의해주세요");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
