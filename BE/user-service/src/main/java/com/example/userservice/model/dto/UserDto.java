@@ -27,7 +27,6 @@ public class UserDto {
         private String password;
         @Length(max = 11)
         private String phone;
-        private String imgUrl;
     }
 
     @Getter

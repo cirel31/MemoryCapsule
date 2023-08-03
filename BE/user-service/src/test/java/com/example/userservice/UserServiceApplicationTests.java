@@ -48,8 +48,7 @@ class UserServiceApplicationTests {
     @Test
     @Transactional
     void TestingFriend(){
-        List<User> reqFriendList = userRepository.findById(1L).get().getReqFriendList();
-        log.info(reqFriendList.toString());
-//        Assertions.assertThat(friendList.size()).isEqualTo(2);
+        boolean b = userService.deleteFirend(1L, 3L);
+        log.info(b ? "true" : "false");
     }
 }

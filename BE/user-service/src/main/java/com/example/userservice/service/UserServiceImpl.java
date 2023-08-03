@@ -4,8 +4,10 @@ import com.example.userservice.model.Enum.UserRole;
 import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.Access;
+import com.example.userservice.model.entity.ConnectId;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.AccessRepository;
+import com.example.userservice.repository.ConnectedRepository;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +46,7 @@ public class UserServiceImpl implements UserService {
     private final TokenProvider tokenProvider;
     private final AccessRepository accessRepository;
     private final FileService fileService;
+    private final ConnectedRepository connectedRepository;
 
     @Value("${S3Url}")
     private String defaultUrl;
@@ -135,20 +138,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findByAllFriends(final Long userId, final int confrimType) throws Exception {
+    public List<User> findByAllFriends(final Long userId) throws Exception {
         //TODO: userId의 친구정보를 주는 서비스
-        //  - type
-        //  0 :
-
-        User user = userRepository.findById(Long.valueOf(userId)).orElseThrow(() -> new Exception("user not found - " + userId));
-
-
-        return null;
+        return userRepository.findById(Long.valueOf(userId)).orElseThrow(() -> new Exception("user not found - " + userId))
+                .getFriendList();
     }
 
     @Override
+    @Transactional
     public boolean deleteFirend(Long hostId, Long guestId) {
-        return false;
+        ConnectId connectId = new ConnectId();
+        connectId.setRequesterId(hostId);
+        connectId.setRequesteeId(guestId);
+
+        boolean present = connectedRepository.findById(connectId).isPresent();
+        log.info("첫번째 {}", present);
+        if(present){
+            log.info("분기는 탄다");
+            connectedRepository.deleteById(connectId);
+            log.info("딜리트 됐나?");
+        }
+        connectId.setRequesterId(guestId);
+        connectId.setRequesteeId(hostId);
+        boolean present1 = connectedRepository.findById(connectId).isPresent();
+        log.info("두번쨰 {}", present1);
+        if(present1){
+            connectedRepository.deleteById(connectId);
+        }
+//        connectedRepository.deleteConnection(connectId);
+        return true;
     }
 
     @Override
@@ -157,8 +175,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUserId(Long hostId) {
-        return null;
+    public boolean checkEmailDuplicated(String email) throws Exception {
+        return false;
     }
 
     @Override

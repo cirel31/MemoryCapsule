@@ -14,5 +14,8 @@ import javax.persistence.*;
 public class Connected {
     @EmbeddedId
     private ConnectId connectId;
+
+
+    @Column(name = "connected_confirm")
     private Boolean confirm;
 }
