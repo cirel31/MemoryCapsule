@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     public List<Article> findAllByUser_Id(Long id);
     List<Article> findByUser_IdAndProject_Id(Long userId, Long projectId);
-
     Optional<Article> findFirstByUser_IdAndProject_IdOrderByCreatedDesc(Long userId, Long projectId);
+
+    long countByProjectId(Long projectId);
 }
