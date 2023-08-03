@@ -58,17 +58,3 @@ eureka:
 #          descriptor:
 #            sql: trace
 
-cloud:
-  aws:
-#      IAM : jaehyoni
-    credentials:
-      accessKey: AKIAQPOZGAOT652M75EC
-      secretKey: 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
-    stack:
-      auto: false
-    s3:
-      bucket: ssafysanta
-    region:
-      static: ap-northeast-2
-
-#
