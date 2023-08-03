@@ -1,10 +1,10 @@
-import { NoFriendList, AuthFormGrid, CustomButton } from "../styles/friendStyle";
+import { NoFriendList, AuthFormGrid, CustomButton } from "../../styles/friendStyle";
 
 import React, { useState } from "react";
 // import NoticeInfo from "../components/notice/NoticeInfo";
-import SearchBar from "../components/SearchBar"
+import SearchBar from "../../components/SearchBar"
 import axios from "axios";
-import Pagination from "../components/common/Pagination";
+import Pagination from "../../components/common/Pagination";
 
 const NoticeListPage = () => {
     // 검색어 저장

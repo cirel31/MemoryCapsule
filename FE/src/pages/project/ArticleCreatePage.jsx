@@ -1,10 +1,10 @@
-import ArticleCreateForm from "../components/project/ArticleCreateForm";
+import ArticleCreateForm from "../../components/project/ArticleCreateForm";
 
 const ArticleCreatePage = () => {
 
   return (
     <>
-      <div style={{ alignItems: "center", textAlign: "center"}}>
+      <div>
         <ArticleCreateForm />
       </div>
     </>

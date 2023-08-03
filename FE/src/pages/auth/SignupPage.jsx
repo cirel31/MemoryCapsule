@@ -1,4 +1,4 @@
-import SignupForm from "../components/auth/SignupForm"
+import SignupForm from "../../components/auth/SignupForm"
 import {useState} from "react";
 
 const SignupPage = () => {

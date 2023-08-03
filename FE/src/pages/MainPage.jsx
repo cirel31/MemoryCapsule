@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import ProjectListPage from "./ProjectListPage";
+import ProjectListPage from "./project/ProjectListPage";
 
 const MainPage = () => {
   return (

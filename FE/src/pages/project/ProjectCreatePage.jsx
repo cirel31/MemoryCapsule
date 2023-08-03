@@ -1,8 +1,8 @@
-import ProjectForm from "../components/ProjectForm";
+import ProjectForm from "../../components/project/ProjectForm";
 
 const ProjectCreatePage = () => {
   return (
-      <div  style={{textAlign: 'center', width:'100%', height:'600px'}}>
+      <div>
         프로젝트 만들기!
         <ProjectForm />
       </div>
