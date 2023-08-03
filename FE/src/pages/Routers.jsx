@@ -8,6 +8,7 @@ import SignupPage from "./auth/SignupPage";
 import MyPage from "./user/MyPage";
 import CalendarForm from "../components/user/CalendarForm";
 import FriendListPage from "./friend/FriendListPage";
+import FriendSearchPage from "./friend/FriendSearchPage";
 import NoticeListPage from "./notice/NoticeListPage";
 import ArticleCreatePage from "./project/ArticleCreatePage";
 import ProjectDetailPage from "./project/ProjectDetailPage";
@@ -27,6 +28,7 @@ export default function Routers() {
       <Route path='/project/:projectId' element={<ProjectDetailPage />} />
       <Route path='/project/article/write/:projectId' element={<ArticleCreatePage />} />
       <Route path='/friend' element={<FriendListPage />} />
+      <Route path='/friend/search' element={<FriendSearchPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
 
       <Route path='/mypage' element={<MyPage />} />

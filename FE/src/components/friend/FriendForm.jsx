@@ -39,7 +39,6 @@ const FriendForm = ({form, setForm}) => {
                 <WhiteBox>
                     <AuthFormBlock>
                         <form>
-                            <label htmlFor="search">친구찾기 페이지</label>
                             <select id="search" name="search" onChange={handleChange}>
                                 <option value={"id"}>e-mail</option>
                                 <option value={"name"}>name</option>
