@@ -74,6 +74,7 @@
     /*brand gradient*/
     --gradient_main_V: linear-gradient(rgba(255,159,159,1) 0%, rgba(255,89,159,1) 100%);
     --gradient_main_H: linear-gradient(90deg, rgba(255,159,159,1) 0%, rgba(255,89,159,1) 100%);
+    --main_2: linear-gradient(360deg, #FF9E9E 0%, #FF5A9E 100%);
 
     /*etc.*/
     --main: #FF599FFF;
@@ -81,6 +82,6 @@
     --main_color: #FF7474FF;
     --blue_main: #599CFFFF;
     --fontcolor: #CC556AFF;
-    --line: #E04B66FF;.
+    --line: #E04B66FF;
     --main3: #FF8CA1FF;
 }

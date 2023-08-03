@@ -1,13 +1,12 @@
-import { FriendItem, CustomButtonFriend } from "../../styles/friendStyle";
+import { FriendItem } from "../../styles/friendStyle";
 
-const FriendInfo = ({id, name, username, email, address, phone, website}) => {
-    const addFriend = (e) => {
-        const {value} = e.target;
-        console.log(value);
-    }
-    const discardFriend = (e) => {
-        const {value} = e.target;
-        console.log(value);
+const FriendInfo = ({select, setSelect, id, name, username, email, address, phone, website}) => {
+    const selectFriend = () => {
+        const selected = {
+            "id" : email,
+        };
+        setSelect(selected);
+        console.log("[selectFriend] ", select);
     }
 
     return (
@@ -19,13 +18,7 @@ const FriendInfo = ({id, name, username, email, address, phone, website}) => {
                         name : {name}<br/>
                         nickname : {username}<br/>
                     </span>
-                    <div>
-                        {
-                            (1 === 1)
-                            ?<CustomButtonFriend className="CustomButtonFriend addFriend" value={email} onClick={addFriend}> + </CustomButtonFriend>
-                            :<CustomButtonFriend className="CustomButtonFriend discardFriend" value={email} onClick={discardFriend}> - </CustomButtonFriend>
-                        }
-                    </div>
+                    <div onClick={selectFriend}> 자세히보기 </div>
                 </div>
             </div>
         </FriendItem>
