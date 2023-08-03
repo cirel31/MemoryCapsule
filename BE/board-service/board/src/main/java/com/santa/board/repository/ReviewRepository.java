@@ -65,13 +65,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                                 @Param("reviewImgUrl") String reviewImgUrl,
                                 @Param("reviewIdx") Long reviewIdx);
 
-    // 좋아요 누르기
-//    @Modifying
-//    @Query(value = "INSERT INTO Liked (liked_review_idx, liked_usr_idx) " +
-//            "VALUES (:reviewIdx, :userIdx)", nativeQuery = true)
-//    int likedReview(@Param("reviewIdx") Long reviewIdx,
-//                     @Param("userIdx") Long userIdx);
-
     //review에 like + 1
     @Modifying
     @Query("UPDATE Review r " +

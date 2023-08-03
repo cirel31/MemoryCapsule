@@ -1,8 +1,11 @@
 package com.santa.board.service;
 
+import com.mysql.cj.log.Log;
 import com.santa.board.Dto.InsertDto;
 import com.santa.board.Dto.ModifyDto;
 import com.santa.board.Dto.ReviewResponseDTO;
+import com.santa.board.Enum.LogMessageEnum;
+import com.santa.board.Enum.ServiceNameEnum;
 import com.santa.board.entity.Liked;
 import com.santa.board.entity.LikedId;
 import com.santa.board.repository.LikeRepository;
@@ -29,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Page<ReviewResponseDTO> getReviewList(Pageable pageable) {
         Page<ReviewResponseDTO> responseDTOPage = new ReviewResponseDTO().toDtoList(reviewRepository.findByReviewDeletedFalse(pageable));
-
+        log.info(LogMessageEnum.TOTAL_LIST_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, responseDTOPage));
         return responseDTOPage;
     }
 
@@ -43,8 +46,9 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewResponseDTO getReviewByReviewId(Long userIdx, Long reviewIdx) {
         reviewRepository.incrementReviewHit(reviewIdx);
-//        ReviewResponseDTO responseDTO = new ReviewResponseDTO().toDto(reviewRepository.findReviewWithIsLikedByReviewIdxAndUserIdx(userIdx, reviewIdx));
-        return reviewRepository.findReviewWithIsLikedByReviewIdxAndUserIdx(userIdx, reviewIdx);
+        ReviewResponseDTO responseDTO = reviewRepository.findReviewWithIsLikedByReviewIdxAndUserIdx(userIdx, reviewIdx);
+        log.info(LogMessageEnum.FIND_BY_IDX_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
+        return responseDTO;
     }
 
     /**
@@ -56,6 +60,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     @Override
     public boolean insertReview(InsertDto insertDto, Long userIdx) {
+        log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, insertDto, userIdx));
         return reviewRepository.insertReview
                 (insertDto.getTitle(),
                         insertDto.getContent(),
@@ -72,6 +77,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     @Override
     public boolean deleteReview(long reviewIdx) {
+        log.info(LogMessageEnum.DELETE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx));
         return reviewRepository.deleteReviewByReviewIdx(reviewIdx) == 1;
     }
 
@@ -83,6 +89,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     @Override
     public boolean modifyReviewById(ModifyDto modifyDto) {
+        log.info(LogMessageEnum.MODIFY_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, modifyDto));
         return reviewRepository.modifyNoticeByNoticeIdx
                 (modifyDto.getTitle(),
                         modifyDto.getContent(),
@@ -107,6 +114,7 @@ public class ReviewServiceImpl implements ReviewService {
         liked.setId(likedId);
         reviewRepository.incrementReviewLike(reviewIdx);
         likeRepository.save(liked);
+        log.info(LogMessageEnum.LIKE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
         return true;
     }
 
@@ -120,6 +128,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public boolean unlikedReviewByReviewId(Long reviewIdx, Long userIdx) {
         reviewRepository.reductionReviewLike(reviewIdx);
-        return reviewRepository.unlikedReview(reviewIdx, userIdx) > 0;
+        likeRepository.deleteByIdLikedReviewIdxAndIdLikedUsrIdx(reviewIdx, userIdx);
+        log.info(LogMessageEnum.UNLIKE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
+        return true;
     }
 }

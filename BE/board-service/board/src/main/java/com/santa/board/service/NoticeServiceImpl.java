@@ -3,6 +3,8 @@ package com.santa.board.service;
 import com.santa.board.Dto.InsertDto;
 import com.santa.board.Dto.ModifyDto;
 import com.santa.board.Dto.NoticeResponseDto;
+import com.santa.board.Enum.LogMessageEnum;
+import com.santa.board.Enum.ServiceNameEnum;
 import com.santa.board.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Page<NoticeResponseDto> getNoticeList(Pageable pageable) {
         Page<NoticeResponseDto> responseDTOPage = new NoticeResponseDto().toDtoList(noticeRepository.findByNoticeDeletedFalse(pageable));
-        log.info(String.format("getNoticeList %s", responseDTOPage.toString()));
+        log.info(LogMessageEnum.TOTAL_LIST_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, responseDTOPage));
         return responseDTOPage;
     }
 
@@ -40,7 +42,7 @@ public class NoticeServiceImpl implements NoticeService {
     public NoticeResponseDto getNoticeById(Long noticeIdx) {
         noticeRepository.incrementNoticeHit(noticeIdx);
         NoticeResponseDto responseDTO = new NoticeResponseDto().toDto(noticeRepository.findByNoticeIdx(noticeIdx));
-        log.info(String.format("getNoticeById id:%d %s", noticeIdx, responseDTO.toString()));
+        log.info(LogMessageEnum.FIND_BY_IDX_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, responseDTO));
         return responseDTO;
     }
 
@@ -52,7 +54,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     @Override
     public boolean insertNotice(InsertDto insertDto, Long userIdx) {
-        log.info(String.format("insert Notice userIdx:%d %s", userIdx, insertDto.toString()));
+        log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, insertDto, userIdx));
         return noticeRepository.insertNewNotice
                 (userIdx,
                         insertDto.getTitle(),
@@ -69,7 +71,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     @Override
     public boolean deleteNoticeById(Long noticeIdx) {
-        log.info(String.format("delete Notice noticeIdx:%d", noticeIdx));
+        log.info(LogMessageEnum.DELETE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, noticeIdx));
         return noticeRepository.deleteNoticeByNoticeIdx(noticeIdx) == 1;
     }
 
@@ -81,7 +83,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     @Override
     public boolean modifyNoticeById(ModifyDto modifyDto) {
-        log.info(String.format("modify Notice %s", modifyDto.toString()));
+        log.info(LogMessageEnum.MODIFY_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, modifyDto));
         return noticeRepository.modifyNoticeByNoticeIdx
                 (modifyDto.getTitle(),
                         modifyDto.getContent(),
