@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import Modal from "react-modal";
 import FriendAddDeleteButton from "./FriendAddDeleteButton";
 
-const FriendDetail = ({select, setSelect, closeFriendDetail}) => {
+const FriendDetail = ({select, closeFriendDetail}) => {
 
     return (
         <>
@@ -16,7 +16,7 @@ const FriendDetail = ({select, setSelect, closeFriendDetail}) => {
                         <div>
                             <h1>user Detail</h1>
                         </div>
-                        <div>User img</div>
+                        <img src="../userImg" alt="유저 이미지"/>
                         <div>{select.id}</div>
                         <div>
                             <div>친구가 현재까지 작성한 기록 {} 개</div>
@@ -24,13 +24,6 @@ const FriendDetail = ({select, setSelect, closeFriendDetail}) => {
                         <div>
                             <div>친구가 현재 제작중인 캡슐 {} 개</div>
                         </div>
-                        {/*<div>*/}
-                        {/*    {*/}
-                        {/*        (1 === 1)*/}
-                        {/*            ?<CustomButtonFriend className="CustomButtonFriend addFriend" value={select} onClick={addFriend}> + </CustomButtonFriend>*/}
-                        {/*            :<CustomButtonFriend className="CustomButtonFriend discardFriend" value={select} onClick={discardFriend}> - </CustomButtonFriend>*/}
-                        {/*    }*/}
-                        {/*</div>*/}
                         <FriendAddDeleteButton select={select}/>
                     </AuthFormBlock>
                 </WhiteBox>

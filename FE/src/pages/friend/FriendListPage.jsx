@@ -61,14 +61,13 @@ const FriendListPage = () => {
         fetch("https://jsonplaceholder.typicode.com/users")
             .then(response => response.json())
             .then((json) => {
-                setRowFriends(json);
-                setFriends(rowFriends);
-            });
+                    setRowFriends(json);
+                    setFriends(json);
+                }
+            );
         //======== //Erase ========
 
         console.log(searchId, searchValue);
-        console.log(rowFriends);
-        console.log(friends);
     }
 
     // 검색
@@ -148,25 +147,17 @@ const FriendListPage = () => {
                         <NoFriendList>
                             <div className="NoFriendList">
                                 <div className="textBlock">
-                                    <h1>선택된 친구가 없습니다.</h1>
+                                    <img src="../UserImg" alt="로고"/>
                                 </div>
                             </div>
                         </NoFriendList>
-                        :<FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
+                        :
+                        // 스크롤 구현해야 하는 부분
+                        <div>
+                            <FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
+                        </div>
                 }
             </div>
-            {/*/!* 모달 창 *!/*/}
-            {/*<Modal isOpen={friendModalIsOpen !== 0}>*/}
-            {/*    {*/}
-            {/*        <div style={{width:'100%', height:'100%'}} onClick={() => setFriendModalIsOpen(0)}>*/}
-            {/*            {*/}
-            {/*                friendModalIsOpen === 1*/}
-            {/*                    ?"친구 추가 요청이 처리되었습니다."*/}
-            {/*                    :"친구 삭제 요청이 처리되었습니다."*/}
-            {/*            }*/}
-            {/*        </div>*/}
-            {/*    }*/}
-            {/*</Modal>*/}
         </>
     )
 }

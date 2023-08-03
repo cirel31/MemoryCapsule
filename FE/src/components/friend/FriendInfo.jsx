@@ -1,6 +1,6 @@
 import { FriendItem } from "../../styles/friendStyle";
 import FriendAddDeleteButton from "./FriendAddDeleteButton";
-import {useState} from "react";
+import React, {useState} from "react";
 
 const FriendInfo = ({select, setSelect, id, name, username, email, address, phone, website}) => {
     // 친구인지 여부
@@ -17,6 +17,7 @@ const FriendInfo = ({select, setSelect, id, name, username, email, address, phon
     return (
         <FriendItem>
             <div className="FriendItem">
+                <img src="../userImg" alt="유저 이미지"/>
                 <div className="info">
                     <span className="author_info">
                         e-mail : {email}<br/>
