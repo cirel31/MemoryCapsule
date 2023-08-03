@@ -170,7 +170,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDto findProjectByProjectId(Long id) throws ProjectNotFoundException {
         Optional<Project> project = projectRepository.findById(id);
-        if(!project.isPresent()) throw new ProjectNotFoundException("해당하는 Id의 프로젝트를 찾을 수 없습니다");
+        if(!project.isPresent())
+            throw new ProjectNotFoundException("해당하는 Id의 프로젝트를 찾을 수 없습니다");
         ProjectDto projectDto = project.get().toDto();
         return projectDto;
     }
