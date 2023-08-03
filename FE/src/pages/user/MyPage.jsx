@@ -1,9 +1,9 @@
-import CalendarPage from "./CalendarPage";
-import UserInfoHeaderPage from "./UserInfoHeaderPage";
-import AnnounceUserViewPage from "./AnnounceUserViewPage";
+import CalendarForm from "../../components/user/CalendarForm";
+import UserInfoHeaderForm from "../../components/user/UserInfoHeaderForm";
+import AnnounceUserViewPage from "../notice/AnnounceUserViewPage";
 import {useDispatch} from "react-redux";
-import {logout} from "../store/userSlice";
-import "../styles/MyPage.scss"
+import {logout} from "../../store/userSlice";
+import "../../styles/MyPage.scss"
 
 
 const MyPage = () => {
@@ -20,11 +20,11 @@ const MyPage = () => {
     <div className="big_body">
         <div className="mypage_layout">
             <div>
-                <UserInfoHeaderPage />
+                <UserInfoHeaderForm />
             </div>
             <br/>
             <div>
-                <CalendarPage />
+                <CalendarForm />
             </div>
             <br/>
             <div>

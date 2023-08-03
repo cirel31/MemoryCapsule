@@ -1,4 +1,3 @@
-import {AuthFormBlock, StyledInput, CustomButton, FormBody, WhiteBox} from "../../styles/loginStyle";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import Modal from "react-modal";
@@ -53,14 +52,14 @@ const SignupForm = ({ form, setForm,  }) => {
 
 
   return (
-    <FormBody>
-      <WhiteBox>
+    <div>
+      <div>
         <div>
           회원가입 페이지
         </div>
-        <AuthFormBlock>
+        <div>
           <form >
-            <StyledInput
+            <input
               id="id"
               type="email"
               placeholder="아이디"
@@ -68,8 +67,8 @@ const SignupForm = ({ form, setForm,  }) => {
               onChange={handleChange}
               required
             />
-            {!isValidEmail && <div style={{ color: 'red' }}>올바른 이메일 형식이 아닙니다.</div>}
-            <StyledInput
+            {!isValidEmail && <div>올바른 이메일 형식이 아닙니다.</div>}
+            <input
               id="nickname"
               type="text"
               value={form.nickname}
@@ -77,8 +76,8 @@ const SignupForm = ({ form, setForm,  }) => {
               placeholder="닉네임"
               required
             />
-            { ((form.nickname.length > 0) && (form.nickname.length < 2)) && <div style={{ color: 'red' }}>닉네임은 2글자 이상이어야 합니다.</div> }
-            <StyledInput
+            { ((form.nickname.length > 0) && (form.nickname.length < 2)) && <div>닉네임은 2글자 이상이어야 합니다.</div> }
+            <input
               id="password"
               type="password"
               placeholder="비밀번호"
@@ -86,8 +85,8 @@ const SignupForm = ({ form, setForm,  }) => {
               onChange={handleChange}
               required
             />
-            { ((form.password.length > 0) && (form.password.length < 5)) && <div style={{ color: 'red' }}>비밀번호는 4글자 이상이어야 합니다.</div> }
-            <StyledInput
+            { ((form.password.length > 0) && (form.password.length < 5)) && <div>비밀번호는 4글자 이상이어야 합니다.</div> }
+            <input
               id="passwordCheck"
               type="password"
               placeholder="비밀번호 확인"
@@ -95,8 +94,8 @@ const SignupForm = ({ form, setForm,  }) => {
               onChange={handleChange}
               required
             />
-            { !passwordChecking() && <div style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</div> }
-            <button onClick={policyPaper} style={{ marginTop: '0.5rem' }}>약관보기</button>
+            { !passwordChecking() && <div>비밀번호가 일치하지 않습니다.</div> }
+            <button onClick={policyPaper}>약관보기</button>
             <label>
               <input
                 type="checkbox"
@@ -106,21 +105,21 @@ const SignupForm = ({ form, setForm,  }) => {
               약관에 동의합니다.
             </label>
 
-            <CustomButton style={{ marginTop: '1rem' }} onClick={sendSignupData}>
+            <button style={{ marginTop: '1rem' }} onClick={sendSignupData}>
               회원가입
-            </CustomButton>
+            </button>
           </form>
-          <button onClick={handleLoginPage} style={{ marginTop: '0.5rem' }}>로그인페이지로</button>
-        </AuthFormBlock>
-      </WhiteBox>
+          <button onClick={handleLoginPage}>로그인페이지로</button>
+        </div>
+      </div>
       <Modal isOpen={policyModalIsOpen}>
-        <div style={{width:'100%', height:'100%'}} onClick={() => setPolicyModalIsOpen(false)}>
+        <div onClick={() => setPolicyModalIsOpen(false)}>
           회원 가입 약관 페이지
 
           본 과정은 삼성 청년 소프트웨어 아카데미(SSAFY)의 일환으로 만들어진 것입니다.
         </div>
       </Modal>
-    </FormBody>
+    </div>
 
   )
 }

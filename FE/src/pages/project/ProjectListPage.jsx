@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
-import "../styles/testPage.css"
-import ProjectDetailPage from "./ProjectDetailPage";
+import "../../styles/testPage.css"
 
 
 const ProjectListPage = () => {
@@ -79,12 +78,12 @@ const ProjectListPage = () => {
   Modal.setAppElement("#root");
 
   return (
-      <div  style={{textAlign: 'center', width:'100%', height:'600px'}}>
+      <div>
         <h1>현재 진행 중인 프로젝트</h1>
         {projects.length === 0 ? (
             <p>프로젝트가 아직 없습니다.</p>
         ) : (
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div>
               {currentPosts.map((project) => (
                   <div
                     key={project.idx}
@@ -121,7 +120,7 @@ const ProjectListPage = () => {
             </div>
           )}
         </Modal>
-        <div style={{ display: 'flex', justifyContent: "space-between", marginTop: '1rem' }}>
+        <div>
           <div ></div>
           <button onClick={startBTN}>◀◀</button>
           <button onClick={leftBTN}>◀</button>
@@ -129,7 +128,7 @@ const ProjectListPage = () => {
           <button onClick={endBTN}>▶▶</button>
           <div></div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div>
           <Link to='/project/create'>
             <button>
               새로운 추억 생성

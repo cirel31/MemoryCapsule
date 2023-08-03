@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
-import '../styles/Calendar.scss'
+import '../../styles/Calendar.scss'
 import moment from "moment";
 import axios from "axios";
 import {useSelector} from "react-redux";
 // import {useNavigate} from "react-router-dom";
 
-const CalendarPage = () => {
+const CalendarForm = () => {
   // const navigate = useNavigate()
   const isLoggedIn = useSelector((state) => state.userState.isLoggedIn)
   console.log('로그인 상태 : ', isLoggedIn)
@@ -83,4 +83,4 @@ const CalendarPage = () => {
   )
 }
 
-export default CalendarPage
+export default CalendarForm
