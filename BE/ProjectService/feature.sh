@@ -55,7 +55,7 @@ $image_build_command
 ############################################################
 # [docker container run command]
 ############################################################
-container_run_command="sudo docker run --net santa -e "PROFILE=dev" --name  $container_name $image_name:$tag_name"
+container_run_command="sudo docker run --net santa -e "PROFILE=dev" --name -d $container_name $image_name:$tag_name"
 printf "\n"
 printf "=================================================\n"
 printf "| Docker container running !!\n"
