@@ -95,7 +95,7 @@ public class ProjectController {
      *
      * */
     @PostMapping("/create")
-    public ResponseEntity<Object> createProject(HttpServletRequest httpRequest, @RequestBody Map<String, Object> map) throws RegisterMakeException, ParseException {
+    public ResponseEntity<Object> createProject(HttpServletRequest httpRequest, @ModelAttribute  @RequestBody Map<String, Object> map) throws RegisterMakeException, ParseException {
         List<Integer> list = (ArrayList<Integer>) map.get("userList");
         List<Long> userList = new ArrayList<>();
         list.forEach(L -> {
