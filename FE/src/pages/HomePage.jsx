@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/HomePage.scss"
-import home_ba from "../assets/images/home/home_background.svg";
+import home_bg from "../assets/images/home/home_background.svg";
 const HomePage = () => {
   const navigate = useNavigate()
   const handlePageLogin = () => {
@@ -10,7 +10,7 @@ const HomePage = () => {
   return (
     <>
       <div onClick={handlePageLogin} className="home_body">
-        <img src={home_ba} className="homepage"/>
+        <img src={home_bg} className="homepage"/>
         <div className="home_text">
           <div>
             <p>추억을 쌓고 선물하기</p>
