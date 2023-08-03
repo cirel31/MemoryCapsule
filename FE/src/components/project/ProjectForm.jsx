@@ -1,31 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import {useRef, useState} from "react";
 import Calendar from "react-calendar";
-import '../styles/Calendar.css'
+import '../../styles/Calendar.css'
 import Modal from "react-modal";
 import axios from "axios";
-import ProjectAddFriends from "../pages/ProjectAddFriends";
+import ProjectAddFriends from "../../components/project/ProjectAddFriends";
 import {useDispatch, useSelector} from "react-redux";
-import {removeAll} from "../store/selectFriendSlice";
+import {removeAll} from "../../store/selectFriendSlice";
 import moment from "moment";
 
-const customModalStyles = {
-  overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    zIndex: 1000,
-  },
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    transform: "translate(-50%, -50%)",
-    borderRadius: "10px",
-    padding: "20px",
-    width: "80%",
-    maxWidth: "400px",
-  },
-};
 
 const ProjectForm = () => {
   const formRef = useRef(null)
@@ -91,8 +74,8 @@ const ProjectForm = () => {
 
   return (
     <div>
-      <div style={{display:"flex", justifyContent: "space-evenly", alignItems: "center"}}>
-        <form ref={formRef} style={{marginTop:'2rem'}}>
+      <div>
+        <form ref={formRef}>
           <div>
             <label id="title">캡슐 이름</label>
             <br/>
@@ -155,6 +138,7 @@ const ProjectForm = () => {
             />
           </div>
           <br/>
+          {/* 일부러 none 걸어논 거 */}
           <div style={{display:'none'}}>
             <input
               className="selectedUsers"
@@ -173,7 +157,7 @@ const ProjectForm = () => {
             <button onClick={() => setMultiplayModal(true)}>
               여러명이서 할거야!
             </button>
-            <Modal isOpen={multiplayModal} onRequestClose={() => setMultiplayModal(false)} style={customModalStyles}>
+            <Modal isOpen={multiplayModal} onRequestClose={() => setMultiplayModal(false)}>
               <ProjectAddFriends />
             </Modal>
           </div>

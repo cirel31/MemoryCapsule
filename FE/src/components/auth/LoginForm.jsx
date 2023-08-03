@@ -1,4 +1,3 @@
-import { AuthFormBlock, StyledInput, CustomButton, FormBody, WhiteBox } from "../../styles/loginStyle";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Modal from "react-modal";
@@ -7,7 +6,6 @@ import Modal from "react-modal";
 // import { login } from "../../store/authSlice"
 import useLoginEmail from "../../hooks/useLoginEmail";
 import kakao_login_img from "../../assets/images/kakao_login.png"
-import axios from "axios";
 
 const LoginForm = ({ form, setForm }) => {
   const navigate = useNavigate();
@@ -22,17 +20,6 @@ const LoginForm = ({ form, setForm }) => {
   // 키 갱신 안하면 로그인 페이지는 뜨지만 로그인이 안됨
   const OAUTH_KAKAO = `https://kauth.kakao.com/oauth/authorize?client_id=${API_KEY_KAKAO}&redirect_uri=${REDIRECT_URI_SITE+'kakao'}&response_type=code`
 
-  const TEST_URL = 'http://i9a608.p.ssafy.io:8000/oauth2/authorization/kakao'
-  const testFunc = async () => {
-    axios.get('http://i9a608.p.ssafy.io:8000/oauth2/authorization/kakao')
-      .then((res) => {
-        console.log('성공')
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
   const handleSignupPage = () => {
     navigate('/signup');
   };
@@ -78,14 +65,14 @@ const LoginForm = ({ form, setForm }) => {
   };
 
   return (
-    <FormBody>
-      <WhiteBox>
+    <div>
+      <div>
         <div>
           로그인 페이지
         </div>
-        <AuthFormBlock>
+        <div>
           <form>
-            <StyledInput
+            <input
               id="id"
               type="email"
               placeholder="아이디"
@@ -94,7 +81,7 @@ const LoginForm = ({ form, setForm }) => {
               required
             />
             {!isValidEmail && <div style={{ color: 'red' }}>올바른 이메일 형식이 아닙니다.</div>}
-            <StyledInput
+            <input
               id="password"
               type="password"
               placeholder="비밀번호"
@@ -102,25 +89,24 @@ const LoginForm = ({ form, setForm }) => {
               onChange={handleChange}
               required
             />
-            <CustomButton style={{ marginTop: '1rem', marginBottom: '1rem' }} onClick={sendLoginDataServer}>
+            <button onClick={sendLoginDataServer}>
               로그인
-            </CustomButton>
+            </button>
             <a href={OAUTH_KAKAO}>
               <img src={kakao_login_img} alt="카카오로 로그인" style={{height: '50%'}}/>
             </a>
           </form>
           <button onClick={handleSignupPage}>회원가입 페이지로</button>
-        </AuthFormBlock>
-      </WhiteBox>
+        </div>
+      </div>
       {/* 모달 창 */}
       <Modal isOpen={idModalIsOpen}>
-        <div style={{width:'100%', height:'100%'}} onClick={() => setIdModalIsOpen(false)}>아이디 형식이 잘못 되었습니다.</div>
+        <div onClick={() => setIdModalIsOpen(false)}>아이디 형식이 잘못 되었습니다.</div>
       </Modal>
       <Modal isOpen={passModalIsOpen}>
-        <div style={{width:'100%', height:'100%'}} onClick={() => setPassModalIsOpen(false)}>비밀번호 길이는 4자 이상입니다.</div>
+        <div onClick={() => setPassModalIsOpen(false)}>비밀번호 길이는 4자 이상입니다.</div>
       </Modal>
-      <button onClick={testFunc}>테스트 버튼</button>
-    </FormBody>
+    </div>
   );
 };
 

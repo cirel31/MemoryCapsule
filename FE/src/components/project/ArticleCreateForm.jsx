@@ -8,7 +8,7 @@ import stamp_sick from "../../assets/images/stamp/stamp_sick.svg"
 import stamp_soso from "../../assets/images/stamp/stamp_soso.svg"
 import stamp_wow from "../../assets/images/stamp/stamp_wow.svg"
 import Modal from "react-modal";
-import axios from "../../api/axios";
+import axios from "axios"
 
 const ArticleCreateForm = () => {
   const formRef = useRef(null)

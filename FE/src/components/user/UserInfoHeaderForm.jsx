@@ -1,9 +1,9 @@
 import {Link} from "react-router-dom";
-import sample_img from "../assets/images/kokona.png"
-import friend_picto from "../assets/images/mypage/friend_picto.svg"
-import edit_picto from "../assets/images/mypage/edit_picto.svg"
-import "../styles/MyPage.scss"
-const UserInfoHeaderPage = () => {
+import sample_img from "../../assets/images/kokona.png"
+import friend_picto from "../../assets/images/mypage/friend_picto.svg"
+import edit_picto from "../../assets/images/mypage/edit_picto.svg"
+import "../../styles/MyPage.scss"
+const UserInfoHeaderForm = () => {
   const userNickname = '김싸피'
   const userEmail = 'jdragon@ssafy.com'
   const friendsCount = 0
@@ -41,4 +41,4 @@ const UserInfoHeaderPage = () => {
     </div>
   )
 }
-export default UserInfoHeaderPage;
+export default UserInfoHeaderForm;

@@ -1,12 +1,13 @@
-import { NoFriendList, AuthFormGrid, CustomButton } from "../styles/friendStyle";
+import { NoFriendList, AuthFormGrid, CustomButton } from "../../styles/friendStyle";
 
 import React, { useState, useEffect } from "react";
 // import NoticeInfo from "../components/notice/NoticeInfo";
-import SearchBar from "../components/SearchBar"
+import SearchBar from "../../components/SearchBar"
 import axios from "axios";
-import Pagination from "../components/common/Pagination";
-import PostCreateForm from "../components/notice/PostCreateForm";
+import Pagination from "../../components/common/Pagination";
+
 import {Link} from "react-router-dom";
+
 
 const NoticeListPage = () => {
 

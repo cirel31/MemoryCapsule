@@ -1,21 +1,18 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
-import LoginPage from "./LoginPage";
-import SignupPage from "./SignupPage";
 import MainPage from "./MainPage";
 import NotFound from "./NotFound";
-import FriendListPage from "./FriendListPage";
-import NoticeListPage from "./NoticeListPage";
-import PostCreatePage from "./PostCreatePage";
-import ProjectListPage from "./ProjectListPage";
-import ProjectCreatePage from "./ProjectCreatePage";
-import TestPage from "./TestPage";
-import TestDetailPage from "./TestDetailPage";
-import MyPage from "./MyPage";
-import CalendarPage from "./CalendarPage";
-import ArticleCreatePage from "./ArticleCreatePage";
-import ProjectDetailPage from "./ProjectDetailPage";
+import LoginPage from "./auth/LoginPage";
+import SignupPage from "./auth/SignupPage";
+import MyPage from "./user/MyPage";
+import CalendarForm from "../components/user/CalendarForm";
+import FriendListPage from "./friend/FriendListPage";
+import NoticeListPage from "./notice/NoticeListPage";
+import ArticleCreatePage from "./project/ArticleCreatePage";
+import ProjectDetailPage from "./project/ProjectDetailPage";
+import ProjectListPage from "./project/ProjectListPage";
+import ProjectCreatePage from "./project/ProjectCreatePage";
 
 export default function Routers() {
 
@@ -34,9 +31,8 @@ export default function Routers() {
       <Route path='/notice/postcreate' element={<PostCreatePage />} />
 
       <Route path='/mypage' element={<MyPage />} />
-      <Route path='/test' element={<TestPage />} />
-      <Route path='/test/:postId' element={<TestDetailPage />} />
-      <Route path='/calendar' element={<CalendarPage />} />
+
+      <Route path='/calendar' element={<CalendarForm />} />
 
       <Route path='/*' element={<NotFound />} />
     </Routes>
