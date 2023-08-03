@@ -1,20 +1,11 @@
-<<<<<<< HEAD:FE/src/pages/FriendListPage.jsx
-import { NoFriendList, AuthFormGrid, CustomButton } from "../styles/friendStyle";
-
-import React, { useEffect, useState } from "react";
-import FriendForm from "../components/friend/FriendForm";
-import FriendInfo from "../components/friend/FriendInfo";
-import FriendDetail from "../components/friend/FriendDetail";
-import axios from "axios";
-import {Link} from "react-router-dom";
-=======
 import { NoFriendList, AuthFormGrid, CustomButton } from "../../styles/friendStyle";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FriendForm from "../../components/friend/FriendForm";
 import FriendInfo from "../../components/friend/FriendInfo";
+import FriendDetail from "../../components/friend/FriendDetail";
+import {Link} from "react-router-dom";
 
->>>>>>> 51e779e6d36067df8523b27aca0c76396e201055:FE/src/pages/friend/FriendListPage.jsx
 
 const FriendListPage = () => {
     const [form, setForm] = useState({

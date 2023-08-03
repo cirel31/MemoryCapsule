@@ -1,9 +1,9 @@
-import { NoFriendList, AuthFormGrid, CustomButton } from "../styles/friendStyle";
+import { NoFriendList, AuthFormGrid, CustomButton } from "../../styles/friendStyle";
 
 import React, { useState } from "react";
-import FriendForm from "../components/friend/FriendForm";
-import FriendInfo from "../components/friend/FriendInfo";
-import FriendDetail from "../components/friend/FriendDetail";
+import FriendForm from "../../components/friend/FriendForm";
+import FriendInfo from "../../components/friend/FriendInfo";
+import FriendDetail from "../../components/friend/FriendDetail";
 import axios from "axios";
 
 const FriendListPage = () => {
