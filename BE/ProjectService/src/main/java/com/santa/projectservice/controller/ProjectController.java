@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -153,21 +154,16 @@ public class ProjectController {
     }
 
 
-    @PostMapping("/article/write/{projectId}")
-    public ResponseEntity<Boolean> writeArticle(@PathVariable("projectId") Long projectId,
-                                                @RequestBody Map<String, String> map,
+    @PostMapping("/{projectid}/article")
+    public ResponseEntity<Boolean> writeArticle(@PathVariable("projectid") Long projectId,
+                                                @RequestParam("images") List<MultipartFile> files,
+                                                @ModelAttribute ArticleDto articleDto,
                                                 HttpServletRequest request) throws IOException {
         Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
-        String title = map.get("title");
-        String content = map.get("content");
-        ArticleDto articleDto = ArticleDto.builder()
-                .title(map.get("title"))
-                .content(map.get("content"))
-                .userId(userId)
-                .projectId(projectId)
-                .stamp(Integer.parseInt(map.get("stamp")))
-                .build();
-        Boolean result = articleService.writeArticle(articleDto, null);
+        articleDto.setUserId(userId);
+        articleDto.setProjectId(projectId);
+        log.info(articleDto.toString());
+        Boolean result = articleService.writeArticle(articleDto, files);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
