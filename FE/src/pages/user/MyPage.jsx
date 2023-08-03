@@ -1,6 +1,7 @@
 import CalendarForm from "../../components/user/CalendarForm";
 import UserInfoHeaderForm from "../../components/user/UserInfoHeaderForm";
 import AnnounceUserViewPage from "../notice/AnnounceUserViewPage";
+
 import {useDispatch} from "react-redux";
 import {logout} from "../../store/userSlice";
 import "../../styles/MyPage.scss";
@@ -34,9 +35,18 @@ const MyPage = () => {
             <div>
                 <AnnounceUserViewPage />
             </div>
+            <br/>
+            <h1 className="mypage_notice_h1">제작중인 캡슐 현황</h1>
+            <div className="parting_line"></div>
             <div>
-                <button onClick={LogoutUser}>로그아웃 버튼</button>
+              <p>알약들 나오는 페이지 만들어줘 만들어 줘 만들어 "줘"</p>
+              <button onClick={LogoutUser}>로그아웃 버튼</button>
             </div>
+            <br/>
+            <br/>
+            <h1 className="mypage_notice_h1">보관함</h1>
+            <div className="parting_line"></div>
+
         </div>
     </div>
   )
