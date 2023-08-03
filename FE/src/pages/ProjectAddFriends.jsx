@@ -1,36 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchResult, addFriends, removeFriends } from "../store/selectFriendSlice";
 
 const ProjectAddFriends = () => {
+  const dispatch = useDispatch()
   const searchUsers = ''
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([
-    {
-      id: '김태경',
-      nickname: '김태경'
-    },
-    {
-      id: '정도현',
-      nickname: '김태경'
-    },
-    {
-      id: '김재현',
-      nickname: '김태경'
-    },
-    {
-      id: '김영도',
-      nickname: '김태경'
-    },
-    {
-      id: '김명진',
-      nickname: '김태경'
-    },
-    {
-      id: '이정명',
-      nickname: '김태경'
-    }
-  ]);
-  const [selectedUsers, setSelectedUsers] = useState([])
 
   const handleSearchFriends = async () => {
     try {
@@ -41,18 +17,21 @@ const ProjectAddFriends = () => {
         },
       });
       const searchResultsData = response.data
-      setSearchResults(searchResultsData)
+      dispatch(setSearchResult(searchResultsData))
     } catch (error) {
       console.error("서버에서 유저 검색에 실패했습니다", error)
     }
   }
   const addFriendsList = (userId) => {
-    setSelectedUsers([...selectedUsers, userId])
+    dispatch(addFriends(userId))
   }
   const removeFriendsList = (userId) => {
-    const updateFriends = selectedUsers.filter((id) => id !== userId)
-    setSelectedUsers(updateFriends)
+    dispatch(removeFriends(userId))
   }
+
+  const selectedUsers = useSelector((state) => state.friend.selectedPeople)
+  const searchResults = useSelector((state) => state.friend.searchResults)
+
   return (
     <div>
       <div>
@@ -75,7 +54,11 @@ const ProjectAddFriends = () => {
         <h2>선택한 유저 리스트</h2>
         <div>
           {selectedUsers.map((userId) => (
-            <p key={userId} onClick={() => removeFriendsList(userId)}>{userId}</p>
+            <div key={userId} style={{display:"flex", alignItems:"center"}}>
+              <p>{userId}    </p>
+              <button onClick={() => removeFriendsList(userId)}>제외하기</button>
+            </div>
+            
           ))}
         </div>
       </div>
