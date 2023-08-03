@@ -68,3 +68,17 @@ management:
     web:
       exposure:
         include: refresh, health, beans, bus-refresh, info, metrics, prometheus # 포함시킬 내용들
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAQPOZGAOT652M75EC
+      secretKey: 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
+    stack:
+      auto: false
+    s3:
+      bucket: ssafysanta
+    region:
+      static: ap-northeast-2
+S3Url: https://ssafysanta.s3.ap-northeast-2.amazonaws.com/
+
