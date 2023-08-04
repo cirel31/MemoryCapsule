@@ -2,8 +2,8 @@ spring:
   cloud:
     config:
       uri: http://i9a608.p.ssafy.io:8888
-      name:  CommonConfig
-      enabled: false
+      name:  CommonConfig, notification
+      enabled: true
 
   profiles:
     active: ${PROFILE:default}

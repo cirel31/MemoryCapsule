@@ -8,7 +8,7 @@
 # 1. stop & remove continaer ${name}-service
 # 2. make image ${name}-image
 # 3. build container with ${run_option} , named ${name}-service
-name="alarm"
+name="notification"
 container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
