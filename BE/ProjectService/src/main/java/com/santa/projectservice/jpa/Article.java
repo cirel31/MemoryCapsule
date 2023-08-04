@@ -47,7 +47,7 @@ public class Article {
     @Column(name = "article_stamp")
     private Integer stamp;
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<ArticleImg> articleImgList = new ArrayList<>();
 

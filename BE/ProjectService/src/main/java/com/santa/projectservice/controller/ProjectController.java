@@ -58,18 +58,18 @@ public class ProjectController {
         this.articleService = articleService;
     }
 
+    @GetMapping("/all")
     @Operation(summary = "모든 프로젝트를 가져옵니다", deprecated = true, description = "테스트용 함수이니 사용하지 않는것을 권장합니다")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "가져오기 성공",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProjectDto.class)) }),
             @ApiResponse(responseCode = "404", description = "해당 ID를 가진 사용자 혹은 프로젝트를 찾을 수 없음", content = @Content) })
-    @GetMapping("/all")
     public ResponseEntity<List<ProjectDto>> getAllProject() {
         return ResponseEntity.status(HttpStatus.OK).body(projectService.getAll());
     }
 
-    @Operation(summary = "아이디로 내 프로젝트를 가져옵니다")
     @GetMapping("/myproject")
+    @Operation(summary = "아이디로 내 프로젝트를 가져옵니다")
     public ResponseEntity<List<ProjectInfo>> getMyProject(
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId) {
@@ -77,8 +77,8 @@ public class ProjectController {
         List<ProjectInfo> projectInfos = projectService.projectDtosToInfos(projectDtos);
         return ResponseEntity.status(HttpStatus.OK).body(projectInfos);
     }
-    @Operation(summary = "아이디로 내 현재 진행중인 프로젝트를 가져옵니다", description = "confirm이 0인걸 가져옵니다")
     @GetMapping("/myproject/current")
+    @Operation(summary = "아이디로 내 현재 진행중인 프로젝트를 가져옵니다", description = "confirm이 0인걸 가져옵니다")
     public ResponseEntity<List<ProjectInfo>> getMyCurrentProject(
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId) {
@@ -86,8 +86,8 @@ public class ProjectController {
         List<ProjectInfo> projectInfos = projectService.projectDtosToInfos(projectDtos);
         return ResponseEntity.status(HttpStatus.OK).body(projectInfos);
     }
-    @Operation(summary = "완료된 프로젝트를 가져옵니다", description = "confirm이 1인걸 가져옵니다")
     @GetMapping("/myproject/done")
+    @Operation(summary = "완료된 프로젝트를 가져옵니다", description = "confirm이 1인걸 가져옵니다")
     public ResponseEntity<List<ProjectInfo>> getMyDoneProject(
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId) {
@@ -95,20 +95,17 @@ public class ProjectController {
         List<ProjectInfo> projectInfos = projectService.projectDtosToInfos(projectDtos);
         return ResponseEntity.status(HttpStatus.OK).body(projectInfos);
     }
-    @Operation(summary = "루트 권한으로 프로젝트를 가져옵니다", description = "모든 프로젝트 가져옵니다")
-    /* 그냥 원하는 프로젝트 가져옴 */
     @GetMapping("/root/{projectid}")
+    @Operation(summary = "루트 권한으로 프로젝트를 가져옵니다", description = "모든 프로젝트 가져옵니다")
     public ResponseEntity<ProjectDto> getProjectByRoot(@PathVariable Integer projectid) throws ProjectNotFoundException {
         Long projectId = Long.valueOf(projectid.toString());
         ProjectDto projectDto = projectService.findProjectByProjectId(projectId);
         return ResponseEntity.status(HttpStatus.OK).body(projectDto);
     }
 
-    /* 원하는 프로젝트 가져옴
-     *  userId를 가지고 있어야 함
-     * */
-    @Operation(summary = "특정 프로젝트를 조회합니다", description = "내가 참여하고 있는 프로젝트라면 정보를 가져옵니다. ")
+
     @GetMapping("/{projectid}")
+    @Operation(summary = "특정 프로젝트를 조회합니다", description = "내가 참여하고 있는 프로젝트라면 정보를 가져옵니다. ")
     public ResponseEntity<ProjectDto> getProjectById(@PathVariable Integer projectid,
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId) throws UserNotFoundException, ProjectNotFoundException
@@ -127,18 +124,16 @@ public class ProjectController {
      *  userId 필요
      *
      * */
-    @Operation(summary = "프로젝트를 생성합니다 ", description = "confirm이 1인걸 가져옵니다")
     @PostMapping("/create")
+    @Operation(summary = "프로젝트를 생성합니다 ", description = "confirm이 1인걸 가져옵니다")
     public ResponseEntity<Object> createProject(
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId,
-            @ModelAttribute  @RequestBody Map<String, Object> map) throws RegisterMakeException, ParseException
-    {
+            @RequestParam MultipartFile image,
+            @RequestBody Map<String, Object> map) throws RegisterMakeException, IOException {
         List<Integer> list = (ArrayList<Integer>) map.get("userList");
         List<Long> userList = new ArrayList<>();
-        list.forEach(L -> {
-            userList.add(Long.valueOf(L.toString()));
-        });
+        list.forEach(L -> {userList.add(Long.valueOf(L.toString()));});
         Map<String, String> pro = (Map<String, String>) map.get("project");
         String title = pro.get("title"), content = pro.get("content");
 
@@ -157,16 +152,15 @@ public class ProjectController {
                     .started(started)
                     .ended(ended)
                     .build();
-        } catch (Exception e) {
-            throw new ProjectNotFullfillException("인자가 부족하네요!", e);
-        }
+        } catch (Exception e) {throw new ProjectNotFullfillException("인자가 부족하네요!", e);}
+
         Long owner = userId;
-        Long projectId = projectService.createProject(projectDto, userList, owner);
+        Long projectId = projectService.createProject(projectDto, userList, owner, image);
         return ResponseEntity.status(HttpStatus.OK).body(projectId);
     }
 
-    @Operation(summary = "내가 주인인 프로젝트를 삭제합니다.")
     @DeleteMapping("/{projectid}")
+    @Operation(summary = "내가 주인인 프로젝트를 삭제합니다.")
     public ResponseEntity<String> deleteProject(
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId,
@@ -178,8 +172,8 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("[" + title + "] : 삭제성공");
     }
 
-    @Operation(summary = "특정 유저가 참여중인 프로젝트들을 가져옵니다 ")
     @GetMapping("/list/{userId}")
+    @Operation(summary = "특정 유저가 참여중인 프로젝트들을 가져옵니다 ")
     public ResponseEntity<List<ProjectDto>> getRegisterById(@PathVariable("userId") Long userId) {
         List<RegisterDto> registerDtoList = projectService.findRegistersByUserId(userId);
         log.info(registerDtoList.toString());
@@ -188,8 +182,8 @@ public class ProjectController {
     }
 
 
-    @Operation(summary = "프로젝트를 수정합니다 .", description = "근데 수정 안할거죠?")
     @PutMapping("/{projectId}")
+    @Operation(summary = "프로젝트를 수정합니다 .", description = "근데 수정 안할거죠?")
     public ResponseEntity<Boolean> editProjectContent(@PathVariable("projectId") Long projectId, @RequestBody String content,
               @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
               @RequestHeader("userId") Long userId)
@@ -199,30 +193,23 @@ public class ProjectController {
     }
 
 
-    @PostMapping(value = "/{projectid}/article", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "프로젝트에 게시글을 작성합니다",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    content = @Content(encoding = @Encoding(name = "multipart",
-                            contentType = MediaType.MULTIPART_FORM_DATA_VALUE))))
-    public ResponseEntity<Boolean> writeArticle(
-            @Parameter(description = "프로젝트 아이디") @PathVariable("projectid") Long projectId,
-            @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER) @RequestHeader("userId") Long userId,
-            @Parameter(description = "이미지들", schema = @Schema(type = "string", format = "binary"))
-            @RequestPart("images") List<MultipartFile> files,
-            @Parameter(description = "게시글 제목") @RequestPart("title") String title,
-            @Parameter(description = "게시글 내용") @RequestPart("content") String content,
-            @Parameter(description = "스탬프 번호") @RequestPart("stamp") Integer stamp
-    ) throws IOException {
-        ArticleDto articleDto = ArticleDto.builder()
-                        .userId(userId).projectId(projectId).title(title).content(content).stamp(stamp).build();
+    @PostMapping("/{projectid}/article")
+    @Operation(summary = "게시글을 작성합니다.", description = "특정 프로젝트의 게시글을 작성합니다.")
+    public ResponseEntity<Boolean> writeArticle(@PathVariable("projectid") Long projectId,
+                                                @RequestParam("images") List<MultipartFile> files,
+                                                @ModelAttribute ArticleDto articleDto,
+                                                HttpServletRequest request) throws IOException {
+        Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
+        articleDto.setUserId(userId);
+        articleDto.setProjectId(projectId);
         log.info(articleDto.toString());
         Boolean result = articleService.writeArticle(articleDto, files);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
 
-    @Operation(summary = "특정 프로젝트의 게시물 조회")
     @GetMapping("/{projectid}/article")
+    @Operation(summary = "특정 프로젝트의 내 게시물 조회")
     public ResponseEntity<List<ArticleDto>> getProjectArticles(@PathVariable("projectid") Integer projectid,
                 @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
                 @RequestHeader("userId") Long userId) {
@@ -232,8 +219,8 @@ public class ProjectController {
     }
 
 
-    @Operation(summary = "프로젝트에서 내가 최근에 쓴 게시물 조회")
     @GetMapping("/{projectid}/latestarticle")
+    @Operation(summary = "프로젝트에서 내가 최근에 쓴 게시물 조회")
     public ResponseEntity<ArticleDto> getRecentArticles(
             @PathVariable("projectid") Integer projectid,
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)

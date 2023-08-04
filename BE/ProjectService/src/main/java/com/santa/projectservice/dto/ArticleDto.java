@@ -1,12 +1,8 @@
 package com.santa.projectservice.dto;
 
-import com.santa.projectservice.jpa.Project;
-import com.santa.projectservice.jpa.User;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -19,10 +15,10 @@ public class ArticleDto {
     private String content;
     private Date created;
     private Integer stamp;
-    List<MultipartFile> images;
+    private List<ArticleImgDto> images;
 
     @Builder
-    public ArticleDto(Long idx, Long projectId, Long userId, String title, String content, Date created, Integer stamp, List<MultipartFile> images) {
+    public ArticleDto(Long idx, Long projectId, Long userId, String title, String content, Date created, Integer stamp, List<ArticleImgDto> images) {
         this.idx = idx;
         this.projectId = projectId;
         this.userId = userId;

@@ -14,6 +14,7 @@ import com.santa.projectservice.repository.ArticleRepository;
 import com.santa.projectservice.repository.ProjectRepository;
 import com.santa.projectservice.repository.RegisterRepository;
 import com.santa.projectservice.repository.UserRepository;
+import com.santa.projectservice.service.FileUploadService;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.vo.ProjectInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,10 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,11 +40,13 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ModelMapper mapper;
     private final ArticleRepository articleRepository;
+    private final FileUploadService fileUploadService;
 
     public ProjectServiceImpl(RegisterRepository registerRepository,
                               ProjectRepository projectRepository,
-                              UserRepository userRepository, ArticleRepository articleRepository) {
+                              UserRepository userRepository, ArticleRepository articleRepository, FileUploadService fileUploadService) {
         this.articleRepository = articleRepository;
+        this.fileUploadService = fileUploadService;
         this.mapper = new ModelMapper();
         this.registerRepository = registerRepository;
         this.projectRepository = projectRepository;
@@ -58,11 +63,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional(rollbackOn =  RegisterMakeException.class)
-    public Long createProject(ProjectDto projectDto, List<Long> userList, Long Owner) throws RegisterMakeException, ProjectNotFullfillException{
+    public Long createProject(ProjectDto projectDto, List<Long> userList, Long Owner, MultipartFile image) throws RegisterMakeException, ProjectNotFullfillException, IOException {
+
+        String url = fileUploadService.upload(image);
         Project project1 = Project.builder()
                 .content(projectDto.getContent())
                 .title(projectDto.getTitle())
                 .started(projectDto.getStarted())
+                .imgUrl(url)
                 .ended(projectDto.getEnded())
                 .build();
         log.info(project1.toString());

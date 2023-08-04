@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -66,19 +67,19 @@ public class ArticleServiceImpl implements ArticleService {
                 .stamp(articleDto.getStamp())
                 .build();
         Article writeArticle = articleRepository.save(article);
-        if(images != null) {
-            images.forEach(file -> {
-                try {
-                    String url = fileUploadService.upload(file);
-                    articleImgRepository.save(ArticleImg.builder()
-                            .article(writeArticle)
-                            .imgurl(url)
-                            .build()
-                    );
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        int order = 0;
+        try {
+            for (int i = 0; i < images.size(); i++) {
+                String url = fileUploadService.upload(images.get(i));
+                articleImgRepository.save(ArticleImg.builder()
+                        .article(writeArticle)
+                        .order(order++)
+                        .imgurl(url)
+                        .build()
+                );
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return true;
     }
@@ -109,6 +110,12 @@ public class ArticleServiceImpl implements ArticleService {
                             .content(article.getContent())
                             .title(article.getTitle())
                             .created(article.getCreated())
+                            .images(
+                                    article.getArticleImgList()
+                                    .stream()
+                                    .map(ArticleImg::toDto)
+                                    .collect(Collectors.toList())
+                            )
                     .build());
         }
         return resultList;
