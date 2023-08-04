@@ -31,10 +31,21 @@ eureka:
   client:
     service-url:
       defaultZone:
-        http://localhost:8761
-    fetch-registry: false
-    register-with-eureka: false
+        http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
 
+
+openapi:
+  service:
+    title: Project Service Swagger Api 만들기 성공입니다 하하
+    version: 999999999
+    url: http://localhost:8000/project
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 #logging:
 #  level:
 #    root:
