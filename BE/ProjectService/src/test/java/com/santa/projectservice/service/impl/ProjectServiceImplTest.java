@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,13 +48,13 @@ public class ProjectServiceImplTest {
 
 
     @Test
-    public void 프로젝트_생성() {
+    public void 프로젝트_생성() throws IOException {
         ProjectDto projectDto = ProjectDto.builder()
                 .title("프로젝트 테스트")
                 .content("컨텐츠 테스트")
                 .build();
         ArrayList<Long> userList = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L));
-        Long result = projectService.createProject(projectDto, userList, 1001L);
+        Long result = projectService.createProject(projectDto, userList, 1001L, null);
         ProjectDto resultDto = null;
         try {
             resultDto = projectService.findProjectById(result);
@@ -75,13 +76,13 @@ public class ProjectServiceImplTest {
     }
 
     @Test
-    public void 프로젝트_생성_후_레지스터_검색() {
+    public void 프로젝트_생성_후_레지스터_검색() throws IOException {
         ProjectDto projectDto = ProjectDto.builder()
                 .title("프로젝트 테스트")
                 .content("컨텐츠 테스트")
                 .build();
         ArrayList<Long> userList = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L));
-        Long result = projectService.createProject(projectDto, userList, 1001L);
+        Long result = projectService.createProject(projectDto, userList, 1001L, null);
         ProjectDto resultDto = null;
         try {
             resultDto = projectService.findProjectById(result);

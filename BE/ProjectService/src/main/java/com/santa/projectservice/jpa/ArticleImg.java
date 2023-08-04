@@ -1,5 +1,6 @@
 package com.santa.projectservice.jpa;
 
+import com.santa.projectservice.dto.ArticleImgDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -28,11 +29,23 @@ public class ArticleImg {
     @CreationTimestamp
     private Date created;
 
+    @Column(name = "articleimg_order")
+    private Integer order;
     @Builder
-    public ArticleImg(Long id, Article article, String imgurl, Date created) {
+    public ArticleImg(Long id, Article article, String imgurl, Date created, Integer order) {
         this.id = id;
         this.article = article;
         this.imgurl = imgurl;
         this.created = created;
+        this.order = order;
+    }
+
+    public static ArticleImgDto toDto(ArticleImg articleImg){
+        return ArticleImgDto.builder()
+                .articleId(articleImg.getId())
+                .imgurl(articleImg.getImgurl())
+                .imgIdx(articleImg.getId())
+                .order(articleImg.order)
+                .build();
     }
 }

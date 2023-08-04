@@ -10,8 +10,10 @@ import com.santa.projectservice.jpa.Project;
 import com.santa.projectservice.jpa.Register;
 import com.santa.projectservice.jpa.User;
 import com.santa.projectservice.vo.ProjectInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
 
 public interface ProjectService {
@@ -23,7 +25,7 @@ public interface ProjectService {
      * @param Owner - 프로젝트 주인
      * @return
      */
-    Long  createProject(ProjectDto project, List<Long> userList, Long Owner)  throws RegisterMakeException, ProjectNotFullfillException;
+    Long  createProject(ProjectDto project, List<Long> userList, Long Owner, MultipartFile image) throws RegisterMakeException, ProjectNotFullfillException, IOException;
 
     /**
      * @param id - 프로젝트 id
