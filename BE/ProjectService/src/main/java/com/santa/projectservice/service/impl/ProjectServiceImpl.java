@@ -21,14 +21,13 @@ import org.hibernate.PropertyValueException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -212,6 +211,14 @@ public class ProjectServiceImpl implements ProjectService {
             projects.add(dto);
         }
         return projects;
+    }
+
+    @Override
+    public List<ProjectDto> findProjectsByUserId(Long userId){
+        return registerRepository.findRegistersByUser_Id(userId)
+                .stream().map(Register::getProject)
+                .map(Project::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
