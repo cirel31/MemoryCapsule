@@ -50,10 +50,10 @@ public class UserController {
     public ResponseEntity userLogin(@RequestBody UserDto.RequestLogin requestLogin) {
         log.info("user-login");
         try {
-            TokenDto result = userService.login(requestLogin);
+            UserDto.ResponseLogin result = userService.login(requestLogin);
             return ResponseEntity.status(HttpStatus.CREATED).body(result);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

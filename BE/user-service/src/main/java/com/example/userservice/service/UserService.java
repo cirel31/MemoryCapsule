@@ -1,6 +1,5 @@
 package com.example.userservice.service;
 
-import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.User;
 import org.springframework.security.core.Authentication;
@@ -11,7 +10,7 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
     // User 로그인
-    TokenDto login(UserDto.RequestLogin requestLogin) throws Exception;
+    UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception;
     // User 로그아웃
     void logout(Authentication authentication);
     // User 회원가입

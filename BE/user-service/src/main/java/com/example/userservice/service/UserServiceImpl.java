@@ -31,10 +31,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public TokenDto login(UserDto.RequestLogin requestLogin) throws Exception {
+    public UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception {
         User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Not found"));
         if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
             throw new Exception("Password Not Matched!");
@@ -82,7 +80,8 @@ public class UserServiceImpl implements UserService {
                     .build());
         }
 
-        return TokenDto.builder()
+        return UserDto.ResponseLogin.builder()
+                .userIdx(user.getIdx())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -209,6 +208,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
         return UserDto.Detail.builder()
                 .email(user.getEmail())
+                .point(user.getPoint().intValue())
                 .nickname(user.getNickName())
                 .totalFriend(user.getFriendList().size())
                 .build();
