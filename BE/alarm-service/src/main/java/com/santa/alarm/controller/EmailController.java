@@ -8,11 +8,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +22,11 @@ import java.util.Map;
 public class EmailController {
 
     private final EmailService emailService;
+
+    @GetMapping("/health-check")
+    public ResponseEntity health_check(){
+        return ResponseEntity.status(HttpStatus.OK).body("Hello alarm-service");
+    }
 
     @ApiOperation(value = "회원 가입 인증 메일", notes = "이메일 전송 결과 메시지를 반환한다.", response = String.class)
     @PostMapping("/register_verify/{user_email}/{code}")
