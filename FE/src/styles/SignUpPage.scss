@@ -188,11 +188,16 @@
     font-family: "IBM Plex Sans KR";
     font-weight: 600;
     font-size: 1.25vw;
-    background-color: var(--point1_4);
+    background-color: var(--point1_main);
     color: var(--white);
     height: 100%;
     width: 8vw;
     padding: 2% 4% 2% 4%;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: var(--point1_3);
+    }
   }
   & > div {
     width: 100%;
@@ -260,6 +265,12 @@
     height: 100%;
     width: 8vw;
     padding: 2% 4% 2% 4%;
+    transition: color, background-color 0.3s;
+
+    &:hover {
+      color: var(--font_burgundy_100);
+      background-color: var(--brand3_3);
+    }
   }
 }
 .signup_alert_id {
@@ -300,9 +311,13 @@
   border: none;
   border-radius: 0 4rem 4rem 0;
   background-color: var(--brand2_main);
+  transition: background-color 0.3s;
   display: grid;
   align-items: center;
   & > img {
     width: 2vw;
+  }
+  &:hover {
+    background-color: var(--brand2_3);
   }
 }
