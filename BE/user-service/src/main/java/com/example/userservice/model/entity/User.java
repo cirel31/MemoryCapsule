@@ -77,4 +77,15 @@ public class User {
     @WhereJoinTable (clause = "connected_confirm = '1'")
     @JsonIgnore
     private List<User> friendList = new ArrayList<>();
+
+
+    public void deleteUser() {
+        this.deleted = true;
+    }
+
+    public void modifyUser(String nickName, String passWord, String file) {
+        this.nickName = nickName;
+        this.passWord = passWord;
+        this.imgUrl = file;
+    }
 }

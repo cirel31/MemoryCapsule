@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
     // User 로그인
@@ -17,18 +18,16 @@ public interface UserService extends UserDetailsService {
     // User 회원가입
     UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile file) throws Exception;
 
-    List<User> findByAllFriends(Long userId) throws Exception;
-    // 친구삭제
-    boolean deleteFirend(Long hostId, Long guestId);
-    // 친구추가
-    boolean userAddFriend(Long hostId, Long guestId);
-
-    boolean userConfirmFriend(Long hostId, Long guestId);
+    UserDto.Detail getUserDetail(Long userId, int year, int month) throws Exception;
+    UserDto.Detail getUserDetail(Long userId) throws Exception;
+    //회원 탈퇴
+    void deleteUser(Long userId);
 
     // 이메일로 유저 찾기
     boolean checkEmailDuplicated(final String email) throws Exception;
 
-    UserDto.Detail getUserDetail(Long userId, int year, int month) throws Exception;
-    UserDto.Detail getUserDetail(Long userId) throws Exception;
+    //회원정보 수정
+    void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception;
 
+//    Optional<User> checkEmailGetUser(String userEmail);
 }

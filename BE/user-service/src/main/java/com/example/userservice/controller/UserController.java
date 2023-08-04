@@ -64,18 +64,25 @@ public class UserController {
     }
 
     @PutMapping("/change")
-    public ResponseEntity userChangeInfo() {
-        return null;
+    public ResponseEntity userChangeInfo(
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @ModelAttribute UserDto.modify modifyDto) throws Exception {
+        userService.modifyUser(modifyDto, file);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity userDelete() {
-        return null;
+    public ResponseEntity userDelete(@RequestParam(value = "user_id") Long user_id) {
+        userService.deleteUser(user_id);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/find_password")
-    public ResponseEntity findPwd() {
-        return null;
+    public ResponseEntity findPwd(@PathVariable("userEmail") String userEmail) throws Exception {
+        if (userService.checkEmailDuplicated(userEmail)) {
+            return null;
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
     }
 
     @GetMapping("/{userId}/detail")

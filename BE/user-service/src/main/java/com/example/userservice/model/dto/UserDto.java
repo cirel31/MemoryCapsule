@@ -32,6 +32,20 @@ public class UserDto {
     @Getter
     @Setter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class modify{
+        @NotNull
+        private Long userId;
+        @NotNull
+        private String nickName;
+        @NotNull
+        private String password;
+    }
+
+    @Getter
+    @Setter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RequestLogin{

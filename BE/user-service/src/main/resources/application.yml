@@ -7,7 +7,7 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:33060/santa
+    url: jdbc:mariadb://localhost:33060/santa?autoReconnect=true&useSSL=false
     username: root
     password: root
   jpa:
