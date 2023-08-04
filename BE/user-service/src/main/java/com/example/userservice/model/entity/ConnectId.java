@@ -1,8 +1,6 @@
 package com.example.userservice.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +9,9 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Getter
+@Setter
 public class ConnectId implements Serializable {
     @Column(name = "connected_er")
     private Long requesterId;
