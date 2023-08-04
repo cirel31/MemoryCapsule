@@ -1,0 +1,308 @@
+@import "theme.css";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
+
+.signup_body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  .signup_back {
+    width: 100%;
+  }
+}
+.signup_forms_body {
+  font-family: Inconsolata;
+  position: absolute;
+  width: 40vw;
+  height: 70%;
+  top: 15%;
+  left: 12%;
+  background: var(--white);
+  filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+
+  .forms_body_color {
+    width: 38vw;
+    height: 80%;
+    background: var(--brand3_5);
+    margin-top: 6%;
+
+    & > h1 {
+      color: var(--white);
+      font-size: 3.5vw;
+      margin: 2% 0 0 5%;
+      font-weight: 600;
+    }
+    .form_set {
+      height: 100%;
+      margin: 5% 0 0 8%;
+
+      & > form {
+        height: 100%;
+        display: grid;
+        grid-template-rows: 21% 21% 31% 30%;
+      }
+    }
+
+  }
+}
+
+.forms_namepart {
+  margin-top: 2%;
+  display: grid;
+  grid-template-columns: 25% 65%;
+
+  .name_part{
+    display: grid;
+    grid-template-rows: 40% 60%;
+    align-items: center;
+    //margin: 0 0 0 10%;
+    & > p {
+      margin: 2% 0 0 0;
+      font-weight: 600;
+      font-size: 1.5vw;
+      color: var(--white);
+    }
+    & > input {
+      font-family: "IBM Plex Sans KR";
+      border: none;
+      border-radius: 4rem;
+      padding-left: 25%;
+      font-weight: 500;
+      height: 80%;
+      width: 100%;
+    }
+  }
+  .phonenumber_part{
+    display: grid;
+    grid-template-rows: 40% 60%;
+    align-items: center;
+    margin: 0 0 0 20%;
+    & > p {
+      margin: 2% 0 0 0;
+      font-weight: 600;
+      font-size: 1.5vw;
+      color: var(--white);
+    }
+    & > input {
+      font-family: "IBM Plex Sans KR";
+      border: none;
+      border-radius: 4rem;
+      padding-left: 10%;
+
+      font-weight: 500;
+      height: 80%;
+    }
+  }
+}
+.forms_emailpart {
+  margin-top: 2%;
+  display: grid;
+  grid-template-columns: 55% 35%;
+
+  .email_part{
+    display: grid;
+    grid-template-rows: 40% 60%;
+    align-items: center;
+    //margin: 0 0 0 10%;
+    & > p {
+      margin: 2% 0 0 0;
+      font-weight: 600;
+      font-size: 1.5vw;
+      color: var(--white);
+    }
+    & > input {
+      font-family: "IBM Plex Sans KR";
+      border: none;
+      border-radius: 4rem;
+      padding-left: 10%;
+      font-weight: 500;
+      height: 80%;
+      width: 80%;
+    }
+  }
+  .nickname_part{
+    display: grid;
+    grid-template-rows: 40% 60%;
+    align-items: center;
+    margin: 0 0 0 10%;
+    & > p {
+      margin: 2% 0 0 0;
+      font-weight: 600;
+      font-size: 1.5vw;
+      color: var(--white);
+    }
+    & > input {
+      font-family: "IBM Plex Sans KR";
+      border: none;
+      border-radius: 4rem;
+      padding-left: 10%;
+      font-weight: 500;
+      height: 80%;
+      width: 88%;
+    }
+  }
+}
+.forms_passwordpart {
+  margin-top: 2%;
+  display: grid;
+  grid-template-rows: 30% 70%;
+
+  & > p {
+    margin: 2% 0 0 0;
+    font-weight: 600;
+    font-size: 1.5vw;
+    color: var(--white);
+  }
+
+  .password_part{
+    display: grid;
+    grid-template-rows: 50% 50%;
+    align-items: center;
+    //margin: 0 0 0 10%;
+
+    & > input {
+      font-family: "IBM Plex Sans KR";
+      border: none;
+      border-radius: 4rem;
+      padding-left: 10%;
+      font-weight: 500;
+      height: 80%;
+      width: 75%;
+    }
+  }
+}
+.signup_button_group {
+  margin: 0 0 0 0;
+  display: grid;
+  grid-template-columns: 70% 20%;
+  align-items: center;
+  align-content: center;
+  height: 100%;
+
+  & > div > button {
+    cursor: pointer;
+    border: none;
+    border-radius: 4rem;
+    font-family: "IBM Plex Sans KR";
+    font-weight: 600;
+    font-size: 1.25vw;
+    background-color: var(--point1_4);
+    color: var(--white);
+    height: 100%;
+    width: 8vw;
+    padding: 2% 4% 2% 4%;
+  }
+  & > div {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 35% auto;
+    align-items: center;
+    justify-items: left;
+  }
+  & > div > label {
+    display: grid;
+    grid-template-columns: auto 8%;
+    margin-left: 4%;
+    font-family: "IBM Plex Sans KR";
+    font-weight: 600;
+    font-size: 1.25vw;
+    color: var(--font_gray_main);
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    & > p {
+      margin: 0 0 0 0;
+    }
+    & > input[type="checkbox"] {
+      display: none;
+    }
+
+    & > input[type="checkbox"] + .custumlabel{
+      margin: 0 0 2% 0;
+      display: inline-block;
+      border-radius: 4rem;
+      border: solid 0.2em var(--brand3_main);
+      width: 1.6vw;
+      height: 1.6vw;
+      align-content: center;
+      align-items: center;
+      //position: relative;
+      top: .3vw;
+    }
+
+    & > input[id="custom"]:checked + .custumlabel::after{
+      content: '✔';
+      font-size: 2.7vw;
+      width: 1.6vw;
+      height: 1.6vw;
+      text-align: center;
+      position: absolute;
+      align-items: center;
+      align-content: center;
+      top: 34vw;
+      left: 24vw;
+      color: var(--point1_main);
+
+
+    }
+  }
+  & > button {
+    cursor: pointer;
+    border: none;
+    border-radius: 4rem;
+    font-family: "IBM Plex Sans KR";
+    font-weight: 600;
+    font-size: 1.25vw;
+    background-color: var(--brand3_main);
+    color: var(--white);
+    height: 100%;
+    width: 8vw;
+    padding: 2% 4% 2% 4%;
+  }
+}
+.signup_alert_id {
+  position: absolute;
+  font-family: "IBM Plex Sans KR";
+  font-weight: 600;
+  color: var(--font_burgundy_100);
+  font-size: 1vw;
+  top: 40%;
+  left: 24%;
+}
+.signup_alert_nickname {
+  position: absolute;
+  font-family: "IBM Plex Sans KR";
+  font-weight: 600;
+  color: var(--font_burgundy_100);
+  font-size: 1vw;
+  top: 53%;
+  left: 61%;
+}
+.signup_alert_password {
+  position: absolute;
+  font-family: "IBM Plex Sans KR";
+  font-weight: 600;
+  color: var(--font_burgundy_100);
+  font-size: 1vw;
+  top: 57%;
+  left: 27%;
+}
+.goback_button {
+  cursor: pointer;
+  position: absolute;
+  top: 14%;
+  left: 40vw;
+  z-index: -1;
+  width: 4vw;
+  height: 4vw;
+  border: none;
+  border-radius: 0 4rem 4rem 0;
+  background-color: var(--brand2_main);
+  display: grid;
+  align-items: center;
+  & > img {
+    width: 2vw;
+  }
+}
