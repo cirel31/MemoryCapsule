@@ -1,5 +1,6 @@
 package com.santa.projectservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.santa.projectservice.vo.ProjectInfo;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProjectDto {
     private Long idx;
     private String title;
