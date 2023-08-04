@@ -73,12 +73,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     int incrementReviewLike(@Param("reviewIdx") Long reviewIdx);
 
     //좋아요 취소
-    @Modifying
-    @Query("DELETE FROM Liked l " +
-            "WHERE l.id.likedReviewIdx = :reviewIdx " +
-            "AND l.id.likedUsrIdx = :userIdx")
-    int unlikedReview(@Param("reviewIdx") Long reviewIdx,
-                      @Param("userIdx") Long userIdx);
+//    @Modifying
+//    @Query("DELETE FROM Liked l " +
+//            "WHERE l.id.likedReviewIdx = :reviewIdx " +
+//            "AND l.id.likedUsrIdx = :userIdx")
+//    int unlikedReview(@Param("reviewIdx") Long reviewIdx,
+//                      @Param("userIdx") Long userIdx);
 
     //review에 like - 1
     @Modifying

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/notice")
@@ -28,7 +27,7 @@ public class NoticeController {
 
     @ApiOperation(value = "공지사항 목록", notes = "공지사항 리스트들을 반환한다.", response = NoticeResponseDto.class)
     @GetMapping("/list")
-    public ResponseEntity<NoticeResponseDto> getNoticeList(Pageable pageable) throws Exception {
+    public ResponseEntity<NoticeResponseDto> getNoticeList(Pageable pageable) {
         try {
             return new ResponseEntity(noticeService.getNoticeList(pageable).getContent(), HttpStatus.OK);
         } catch(Exception e) {
@@ -39,7 +38,7 @@ public class NoticeController {
     @ApiOperation(value = "공지사항 상세보기", notes = "공지사항 id를 통해 공지사항 정보를 가져온다. ", response = NoticeResponseDto.class)
     @GetMapping("/{notice_idx}")
     public ResponseEntity<NoticeResponseDto> getNoticeById
-            (@PathVariable("notice_idx") @ApiParam(value = "공지사항 번호", required = true) Long noticeIdx) throws Exception {
+            (@PathVariable("notice_idx") @ApiParam(value = "공지사항 번호", required = true) Long noticeIdx) {
         try {
             return new ResponseEntity<>(noticeService.getNoticeById(noticeIdx), HttpStatus.OK);
         } catch(Exception e) {
@@ -50,8 +49,8 @@ public class NoticeController {
     @ApiOperation(value = "공지사항 등록하기", notes = "공지사항 글을 등록한다. 성공 유무 반환", response = String.class)
     @PostMapping("")
     public ResponseEntity<String> writeNotice
-            (@RequestBody InsertDto insertDto, HttpServletRequest request,
-             @RequestParam(value = "file", required = false) MultipartFile file) {
+            (@RequestPart(value = "insertDto") InsertDto insertDto, HttpServletRequest request,
+             @RequestPart(value = "file", required = false) MultipartFile file) {
         Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
         try {
             if (noticeService.insertNotice(insertDto, user_idx, file)) {
@@ -80,8 +79,8 @@ public class NoticeController {
     @ApiOperation(value = "공지사항 수정하기", notes = "공지사항 글을 수정한다. 성공 유무 반환", response = String.class)
     @PutMapping("")
     public ResponseEntity<String> modifyNotice (
-            @RequestBody ModifyDto modifyDto,
-             @RequestParam(value = "file", required = false) MultipartFile file) {
+            @RequestPart(value = "modifyDto") ModifyDto modifyDto,
+             @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             if (noticeService.modifyNoticeById(modifyDto, file)) {
                 return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);

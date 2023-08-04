@@ -28,6 +28,8 @@ public class ReviewServiceImpl implements ReviewService {
     /**
      * 전체 리뷰 리스트를 얻는다.
      * @return 리뷰 리스트
+     * @param pageable 페이지
+     * @throws Exception 에러
      */
     @Transactional(readOnly = true)
     @Override
@@ -42,6 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
      * @param userIdx 로그인한 유저 idx (유저가 그 리뷰를 좋아요에 대한 유무)
      * @param reviewIdx 리뷰 idx
      * @return Title, Content, ImgUrl, Hit, Like, Created, writerNickname, isLiked
+     * @throws Exception 에러
      */
     @Transactional(rollbackFor={Exception.class})
     @Override
@@ -56,7 +59,9 @@ public class ReviewServiceImpl implements ReviewService {
      * 새로운 리뷰 글을 작성한다.
      * @param insertDto 작성한 리뷰 글에 대한 정보
      * @param userIdx 작성자(로그인한 유저)의 idx
-     * @return 성공 유무 
+     * @param file 파일
+     * @return 성공 유무
+     * @throws Exception 에러
      */
     @Transactional
     @Override

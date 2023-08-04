@@ -49,10 +49,11 @@ public class ReviewController {
     @ApiOperation(value = "리뷰 등록하기", notes = "리뷰 글을 등록한다. 성공 유무 반환", response = String.class)
     @PostMapping("")
     public ResponseEntity<String> writeReview
-            (@RequestBody InsertDto insertDto, HttpServletRequest request, MultipartFile file) {
+            (@RequestPart(value = "insertDto") InsertDto insertDto, HttpServletRequest request,
+             @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
-            if (reviewService.insertReview(insertDto, user_idx)) {
+            if (reviewService.insertReview(insertDto, user_idx, file)) {
                 return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);
             }
             return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
@@ -78,9 +79,10 @@ public class ReviewController {
     @ApiOperation(value = "리뷰 수정하기", notes = "리뷰 글을 수정한다. 성공 유무 반환", response = String.class)
     @PutMapping("")
     public ResponseEntity<String> modifyReview
-            (@RequestBody ModifyDto modifyDto) {
+            (@RequestPart(value = "modifyDto") ModifyDto modifyDto,
+             @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
-            if (reviewService.modifyReviewById(modifyDto)) {
+            if (reviewService.modifyReviewById(modifyDto, file)) {
                 return new ResponseEntity(com.santa.board.Enum.ResponseStatus.SUCCESS, HttpStatus.OK);
             }
             return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);

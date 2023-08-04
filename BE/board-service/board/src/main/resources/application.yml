@@ -1,24 +1,26 @@
 
 spring:
-#  datasource:
+  application:
+    name: boardservice
+  #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/realtest?serverTimezone=UTC&characterEncoding=UTF-8
 #    username: root
 #    password: ssafy
 
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: dev
-    password: dev
-    url: jdbc:mariadb://i9a608.p.ssafy.io:3306/santa
-    hikari:
-      maximum-pool-size: 50
-      minimum-idle: 50
-      connection-init-sql: SELECT 1
-      connection-timeout: 5000
-      idle-timeout: 600000
-      max-lifetime: 1800000
-      auto-commit: true
+#  datasource:
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    username: dev
+#    password: dev
+#    url: jdbc:mariadb://i9a608.p.ssafy.io:3306/santa
+#    hikari:
+#      maximum-pool-size: 50
+#      minimum-idle: 50
+#      connection-init-sql: SELECT 1
+#      connection-timeout: 5000
+#      idle-timeout: 600000
+#      max-lifetime: 1800000
+#      auto-commit: true
 
   jpa:
 #    database: mysql
