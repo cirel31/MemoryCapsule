@@ -47,11 +47,10 @@ const LoginForm = ({ form, setForm }) => {
 
     if (idCheck && passCheck) {
       const loginData = {
-        id: sendId,
+        email: sendId,
         password: sendPass,
       }
       await loginUser(loginData)
-      navigate("/main");
     }
   };
 
