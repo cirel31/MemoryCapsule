@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import NoticeInfo from "../notice/NoticeInfo";
 import PostModal from "../post/PostModal";
 
 const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => {

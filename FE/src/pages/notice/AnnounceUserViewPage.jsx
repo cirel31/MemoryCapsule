@@ -2,7 +2,6 @@ import Modal from "react-modal";
 import React, {useEffect, useState} from "react";
 import "../../styles/MyPage.scss"
 import PostModal from "../../components/post/PostModal";
-import {NoFriendList} from "../../styles/friendStyle";
 import Pagination from "../../components/common/Pagination";
 
 const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
@@ -38,7 +37,7 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
 
 
   useEffect(() => {
-    console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
+    console.log('[AnnounceUserViewPage] 페이지 로딩 시 한 번만 실행되는 함수');
     getNoticesData();
   }, []);
 
@@ -103,7 +102,6 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
     {/*</div>*/}
     <div>
       <div>
-      {console.log("size", size)}
       {
       postList.length === 0
         ?
