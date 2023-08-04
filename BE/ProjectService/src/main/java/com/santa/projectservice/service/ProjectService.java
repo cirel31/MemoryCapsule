@@ -74,5 +74,7 @@ public interface ProjectService {
     @Transactional
     List<ProjectDto> findProjectByUserIdAndState(Long userId, ProjectState projectState);
 
+    List<ProjectDto> findProjectsByUserId(Long userId);
+
     Long projectNum(Long userId);
 }
