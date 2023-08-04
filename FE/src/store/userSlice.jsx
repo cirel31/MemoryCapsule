@@ -3,10 +3,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const initialState = {
-  userId: null,
+  userIdx: null,
   isLoggedIn: false,
   accessToken: null,
   user: null,
+  // accessList : 출석
   point: 100,
 }
 
@@ -15,16 +16,19 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.isLoggedIn = true;
-      console.log('이메일 로그인 성공')
+      state.isLoggedIn = JSON.stringify(action.payload)
+      sessionStorage.setItem('loginData', state.isLoggedIn)
+      console.log(state.userIdx, ' : 이메일 로그인 성공')
+      console.log(sessionStorage)
     },
     logout: (state) => {
-      state.isLoggedIn = false;
+      sessionStorage.clear()
       console.log('이메일 로그아웃 성공');
     },
     setUser: (state, action) => {
-      state.user = action.payload
+      state.user = JSON.stringify(action.payload)
       console.log(state.user)
+      sessionStorage.setItem('userInfo', state.user)
     },
     renewToken: (state, action) => {
       state.accessToken = action.payload
