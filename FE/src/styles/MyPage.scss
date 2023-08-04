@@ -10,14 +10,35 @@
   background-color: var(--backGround_1);
 
 }
-
+.parting_line {
+  height: 0.5px;
+  width: 750px;
+  background-color: var(--brand3_main);
+  stroke: var(--brand3_main);
+  stroke-width: 2px;
+  margin-bottom: 20px;
+}
+.mypage_h1 {
+  font-family: Inconsolata;
+  color: var(--font_gray_main);
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 25pt;
+}
+.mypage_notice_h1 {
+  font-family: "IBM Plex Sans KR";
+  color: var(--font_gray_main);
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 25pt;
+}
 .mypage_layout {
   width: 840px;
   display: grid;
 
   grid-template-columns: 1fr;
   justify-items: center;
-  background-color: var(--backGround_1);
+  background-color: var(--backGround_0);
   filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.25));
 
 }
@@ -32,7 +53,7 @@
   .header_sets {
     width: 800px;
     height: 160px;
-    background-color: var(--backGround_1);
+    background-color: var(--backGround_0);
     border-radius: 1em;
     display: grid;
     grid-template-rows: 1fr;
@@ -142,6 +163,7 @@
   height: 400px;
   display: grid;
   grid-template-columns: 450px 340px;
+
   align-items: center;
   justify-content: center;
   justify-items: center;
@@ -149,8 +171,8 @@
     font-family: "IBM Plex Sans KR";
     font-weight: 700;
     width: 320px;
-    height: 400px;
-    background-color: var(--backGround_1);
+    height: 420px;
+    background-color: var(--backGround_0);
     border-radius: 2rem;
     filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.15));
     align-items: center;
@@ -190,6 +212,127 @@
       color: var(--font_gray_main);
       font-weight: 600;
     }
+    .good_stamp {
+      position: absolute;
+      width: 60px;
+      top: 260px;
+      left: 250px;
+      //opacity: 70%;
+      mix-blend-mode: multiply;
+    }
   }
+}
+.mypage_notice_part {
+  cursor: pointer;
+  width: 700px;
+  height: 50px;
+  background-color: var(--brand3_main);
+  border-radius: 0.5rem;
+
+  align-items: center;
+  align-content: center;
+
+  justify-content: center;
+  font-size: 15pt;
+  color: var(--white);
+  margin-bottom: 10px;
+  & > p {
+    display: grid;
+    align-items: center;
+    height: 50px;
+    font-family: "IBM Plex Sans KR";
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+  }
+}
+.notice_modal_part {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 800px;
+  height: 700px;
+  background-color: var(--backGround_main);
+  display: grid;
+
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+
+  border-radius: 1rem;
+  border: solid 3px var(--brand3_3);
+
+  backdrop-filter: blur(10px);
+  //margin-left: 15%;
+  .modal_contents_box{
+    width: 700px;
+    height: 650px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 150px 400px 50px;
+    align-items: center;
+    .modal_inner_title {
+      text-align: center;
+      font-family: "IBM Plex Sans KR";
+      font-weight: 700;
+      font-size: 22pt;
+      color: var(--font_gray_main);
+
+      & > hr {
+        stroke: var(--brand3_main);
+        color: var(--brand3_main);
+        background-color: var(--brand3_main);
+      }
+    }
+    .modal_inner_contents {
+      height: 380px;
+      text-align: left;
+      font-family: "IBM Plex Sans KR";
+      font-weight: 500;
+      font-size: 15pt;
+      color: var(--font_gray_main);
+      overflow-y: scroll;
+
+      scroll-behavior: smooth;
+      scrollbar-gutter: stable;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      table-layout:fixed;
+
+      &::-webkit-scrollbar {
+        width: 9px;  /* 스크롤바의 너비 */
+      }
+
+      &::-webkit-scrollbar-thumb {
+        height: auto; /* 스크롤바의 길이 */
+        width: 7px;
+        background: var(--brand3_3); /* 스크롤바의 색상 */
+
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+        border-radius: 10px;
+      }
+    }
+    & > button {
+      width: 30%;
+      height: 40px;
+      text-align: center;
+      color: var(--white);
+      background-color: var(--brand3_main);
+      font-family: "IBM Plex Sans KR";
+      font-weight: 700;
+      font-size: 15pt;
+      cursor: pointer;
+      border: none;
+      border-radius: 3rem;
+    }
+  }
+
 }
 

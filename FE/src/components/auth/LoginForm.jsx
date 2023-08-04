@@ -5,7 +5,7 @@ import Modal from "react-modal";
 // import { useDispatch } from "react-redux";
 // import { login } from "../../store/authSlice"
 import useLoginEmail from "../../hooks/useLoginEmail";
-import kakao_login_img from "../../assets/images/kakao_login.png"
+import kakao_login_img from "../../assets/images/home/kakaotalk_logo.svg"
 
 const LoginForm = ({ form, setForm }) => {
   const navigate = useNavigate();
@@ -65,47 +65,67 @@ const LoginForm = ({ form, setForm }) => {
   };
 
   return (
-    <div>
+    <div className="login_forms_body">
       <div>
         <div>
-          로그인 페이지
+
         </div>
-        <div>
+        <div className="forms_set_layout">
           <form>
-            <input
-              id="id"
-              type="email"
-              placeholder="아이디"
-              value={form.id}
-              onChange={handleChange}
-              required
-            />
-            {!isValidEmail && <div style={{ color: 'red' }}>올바른 이메일 형식이 아닙니다.</div>}
-            <input
-              id="password"
-              type="password"
-              placeholder="비밀번호"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-            <button onClick={sendLoginDataServer}>
-              로그인
-            </button>
-            <a href={OAUTH_KAKAO}>
-              <img src={kakao_login_img} alt="카카오로 로그인" style={{height: '50%'}}/>
-            </a>
+            <div >
+              <input
+                id="id"
+                type="email"
+                placeholder="아이디"
+                value={form.id}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                id="password"
+                type="password"
+                placeholder="비밀번호"
+                value={form.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <button onClick={sendLoginDataServer}>
+                로그인
+              </button>
+            </div>
+
+
           </form>
-          <button onClick={handleSignupPage}>회원가입 페이지로</button>
+
+          <div>
+            <button onClick={handleSignupPage}>회원가입 페이지로</button>
+            <a href={OAUTH_KAKAO}>
+              <div >
+                <p>카카오톡으로 로그인</p>
+                <img src={kakao_login_img}/>
+              </div>
+
+            </a>
+
+          </div>
+          {!isValidEmail && <div className="login_alert">올바른 이메일 형식이 아닙니다.</div>}
+
         </div>
       </div>
       {/* 모달 창 */}
-      <Modal isOpen={idModalIsOpen}>
-        <div onClick={() => setIdModalIsOpen(false)}>아이디 형식이 잘못 되었습니다.</div>
-      </Modal>
-      <Modal isOpen={passModalIsOpen}>
-        <div onClick={() => setPassModalIsOpen(false)}>비밀번호 길이는 4자 이상입니다.</div>
-      </Modal>
+      <div onClick={() => setIdModalIsOpen(false)}>
+        <Modal isOpen={idModalIsOpen}>
+          <div >아이디 형식이 잘못 되었습니다.</div>
+        </Modal>
+      </div>
+      <div onClick={() => setPassModalIsOpen(false)}>
+        <Modal isOpen={passModalIsOpen}>
+          <div >비밀번호 길이는 4자 이상입니다.</div>
+        </Modal>
+      </div>
     </div>
   );
 };

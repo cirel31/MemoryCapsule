@@ -4,6 +4,7 @@ import '../../styles/Calendar.scss'
 import moment from "moment";
 import axios from "axios";
 import {useSelector} from "react-redux";
+import goodstamp from "../../assets/images/stamp/stamp_best.svg"
 // import {useNavigate} from "react-router-dom";
 
 const CalendarForm = () => {
@@ -77,6 +78,7 @@ const CalendarForm = () => {
             <p className="mypage_shorts_highlight">{countProject}  </p>
             <p className="mypage_shorts_txt"> 개의 캡슐을 제작하셨어요!</p>
           </div>
+          <img src={goodstamp} className="good_stamp"/>
         </div>
       </div>
   </div>

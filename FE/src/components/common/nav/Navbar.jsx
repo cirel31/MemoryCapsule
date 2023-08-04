@@ -152,6 +152,15 @@ export default function Navbar() {
                     </Link>
                   </div>
                   <div>
+                    {/*리뷰페이지로 router추가해야함*/}
+                    <Link to='/reviews' className="link_txt">
+                      <button className="nav_button" >
+                        <img src={btn_deco} className="button_deco"/>
+                        <p>REVIEW</p>
+                      </button>
+                    </Link>
+                  </div>
+                  <div>
                     <Link to='/announce' className="link_txt">
                       <button className="nav_button" >
                         <img src={btn_deco} className="button_deco"/>
