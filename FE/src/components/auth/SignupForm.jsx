@@ -26,11 +26,7 @@ const SignupForm = ({ form, setForm,  }) => {
 
   const saveImgFile = () => {
     const file = imgRef.current.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImgFile(reader.result);
-    };
+    setImgFile(URL.createObjectURL(file));
   };
 
   const handleLoginPage = () => {
@@ -91,7 +87,6 @@ const SignupForm = ({ form, setForm,  }) => {
             console.log(`끼야야야악 : ${key}: ${value}`);
           }
         })
-      // navigate("/main");
     } else {
       console.log('데이터 오류', form.id.length, form.nickname.length, form.password )
     }
@@ -107,20 +102,20 @@ const SignupForm = ({ form, setForm,  }) => {
 
         <div>
           <form onSubmit={sendSignupData} ref={formRef} id="loginForm">
-            {/* 프로필 디폴트 이미지 변경 시 imgFile : 뒤의 값 변경  */}
-            {/*<img*/}
-            {/*  src={imgFile ? imgFile:kokona}*/}
-            {/*  alt="프로필 이미지"*/}
-            {/*  style={{width:"100px"}}*/}
-            {/*/>*/}
-            {/*<input*/}
-            {/*  name="file"*/}
-            {/*  type="file"*/}
-            {/*  accept="image/*"*/}
-            {/*  id="profileImg"*/}
-            {/*  onChange={saveImgFile}*/}
-            {/*  ref={imgRef}*/}
-            {/*/>*/}
+             프로필 디폴트 이미지 변경 시 imgFile : 뒤의 값 변경
+            <img
+              src={imgFile ? imgFile:kokona}
+              alt="프로필 이미지"
+              style={{width:"100px"}}
+            />
+            <input
+              name="file"
+              type="file"
+              accept="image/*"
+              id="profileImg"
+              onChange={saveImgFile}
+              ref={imgRef}
+            />
             <input
               name="email"
               id="id"
@@ -159,7 +154,7 @@ const SignupForm = ({ form, setForm,  }) => {
               onChange={handleChange}
               required
             />
-            { !passwordChecking() && <div>비밀번호가 일치하지 않습니다.</div> }
+            { !passwordChecking(form.password, form.passwordCheck) && <div>비밀번호가 일치하지 않습니다.</div> }
             <input
               id="phone"
               name="phone"
