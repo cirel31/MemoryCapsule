@@ -23,13 +23,14 @@ import java.util.Map;
 @RestController
 public class EmailController {
 
-    EmailService emailService;
+    private final EmailService emailService;
 
     @ApiOperation(value = "회원 가입 인증 메일", notes = "이메일 전송 결과 메시지를 반환한다.", response = String.class)
     @PostMapping("/register_verify/{user_email}/{code}")
     public ResponseEntity<String> sendCheckMail
             (@PathVariable("user_email") @ApiParam(value = "회원가입한 유저의 이메일", required = true) String user_email,
                 @PathVariable("code") @ApiParam(value = "인증 번호", required = true)  String code) {
+        System.out.println(user_email + " " + code);
         Map<String, String> contextDataMap = new HashMap<>();
         contextDataMap.put(EmailContextDataType.code.name(), code);
         EmailDto emailDto = EmailDto.builder()
