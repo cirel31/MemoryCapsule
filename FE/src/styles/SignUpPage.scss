@@ -195,8 +195,12 @@
     padding: 2% 4% 2% 4%;
     transition: background-color 0.3s;
 
+
     &:hover {
       background-color: var(--point1_3);
+      &:active {
+        box-shadow: inset 0 2px 5px rgb(0,0,0, 0.15);
+      }
     }
   }
   & > div {
@@ -225,16 +229,20 @@
     }
 
     & > input[type="checkbox"] + .custumlabel{
+      cursor: pointer;
       margin: 0 0 2% 0;
       display: inline-block;
       border-radius: 4rem;
-      border: solid 0.2em var(--brand3_main);
+      border: solid 0.2em var(--brand2_4);
       width: 1.6vw;
       height: 1.6vw;
       align-content: center;
       align-items: center;
       //position: relative;
       top: .3vw;
+      &:active {
+        border: solid 0.2em var(--brand2_main);
+      }
     }
 
     & > input[id="custom"]:checked + .custumlabel::after{
@@ -270,6 +278,9 @@
     &:hover {
       color: var(--font_burgundy_100);
       background-color: var(--brand3_3);
+      &:active {
+        box-shadow: inset 0 2px 5px rgb(0,0,0, 0.15);
+      }
     }
   }
 }

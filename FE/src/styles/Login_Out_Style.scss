@@ -90,6 +90,9 @@
       transition: background-color 0.5s;
       &:hover {
         background-color: var(--brand2_3);
+        &:active {
+          box-shadow: inset 0 2px 5px rgb(0,0,0, 0.15);
+        }
       }
     }
     & > div {
@@ -114,6 +117,9 @@
       &:hover {
         background-color: var(--brand2_3);
         color: var(--font_burgundy_100);
+        &:active {
+          box-shadow: inset 0 2px 5px rgb(0,0,0, 0.15);
+        }
 
       }
     }
@@ -139,6 +145,9 @@
       transition: background-color 0.5s;
       &:hover {
         background-color: #FFD687;
+        &:active {
+          box-shadow: inset 0 2px 5px rgb(0,0,0, 0.15);
+        }
 
       }
 
