@@ -28,6 +28,7 @@ public interface UserService extends UserDetailsService {
 
     //회원정보 수정
     void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception;
-
-//    Optional<User> checkEmailGetUser(String userEmail);
+    
+    //임시 비번 만들기
+    String generateRandomPassword();
 }

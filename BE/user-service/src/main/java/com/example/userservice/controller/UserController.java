@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
@@ -80,7 +81,16 @@ public class UserController {
     @GetMapping("/find_password")
     public ResponseEntity findPwd(@PathVariable("userEmail") String userEmail) throws Exception {
         if (userService.checkEmailDuplicated(userEmail)) {
-            return null;
+            String code = userService.generateRandomPassword();
+            ResponseEntity<String> response = new RestTemplate().postForEntity(
+                    "http://localhost:8081/register_verify/" + userEmail + "/" + code,
+                    null,
+                    String.class
+            );
+            if (response.getStatusCode().isError()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일 전송 실패");
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body("임시 비밀번호: " + code);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
     }

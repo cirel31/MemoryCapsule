@@ -25,12 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,6 +41,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
+    private static final int TMP_PWD_LENGTH = 8;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String, String> redisTemplate;
@@ -213,17 +216,12 @@ public class UserServiceImpl implements UserService {
         return imgUrl;
     }
 
-//    @Override
-//    public Optional<User> checkEmailGetUser(String userEmail) {
-//        return userRepository.findByEmail(userEmail);
-//    }
+    @Override
+    public String generateRandomPassword() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] randomBytes = new byte[TMP_PWD_LENGTH];
+        secureRandom.nextBytes(randomBytes);
 
-//    public String generateRandomPassword(int length) {
-//        SecureRandom secureRandom = new SecureRandom();
-//        byte[] randomBytes = new byte[length];
-//        secureRandom.nextBytes(randomBytes);
-//
-//        // SecureRandom으로 생성된 바이트 배열을 Base64로 인코딩하여 문자열로 변환
-//        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
-//    }
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    }
 }
