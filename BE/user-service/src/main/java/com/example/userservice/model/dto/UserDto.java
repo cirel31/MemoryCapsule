@@ -72,6 +72,7 @@ public class UserDto {
         private String email;
         private String nickname;
         private int totalFriend;
+        private boolean admin;
         private int point;
         private List<Date> accessList;
     }

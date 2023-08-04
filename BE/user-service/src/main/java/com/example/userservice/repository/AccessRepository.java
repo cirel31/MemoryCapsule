@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface AccessRepository extends JpaRepository<Access, Long> {
 
-    List<Access> findByIdxAndAccessedAtIsBetween(Long idx, LocalDateTime start, LocalDateTime end);
+    List<Access> findByUser_IdxAndAccessedAtIsBetween(Long idx, LocalDateTime start, LocalDateTime end);
 }

@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
         LocalDate now = LocalDateTime.now().toLocalDate();
 
-        List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByIdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
+        List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByUser_IdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
         if(byIdxAndAccessedAtIsBetween == null || byIdxAndAccessedAtIsBetween.isEmpty()){
             accessRepository.save(Access.builder()
                             .user(user)
@@ -190,7 +190,7 @@ public class UserServiceImpl implements UserService {
         log.info(date.toString());
         LocalDateTime start = date.withDayOfMonth(1);
         LocalDateTime end = start.withDayOfMonth(date.toLocalDate().lengthOfMonth());
-        List<Access> accessList = accessRepository.findByIdxAndAccessedAtIsBetween(userId, start, end);
+        List<Access> accessList = accessRepository.findByUser_IdxAndAccessedAtIsBetween(userId, start, end);
 
         result.setAccessList(
                 accessList.stream().map(
@@ -210,6 +210,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .point(user.getPoint().intValue())
                 .nickname(user.getNickName())
+                .admin(user.getRole().equals(UserRole.ADMIN))
                 .totalFriend(user.getFriendList().size())
                 .build();
     }
