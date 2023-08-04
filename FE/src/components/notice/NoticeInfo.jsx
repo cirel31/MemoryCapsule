@@ -9,6 +9,7 @@ const NoticeInfo = ({notice}) => {
     const noticeDetailModal = () => {
         setNoticeModalIsOpen(notice.id);
     }
+
     return (
         <NoticeItem>
             <div className="NoticeItem" onClick={noticeDetailModal}>

@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
 import NoticeInfo from "../notice/NoticeInfo";
+import PostModal from "../post/PostModal";
 
-const Pagination = ({ itemsPerPage, notices, currentPage, setCurrentPage }) => {
+const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => {
 
     // Calculate the total number of pages
-    const totalPages = Math.ceil(notices.length / itemsPerPage);
+    const totalPages = Math.ceil(postList.length / itemsPerPage);
 
-    // Get the current items to display on the current page
+    // pagenation 처리를 위한 값들
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = notices.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = postList.slice(indexOfFirstItem, indexOfLastItem);
+
+    // 모달창 컨트롤을 위한 값
+    const [selectedPost, setSelectedPost] = useState(null)
+    const [isModal, setIsModal] = useState(false)
+
+    const openModal = (id) => {
+        // const index = postList.findIndex((post => post.id === id))
+        const index = postList.findIndex((post => post.title === id))
+        setSelectedPost(postList[index])
+        setIsModal(true)
+    }
 
     // Handle page changes
     const handlePageChange = (pageNumber) => {
@@ -50,11 +62,18 @@ const Pagination = ({ itemsPerPage, notices, currentPage, setCurrentPage }) => {
     return (
         <div>
             {/* 자체 페이지네이션 */}
-            {currentItems.map((notice) => (
-                <div className="AuthFormGrid">
-                    <NoticeInfo key={notice.id} notice={notice} />
+            {
+            currentItems.map((post) => (
+                <div
+                    className="mypage_notice_part"
+                    key={post.id}
+                    // onClick={() => openModal(post.id)} // 이걸로 수정해야 합니다!
+                    onClick={() => openModal(post.title)}
+                >
+                    <p>{post.title}</p>
                 </div>
-            ))}
+            ))
+            }
 
             {/* 페이지네이션 */}
             <div>
@@ -64,6 +83,12 @@ const Pagination = ({ itemsPerPage, notices, currentPage, setCurrentPage }) => {
                     </button>
                 ))}
             </div>
+            <PostModal
+                selectedPost={selectedPost}
+                setSelectedPost={setSelectedPost}
+                modalIsOpen={isModal}
+                setModalIsOpen={setIsModal}
+            />
         </div>
     );
 };

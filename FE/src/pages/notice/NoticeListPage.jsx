@@ -5,20 +5,19 @@ import React, { useState, useEffect } from "react";
 import SearchBar from "../../components/SearchBar"
 import axios from "axios";
 import Pagination from "../../components/common/Pagination";
+import AnnounceUserViewPage from "./AnnounceUserViewPage";
 
 import {Link} from "react-router-dom";
 
 
 const NoticeListPage = () => {
-
     const API = '/notice'
     // 검색어 저장
     const [search, setSearch] = useState("");
 
-
-
     // 페이지네이션마다 보여줄 페이지 개수
     const [itemsPerPage, setItemsPerPage] = useState(10);
+
     // 페이지네이션 페이지 저장
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -69,17 +68,24 @@ const NoticeListPage = () => {
     // 처음 한 번 실행해서, 모든 공지사항 불러오기
     useEffect(() => {
         console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
-        getAllNotices();
-        //getAllNoticesDataServer();
+        getAllNoticesData();
      }, []);
 
     /**
      * 1. 전체 공지사항 [get]
      * http://localhost:8080/notice/list?page=0&size=10
      * */
-    const getAllNoticesDataServer = (e) => {
-        console.log("[getAllNoticesDataServer]");
-        e.preventDefault();
+    const getAllNoticesData = () => {
+        console.log("[getAllNoticesData]");
+
+        // [ TEST ]
+        // ========== ERASE ==========
+        fetch("https://jsonplaceholder.typicode.com/posts")
+            .then(response => response.json())
+            .then((json) => {
+                setNotices(json);
+            });
+        // ========== //ERASE ==========
 
         // 실제 배포는 8000
         // 테스트 및 개발 서버는 7000
@@ -102,8 +108,8 @@ const NoticeListPage = () => {
      * 2. 공지사항 자세하게 보기 [get]
      * http://localhost:8080/notice/2
      * */
-    const getNoticesDataDetailServer = (e) => {
-        console.log("[getNoticesDataDetailServer]");
+    const getNoticesDataDetail = (e) => {
+        console.log("[getNoticesDataDetail]");
         e.preventDefault();
 
         // 실제 배포는 8000
@@ -123,41 +129,12 @@ const NoticeListPage = () => {
     }
 
 
-
-    // 공지사항 데이터 수신
-    function getAllNotices() {
-        console.log("[getNotices]");
-        //test data 받아오기
-        /*
-        axios.get(`${API}/list?page=0&size=10`)
-            .then((response) => {
-                console.log("response.data : ", response.data)
-                setNotices(response.data);
-            })
-            .catch((error) => {
-                console.error("Notice List 호출 과정에서 에러 발생", error)
-            })
-        */
-
-        // ========== ERASE ==========
-        fetch("https://jsonplaceholder.typicode.com/posts")
-            .then(response => response.json())
-            .then((json) => {
-                setNotices(json);
-            });
-        // ========== //ERASE ==========
-
-        console.log(notices);
-
-        return true;
-    }
-
     // 검색
     const handleNoticeData = (e) => {
         e.preventDefault();
 
         // 공지사항 데이터 호출
-        getAllNotices();
+        getAllNoticesData();
 
         // 전체 리스트에서 FE 자체 검색
         const sendSearch = search.toLowerCase();
@@ -181,19 +158,12 @@ const NoticeListPage = () => {
 
     return (
         <>
+            <div>
+                <h2>공지사항</h2>
+            </div>
+            <AnnounceUserViewPage page={currentPage} size={itemsPerPage} setCurrentPage={setCurrentPage}/>
             <AuthFormGrid>
                 {
-                    notices.length === 0
-                    ?
-                    <NoFriendList>
-                        <div className="NoFriendList">
-                            {/*on load는 시작하자마자 게시글을 불러오기 위해서 임시로 작성*/}
-                            <div className="textBlock">
-                                등록된 공지사항이 없습니다.
-                            </div>
-                        </div>
-                    </NoFriendList>
-                    :<Pagination notices={notices} itemsPerPage={itemsPerPage} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
                     // 모든 리스트 출력
                     // :<div className="AuthFormGrid">
                     //     { notices.map((notice) => (
