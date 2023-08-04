@@ -27,7 +27,6 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
       auto-commit: true
-spring:
   jpa:
     hibernate:
       ddl-auto: validate
