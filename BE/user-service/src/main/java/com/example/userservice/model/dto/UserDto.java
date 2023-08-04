@@ -71,6 +71,7 @@ public class UserDto {
     public static class Detail{
         private String email;
         private String nickname;
+        private String imgUrl;
         private int totalFriend;
         private boolean admin;
         private int point;

@@ -209,6 +209,7 @@ public class UserServiceImpl implements UserService {
         return UserDto.Detail.builder()
                 .email(user.getEmail())
                 .point(user.getPoint().intValue())
+                .imgUrl(user.getImgUrl())
                 .nickname(user.getNickName())
                 .admin(user.getRole().equals(UserRole.ADMIN))
                 .totalFriend(user.getFriendList().size())
