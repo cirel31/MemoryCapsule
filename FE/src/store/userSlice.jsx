@@ -1,15 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
-const BASE_URL = ''
-const USER_URL = ''
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
-  userId: null,
-  accessToken: null,
-  redirectToken: null,
+  userIdx: null,
   isLoggedIn: false,
+  accessToken: null,
   user: null,
+  // accessList : 출석
   point: 100,
 }
 
@@ -18,37 +16,31 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.isLoggedIn = true;
-      console.log('이메일 로그인 성공');
+      state.isLoggedIn = JSON.stringify(action.payload)
+      sessionStorage.setItem('loginData', state.isLoggedIn)
+      console.log(state.userIdx, ' : 이메일 로그인 성공')
+      console.log(sessionStorage)
     },
     logout: (state) => {
-      state.isLoggedIn = false;
-      state.accessToken = null;
-      state.redirectToken = null;
+      sessionStorage.clear()
       console.log('이메일 로그아웃 성공');
     },
     setUser: (state, action) => {
-      state.user = action.payload
+      state.user = JSON.stringify(action.payload)
       console.log(state.user)
+      sessionStorage.setItem('userInfo', state.user)
+    },
+    renewToken: (state, action) => {
+      state.accessToken = action.payload
     }
   }
 })
 
-export const { login, logout  , setUser} = userSlice.actions
-
-// 비동기 액션
-export const fetchUser = (token) => async (dispatch) => {
-  try {
-    const response = await axios.get(USER_URL, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const userData = response.data;
-    dispatch(setUser(userData));
-  } catch (error) {
-    console.error('유저 정보를 가져오지 못함:', error);
-  }
-};
+export const {
+  login,
+  logout  ,
+  setUser,
+  renewToken,
+} = userSlice.actions
 
 export default userSlice.reducer

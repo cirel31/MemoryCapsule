@@ -121,14 +121,15 @@ const ProjectDetailPage = () => {
               <div>
                 <div>
                   {article.img ? (
-                      <img src={`data:image/png;base64,${article.img}`} alt="서버 이미지를 불러올 수 없습니다"/>
+                      <img src={`${article.img}`} alt="서버 이미지를 불러올 수 없습니다"/>
                   ) : <img src={kokona} alt="클라이언트 이미지를 불러올 수 없습니다" style={{width:"300px" }} />
                   }
                 </div>
                 <div>
-                  {article.stamp && (
-                    <img src={stamps[article.stamp - 1].stamp} alt="이미지를 불러올 수 없습니다"/>
-                  )}
+                  {/*{article.stamp && (*/}
+                  {/*  <img src={stamps[article.stamp - 1].stamp} alt="이미지를 불러올 수 없습니다"/>*/}
+                  {/*)}*/}
+                  <p>{article.stamp}</p>
                   <p>{article.content}</p>
                 </div>
               </div>
