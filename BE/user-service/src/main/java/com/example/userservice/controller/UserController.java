@@ -83,7 +83,7 @@ public class UserController {
         if (userService.checkEmailDuplicated(userEmail)) {
             String code = userService.generateRandomPassword();
             ResponseEntity<String> response = new RestTemplate().postForEntity(
-                    "http://localhost:8081/register_verify/" + userEmail + "/" + code,
+                    "http://notification-service:8081/email/register_verify/" + userEmail + "/" + code,
                     null,
                     String.class
             );

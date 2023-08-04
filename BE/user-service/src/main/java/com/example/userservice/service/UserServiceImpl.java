@@ -176,6 +176,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .nickname(user.getNickName())
                 .totalFriend(user.getFriendList().size())
+                .imgurl(user.getImgUrl())
                 .build();
     }
 
