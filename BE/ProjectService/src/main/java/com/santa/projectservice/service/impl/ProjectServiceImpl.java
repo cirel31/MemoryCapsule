@@ -1,6 +1,7 @@
 package com.santa.projectservice.service.impl;
 
 import com.santa.projectservice.dto.ProjectDto;
+import com.santa.projectservice.dto.ProjectState;
 import com.santa.projectservice.dto.RegisterDto;
 import com.santa.projectservice.exception.project.ProjectNotAuthorizedException;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
@@ -14,18 +15,20 @@ import com.santa.projectservice.repository.ProjectRepository;
 import com.santa.projectservice.repository.RegisterRepository;
 import com.santa.projectservice.repository.UserRepository;
 import com.santa.projectservice.service.ProjectService;
+import com.santa.projectservice.vo.ProjectInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.PropertyValueException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -186,23 +189,29 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Transactional
-    public List<ProjectDto> findProjectByUserId(Long userId){
-        List<Register> registers = registerRepository.findRegistersByUser_Id(userId);
-        List<Project> projects = registers.stream()
-                .map(Register::getProject)
-                .collect(Collectors.toList());
-        List<ProjectDto> projectDtos = new ArrayList<>();
-        projects.forEach(project -> {
-            if(!project.getDeleted()) {
-                projectDtos.add(project.toDto());
-            }
+    public List<ProjectInfo> projectDtosToInfos(List<ProjectDto> projectDtos) {
+        List<Long> numList = new ArrayList<>();
+        List<ProjectInfo> projectInfos = new ArrayList<>();
+        projectDtos.forEach(pjt -> {
+            numList.add(articleRepository.countByProjectId(pjt.getIdx()));
         });
-        return projectDtos;
+        for (int i = 0; i < numList.size(); i++) {
+            projectInfos.add(projectDtos.get(i).toInfo(numList.get(i)));
+        }
+        return projectInfos;
     }
+
     @Override
-    public Long projectArticleNum(Long projectId){
-        return articleRepository.countByProjectId(projectId);
+    @Transactional
+    public List<ProjectDto> findProjectByUserIdAndState(Long userId, ProjectState projectState){
+        List<Register> registers = registerRepository.findByUserIdAndProjectState(userId, projectState.name());
+        List<ProjectDto> projects = new ArrayList<>();
+        for (Register register : registers) {
+            Project registerProject = register.getProject();
+            ProjectDto dto = registerProject.toDto();
+            projects.add(dto);
+        }
+        return projects;
     }
 
     @Override
