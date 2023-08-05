@@ -2,6 +2,7 @@ package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.santa.projectservice.dto.RegisterDto;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -59,8 +60,19 @@ public class Register {
         this.confirm = rgstr_confirm;
         this.alarm = rgstr_alarm;
     }
-
-    public void confirm() {
+    public void confirm(){
         this.confirm = true;
     }
+
+    public RegisterDto toDto() {
+        return RegisterDto.builder()
+                .id(this.id)
+                .userId(this.user.getId())
+                .pjtId(this.project.getId())
+                .type(this.type)
+                .confirm(this.confirm)
+                .alarm(this.alarm)
+                .build();
+    }
+
 }
