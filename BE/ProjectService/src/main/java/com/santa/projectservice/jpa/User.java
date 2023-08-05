@@ -15,9 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-// 필드가 없는 클래스를 직렬화 하면서 문제가 생긴다함
-// 디비에 데이터가 없어서 그런가?
+@NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
@@ -28,7 +26,7 @@ public class User {
     @Column(name = "user_email", unique = true)
     private String email;
     @Column(name = "user_point")
-    private int point;
+    private Integer point;
     @Column(name = "user_name")
     private String name;
     @Column(name = "user_nickname")
@@ -48,7 +46,7 @@ public class User {
     @Column(name = "user_deleted")
     private Boolean deleted;
     @Column(name = "user_role")
-    private int role;
+    private Integer role;
     @Column(name = "user_phone", unique = true)
     @NotNull
     private String phone;
@@ -64,6 +62,23 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Article> articleList = new ArrayList<>();
+    @Builder
+    public User(Long id, String email, Integer point, String name, String nickname, String pwd, Date created, Date updated, Boolean deleted, Integer role, String phone, String imgurl, List<Register> registerList, List<Article> articleList) {
+        this.id = id;
+        this.email = email;
+        this.point = point;
+        this.name = name;
+        this.nickname = nickname;
+        this.pwd = pwd;
+        this.created = created;
+        this.updated = updated;
+        this.deleted = deleted;
+        this.role = role;
+        this.phone = phone;
+        this.imgurl = imgurl;
+        this.registerList = registerList;
+        this.articleList = articleList;
+    }
 
     public User(Long userId){
         this.id = userId;
