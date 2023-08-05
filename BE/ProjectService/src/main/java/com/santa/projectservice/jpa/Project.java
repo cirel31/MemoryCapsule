@@ -18,9 +18,7 @@ import java.util.List;
 @Getter
 @Table(name = "project")
 @DynamicInsert //insert 시 null 인필드 제외
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,24 +74,16 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Article> articleList = new ArrayList<>();
 
-    public void delete() {
-        this.deleted = true;
-    }
-
-    public void editComment(String content) {
-        this.content = content;
-    }
-
     @Builder
-    public Project(Long id, String title, String content, Date started, Date ended, Date created, String imgurl, String shareurl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm) {
+    public Project(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm, List<Register> registerList, List<Article> articleList) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.started = started;
         this.ended = ended;
         this.created = created;
-        this.imgUrl = imgurl;
-        this.shareUrl = shareurl;
+        this.imgUrl = imgUrl;
+        this.shareUrl = shareUrl;
         this.type = type;
         this.state = state;
         this.giftUrl = giftUrl;
@@ -101,25 +91,35 @@ public class Project {
         this.deleted = deleted;
         this.alarmType = alarmType;
         this.alarm = alarm;
+        this.registerList = registerList;
+        this.articleList = articleList;
     }
 
     public ProjectDto toDto(){
-        return  ProjectDto.builder()
-                .title(title)
-                .alarm(alarm)
-                .alarm_type(alarmType)
-                .content(content)
-                .created(created)
-                .deleted(deleted)
-                .ended(ended)
-                .gifturl(giftUrl)
-                .idx(id)
-                .started(started)
-                .state(state)
-                .type(type)
-                .limit(limit)
-                .shareurl(shareUrl)
-                .imgurl(imgUrl)
+        return ProjectDto.builder()
+                .id(this.id)
+                .title(this.title)
+                .content(this.content)
+                .started(this.started)
+                .ended(this.ended)
+                .created(this.created)
+                .imgUrl(this.imgUrl)
+                .shareurl(this.shareUrl)
+                .type(this.type)
+                .state(this.state)
+                .giftUrl(this.giftUrl)
+                .limit(this.limit)
+                .deleted(this.deleted)
+                .alarmType(this.alarmType)
+                .alarm(this.alarm)
                 .build();
+    }
+
+    public void delete() {
+        this.deleted = true;
+    }
+
+    public void editComment(String content) {
+        this.content = content;
     }
 }
