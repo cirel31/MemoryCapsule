@@ -1,5 +1,6 @@
 package com.santa.projectservice.service.impl;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.dto.ProjectState;
 import com.santa.projectservice.dto.RegisterDto;
@@ -7,9 +8,12 @@ import com.santa.projectservice.exception.project.ProjectNotAuthorizedException;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotFullfillException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
-import com.santa.projectservice.jpa.Project;
-import com.santa.projectservice.jpa.Register;
-import com.santa.projectservice.jpa.User;
+import com.santa.projectservice.jpa.*;
+import com.santa.projectservice.jpa.QArticle;
+import com.santa.projectservice.jpa.QArticleImg;
+import com.santa.projectservice.jpa.QProject;
+import com.santa.projectservice.jpa.QRegister;
+import com.santa.projectservice.jpa.QUser;
 import com.santa.projectservice.repository.ArticleRepository;
 import com.santa.projectservice.repository.ProjectRepository;
 import com.santa.projectservice.repository.RegisterRepository;
@@ -25,6 +29,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,12 +47,19 @@ public class ProjectServiceImpl implements ProjectService {
     private final ModelMapper mapper;
     private final ArticleRepository articleRepository;
     private final FileUploadService fileUploadService;
+    private final JPAQueryFactory queryFactory;
+    private QProject qProject = QProject.project;
+    private QRegister qRegister = QRegister.register;
+    private QArticle qArticle = QArticle.article;
+    private QUser qUser = QUser.user;
+    private QArticleImg qArticleImg = QArticleImg.articleImg;
 
     public ProjectServiceImpl(RegisterRepository registerRepository,
                               ProjectRepository projectRepository,
-                              UserRepository userRepository, ArticleRepository articleRepository, FileUploadService fileUploadService) {
+                              UserRepository userRepository, ArticleRepository articleRepository, FileUploadService fileUploadService, EntityManager em) {
         this.articleRepository = articleRepository;
         this.fileUploadService = fileUploadService;
+        this.queryFactory = new JPAQueryFactory(em);
         this.mapper = new ModelMapper();
         this.registerRepository = registerRepository;
         this.projectRepository = projectRepository;
@@ -81,16 +94,24 @@ public class ProjectServiceImpl implements ProjectService {
             throw new ProjectNotFullfillException("Title 혹은 Content가 비었습니다. ", e, e.getPropertyName());
         }
         try{
-            Register register = new Register(
-                    userRepository.getReferenceById(Owner),
-                    project,
-                    true, false, false
-            );
+            Register register = Register.builder()
+                            .user(userRepository.getReferenceById(Owner))
+                            .project(project)
+                            .type(true)
+                            .confirm(true)
+                            .alarm(false)
+                            .build();
             registerRepository.save(register);
             final Project regiProject = project;
             userList.forEach(id -> {
                 User user = userRepository.getReferenceById(id);
-                registerRepository.save(new Register(user, regiProject, false, false, false));
+                registerRepository.save(Register.builder()
+                        .user(userRepository.getReferenceById(Owner))
+                        .project(regiProject)
+                        .type(false)
+                        .confirm(true)
+                        .alarm(false)
+                        .build());
             });
         } catch (DataAccessException e){
             throw new RegisterMakeException("프로젝트 유저들을 초기화하는데 문제가 발생했습니다", e);
@@ -105,12 +126,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     public List<RegisterDto> findRegistersByUserId(Long id){
-        List<Register> registerList = registerRepository.findRegistersByUser_Id(id);
-        List<RegisterDto> registerDtoList = new ArrayList<>();
-        registerList.forEach(r -> {
-            registerDtoList.add(mapper.map(r, RegisterDto.class));
-        });
-        return registerDtoList;
+        return queryFactory
+                .select(qRegister)
+                .from(qRegister)
+                .where(qRegister.user.id.eq(id))
+                .fetch()
+                .stream().map(Register::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -170,11 +191,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDto> getAll() {
         List<Project> list = projectRepository.findAll();
-        List<ProjectDto> resultList = new ArrayList<>();
-        list.forEach(pjt -> {
-            resultList.add(pjt.toDto());
-        });
-        return resultList;
+        return list.stream().map(Project::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -182,17 +199,17 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<Project> project = projectRepository.findById(id);
         if(!project.isPresent())
             throw new ProjectNotFoundException("해당하는 Id의 프로젝트를 찾을 수 없습니다");
-        ProjectDto projectDto = project.get().toDto();
-        return projectDto;
+        return project.get().toDto();
     }
 
     @Override
     public ProjectDto findProjectByProjectIdAndUserId(Long userId, Long projectId) throws ProjectNotFoundException {
-        Optional<Register> register = registerRepository.findByUser_IdAndProject_Id(userId, projectId);
-        Project project = register.map(Register::getProject).orElse(null);
-        if(project == null) throw new ProjectNotFoundException("프로젝트에 참여하지 않거나 없는 프로젝트입니다");
-        ProjectDto projectDto = project.toDto();
-        return projectDto;
+        return queryFactory
+                .select(qRegister.project)
+                .from(qRegister)
+                .where(qRegister.user.id.eq(userId), qRegister.project.id.eq(projectId))
+                .fetchFirst()
+                .toDto();
     }
 
     @Override
@@ -200,7 +217,7 @@ public class ProjectServiceImpl implements ProjectService {
         List<Long> numList = new ArrayList<>();
         List<ProjectInfo> projectInfos = new ArrayList<>();
         projectDtos.forEach(pjt -> {
-            numList.add(articleRepository.countByProjectId(pjt.getIdx()));
+            numList.add(articleRepository.countByProjectId(pjt.getId()));
         });
         for (int i = 0; i < numList.size(); i++) {
             projectInfos.add(projectDtos.get(i).toInfo(numList.get(i)));
@@ -210,23 +227,23 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public List<ProjectDto> findProjectByUserIdAndState(Long userId, ProjectState projectState){
-        List<Register> registers = registerRepository.findByUserIdAndProjectState(userId, projectState.name());
-        List<ProjectDto> projects = new ArrayList<>();
-        for (Register register : registers) {
-            Project registerProject = register.getProject();
-            ProjectDto dto = registerProject.toDto();
-            projects.add(dto);
-        }
-        return projects;
+    public List<ProjectDto> findProjectByUserIdAndState(Long userId, ProjectState state){
+        return queryFactory
+                .select(qRegister.project).from(qRegister)
+                .where(qRegister.user.id.eq(userId),
+                        state == ProjectState.DONE ? qRegister.confirm.isTrue() :
+                        state == ProjectState.CURRENT ? qRegister.confirm.isFalse() : null
+                )
+                .fetch().stream().map(Project::toDto).collect(Collectors.toList());
     }
 
     @Override
     public List<ProjectDto> findProjectsByUserId(Long userId){
-        return registerRepository.findRegistersByUser_Id(userId)
-                .stream().map(Register::getProject)
-                .map(Project::toDto)
-                .collect(Collectors.toList());
+        return queryFactory
+                .select(qRegister.project)
+                .from(qRegister)
+                .where(qRegister.user.id.eq(userId)).fetch()
+                .stream().map(Project::toDto).collect(Collectors.toList());
     }
 
     @Override
