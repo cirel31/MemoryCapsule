@@ -41,7 +41,7 @@ public class ProjectInfo {
         this.artielcNum = artielcNum;
     }
     public ProjectInfo(ProjectDto projectDto, Long num){
-        this.idx = projectDto.getIdx();
+        this.idx = projectDto.getId();
         this.title = projectDto.getTitle();
         this.content = projectDto.getContent();
         this.started = projectDto.getStarted();
