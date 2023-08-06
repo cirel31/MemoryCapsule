@@ -27,11 +27,7 @@ const SignupForm = ({ form, setForm,  }) => {
 
   const saveImgFile = () => {
     const file = imgRef.current.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImgFile(reader.result);
-    };
+    setImgFile(URL.createObjectURL(file));
   };
 
   const handleLoginPage = () => {
@@ -92,7 +88,6 @@ const SignupForm = ({ form, setForm,  }) => {
             console.log(`끼야야야악 : ${key}: ${value}`);
           }
         })
-      // navigate("/main");
     } else {
       console.log('데이터 오류', form.id.length, form.nickname.length, form.password )
     }

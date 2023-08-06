@@ -32,20 +32,11 @@ const CalendarForm = () => {
     "2023-07-25",
     "2023-08-01",
   ])
-  // useEffect(() => {
-  //   // 출석 날짜 정보를 서버에서 가져와서 state에 저장
-  //   const fetchAttendanceDates = async () => {
-  //     try {
-  //       // 서버 api 주소는 변경 예정
-  //       const response = await axios.get('/localhost:8000/api/getAttendanceDates');
-  //       // data 받는 변수 이름도 변경 예정
-  //       setAttendanceDates(response.data.attendanceDates);
-  //     } catch (error) {
-  //       console.error('서버와 통신 에러 - 출석 데이터 받지 못함:', error);
-  //     }
-  //   };
-  //   fetchAttendanceDates();
-  // }, []);
+
+  useEffect(() => {
+    const myAttendance = JSON.parse(sessionStorage.getItem("userInfo"))?.accessList.map(date => date.slice(0, 10)) || attendanceDates
+    setAttendanceDates(myAttendance)
+  },[]);
 
   const [value, onChange] = useState(new Date())
   const username = '김싸피'

@@ -20,8 +20,11 @@ const useLoginEmail = () => {
       })
         .then(res => {
           console.log(res.data)
-          const userIdx= res.data.userIdx
           dispatch(login(res.data))
+        })
+        .then(() => {
+          const userIdx = JSON.parse(sessionStorage.getItem("loginData")).userIdx
+          console.log(userIdx)
           userInfoUpdate(userIdx)
         })
         .catch(err => {
@@ -46,7 +49,7 @@ const useLoginEmail = () => {
           dispatch(setUser(userData))
         })
         .then(() => {
-          navigate('/mypage')
+          navigate('/profile')
         })
         .catch(err => {
           console.error('유저 정보를 가져오지 못함:', err)

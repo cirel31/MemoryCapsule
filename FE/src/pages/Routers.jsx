@@ -6,6 +6,7 @@ import NotFound from "./NotFound";
 import LoginPage from "./auth/LoginPage";
 import SignupPage from "./auth/SignupPage";
 import MyPage from "./user/MyPage";
+import UserProfilePage from "./user/UserProfilePage";
 import CalendarForm from "../components/user/CalendarForm";
 import FriendListPage from "./friend/FriendListPage";
 import FriendSearchPage from "./friend/FriendSearchPage";
@@ -23,6 +24,7 @@ export default function Routers() {
       <Route path='/' element={<HomePage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/signup' element={<SignupPage />} />
+      <Route path='/profile' element={<UserProfilePage />} />
       <Route path='/main' element={<MainPage />} />
       <Route path='/project' element={<ProjectListPage />} />
       <Route path='/project/create' element={<ProjectCreatePage />} />
