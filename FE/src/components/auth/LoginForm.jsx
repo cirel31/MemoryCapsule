@@ -75,7 +75,7 @@ const LoginForm = ({ form, setForm }) => {
               <input
                 id="id"
                 type="email"
-                placeholder="아이디"
+                placeholder="e-mail"
                 value={form.id}
                 onChange={handleChange}
                 required
