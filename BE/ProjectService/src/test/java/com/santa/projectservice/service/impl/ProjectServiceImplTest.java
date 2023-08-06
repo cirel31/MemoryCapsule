@@ -20,7 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /*
 핵심 메소드
@@ -63,7 +64,7 @@ public class ProjectServiceImplTest {
             log.error(e.toString());
         }
         log.info(resultDto.toString());
-        assertEquals(result, resultDto.getIdx());
+        assertEquals(result, resultDto.getId());
 
     }
 
@@ -91,7 +92,7 @@ public class ProjectServiceImplTest {
             log.error(e.toString());
         }
         log.info(resultDto.toString());
-        assertEquals(result, resultDto.getIdx());
+        assertEquals(result, resultDto.getId());
         List<RegisterDto> registerDtos = projectService.findRegistersByUserId(1001L);
         registerDtos.forEach(regi -> {
             System.out.println(regi.toString());
