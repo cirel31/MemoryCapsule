@@ -18,6 +18,7 @@ import java.security.AuthProvider;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -44,7 +45,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
 
         // 등록된 회원이지 check 후, 미가입자 회원가입처리
-        User byEmail = userRepository.findByEmail((String) memberAttribute.get("email"));
+        Optional<User> byEmail = userRepository.findByEmail((String) memberAttribute.get("email"));
         if(byEmail == null){
             userRepository.save(User.builder()
                             .nickName((String) memberAttribute.get("name"))

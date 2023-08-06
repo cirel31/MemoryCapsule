@@ -1,20 +1,22 @@
 import {NoticeItem} from "../../styles/noticeStyle";
 import Modal from "react-modal";
 import React, {useState} from "react";
+import PostModal from "../post/PostModal";
 
-const NoticeInfo = ({userId, id, title, body}) => {
+const NoticeInfo = ({notice}) => {
     const [noticeModalIsOpen, setNoticeModalIsOpen] = useState(0);
 
-    const noticeDetailModal = (e) => {
-        setNoticeModalIsOpen(id);
+    const noticeDetailModal = () => {
+        setNoticeModalIsOpen(notice.id);
     }
+
     return (
         <NoticeItem>
             <div className="NoticeItem" onClick={noticeDetailModal}>
                 <div className="info">
                     <span className="author_info">
                         {/*userId : {userId} |*/}
-                        title : {title}
+                        title : {notice.title}
                         {/*body : {body}<br/>*/}
                     </span>
                     <div>
@@ -27,28 +29,12 @@ const NoticeInfo = ({userId, id, title, body}) => {
                     </div>
                     <div>
                         {/*날짜*/}
-                        0000-00-0{id}
+                        0000-00-0{notice.id}
                     </div>
                 </div>
             </div>
             {/* 모달 창 */}
-            <Modal isOpen={noticeModalIsOpen !== 0}>
-                <div style={{width:'100%', height:'100%'}}>
-                    <div onClick={() => setNoticeModalIsOpen(0)}>
-                        ✖
-                    </div>
-                    <div>
-                        title : {title}
-                    </div>
-                    <div>
-                        createdAt :
-                        | updatedAt :
-                    </div>
-                    <div>
-                        body : {body}
-                    </div>
-                </div>
-            </Modal>
+            <PostModal notice={notice} noticeModalIsOpen={noticeModalIsOpen} setNoticeModalIsOpen={setNoticeModalIsOpen}/>
         </NoticeItem>
     )
 }

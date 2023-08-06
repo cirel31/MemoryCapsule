@@ -47,15 +47,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
+//                .cors().configurationSource(corsConfigurationSource())
+//                .and()
                 .httpBasic().disable()
                 .formLogin().disable()
                 .authorizeRequests()
                 .antMatchers("/favicon**").permitAll()
-                .antMatchers("/user/health-check").permitAll()
+                .antMatchers("/*/health-check").permitAll()
                 .antMatchers("/user/login").permitAll()
+                .antMatchers("/user/signup").permitAll()
                 .antMatchers("/actuator/**").permitAll()
+                .antMatchers(("/friend/test")).permitAll()
                 .antMatchers("/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -75,18 +77,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /* Cors Setting */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addExposedHeader("accessToken");
-        corsConfiguration.setMaxAge(3600L);
-        corsConfiguration.addAllowedOrigin("http://localhost:3000");
-        corsConfiguration.addAllowedOrigin("**");
-
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-        return urlBasedCorsConfigurationSource;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource(){
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.addExposedHeader("accessToken");
+//        corsConfiguration.setMaxAge(3600L);
+//        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+//        corsConfiguration.addAllowedOrigin("**");
+//
+//        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+//        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+//        return urlBasedCorsConfigurationSource;
+//    }
 
 
 }
