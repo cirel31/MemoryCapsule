@@ -19,7 +19,7 @@ stop_container_command="sudo docker stop $container_name"
 remove_container_command="sudo docker rm $container_name"
 remove_image_command="sudo docker rmi $image_name"
 
-if [ ! "$(sudo docker ps -a -q -f name=$container_name)" ]; then
+if [ "$(sudo docker ps -a -q -f name=$container_name)" ]; then
     ############################################################
     # [stop container by name or container-id]
     ############################################################
