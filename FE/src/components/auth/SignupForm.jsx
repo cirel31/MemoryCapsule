@@ -50,10 +50,8 @@ const SignupForm = ({ form, setForm,  }) => {
 
   const sendSignupData = (e) => {
     e.preventDefault()
-    // const loginForm = document.getElementById('loginForm')
     const signupURL = '/user/signup'
     const formData = new FormData(formRef.current);
-    // const formData = new FormData(loginForm);
     for (const [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
@@ -85,11 +83,11 @@ const SignupForm = ({ form, setForm,  }) => {
           console.log('서버에서 회원가입 실패', err)
           console.log(err.response)
           for (const [key, value] of formData.entries()) {
-            console.log(`끼야야야악 : ${key}: ${value}`);
+            console.log(`왜 안 되 는 건 데.... : ${key}: ${value}`);
           }
         })
     } else {
-      console.log('데이터 오류', form.id.length, form.nickname.length, form.password )
+      console.log('데이터 오류')
     }
   }
 
@@ -108,7 +106,7 @@ const SignupForm = ({ form, setForm,  }) => {
             {/*  style={{width:"100px"}}*/}
             {/*/>*/}
             {/*<input*/}
-            {/*  name="file"*/}
+            {/*  name="imgUrl"*/}
             {/*  type="file"*/}
             {/*  accept="image/*"*/}
             {/*  id="profileImg"*/}

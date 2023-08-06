@@ -9,7 +9,7 @@ import "../src/styles/MainStyle.scss"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <App />
+      <App />
   </Provider>
 );
 

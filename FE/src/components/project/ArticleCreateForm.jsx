@@ -14,7 +14,6 @@ const ArticleCreateForm = () => {
   const formRef = useRef(null)
   const [photos, setPhotos] = useState([])
   const [text, setText] = useState("");
-  const userPoint = useSelector((state) => state.userState.point);
   const articleId = window.location.href.replace(window.location.origin, "")
   const [stampModalOpen, setStampModalOpen] = useState(false)
   const [feelingStamp, setFellingStamp] = useState([])
@@ -57,9 +56,6 @@ const ArticleCreateForm = () => {
   const closeStampModal = () => {
     setStampModalOpen(false)
   }
-  useEffect(() => {
-    console.log(userPoint);
-  });
   useEffect(() => {
     console.log(articleId)
   })

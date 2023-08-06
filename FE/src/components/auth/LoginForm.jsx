@@ -1,13 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState} from "react";
 import Modal from "react-modal";
-// import axios from "axios";
-// import { useDispatch } from "react-redux";
-// import { login } from "../../store/authSlice"
 import useLoginEmail from "../../hooks/useLoginEmail";
 import kakao_login_img from "../../assets/images/home/kakaotalk_logo.svg"
 
+
 const LoginForm = ({ form, setForm }) => {
+
   const navigate = useNavigate();
   const { isValidEmail, setIsValidEmail, loginUser, validateEmail } = useLoginEmail();
   const [idModalIsOpen, setIdModalIsOpen] = useState(false);
@@ -28,30 +27,22 @@ const LoginForm = ({ form, setForm }) => {
     e.preventDefault();
     const sendId = form.id;
     const sendPass = form.password;
-    let idCheck = false
-    let passCheck = false
-    if (sendId.length > 0 && isValidEmail) {
-      idCheck = true
-      console.log(sendId);
-    } else {
+
+    if (sendId.length === 0 || !isValidEmail) {
       setIdModalIsOpen(true);
-      idCheck = false
-    }
-    if (sendPass.length >= 4) {
-      passCheck = true
-      console.log(sendPass)
-    } else {
-      setPassModalIsOpen(true);
-      passCheck = false
+      return;
     }
 
-    if (idCheck && passCheck) {
-      const loginData = {
-        email: sendId,
-        password: sendPass,
-      }
-      await loginUser(loginData)
+    if (sendPass.length < 4) {
+      setPassModalIsOpen(true);
+      return;
     }
+
+    const loginData = {
+      email: sendId,
+      password: sendPass,
+    };
+    await loginUser(loginData);
   };
 
   const handleChange = (e) => {
