@@ -3,8 +3,6 @@ import Modal from "react-modal";
 import axios from "axios";
 
 const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
-    console.log("[PostModal]");
-
     const API = '/notice';
 
     const [state, setState] = useState(false);
@@ -12,7 +10,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     const [disabledContent, setDisabledContent] = useState(false);
 
     useEffect(() => {
-        console.log('[PostModal] 페이지 로딩 시 한 번만 실행되는 함수');
+        console.log("[PostModal]");
         setState(selectedPost &&(selectedPost.id === 0 || state));
     });
 
@@ -21,6 +19,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         console.log("[checkUserRole]");
         // 관리자 권한 확인
         if (true) {
+            console.log("관리자로 확인되었습니다.");
             return true;
         } else {
             console.log("관리자 권한이 없습니다.");
@@ -57,7 +56,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         //         })
         //         .catch((error) => {
         //             console.error('게시글 작성 POST fail : ', error);
-        //         });
+        //         });++++
         // }
     }
 

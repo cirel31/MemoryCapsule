@@ -11,7 +11,7 @@ name="discovery"
 container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
-# .env file import
+# ..env file import
 run_option="-dp 8761:8761 --net santa --env-file=/var/jenkins_home/workspace/setup.env"
 
 

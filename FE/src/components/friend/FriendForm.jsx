@@ -28,28 +28,22 @@ const FriendForm = ({form, setForm, isValidSearch, setIsValidSearch}) => {
 
     return (
         <>
-            <FormBody>
-                <WhiteBox>
-                    <AuthFormBlock>
-                        <form>
-                            <select id="search" name="search" onChange={handleChange}>
-                                <option value={"id"}>e-mail</option>
-                                <option value={"name"}>name</option>
-                                <option value={"nickname"}>nickname</option>
-                            </select>
+            <form>
+                <select id="search" name="search" onChange={handleChange}>
+                    <option value={"id"}>e-mail</option>
+                    <option value={"name"}>name</option>
+                    <option value={"nickname"}>nickname</option>
+                </select>
 
-                            <StyledSearchBar
-                                id="id"
-                                placeholder="여기에 입력하세요"
-                                value={form.id}
-                                onChange={valueChange}
-                                required
-                            />
-                            {!isValidSearch && <div style={{ color: 'red' }}>한 글자라도 입력해주세요</div>}
-                        </form>
-                    </AuthFormBlock>
-                </WhiteBox>
-            </FormBody>
+                <StyledSearchBar
+                    id="id"
+                    placeholder="여기에 입력하세요"
+                    value={form.id}
+                    onChange={valueChange}
+                    required
+                />
+                {!isValidSearch && <div style={{ color: 'red' }}>한 글자라도 입력해주세요</div>}
+            </form>
         </>
     );
 };
