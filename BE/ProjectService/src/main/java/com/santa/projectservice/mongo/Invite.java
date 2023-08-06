@@ -15,5 +15,6 @@ public class Invite {
     private Long userId;
     private Long projectId;
     private Long inviter;
+    //테스트
     private Date expire;
 }
