@@ -28,7 +28,6 @@ import java.nio.charset.Charset;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final TokenProvider tokenProvider;
     private final RedisTemplate<String,String> redisTemplate;
-    private final UserRepository userRepository;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         //TODO: 로그인 성공 이후의 Process
