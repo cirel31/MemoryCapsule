@@ -1,24 +1,29 @@
 package com.example.userservice.service;
 
+import com.example.userservice.model.Enum.ProjectState;
+import com.example.userservice.model.dto.FriendDto;
 import com.example.userservice.model.entity.ConnectId;
 import com.example.userservice.model.entity.Connected;
+import com.example.userservice.model.entity.Project;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.ConnectedRepository;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class FriendServiceImpl implements FriendService{
-    ConnectedRepository connectedRepository;
-    UserRepository userRepository;
+public class FriendServiceImpl implements FriendService {
+    private final ConnectedRepository connectedRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<User> findByAllFriends(final Long userId) throws Exception {
@@ -85,5 +90,34 @@ public class FriendServiceImpl implements FriendService{
                         .build())
                 .build());
         return true;
+    }
+
+    @Override
+    @Transactional
+    public List<FriendDto.basicFriendInfo> getFriendsInfo(Long userId) throws Exception {
+        //TODO: 친구  정보 조회
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(String.format("%ld 의 유저는 존재하지 않습니다.", userId)));
+        List<User> friendList = user.getFriendList();
+
+
+        return friendList.stream()
+                .map(e -> {
+                    List<Project> projectList = e.getProjectList();
+                    long inProjectCount = projectList.stream().filter(k -> {
+                        return ProjectState.IN_PROGRESS.equals(k.getState());
+                    }).count();
+
+                    Integer userTotalWrite = userRepository.wroteArticleTotal(e.getIdx());
+
+                    return FriendDto.basicFriendInfo.builder()
+                            .idx(e.getIdx())
+                            .name(e.getName())
+                            .nickname(e.getNickName())
+                            .imgUrl(e.getImgUrl())
+                            .totalInProjectCnt(inProjectCount)
+                            .totalProjectCnt(Long.valueOf(projectList.size()))
+                            .totalWriteCnt(Long.valueOf(userTotalWrite))
+                            .build();
+                }).collect(Collectors.toList());
     }
 }
