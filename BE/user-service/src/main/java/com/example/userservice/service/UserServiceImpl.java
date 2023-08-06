@@ -73,9 +73,7 @@ public class UserServiceImpl implements UserService {
         ops.set(user.getIdx().toString(), refreshToken);
 
         // Logging 처리
-
         LocalDate now = LocalDateTime.now().toLocalDate();
-
         List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByIdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
         if(byIdxAndAccessedAtIsBetween == null || byIdxAndAccessedAtIsBetween.isEmpty()){
             accessRepository.save(Access.builder()
@@ -173,6 +171,7 @@ public class UserServiceImpl implements UserService {
     public UserDto.Detail getUserDetail(Long userId) throws Exception {
         User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
         return UserDto.Detail.builder()
+                .userId(user.getIdx())
                 .email(user.getEmail())
                 .nickname(user.getNickName())
                 .totalFriend(user.getFriendList().size())

@@ -74,6 +74,7 @@ public class UserDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Detail{
+        private Long userId;
         private String email;
         private String nickname;
         private int totalFriend;
