@@ -2,13 +2,9 @@ package com.example.userservice.service;
 
 import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
-import com.example.userservice.model.entity.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
     // User 로그인

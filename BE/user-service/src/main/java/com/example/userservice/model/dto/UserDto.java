@@ -1,7 +1,5 @@
 package com.example.userservice.model.dto;
 
-import com.example.userservice.model.entity.Access;
-import jdk.jfr.SettingDefinition;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 

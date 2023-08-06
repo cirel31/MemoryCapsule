@@ -2,10 +2,7 @@ package com.example.userservice.controller;
 
 import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
-import com.example.userservice.model.entity.User;
-import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.UserService;
-import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,8 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
