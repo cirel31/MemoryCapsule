@@ -8,19 +8,61 @@ import {Link} from "react-router-dom";
 import "../../styles/friendStyle.scss";
 import brand_gradation from "../../assets/images/frield/brand_gradation.svg"
 import searchIcon from "../../assets/images/frield/searchIcon.svg"
+import {login} from "../../store/userSlice";
 
-const FriendListPage = ({friends, setFriends, rowFriends, setRowFriends, form, setForm}) => {
+const FriendListPage = ({rowFriends, setRowFriends, select, setSelect, setSelectPage}) => {
     const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
     const API = '/friend';
 
-    const [isValidSearch, setIsValidSearch] = useState(true);
+    const [friends, setFriends] = useState([]);
 
-    const [select, setSelect] = useState({
+    const [form, setForm] = useState({
         id: "",
+        search : 'id',
     });
+
+    const [isValidSearch, setIsValidSearch] = useState(true);
 
     const closeFriendDetail = () => {
         setSelect({id : ""});
+    }
+
+    // 처음 한 번 실행 시, 내 친구 전부 불러오기
+    useEffect(() => {
+        console.log("[useEffect]");
+        getFriends("id", "");
+        console.log("login : ", login);
+    }, []);
+
+    /**
+     * 1. 전체 내 친구 목록 불러오기
+     *
+     * Method : get
+     * URL : /friend/search/{user_id}
+     * */
+    function getFriends(searchId, searchValue) {
+        console.log("[getFriends]");
+
+        // 서버로부터 내 친구목록 가져오기
+        // axios.get(`${API}/search/${user_id}`,
+        axios.get(`${API}/search/2`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+            }
+        )
+            .then((response) => {
+                console.log('서버로부터 친구목록 가져오기 성공');
+                console.log(API);
+                console.log(response.data);
+                setRowFriends(response.data);
+            })
+            .catch((error) => {
+                console.error("서버로부터 친구목록 가져오기 실패", error);
+                console.error(error.code);
+            });
+        console.log(searchId, searchValue);
     }
 
     // 검색
@@ -50,6 +92,11 @@ const FriendListPage = ({friends, setFriends, rowFriends, setRowFriends, form, s
         setForm(updatedForm);
     };
 
+    // searchPage로 이동
+    const searchPage = () => {
+        setSelectPage(true);
+    }
+
     return (
         <>
             <div className="search_info">
@@ -70,11 +117,9 @@ const FriendListPage = ({friends, setFriends, rowFriends, setRowFriends, form, s
                     <button onClick={handleFriendData} className="search_friends_button button_front">
                         <img src={searchIcon} alt="검색 아이콘" className="search_friends_button_img"/>
                     </button>
-                    <Link to={`/friend/search`} className="search_friends_link">
-                        <button className="search_friends_button button_server">
-                            친구찾기
-                        </button>
-                    </Link>
+                    <button onClick={searchPage} className="search_friends_button button_server">
+                        친구찾기
+                    </button>
                 </div>
             </div>
             <div className="friendList">
@@ -90,7 +135,7 @@ const FriendListPage = ({friends, setFriends, rowFriends, setRowFriends, form, s
                             // 스크롤 구현해야 하는 부분
                             :<div>
                                 { friends.map((friend) => (
-                                    <FriendInfo select={select} setSelect={setSelect} key={friend.id} {...friend} />
+                                    <FriendInfo select={select} setSelect={setSelect} key={friend.id} friend={friend} />
                                 ))}
                             </div>
                     }

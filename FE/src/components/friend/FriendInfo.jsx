@@ -3,16 +3,16 @@ import FriendAddDeleteButton from "./FriendAddDeleteButton";
 import React, {useState} from "react";
 import person from "../../assets/images/frield/person.svg"
 
-const FriendInfo = ({select, setSelect, id, name, username, email, address, phone, website}) => {
+const FriendInfo = ({select, setSelect, friend}) => {
     // 친구인지 여부
     const isFriend = true;
 
     const selectFriend = () => {
         const selected = {
-            "id" : email,
+            "id" : friend.email,
         };
         setSelect(selected);
-        console.log("[selectFriend] ", select);
+        console.log("[selectFriend] ", friend.userId);
     }
 
     return (
@@ -22,10 +22,10 @@ const FriendInfo = ({select, setSelect, id, name, username, email, address, phon
             </div>
             <div className="user_info">
                 <div className="user_info_username">
-                    {username}
+                    {friend.nickname}
                 </div>
                 <div className="user_info_email">
-                    ({email})
+                    ({friend.email})
                 </div>
             </div>
             {

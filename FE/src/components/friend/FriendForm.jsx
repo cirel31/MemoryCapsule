@@ -41,7 +41,7 @@ const FriendForm = ({form, setForm, isValidSearch, setIsValidSearch}) => {
                     onChange={valueChange}
                     required
                 />
-                {!isValidSearch && <div style={{ color: 'red' }}>한 글자라도 입력해주세요</div>}
+                {!isValidSearch && <div style={{ color: 'red' }}>한 글자 이상 입력해주세요</div>}
             </form>
         </>
     );
