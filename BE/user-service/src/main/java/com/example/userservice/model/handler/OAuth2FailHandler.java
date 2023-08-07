@@ -3,6 +3,7 @@ package com.example.userservice.model.handler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -20,7 +21,8 @@ public class OAuth2FailHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        if(response instanceof OAuth2AuthorizationException){
+        log.info("여기는 Oauth2FailerHandler 이다. {} , - {}", exception.getMessage(), exception.getCause());
+        if(exception instanceof OAuth2AuthenticationException){
             response.sendError(HttpStatus.NOT_ACCEPTABLE.value(), exception.getMessage());
         }
         else if(response instanceof  ServletException){
