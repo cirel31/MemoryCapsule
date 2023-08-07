@@ -84,7 +84,7 @@ public class UserDto {
         private Long userId;
         private String email;
         private String nickname;
-        private String imgUrl;
+		private String imgUrl;
         private int totalFriend;
         private boolean admin;
         private int point;

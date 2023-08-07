@@ -117,6 +117,7 @@ const ProjectDetailPage = () => {
           <h2>History</h2>
           {myArticles.map((article) => (
             <div key={article.idx} >
+              {console.log(article)}
               <h3>{article.created}</h3>
               <div>
                 <div>
@@ -126,10 +127,9 @@ const ProjectDetailPage = () => {
                   }
                 </div>
                 <div>
-                  {/*{article.stamp && (*/}
-                  {/*  <img src={stamps[article.stamp - 1].stamp} alt="이미지를 불러올 수 없습니다"/>*/}
-                  {/*)}*/}
-                  <p>{article.stamp}</p>
+                  {article.stamp && (
+                    <img src={stamps[article.stamp - 1].stamp} alt="이미지를 불러올 수 없습니다" style={{width:"100px"}}/>
+                  )}
                   <p>{article.content}</p>
                 </div>
               </div>

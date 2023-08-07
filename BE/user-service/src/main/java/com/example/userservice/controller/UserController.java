@@ -28,6 +28,10 @@ public class UserController {
             UserDto.Basic signup = userService.signup(signUpDto, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(signup);
         } catch (Exception e) {
+            if(e instanceof IllegalStateException){
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            }
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -131,4 +135,5 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
 }

@@ -50,8 +50,7 @@ public class FileServiceImpl implements FileService {
             PutObjectResult result = amazonS3.putObject(
                     new PutObjectRequest(bucket, fileName, file.getInputStream(), objectMetadata)
             );
-            amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
-                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata));
         } catch (AmazonServiceException e){
             log.error(e.getMessage());
             return ResponseStatus.ERROR.name();

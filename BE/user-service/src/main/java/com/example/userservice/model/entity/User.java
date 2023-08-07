@@ -84,7 +84,7 @@ public class User {
     private List<Project> projectList = new ArrayList<>();
 
     // Article 목록
-    @OneToMany(fetch = FetchType.LAZY)
+//    @OneToMany(fetch = FetchType.LAZY)
 
 
 
