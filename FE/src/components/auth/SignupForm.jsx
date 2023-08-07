@@ -50,6 +50,7 @@ const SignupForm = ({ form, setForm,  }) => {
 
   const sendSignupData = (e) => {
     e.preventDefault()
+    const baseURL = 'http://i9a608.p.ssafy.io:8000'
     const signupURL = '/user/signup'
     const formData = new FormData(formRef.current);
     for (const [key, value] of formData.entries()) {
@@ -63,7 +64,7 @@ const SignupForm = ({ form, setForm,  }) => {
       isChecked
     ) {
       // get으로 서버에서 데이터 안받는 api 만들어보기
-      axios.post(`${signupURL}`, formData, {
+      axios.post(`${baseURL}${signupURL}`, formData, {
         headers : {
           "Content-Type": "multipart/form-data",
         }

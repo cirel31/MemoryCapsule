@@ -3,12 +3,14 @@ import {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 
 const InviteProject = () => {
+  const baseURL = 'http://i9a608.p.ssafy.io:8000'
+  const inviteURL = '/project/invite'
   const [inviteLists, setInviteLists] = useState([])
   useEffect(() => {
     const searchInvite = async () => {
       const accessToken = sessionStorage.getItem("accessToken")
       try {
-        await axios.get('/project/invite', {
+        await axios.get(`${baseURL}${inviteURL}`, {
           headers: {
             // Authorization: `Bearer ${accessToken}`
             "userId": "9"
@@ -32,7 +34,7 @@ const InviteProject = () => {
     const formData = new FormData()
     formData.append("inviteId", inviteId)
     try {
-       axios.post('/project/invite/accept', formData, {
+       axios.post(`${baseURL}${inviteURL}/accept`, formData, {
         headers: {
           "userId": `${userId}`,
         }
@@ -54,7 +56,7 @@ const InviteProject = () => {
     const formData = new FormData()
     formData.append("inviteId", inviteId)
     try {
-      axios.post('/project/invite/reject', formData, {
+      axios.post(`${baseURL}${inviteURL}/reject`, formData, {
         headers: {
           "userId": `${userId}`,
         }
@@ -108,12 +110,9 @@ const InviteProject = () => {
       </div>
        <div>
          {inviteLists.map((content, idx) => (
-           <div>
-             <div key={idx + 1}>
-               <h2>초 대 장</h2>
-               <button onClick={() => showAlert(content)}>초대 확인하기</button>
-               
-             </div>
+           <div key={idx + 1}>
+             <h2>초 대 장</h2>
+             <button onClick={() => showAlert(content)}>초대 확인하기</button>
            </div>
          ))}
        </div>

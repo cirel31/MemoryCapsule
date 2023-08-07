@@ -17,8 +17,8 @@ const ArticleCreateForm = () => {
   const articleId = window.location.href.replace(window.location.origin, "")
   const [stampModalOpen, setStampModalOpen] = useState(false)
   const [feelingStamp, setFellingStamp] = useState([])
-  const MAIN_URL = "http://i9a608.p.ssafy.io:8000"
-  const SUB_URL = articleId
+  const baseURL = "http://i9a608.p.ssafy.io:8000"
+  const subURL = articleId
   const stamps = [
     {
       "id": 1,
@@ -104,19 +104,7 @@ const ArticleCreateForm = () => {
     for (let [name, value] of formData.entries()) {
       console.log(`${name}: ${value}`);
     }
-    const articleImgInput = formRef.current.querySelector('input[name="article_img"]');
-    const articleStampInput = formRef.current.querySelector('input[name="article_stamp"]');
-    const articleContentInput = formRef.current.querySelector('textarea[name="article_content"]');
-
-    const sendData = {
-      "img": articleImgInput ? articleImgInput.value : null,
-      "stamp": articleStampInput ? articleStampInput.value : null,
-      "content": articleContentInput ? articleContentInput.value : null,
-    };
-
-    const jsonData = JSON.stringify(sendData);
-
-    axios.post(`${MAIN_URL}${SUB_URL}`, jsonData, {
+    axios.post(`${baseURL}${subURL}`, formData, {
       headers : {
         "Content-Type": "application/json",
         "userId": 1001,
@@ -126,9 +114,7 @@ const ArticleCreateForm = () => {
         console.log("게시글 등록 성공", res)
       })
       .catch(err => {
-        console.log(SUB_URL)
         console.log("게시글 등록 실패", err)
-        console.log(jsonData)
       })
 
   }

@@ -10,7 +10,9 @@ import goodstamp from "../../assets/images/stamp/stamp_best.svg"
 const CalendarForm = () => {
   // const navigate = useNavigate()
   const isLoggedIn = useSelector((state) => state.userState.isLoggedIn)
+  const attend = useSelector((state) => state.userState.user.accessList)
   console.log('로그인 상태 : ', isLoggedIn)
+  console.log(attend)
 
   // 로그인 되지 않은 상태에서는 접근할 수 없는 페이지
   // 추후 로그인 기능 활성화 시 주석 해제할 것
@@ -34,9 +36,9 @@ const CalendarForm = () => {
   ])
 
   useEffect(() => {
-    const myAttendance = JSON.parse(sessionStorage.getItem("userInfo"))?.accessList.map(date => date.slice(0, 10)) || attendanceDates
+    const myAttendance = attend?.map(date => date.slice(0, 10)) || attendanceDates
     setAttendanceDates(myAttendance)
-  },[]);
+  },[isLoggedIn]);
 
   const [value, onChange] = useState(new Date())
   const username = '김싸피'
