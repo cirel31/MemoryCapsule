@@ -79,4 +79,6 @@ public interface ProjectService {
     List<ProjectDto> findProjectsByUserId(Long userId);
 
     Long projectNum(Long userId);
+
+    void createRegister(Long userId, Long projectId);
 }
