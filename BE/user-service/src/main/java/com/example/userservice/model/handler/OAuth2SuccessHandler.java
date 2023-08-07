@@ -46,7 +46,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 등록된 회원이지 check 후, 미가입자 회원가입처리
         Optional<User> byEmail = userRepository.findByEmail((String) oAuth2User.getAttribute("email"));
         User saved;
-        if (byEmail == null) {
+        if (!byEmail.isPresent()) {
             // 회원가입 처리
             saved = userRepository.save(User.builder()
                     .nickName((String) oAuth2User.getAttribute("name"))

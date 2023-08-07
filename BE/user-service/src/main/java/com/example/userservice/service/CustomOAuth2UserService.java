@@ -42,8 +42,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
         log.info("CustomOAuth2UserService");
-        userRepository.findByEmail((String)memberAttribute.get("email")).orElseThrow(() -> new OAuth2AuthenticationException("이미 등록된 회원입니다."));
-
+        userRepository.findByEmail(String.valueOf(memberAttribute.get("email"))).ifPresent(e -> {
+            throw new OAuth2AuthenticationException("이미 등록된 유저입니다.");
+        });
+        log.info("여긴넘긴다?");
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
