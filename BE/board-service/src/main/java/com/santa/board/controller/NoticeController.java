@@ -38,8 +38,9 @@ public class NoticeController {
         try {
             return new ResponseEntity<>(noticeService.getNoticeDtoById(noticeIdx), HttpStatus.OK);
         } catch(Exception e) {
-            return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+            log.error(e.getMessage());
         }
+        return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "공지사항 등록하기", notes = "공지사항 글을 등록한다. 성공 유무 반환", response = String.class)
@@ -52,10 +53,11 @@ public class NoticeController {
             if (noticeService.insertNotice(insertDto, user_idx, file)) {
                 return new ResponseEntity<>(ResponseStatus.SUCCESS, HttpStatus.OK);
             }
-            return new ResponseEntity<>(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
         } catch(Exception e) {
-            return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+            log.error(e.getMessage());
         }
+        return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "공지사항 삭제하기", notes = "공지사항 id를 통해 공지사항의 글을 삭제한다. 성공 유무 반환", response = String.class)
@@ -66,8 +68,9 @@ public class NoticeController {
             noticeService.deleteNoticeById(noticeIdx);
             return new ResponseEntity<>(ResponseStatus.SUCCESS, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+            log.error(e.getMessage());
         }
+        return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "공지사항 수정하기", notes = "공지사항 글을 수정한다. 성공 유무 반환", response = String.class)
@@ -79,7 +82,8 @@ public class NoticeController {
             noticeService.modifyNoticeById(modifyDto, file);
             return new ResponseEntity<>(ResponseStatus.SUCCESS, HttpStatus.OK);
         } catch(Exception e) {
-            return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+            log.error(e.getMessage());
         }
+        return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 }

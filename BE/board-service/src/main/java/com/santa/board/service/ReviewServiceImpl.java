@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewResponseDTO getReviewByReviewId(Long userIdx, Long reviewIdx) throws Exception {
         Review review = getReviewByIdx(reviewIdx);
         review.incrementReviewHit();
-        log.info(LogMessageEnum.FIND_BY_IDX_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
+        log.info(LogMessageEnum.FIND_BY_IDX_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, review));
         return new ReviewResponseDTO().toDto(review, likeRepository.findByIdLikedReviewIdxAndIdLikedUsrIdx(reviewIdx, userIdx));
 //        reviewRepository.incrementReviewHit(reviewIdx);
 //        ReviewResponseDTO responseDTO = reviewRepository.findReviewWithIsLikedByReviewIdxAndUserIdx(userIdx, reviewIdx);
