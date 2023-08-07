@@ -5,6 +5,7 @@ import FriendForm from "../../components/friend/FriendForm";
 import FriendInfo from "../../components/friend/FriendInfo";
 import FriendDetail from "../../components/friend/FriendDetail";
 import {Link} from "react-router-dom";
+import "../../styles/friendStyle.scss";
 
 const FriendListPage = () => {
     const API = '/friend/search';
@@ -101,64 +102,73 @@ const FriendListPage = () => {
     };
 
     return (
-        <>
-            <div>내 친구 page</div>
-            <div>
-                <FriendForm form={form} setForm={setForm} onChange={handleChange} />
-            </div>
-            <AuthFormGrid>
-                <div className="AuthFormGrid">
-                    <CustomButton onClick={handleFriendData}>
-                        내부에서 찾기
-                    </CustomButton>
-                    <Link to={`/friend/search`}>
-                        <CustomButton>
-                            <strong>친구찾기</strong>
-                        </CustomButton>
-                    </Link>
-                </div>
-            </AuthFormGrid>
-            <div>
-                <div>등록된 친구</div>
-                <div>{friends.length}</div>
-            </div>
-            <AuthFormGrid>
-                {
-                    friends.length === 0
-                    ?
-                    <NoFriendList>
-                        <div className="NoFriendList">
-                            <div className="textBlock">
-                                새로운 친구를 찾아보세요
-                            </div>
-                        </div>
-                    </NoFriendList>
-                    :<div className="AuthFormGrid">
-                        { friends.map((friend) => (
-                            <FriendInfo select={select} setSelect={setSelect} key={friend.id} {...friend} />
-                        ))}
+        <div className="big_body">
+            <div className="friend_top"/>
+            <div className="friend_body">
+                <div className="friend_top_content">
+                    <div className="friend_title">친구 목록</div>
+                    <div className="friend_back">
+                        <img alt="뒤로가기이미지" className="friend_back_button"/>
                     </div>
-                }
-            </AuthFormGrid>
-            <div>
-                {
-                    !select.id
-                        ?
-                        <NoFriendList>
-                            <div className="NoFriendList">
-                                <div className="textBlock">
-                                    <img src="../UserImg" alt="로고"/>
+                </div>
+                <div className="search_info">
+                    <div className="friend_counter">
+                        <div className="friend_counter_text">등록된 친구</div>
+                        <div className="friend_counter_text">{friends.length}</div>
+                    </div>
+                    <div className="friend_form">
+                        <FriendForm form={form} setForm={setForm} onChange={handleChange} />
+                    </div>
+
+                    <div className="search_buttons">
+                        <button onClick={handleFriendData} className="search_friends_button button_front">
+                            친구검색
+                        </button>
+                        <Link to={`/friend/search`}>
+                            <button className="search_friends_button button_server">
+                                친구찾기
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+                <div className="friendList">
+                    <div className="friendListItems">
+                        {
+                            friends.length === 0
+                                ?
+                                <div className="no_friend_list">
+                                    <div className="textBlock">
+                                        새로운 친구를 찾아보세요
+                                    </div>
                                 </div>
-                            </div>
-                        </NoFriendList>
-                        :
-                        // 스크롤 구현해야 하는 부분
-                        <div>
-                            <FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
-                        </div>
-                }
+                                // 스크롤 구현해야 하는 부분
+                                :<div>
+                                    { friends.map((friend) => (
+                                        <FriendInfo select={select} setSelect={setSelect} key={friend.id} {...friend} />
+                                    ))}
+                                </div>
+                        }
+                    </div>
+                    <div className="friendDetailItems">
+                        {
+                            !select.id
+                                ?
+                                <div className="no_friend_list">
+                                    <div className="textBlock">
+                                        <img src="../UserImg" alt="로고"/>
+                                    </div>
+                                </div>
+                                :
+                                <div className="friend_detail_guide">
+                                    <div className="friend_detail_item">
+                                        <FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
+                                    </div>
+                                </div>
+                        }
+                    </div>
+                </div>
             </div>
-        </>
+        </div>
     )
 }
 

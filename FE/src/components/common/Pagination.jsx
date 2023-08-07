@@ -63,15 +63,23 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
             {/* 자체 페이지네이션 */}
             {
             currentItems.map((post) => (
-                <div
-                    className="mypage_notice_part"
-                    key={post.id}
-                    // onClick={() => openModal(post.id)} // 이걸로 수정해야 합니다!
-                    onClick={() => openModal(post.title)}
-                >
-                    <p>{post.title}</p>
+                <div>
+                    <div
+                        className="mypage_notice_part"
+                        key={post.id}
+                        // onClick={() => openModal(post.id)} // 이걸로 수정해야 합니다!
+                        onClick={() => openModal(post.title)}
+                    >
+                        <p>{post.title}</p>
+                    </div>
+                    <div>
+                        alarm
+                    </div>
+                    <div>
+                        <p>{post.id}</p>
+                    </div>
                 </div>
-            ))
+                ))
             }
 
             {/* 페이지네이션 */}
