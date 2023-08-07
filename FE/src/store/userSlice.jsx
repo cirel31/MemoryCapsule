@@ -3,8 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const initialState = {
-  userIdx: null,
-  isLoggedIn: false,
+  isLoggedIn: null,
   accessToken: null,
   user: null,
   // accessList : 출석
@@ -18,7 +17,7 @@ const userSlice = createSlice({
     login: (state, action) => {
       state.isLoggedIn = JSON.stringify(action.payload)
       sessionStorage.setItem('loginData', state.isLoggedIn)
-      console.log(state.userIdx, ' : 이메일 로그인 성공')
+      console.log('이메일 로그인 성공')
       console.log(sessionStorage)
     },
     logout: (state) => {
@@ -27,7 +26,7 @@ const userSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = JSON.stringify(action.payload)
-      console.log(state.user)
+      console.log('유저 정보 저장 됨 : ', state.user)
       sessionStorage.setItem('userInfo', state.user)
     },
     renewToken: (state, action) => {

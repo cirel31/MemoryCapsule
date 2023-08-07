@@ -21,6 +21,9 @@ public interface UserService extends UserDetailsService {
     boolean deleteFirend(Long hostId, Long guestId);
     // 친구추가
     boolean userAddFriend(Long hostId, Long guestId);
+
+    boolean userConfirmFriend(Long hostId, Long guestId);
+
     // 이메일로 유저 찾기
     boolean checkEmailDuplicated(final String email) throws Exception;
 
