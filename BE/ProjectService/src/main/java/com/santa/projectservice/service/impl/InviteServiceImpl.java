@@ -1,6 +1,6 @@
 package com.santa.projectservice.service.impl;
 
-import com.santa.projectservice.mongo.Invite;
+import com.santa.projectservice.model.mongo.Invite;
 import com.santa.projectservice.repository.InviteRepository;
 import org.springframework.stereotype.Service;
 

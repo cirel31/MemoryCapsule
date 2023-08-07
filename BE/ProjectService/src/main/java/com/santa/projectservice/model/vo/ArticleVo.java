@@ -1,7 +1,5 @@
-package com.santa.projectservice.vo;
+package com.santa.projectservice.model.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.santa.projectservice.jpa.User;
 import lombok.Builder;
 import lombok.Data;
 

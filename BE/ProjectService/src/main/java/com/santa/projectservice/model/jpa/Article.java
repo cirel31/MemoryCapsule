@@ -1,8 +1,8 @@
-package com.santa.projectservice.jpa;
+package com.santa.projectservice.model.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.santa.projectservice.dto.ArticleDto;
-import com.santa.projectservice.vo.ArticleVo;
+import com.santa.projectservice.model.dto.ArticleDto;
+import com.santa.projectservice.model.vo.ArticleVo;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

@@ -1,16 +1,8 @@
-package com.santa.projectservice.dto;
+package com.santa.projectservice.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.santa.projectservice.jpa.Project;
-import com.santa.projectservice.jpa.User;
-import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.ws.rs.DefaultValue;
 
 @Data
 @NoArgsConstructor

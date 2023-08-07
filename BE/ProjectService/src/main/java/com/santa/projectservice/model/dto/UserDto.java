@@ -1,9 +1,6 @@
-package com.santa.projectservice.dto;
+package com.santa.projectservice.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.santa.projectservice.jpa.User;
-import com.santa.projectservice.vo.UserVo;
-import lombok.AllArgsConstructor;
+import com.santa.projectservice.model.vo.UserVo;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

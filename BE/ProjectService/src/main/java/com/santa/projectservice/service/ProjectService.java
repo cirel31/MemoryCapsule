@@ -1,16 +1,13 @@
 package com.santa.projectservice.service;
 
-import com.santa.projectservice.dto.ProjectDto;
-import com.santa.projectservice.dto.ProjectState;
-import com.santa.projectservice.dto.RegisterDto;
+import com.santa.projectservice.model.dto.ProjectDto;
+import com.santa.projectservice.model.dto.ProjectState;
+import com.santa.projectservice.model.dto.RegisterDto;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotFullfillException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
-import com.santa.projectservice.jpa.Project;
-import com.santa.projectservice.jpa.Register;
-import com.santa.projectservice.jpa.User;
-import com.santa.projectservice.vo.ProjectGiftVo;
-import com.santa.projectservice.vo.ProjectInfo;
+import com.santa.projectservice.model.vo.ProjectGiftVo;
+import com.santa.projectservice.model.vo.ProjectInfo;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;

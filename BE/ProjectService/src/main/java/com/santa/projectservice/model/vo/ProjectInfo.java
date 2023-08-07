@@ -1,6 +1,6 @@
-package com.santa.projectservice.vo;
+package com.santa.projectservice.model.vo;
 
-import com.santa.projectservice.dto.ProjectDto;
+import com.santa.projectservice.model.dto.ProjectDto;
 import lombok.Builder;
 import lombok.Data;
 
