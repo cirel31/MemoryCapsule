@@ -2,6 +2,7 @@ package com.example.userservice;
 
 import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.UserRepository;
+import com.example.userservice.service.FriendService;
 import com.example.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -27,6 +28,7 @@ class UserServiceApplicationTests {
 
     @Autowired
     private UserService userService;
+    private FriendService friendService;
 
     @Test
     void contextLoads() {
@@ -47,7 +49,7 @@ class UserServiceApplicationTests {
 
     @Test
     void TestingFriend(){
-        boolean b = userService.deleteFirend(1L, 3L);
+        boolean b = friendService.deleteFirend(1L, 3L);
         log.info(b ? "true" : "false");
     }
 }
