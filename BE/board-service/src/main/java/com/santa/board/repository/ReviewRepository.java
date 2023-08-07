@@ -28,13 +28,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Optional<Review> findByReviewIdxAndReviewDeletedFalse(Long reviewIdx);
 
-    //hit + 1
-    @Modifying
-    @Query("UPDATE Review r " +
-            "SET r.reviewHit = r.reviewHit + 1 " +
-            "WHERE r.reviewIdx = :reviewIdx")
-    int incrementReviewHit(@Param("reviewIdx") Long reviewIdx);
-
     //리뷰 글 등록하기
     @Modifying
     @Query(value = "INSERT INTO review (review_title, review_content, review_imgurl, review_usr_idx) " +
@@ -43,22 +36,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                       @Param("content") String content,
                       @Param("imgUrl") String imgUrl,
                       @Param("userIdx") Long userIdx);
-
-    // 리뷰 글 삭제
-    @Modifying
-    @Query("UPDATE Review r SET r.reviewDeleted = true WHERE r.reviewIdx = :reviewIdx")
-    int deleteReviewByReviewIdx(@Param("reviewIdx") Long reviewIdx);
-
-    //리뷰 글 수정
-    @Modifying
-    @Query("UPDATE Review r " +
-            "SET r.reviewTitle = :reviewTitle, r.reviewContent = :reviewContent, " +
-            "r.reviewImgUrl = :reviewImgUrl, r.reviewUpdated = CURRENT_TIMESTAMP " +
-            "WHERE r.reviewIdx = :reviewIdx")
-    int modifyNoticeByNoticeIdx(@Param("reviewTitle") String reviewTitle,
-                                @Param("reviewContent") String reviewContent,
-                                @Param("reviewImgUrl") String reviewImgUrl,
-                                @Param("reviewIdx") Long reviewIdx);
 
     //review에 like + 1
     @Modifying

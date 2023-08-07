@@ -12,6 +12,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -40,7 +40,7 @@ public class ReviewController {
         } catch(Exception e) {
             log.error(e.getMessage());
         }
-        return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+        return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "리뷰 등록하기", notes = "리뷰 글을 등록한다. 성공 유무 반환", response = String.class)
@@ -53,11 +53,11 @@ public class ReviewController {
             if (reviewService.insertReview(insertDto, user_idx, file)) {
                 return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);
             }
-            return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
+            return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
         } catch(Exception e) {
             log.error(e.getMessage());
         }
-        return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+        return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "리뷰 삭제하기", notes = "리뷰 id를 통해 리뷰 글을 삭제한다. 성공 유무 반환", response = String.class)
@@ -70,7 +70,7 @@ public class ReviewController {
         } catch(Exception e) {
             log.error(e.getMessage());
         }
-        return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+        return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "리뷰 수정하기", notes = "리뷰 글을 수정한다. 성공 유무 반환", response = String.class)
@@ -84,7 +84,7 @@ public class ReviewController {
         } catch(Exception e) {
             log.error(e.getMessage());
         }
-        return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+        return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "좋아요 누르기", notes = "좋아요를 누른다. 성공 유무 반환", response = String.class)
@@ -95,7 +95,7 @@ public class ReviewController {
         if (reviewService.likedReviewByReviewId(review_idx, user_idx)) {
             return new ResponseEntity(com.santa.board.Enum.ResponseStatus.SUCCESS, HttpStatus.OK);
         }
-        return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
+        return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "좋아요 취소하기", notes = "좋아요를 취소한다. 성공 유무 반환", response = String.class)
@@ -106,6 +106,6 @@ public class ReviewController {
         if (reviewService.unlikedReviewByReviewId(reviewIdx, user_idx)) {
             return new ResponseEntity(com.santa.board.Enum.ResponseStatus.SUCCESS, HttpStatus.OK);
         }
-        return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
+        return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
     }
 }
