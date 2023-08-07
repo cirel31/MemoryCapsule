@@ -12,9 +12,12 @@ const LoginForm = ({ form, setForm }) => {
   const [idModalIsOpen, setIdModalIsOpen] = useState(false);
   const [passModalIsOpen, setPassModalIsOpen] = useState(false);
   // 나중에 키값 입력할 것
-  const API_KEY_KAKAO = '1af0163235ced24b3f4bc66a23b24509'
+  // const API_KEY_KAKAO = '1af0163235ced24b3f4bc66a23b24509'
+  const API_KEY_KAKAO = '50389ab406794f10677cfc8b7e3bcf4d'
+
+
   // 로그인 후 연동될 주소
-  const REDIRECT_URI_SITE = 'http://i9a608.p.ssafy.io:8000/login/oauth2/code/'
+  const REDIRECT_URI_SITE = 'http://i9a608.p.ssafy.io:8000/oauth2/authorization/'
   // 카카오 로그인 버튼 클릭 시 카카오 로그인 페이지로 이동
   // 키 갱신 안하면 로그인 페이지는 뜨지만 로그인이 안됨
   const OAUTH_KAKAO = `https://kauth.kakao.com/oauth/authorize?client_id=${API_KEY_KAKAO}&redirect_uri=${REDIRECT_URI_SITE+'kakao'}&response_type=code`
