@@ -8,7 +8,7 @@ public enum EmailType {
     Temp_password("[추억 터트리기] 임시 비밀번호 발급 안내"),
     Alarm("[추억 터트리기] 알람 메일");
 
-    private String emailTitle;
+    private final String emailTitle;
 
     EmailType(String emailTitle) {
         this.emailTitle = emailTitle;
