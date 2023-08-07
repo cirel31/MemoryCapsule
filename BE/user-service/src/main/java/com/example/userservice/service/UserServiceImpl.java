@@ -4,8 +4,6 @@ import com.example.userservice.model.Enum.UserRole;
 import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.Access;
-import com.example.userservice.model.entity.ConnectId;
-import com.example.userservice.model.entity.Connected;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.AccessRepository;
 import com.example.userservice.repository.ConnectedRepository;
@@ -26,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
+    private static final int TMP_PWD_LENGTH = 8;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String, String> redisTemplate;
@@ -70,10 +71,8 @@ public class UserServiceImpl implements UserService {
         ops.set(user.getIdx().toString(), refreshToken);
 
         // Logging 처리
-
         LocalDate now = LocalDateTime.now().toLocalDate();
-
-        List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByUser_IdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
+        List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByIdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
         if(byIdxAndAccessedAtIsBetween == null || byIdxAndAccessedAtIsBetween.isEmpty()){
             accessRepository.save(Access.builder()
                             .user(user)
@@ -106,12 +105,12 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("이미 존재하는 회원");
         });
 
-        String imgUrl = "https://www.computerhope.com/jargon/g/guest-user.png"; // Default Img
-        // User ImgURl 처리
-        if(multipartFile != null){
-            String fileName = fileService.upload(multipartFile);
-            imgUrl = defaultUrl + fileName;
-        }
+//        String imgUrl = "https://www.computerhope.com/jargon/g/guest-user.png"; // Default Img
+//        // User ImgURl 처리
+//        if(multipartFile != null){
+//            String fileName = fileService.upload(multipartFile);
+//            imgUrl = defaultUrl + fileName;
+//        }
 
         // 회원가입 처리
         User saved = userRepository.save(
@@ -124,7 +123,7 @@ public class UserServiceImpl implements UserService {
                         .role(UserRole.USER)
                         .createdAt(ZonedDateTime.now())
                         .updatedAt(ZonedDateTime.now())
-                        .imgUrl(imgUrl)
+                        .imgUrl(getImgUrl(multipartFile))
                         .passWord(passwordEncoder.encode(signUpDto.getPassword()))
                         .build()
         );
@@ -135,65 +134,6 @@ public class UserServiceImpl implements UserService {
                 .nickname(saved.getNickName())
                 .name(saved.getName())
                 .build();
-    }
-
-    @Override
-    public List<User> findByAllFriends(final Long userId) throws Exception {
-        //TODO: userId의 친구정보를 주는 서비스
-        return userRepository.findById(Long.valueOf(userId)).orElseThrow(() -> new Exception("user not found - " + userId))
-                .getFriendList();
-    }
-
-    @Override
-    @Transactional
-    public boolean deleteFirend(Long hostId, Long guestId) {
-        connectedRepository.disconnectFriend(hostId, guestId);
-        connectedRepository.disconnectFriend(guestId, hostId);
-//        ConnectId connectId = new ConnectId();
-//        connectId.setRequesterId(hostId);
-//        connectId.setRequesteeId(guestId);
-//
-//        boolean present = connectedRepository.findById(connectId).isPresent();
-//        log.info("첫번째 {}", present);
-//        if(present){
-//            log.info("분기는 탄다");
-//            connectedRepository.deleteById(connectId);
-//            log.info("딜리트 됐나?");
-//        }
-//        connectId.setRequesterId(guestId);
-//        connectId.setRequesteeId(hostId);
-//        boolean present1 = connectedRepository.findById(connectId).isPresent();
-//        log.info("두번쨰 {}", present1);
-//        if(present1){
-//            connectedRepository.deleteById(connectId);
-//        }
-////        connectedRepository.deleteConnection(connectId);
-        return true;
-    }
-
-    @Override
-    public boolean userAddFriend(Long hostId, Long guestId) {
-        connectedRepository.save(Connected.builder()
-                        .connectId(ConnectId.builder()
-                                .requesterId(hostId)
-                                .requesteeId(guestId)
-                                .build())
-                        .confirm(false)
-                .build());
-        return true;
-    }
-
-    @Override
-    @Transactional
-    public boolean userConfirmFriend(Long hostId, Long guestId) {
-        connectedRepository.updateConfirmStateByerIdAndeeId(hostId, guestId, true);
-        connectedRepository.save(Connected.builder()
-                        .connectId(ConnectId.builder()
-                                .requesterId(guestId)
-                                .requesteeId(hostId)
-                                .build())
-                .build());
-        return true;
     }
 
     @Override
@@ -230,12 +170,14 @@ public class UserServiceImpl implements UserService {
     public UserDto.Detail getUserDetail(Long userId) throws Exception {
         User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
         return UserDto.Detail.builder()
+                .userId(user.getIdx())
                 .email(user.getEmail())
                 .point(user.getPoint().intValue())
                 .imgUrl(user.getImgUrl())
                 .nickname(user.getNickName())
                 .admin(user.getRole().equals(UserRole.ADMIN))
                 .totalFriend(user.getFriendList().size())
+                .imgurl(user.getImgUrl())
                 .build();
     }
 
@@ -248,5 +190,40 @@ public class UserServiceImpl implements UserService {
                 .password(user.getPassWord())
                 .roles(user.getRole().name())
                 .build();
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId).get();
+        user.deleteUser();
+    }
+
+    @Transactional
+    @Override
+    public void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception {
+        User user = userRepository.findById(info.getUserId()).get();
+
+        user.modifyUser(info.getNickName(), info.getPassword(), getImgUrl(multipartFile));
+    }
+
+    private String getImgUrl(MultipartFile multipartFile) throws IOException {
+        String imgUrl = "https://www.computerhope.com/jargon/g/guest-user.png"; // Default Img
+        // User ImgURl 처리
+        if(multipartFile != null){
+            String fileName = fileService.upload(multipartFile);
+            imgUrl = defaultUrl + fileName;
+        }
+
+        return imgUrl;
+    }
+
+    @Override
+    public String generateRandomPassword() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] randomBytes = new byte[TMP_PWD_LENGTH];
+        secureRandom.nextBytes(randomBytes);
+
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
     }
 }
