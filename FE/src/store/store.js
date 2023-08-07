@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage/session"
 import authSlice from "./authSlice";
 import userSlice from "./userSlice";
 import selectFriendSlice from "./selectFriendSlice";
+import projectSlice from "./projectSlice";
 
 const persistConfig = {
   key: 'user',
@@ -17,6 +18,7 @@ const store = configureStore({
     authState: authSlice,
     userState: persistedUserReducer,
     friend: selectFriendSlice,
+    projectInvite: projectSlice,
   }
 })
 

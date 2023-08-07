@@ -45,13 +45,32 @@ export const logoutUserThunk = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
       try {
         // await axios.post('/user/logout');
-
         sessionStorage.clear();
         console.log('이메일 로그아웃 성공');
+        return
       } catch (error) {
         console.error('로그아웃 중 에러 발생:', error)
       }
     }
+)
+
+export const findPassThunk = createAsyncThunk(
+  'user/findPass',
+  async ({email, phone}, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/user/find_password`, {
+        headers: {
+          "email" : {email},
+          "phone" : {phone},
+          "Content-Type": "application/json"
+        }
+      })
+      console.log(response.data)
+    } catch (error) {
+      console.error("서버와 통신 실패로 패스워드 재발급 에러 발생", error)
+      return rejectWithValue(error)
+    }
+  }
 )
 
 const userSlice = createSlice({
@@ -81,6 +100,7 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
         .addCase(loginUserThunk.fulfilled, (state, action) => {
+          state.isLoggedIn = true
         })
         .addCase(fetchUserInfoThunk.pending, (state) => {
           state.status = 'loading';
@@ -91,6 +111,8 @@ const userSlice = createSlice({
           console.log(state.user)
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
+          state.isLoggedIn = false
+
         })
   }
 })

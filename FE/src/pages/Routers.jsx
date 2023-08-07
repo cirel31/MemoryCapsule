@@ -4,6 +4,7 @@ import HomePage from "./HomePage";
 import MainPage from "./MainPage";
 import NotFound from "./NotFound";
 import LoginPage from "./auth/LoginPage";
+import FindPassWordPage from "./auth/FindPassWordPage";
 import SignupPage from "./auth/SignupPage";
 import MyPage from "./user/MyPage";
 import UserProfilePage from "./user/UserProfilePage";
@@ -16,6 +17,7 @@ import ArticleCreatePage from "./project/ArticleCreatePage";
 import ProjectDetailPage from "./project/ProjectDetailPage";
 import ProjectListPage from "./project/ProjectListPage";
 import ProjectCreatePage from "./project/ProjectCreatePage";
+import InviteProject from "./project/InviteProject";
 
 export default function Routers() {
 
@@ -24,16 +26,19 @@ export default function Routers() {
       <Route path='/' element={<HomePage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/signup' element={<SignupPage />} />
+      <Route path='/find-password' element={<FindPassWordPage />} />
       <Route path='/profile' element={<UserProfilePage />} />
       <Route path='/main' element={<MainPage />} />
       <Route path='/project' element={<ProjectListPage />} />
       <Route path='/project/create' element={<ProjectCreatePage />} />
       <Route path='/project/:projectId' element={<ProjectDetailPage />} />
       <Route path='/project/article/write/:projectId' element={<ArticleCreatePage />} />
+      <Route path='/project/invite' element={<InviteProject />}/>
       <Route path='/friend' element={<FriendListPage />} />
       <Route path='/friend/search' element={<FriendSearchPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
       <Route path='/notice/postcreate' element={<PostCreatePage />} />
+      
 
       <Route path='/mypage' element={<MyPage />} />
 

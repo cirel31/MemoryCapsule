@@ -67,15 +67,14 @@ export default function Navbar() {
   const user = useSelector((state) => state.userState.user)
   useEffect(() => {
     const loginCheck = !!accessToken
-    console.log(loginCheck)
-    console.log(isLoggedIn)
+
     setIsLoggedIn(loginCheck)
     if (isLoggedIn) {
       const idx = sessionStorage.getItem("userIdx")
       console.log(idx)
       dispatch(fetchUserInfoThunk(idx))
     }
-  }, [accessToken])
+  }, [isLoggedIn])
 
 
   const user_nickname = user?.nickname || 'james'

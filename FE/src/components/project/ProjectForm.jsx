@@ -13,6 +13,7 @@ import moment from "moment";
 const ProjectForm = () => {
   const formRef = useRef(null)
   const navigate = useNavigate()
+  const [photos, setPhotos] = useState([])
   const [showStartDateModal, setShowStartDateModal] = useState(false);
   const [showEndDateModal, setShowEndDateModal] = useState(false);
   const [startDate, setStartDate] = useState(null);
@@ -25,43 +26,43 @@ const ProjectForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log('제출 버튼 누름')
+    const formData = new FormData(formRef.current)
 
-    const project = {
-      'title': formRef.current.querySelector('.title').value,
-      'content': formRef.current.querySelector('.example').value,
-      'started': moment(startDate).format("YYYY-MM-DD[T]00:00:00"),
-      'ended': moment(endDate).format("YYYY-MM-DD[T]00:00:00"),
-    }
-    const user = selectedUsers.map((id) => parseInt(id))
-    const formData = {
-      'project': project,
-      'userList': user,
-    }
+    // const project = {
+    //   'title': formRef.current.querySelector('.title').value,
+    //   'content': formRef.current.querySelector('.example').value,
+    //   'started': moment(startDate).format("YYYY-MM-DD[T]00:00:00"),
+    //   'ended': moment(endDate).format("YYYY-MM-DD[T]00:00:00"),
+    // }
+    // const user = selectedUsers.map((id) => parseInt(id))
+    // const formData = {
+    //   'project': project,
+    //   'userList': user,
+    // }
 
     console.log(formData)
     // const accessToken = sessionStorage.getItem("accessToken")
     // console.log(accessToken)
-    const jsonData = JSON.stringify(formData);
     console.log(SubmitURL)
-    try {
-      axios.post(`${SubmitURL}`, jsonData, {
-        headers: {
-          // Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-          "userId": 1001,
-        },
-      })
-        .then((res) => {
-          console.log(res, "프로젝트 생성 성공")
-          navigate('/project')
-        })
-        .catch((err) => {
-          console.log(err, "프로젝트 생성 실패")
-          console.log(err.config)
-        })
-    } catch (error) {
-      console.log(error, "오류 발생");
-    }
+    // try {
+    //   axios.post(`${SubmitURL}`, formData, {
+    //     headers: {
+    //       // Authorization: `Bearer ${accessToken}`,
+    //       "Content-Type": "application/json",
+    //       "userId": 1004,
+    //     },
+    //   })
+    //     .then((res) => {
+    //       console.log(res, "프로젝트 생성 성공")
+    //       navigate('/project')
+    //     })
+    //     .catch((err) => {
+    //       console.log(err, "프로젝트 생성 실패")
+    //       console.log(err.config)
+    //     })
+    // } catch (error) {
+    //   console.log(error, "오류 발생");
+    // }
   }
   const handleStartDateChange = (date) => {
     setStartDate(date);
@@ -71,7 +72,31 @@ const ProjectForm = () => {
   const handleEndDateChange = (date) => {
     setEndDate(date);
   };
-
+  
+  const handleImage = (e) => {
+    // 현재 선택된 파일의 목록을 가져옵니다.
+    const imageLists = Array.from(e.target.files);
+    
+    // 이미 선택된 이미지 URL 목록을 가져옵니다.
+    const newImageUrlLists = [...photos];
+    
+    imageLists.forEach((file) => {
+      const objectURL = URL.createObjectURL(file);
+      if (!newImageUrlLists.includes(objectURL)) {
+        newImageUrlLists.push(objectURL);
+      }
+    });
+    
+    setPhotos(newImageUrlLists);
+    console.log(photos);
+  };
+  
+  const deletePhoto = (idx) => {
+    const newPhotos = photos.filter((photo, index) => index !== idx);
+    setPhotos(newPhotos);
+    console.log(photos);
+  };
+  
   return (
     <div>
       <div>
@@ -84,6 +109,30 @@ const ProjectForm = () => {
               className="title"
               // required
             />
+          </div>
+          <br/>
+          <div>
+            <label id="image">프로젝트 이미지</label>
+            <br/>
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              className="image"
+              onChange={handleImage}
+            />
+            <div>
+              {photos.map((photo, index) => (
+                <div key={index}>
+                  <img
+                    src={photo}
+                    alt={`미리보기 이미지 ${index+1}`}
+                    style={{ width: '300px', height: '300px', objectFit: 'cover' }}
+                  />
+                  <button type="button" onClick={() => deletePhoto(index)}>삭제</button>
+                </div>
+              ))}
+            </div>
           </div>
           <br/>
           <div>

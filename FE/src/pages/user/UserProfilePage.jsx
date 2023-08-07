@@ -1,4 +1,3 @@
-import {Link} from "react-router-dom";
 // 기본 이미지 변경 시 뒤에 경로 변경하면 됩니다
 import defaultImg from "../../assets/images/stamp/stamp_best.svg"
 import {useEffect, useState} from "react";
@@ -35,9 +34,9 @@ const UserProfilePage = () => {
           <p>{user_email}</p>
         </div>
         {/* 마이페이지 이동 버튼 */}
-        <Link to='/mypage'>
+        <a href='/mypage'>
           <button>시작하기</button>
-        </Link>
+        </a>
       </div>
     </>
   )

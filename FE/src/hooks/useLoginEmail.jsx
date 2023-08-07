@@ -1,7 +1,7 @@
 import {  useState } from "react";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { loginUserThunk } from "../store/userSlice";
+import {findPassThunk, loginUserThunk} from "../store/userSlice";
 
 const useLoginEmail = () => {
   const navigate = useNavigate();
@@ -24,6 +24,7 @@ const useLoginEmail = () => {
     return emailPattern.test(email);
   };
 
+  
   return { isValidEmail, setIsValidEmail, loginUser, validateEmail };
 };
 
