@@ -1,4 +1,4 @@
-package com.santa.projectservice.dto;
+package com.santa.projectservice.model.dto;
 
 public enum ProjectState {
     ALL,

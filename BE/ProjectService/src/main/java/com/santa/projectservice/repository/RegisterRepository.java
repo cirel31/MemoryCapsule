@@ -1,6 +1,6 @@
 package com.santa.projectservice.repository;
 
-import com.santa.projectservice.jpa.Register;
+import com.santa.projectservice.model.jpa.Register;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

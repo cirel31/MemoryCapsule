@@ -1,4 +1,4 @@
-package com.santa.projectservice.mongo;
+package com.santa.projectservice.model.mongo;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,7 +1,7 @@
-package com.santa.projectservice.dto;
+package com.santa.projectservice.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.santa.projectservice.vo.ProjectInfo;
+import com.santa.projectservice.model.vo.ProjectInfo;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

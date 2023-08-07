@@ -1,11 +1,7 @@
-package com.santa.projectservice.dto;
+package com.santa.projectservice.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.santa.projectservice.jpa.Article;
-import com.santa.projectservice.repository.ProjectRepository;
-import com.santa.projectservice.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

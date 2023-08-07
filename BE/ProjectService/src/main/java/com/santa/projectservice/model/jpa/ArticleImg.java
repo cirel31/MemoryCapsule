@@ -1,7 +1,6 @@
-package com.santa.projectservice.jpa;
+package com.santa.projectservice.model.jpa;
 
-import com.santa.projectservice.dto.ArticleDto;
-import com.santa.projectservice.dto.ArticleImgDto;
+import com.santa.projectservice.model.dto.ArticleImgDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;

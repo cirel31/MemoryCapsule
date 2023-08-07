@@ -1,4 +1,4 @@
-package com.santa.projectservice.vo;
+package com.santa.projectservice.model.vo;
 
 import lombok.Builder;
 import lombok.Data;

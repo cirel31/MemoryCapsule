@@ -1,4 +1,4 @@
-package com.santa.projectservice.dto;
+package com.santa.projectservice.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;

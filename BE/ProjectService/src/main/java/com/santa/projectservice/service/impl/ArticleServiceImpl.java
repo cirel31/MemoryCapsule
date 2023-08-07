@@ -1,11 +1,11 @@
 package com.santa.projectservice.service.impl;
 
-import com.santa.projectservice.dto.ArticleDto;
+import com.santa.projectservice.model.dto.ArticleDto;
 import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotAuthorizedException;
-import com.santa.projectservice.jpa.Article;
-import com.santa.projectservice.jpa.ArticleImg;
-import com.santa.projectservice.jpa.Project;
+import com.santa.projectservice.model.jpa.Article;
+import com.santa.projectservice.model.jpa.ArticleImg;
+import com.santa.projectservice.model.jpa.Project;
 import com.santa.projectservice.repository.ArticleImgRepository;
 import com.santa.projectservice.repository.ArticleRepository;
 import com.santa.projectservice.repository.ProjectRepository;

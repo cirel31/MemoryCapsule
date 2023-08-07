@@ -1,6 +1,6 @@
 package com.santa.projectservice.repository;
 
-import com.santa.projectservice.jpa.Article;
+import com.santa.projectservice.model.jpa.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

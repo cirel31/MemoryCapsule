@@ -1,11 +1,9 @@
 package com.santa.projectservice.controller;
 
-import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.service.ProjectService;
-import com.santa.projectservice.vo.ProjectGiftVo;
+import com.santa.projectservice.model.vo.ProjectGiftVo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

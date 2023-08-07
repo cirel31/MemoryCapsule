@@ -1,7 +1,7 @@
 package com.santa.projectservice.service.impl;
 
-import com.santa.projectservice.dto.ProjectDto;
-import com.santa.projectservice.dto.RegisterDto;
+import com.santa.projectservice.model.dto.ProjectDto;
+import com.santa.projectservice.model.dto.RegisterDto;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.FileUploadService;

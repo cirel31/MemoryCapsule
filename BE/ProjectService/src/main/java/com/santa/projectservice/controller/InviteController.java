@@ -1,9 +1,8 @@
 package com.santa.projectservice.controller;
 
-import com.santa.projectservice.mongo.Invite;
+import com.santa.projectservice.model.mongo.Invite;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.service.impl.InviteServiceImpl;
-import com.santa.projectservice.service.impl.ProjectServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

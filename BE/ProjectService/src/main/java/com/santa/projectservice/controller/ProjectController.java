@@ -1,21 +1,18 @@
 package com.santa.projectservice.controller;
 
-import com.santa.projectservice.dto.ArticleDto;
-import com.santa.projectservice.dto.ProjectDto;
-import com.santa.projectservice.dto.ProjectState;
-import com.santa.projectservice.dto.RegisterDto;
+import com.santa.projectservice.model.dto.ArticleDto;
+import com.santa.projectservice.model.dto.ProjectDto;
+import com.santa.projectservice.model.dto.ProjectState;
 import com.santa.projectservice.exception.User.UserNotFoundException;
 import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotFullfillException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
-import com.santa.projectservice.mongo.Invite;
-import com.santa.projectservice.repository.InviteRepository;
 import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.service.UserService;
 import com.santa.projectservice.service.impl.InviteServiceImpl;
-import com.santa.projectservice.vo.ProjectInfo;
+import com.santa.projectservice.model.vo.ProjectInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
