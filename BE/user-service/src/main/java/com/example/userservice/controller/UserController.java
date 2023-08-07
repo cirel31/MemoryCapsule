@@ -2,10 +2,7 @@ package com.example.userservice.controller;
 
 import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
-import com.example.userservice.model.entity.User;
-import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.UserService;
-import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,8 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -33,7 +28,7 @@ public class UserController {
             UserDto.Basic signup = userService.signup(signUpDto, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(signup);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러입니다. 관리자에게 문의해주세요");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -51,10 +46,10 @@ public class UserController {
     public ResponseEntity userLogin(@RequestBody UserDto.RequestLogin requestLogin) {
         log.info("user-login");
         try {
-            TokenDto result = userService.login(requestLogin);
+            UserDto.ResponseLogin result = userService.login(requestLogin);
             return ResponseEntity.status(HttpStatus.CREATED).body(result);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

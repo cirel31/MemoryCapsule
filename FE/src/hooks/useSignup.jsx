@@ -1,9 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import Swal from 'sweetalert2'
+import {useNavigate} from "react-router-dom";
 
 const useSignup = () => {
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate()
 
   // 이메일 유효성 검사 함수
   const validateEmail = (email) => {
@@ -23,30 +26,32 @@ const useSignup = () => {
 
   // 회원가입 데이터 서버로 전송 함수
   const sendSignupDataServer = async (signupData) => {
+    const signupURL = '/user/signup'
     console.log('회원가입 정보 서버 제출 함수 작동 확인')
     console.log('세션 스토리지 확인', sessionStorage)
+    console.log(signupData)
     try {
-      // 회원가입 요청 보내기
-      const signupResponse = await axios.post("http://localhost:7000/signup", signupData);
-      console.log(signupResponse.data);
-
-      // 회원가입 성공 시,  로그인 요청 보내기
-      const loginData = {
-        id: signupData.id,
-        password: signupData.password,
-      };
-      const loginResponse = await axios.post("http://localhost:7000/login", loginData);
-      console.log(loginResponse.data);
-
-      const jwtTokenFromServer = loginResponse.data.jwtToken;
-      sessionStorage.setItem("jwtToken", jwtTokenFromServer);
-      console.log(sessionStorage)
-
-      // 이후 로그인 페이지로 이동
-      // navigate("/main");
+      await axios.post(`${signupURL}`, signupData, {
+        headers : {
+          "Content-Type": "multipart/form-data",
+        }
+      })
+        .then(res => {
+          console.log('회원가입 성공', res)
+          navigate('/login')
+        })
+        .catch(err => {
+          if (err.response && err.response.status === 409) {
+            Swal.fire('경로가 잘못되었습니다.')
+          }
+          else if (err.response && err.response.status === 400) {
+            Swal.fire('에러에러')
+          }
+          Swal.fire('서버에서 회원가입 실패')
+          console.log('서버에서 회원가입 실패', err)
+        })
     } catch (error) {
       console.error("회원가입 에러 발생", error);
-      // 회원가입 실패 시 대응
     }
   };
 

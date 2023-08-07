@@ -1,0 +1,72 @@
+
+server:
+  port: 9090
+
+spring:
+  application:
+    name: project-service
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: S09P12A608
+    password: asdf1234
+    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S09P12A608
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 50
+      connection-init-sql: SELECT 1
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      auto-commit: true
+
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}.{spring.application.instance_id:${random.value}}
+    # 기본값 - 윈도우: 컴퓨터 이름, Mac/Linux: localhost
+    # 원하는 도메인을 적어도 작동한다.
+    # ip주소로 하고싶으면 ip주소를 직접 명시하거나,
+    # ip-address 을 적고  prefer-ip-address: true 를 적으면 된다.
+    # hostname: localhost
+  client:
+    service-url:
+      defaultZone:
+        http://localhost:8761
+    fetch-registry: false
+    register-with-eureka: false
+
+logging:
+  level:
+    root:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+cloud:
+  aws:
+#      IAM : jaehyoni
+    credentials:
+      accessKey: AKIAQPOZGAOT652M75EC
+      secretKey: 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
+    stack:
+      auto: false
+    s3:
+      bucket: ssafysanta
+    region:
+      static: ap-northeast-2
+
+#

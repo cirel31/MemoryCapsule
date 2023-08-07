@@ -1,16 +1,9 @@
 import { AuthFormBlock, FormBody, WhiteBox } from "../../styles/friendStyle";
 import {StyledSearchBar} from "../../styles/searchBarStyle";
 
-import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 
-const FriendForm = ({form, setForm}) => {
-    const navigate = useNavigate();
-
-    const validateSearchValue = (searchValue) => {
-        const pattern = /^[a-zA-Z0-9._%+-]/;
-        return pattern.test(searchValue);
-    };
+const FriendForm = ({form, setForm, isValidSearch, setIsValidSearch}) => {
 
     const handleChange = (e) => {
         const { value } = e.target;
@@ -30,7 +23,7 @@ const FriendForm = ({form, setForm}) => {
         };
         setForm(nextForm);
         console.log("valueChange : ", form);
-
+        setIsValidSearch(true);
     };
 
     return (
@@ -39,7 +32,6 @@ const FriendForm = ({form, setForm}) => {
                 <WhiteBox>
                     <AuthFormBlock>
                         <form>
-                            <label htmlFor="search">친구찾기 페이지</label>
                             <select id="search" name="search" onChange={handleChange}>
                                 <option value={"id"}>e-mail</option>
                                 <option value={"name"}>name</option>
@@ -53,6 +45,7 @@ const FriendForm = ({form, setForm}) => {
                                 onChange={valueChange}
                                 required
                             />
+                            {!isValidSearch && <div style={{ color: 'red' }}>한 글자라도 입력해주세요</div>}
                         </form>
                     </AuthFormBlock>
                 </WhiteBox>

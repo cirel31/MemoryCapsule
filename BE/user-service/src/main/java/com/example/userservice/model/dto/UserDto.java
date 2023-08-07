@@ -1,7 +1,5 @@
 package com.example.userservice.model.dto;
 
-import com.example.userservice.model.entity.Access;
-import jdk.jfr.SettingDefinition;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -53,7 +51,16 @@ public class UserDto {
         private String password;
     }
 
-
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResponseLogin{
+        private Long userIdx;
+        private String accessToken;
+        private String refreshToken;
+    }
 
 
     @Getter
@@ -74,10 +81,13 @@ public class UserDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Detail{
+        private Long userId;
         private String email;
         private String nickname;
+        private String imgUrl;
         private int totalFriend;
-        private String imgurl;
+        private boolean admin;
+        private int point;
         private List<Date> accessList;
     }
 

@@ -32,9 +32,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public TokenDto login(UserDto.RequestLogin requestLogin) throws Exception {
+    public UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception {
         User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Not found"));
         if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
             throw new Exception("Password Not Matched!");
@@ -73,9 +71,7 @@ public class UserServiceImpl implements UserService {
         ops.set(user.getIdx().toString(), refreshToken);
 
         // Logging 처리
-
         LocalDate now = LocalDateTime.now().toLocalDate();
-
         List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByIdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
         if(byIdxAndAccessedAtIsBetween == null || byIdxAndAccessedAtIsBetween.isEmpty()){
             accessRepository.save(Access.builder()
@@ -84,7 +80,8 @@ public class UserServiceImpl implements UserService {
                     .build());
         }
 
-        return TokenDto.builder()
+        return UserDto.ResponseLogin.builder()
+                .userIdx(user.getIdx())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -156,7 +153,7 @@ public class UserServiceImpl implements UserService {
         log.info(date.toString());
         LocalDateTime start = date.withDayOfMonth(1);
         LocalDateTime end = start.withDayOfMonth(date.toLocalDate().lengthOfMonth());
-        List<Access> accessList = accessRepository.findByIdxAndAccessedAtIsBetween(userId, start, end);
+        List<Access> accessList = accessRepository.findByUser_IdxAndAccessedAtIsBetween(userId, start, end);
 
         result.setAccessList(
                 accessList.stream().map(
@@ -173,8 +170,12 @@ public class UserServiceImpl implements UserService {
     public UserDto.Detail getUserDetail(Long userId) throws Exception {
         User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
         return UserDto.Detail.builder()
+                .userId(user.getIdx())
                 .email(user.getEmail())
+                .point(user.getPoint().intValue())
+                .imgUrl(user.getImgUrl())
                 .nickname(user.getNickName())
+                .admin(user.getRole().equals(UserRole.ADMIN))
                 .totalFriend(user.getFriendList().size())
                 .imgurl(user.getImgUrl())
                 .build();
