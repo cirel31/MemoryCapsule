@@ -41,20 +41,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
-
-        // 등록된 회원이지 check 후, 미가입자 회원가입처리
-        Optional<User> byEmail = userRepository.findByEmail((String) memberAttribute.get("email"));
-
-        if (byEmail == null) {
-            // 회원가입 처리
-            userRepository.save(User.builder()
-                    .nickName((String) memberAttribute.get("name"))
-                    .email((String) memberAttribute.get("email"))
-                    .passWord("")
-                    .imgUrl((String) memberAttribute.get("picture"))
-                    .oAuthUser(true)
-                    .build());
-        } else if (!byEmail.get().isOAuthUser()) return null;
+        log.info("CustomOAuth2UserService");
+        userRepository.findByEmail((String)memberAttribute.get("email")).orElseThrow(() -> new OAuth2AuthenticationException("이미 등록된 회원입니다."));
 
 
         return new DefaultOAuth2User(
