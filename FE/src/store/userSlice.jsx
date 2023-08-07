@@ -4,11 +4,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 export const loginUserThunk = createAsyncThunk(
     'user/loginUser',
     async (loginData, { dispatch, rejectWithValue }) => {
+      const loginURL = 'http://i9a608.p.ssafy.io:8000/user/login'
       try {
-        const response = await axios.post(`http://i9a608.p.ssafy.io:8000/user/login`, loginData, {
+        const response = await axios.post(`${loginURL}`, loginData, {
           headers: { "Content-Type": "application/json" }
         })
         console.log(response.data)
+        console.log(loginURL)
         sessionStorage.setItem("userIdx", response.data.userIdx)
         sessionStorage.setItem("accessToken", response.data.accessToken)
         sessionStorage.setItem("refreshToken", response.data.refreshToken)
@@ -18,6 +20,7 @@ export const loginUserThunk = createAsyncThunk(
         dispatch(fetchUserInfoThunk(userIdx))
       } catch (error) {
         console.error("서버와 통신 실패로 로그인 에러 발생", error)
+        console.log(loginURL)
         return rejectWithValue(error)
       }
     }
