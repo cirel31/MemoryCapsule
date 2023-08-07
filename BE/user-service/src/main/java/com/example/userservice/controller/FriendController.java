@@ -47,9 +47,9 @@ public class FriendController {
     public ResponseEntity findByUserEmail(@PathVariable String user_email) {
         Optional<User> optionalUser = friendService.findUserEmail(user_email);
         if (optionalUser.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(optionalUser.get());
         }
-        return ResponseEntity.status(HttpStatus.OK).body(optionalUser.get());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
     }
 
     @DeleteMapping("/delete")
