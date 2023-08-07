@@ -74,7 +74,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(projectInfos);
     }
     @GetMapping("/myproject/current")
-    @Operation(summary = "아이디로 내 현재 진행중인 프로젝트를 가져옵니다", description = "confirm이 0인걸 가져옵니다")
+    @Operation(summary = "아이디로 내 현재 진행중인 프로젝트를 가져옵니다", description = "state이 0인걸 가져옵니다")
     public ResponseEntity<List<ProjectInfo>> getMyCurrentProject(
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId) {
@@ -83,7 +83,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(projectInfos);
     }
     @GetMapping("/myproject/done")
-    @Operation(summary = "완료된 프로젝트를 가져옵니다", description = "confirm이 1인걸 가져옵니다")
+    @Operation(summary = "완료된 프로젝트를 가져옵니다", description = "state이 1인걸 가져옵니다")
     public ResponseEntity<List<ProjectInfo>> getMyDoneProject(
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId) {
@@ -126,6 +126,7 @@ public class ProjectController {
             @RequestParam("content") String content,
             @RequestParam("userList") String users,
             @RequestParam("started") String start,
+            @RequestParam("type") Integer type,
             @RequestParam("ended") String end) throws RegisterMakeException, IOException {
         List<Long> userList = Arrays.stream(users.replaceAll("[\\[\\] ]", "").split(","))
                 .map(Long::valueOf)
@@ -144,12 +145,24 @@ public class ProjectController {
                     .title(title)
                     .started(started)
                     .ended(ended)
+                    .type(type)
                     .build();
         } catch (Exception e) {throw new ProjectNotFullfillException("인자가 부족하네요!", e);}
 
         Long owner = userId;
         Long projectId = projectService.createProject(projectDto, userList, owner, image);
         return ResponseEntity.status(HttpStatus.OK).body(projectId);
+    }
+
+    @GetMapping("/finish/{projectId}")
+    @Operation(summary = "프로젝트를 끝냅니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "프로젝트의 UUID를 반환합니다. "),
+            @ApiResponse(responseCode = "404", description = "데이터를 찾을 수 없습니다.")
+    })
+    public ResponseEntity<String> finish(@PathVariable("projectId") Long projectId, @RequestHeader("userId") Long userId){
+        String uuid = projectService.finishProject(userId, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(uuid);
     }
 
     @DeleteMapping("/{projectid}")
@@ -164,16 +177,6 @@ public class ProjectController {
         String title = projectService.deleteProject(userId, projectId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("[" + title + "] : 삭제성공");
     }
-
-    @GetMapping("/list/{userId}")
-    @Operation(summary = "특정 유저가 참여중인 프로젝트들을 가져옵니다 ")
-    public ResponseEntity<List<ProjectDto>> getRegisterById(@PathVariable("userId") Long userId) {
-        List<RegisterDto> registerDtoList = projectService.findRegistersByUserId(userId);
-        log.info(registerDtoList.toString());
-        List<ProjectDto> projectDtos = projectService.findProjectsByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(projectDtos);
-    }
-
 
     @PutMapping("/{projectId}")
     @Operation(summary = "프로젝트를 수정합니다 .", description = "근데 수정 안할거죠?")

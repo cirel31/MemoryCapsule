@@ -12,6 +12,7 @@ import javax.ws.rs.DefaultValue;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @ToString(exclude = {"registerList","articleList"})
 @Entity
@@ -49,7 +50,7 @@ public class Project {
     @Column(name = "pjt_shareurl", length = 2048)
     private String shareUrl;
     @Column(name = "pjt_type")
-    private int type;
+    private Integer type;
     @Column(name = "pjt_state")
     private Boolean state;
     @Column(name = "pjt_gift_url")
@@ -75,7 +76,7 @@ public class Project {
     private List<Article> articleList = new ArrayList<>();
 
     @Builder
-    public Project(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm, List<Register> registerList, List<Article> articleList) {
+    public Project(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, Integer type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm, List<Register> registerList, List<Article> articleList) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -117,6 +118,11 @@ public class Project {
 
     public void delete() {
         this.deleted = true;
+    }
+    public String finish() {
+        this.state = true;
+        this.giftUrl = UUID.randomUUID().toString().replaceAll("-", "");
+        return this.giftUrl;
     }
 
     public void editComment(String content) {

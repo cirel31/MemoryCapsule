@@ -9,6 +9,7 @@ import com.santa.projectservice.exception.register.RegisterMakeException;
 import com.santa.projectservice.jpa.Project;
 import com.santa.projectservice.jpa.Register;
 import com.santa.projectservice.jpa.User;
+import com.santa.projectservice.vo.ProjectGiftVo;
 import com.santa.projectservice.vo.ProjectInfo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -81,4 +82,8 @@ public interface ProjectService {
     Long projectNum(Long userId);
 
     void createRegister(Long userId, Long projectId);
+
+    ProjectGiftVo gift(String uuid);
+
+    String finishProject(Long userId, Long projectId);
 }
