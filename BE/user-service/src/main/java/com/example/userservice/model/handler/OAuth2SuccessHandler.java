@@ -1,11 +1,8 @@
 package com.example.userservice.model.handler;
 
 import com.example.userservice.model.dto.TokenDto;
-import com.example.userservice.repository.UserRepository;
 import com.example.userservice.util.TokenProvider;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.oauth2.sdk.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
 
 @Slf4j
 @Component
@@ -28,7 +24,6 @@ import java.nio.charset.Charset;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final TokenProvider tokenProvider;
     private final RedisTemplate<String,String> redisTemplate;
-    private final UserRepository userRepository;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         //TODO: 로그인 성공 이후의 Process

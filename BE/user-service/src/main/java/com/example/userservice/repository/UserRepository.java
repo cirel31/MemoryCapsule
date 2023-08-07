@@ -9,4 +9,10 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+
+
+    @Query(value = "SELECT count(article_idx) " +
+            "FROM article a " +
+            "WHERE a.article_creator_idx = :userIdx", nativeQuery = true)
+    Integer wroteArticleTotal(Long userIdx);
 }
