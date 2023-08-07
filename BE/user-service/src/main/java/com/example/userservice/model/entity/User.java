@@ -94,4 +94,10 @@ public class User {
         this.passWord = passWord;
         this.imgUrl = file;
     }
+
+    public boolean updatePoint(Long point) {
+        if (this.point + point < 0) return false;
+        this.point += point;
+        return true;
+    }
 }

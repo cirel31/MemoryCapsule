@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: ognl:ognl:3.1.26" type="java-imported" external-system-id="Maven">
+    <properties groupId="ognl" artifactId="ognl" version="3.1.26" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/ognl/ognl/3.1.26/ognl-3.1.26.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/ognl/ognl/3.1.26/ognl-3.1.26-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/ognl/ognl/3.1.26/ognl-3.1.26-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

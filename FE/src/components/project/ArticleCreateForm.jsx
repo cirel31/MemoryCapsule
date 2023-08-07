@@ -97,10 +97,8 @@ const ArticleCreateForm = () => {
     }
   }
   const appendStamp = (stamp) => {
-    // console.log(stamp.id)
     setFellingStamp([stamp.id, stamp.stamp])
     setStampModalOpen(false)
-    // console.log(feelingStamp)
   }
   const createArticle = (e) => {
     e.preventDefault();

@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
         // Logging 처리
         LocalDate now = LocalDateTime.now().toLocalDate();
-        List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByIdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
+        List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByUser_IdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
         if(byIdxAndAccessedAtIsBetween == null || byIdxAndAccessedAtIsBetween.isEmpty()){
             accessRepository.save(Access.builder()
                             .user(user)
@@ -102,15 +103,9 @@ public class UserServiceImpl implements UserService {
         //TODO: User 회원가입
         // - 이메일 중복체크
         userRepository.findByEmail(signUpDto.getEmail()).ifPresent(m -> {
-            throw new IllegalStateException("이미 존재하는 회원");
+            if(m.isOAuthUser()) throw new IllegalStateException("Kakao로 로그인한 회원입니다.");
+            else throw new IllegalStateException("이미 회원가입한 회원입니다.");
         });
-
-//        String imgUrl = "https://www.computerhope.com/jargon/g/guest-user.png"; // Default Img
-//        // User ImgURl 처리
-//        if(multipartFile != null){
-//            String fileName = fileService.upload(multipartFile);
-//            imgUrl = defaultUrl + fileName;
-//        }
 
         // 회원가입 처리
         User saved = userRepository.save(
@@ -172,12 +167,9 @@ public class UserServiceImpl implements UserService {
         return UserDto.Detail.builder()
                 .userId(user.getIdx())
                 .email(user.getEmail())
-                .point(user.getPoint().intValue())
-                .imgUrl(user.getImgUrl())
                 .nickname(user.getNickName())
-                .admin(user.getRole().equals(UserRole.ADMIN))
                 .totalFriend(user.getFriendList().size())
-                .imgurl(user.getImgUrl())
+                .imgUrl(user.getImgUrl())
                 .build();
     }
 
@@ -225,5 +217,16 @@ public class UserServiceImpl implements UserService {
         secureRandom.nextBytes(randomBytes);
 
         return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    }
+
+    @Override
+    public Boolean updatePoint(Long userId, Long point) throws Exception {
+        User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+        return user.updatePoint(point);
+    }
+
+    @Override
+    public Long getPoint(Long userId) throws Exception {
+        return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found")).getPoint();
     }
 }

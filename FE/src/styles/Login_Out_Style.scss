@@ -9,17 +9,12 @@
 
 
   .login_page{
-    //position: fixed;
 
     width: 100%;
     left: 0;
     top: 0;
     z-index: -3;
     margin: 0;
-    //background-image: url("../assets/images/home/home_background.svg");
-    //background-size: auto;
-    //background-repeat: no-repeat;
-
   }
   .login_forms {
     margin: 0;
@@ -95,6 +90,9 @@
       transition: background-color 0.5s;
       &:hover {
         background-color: var(--brand2_3);
+        &:active {
+          box-shadow: inset 0 2px 5px rgb(0,0,0, 0.15);
+        }
       }
     }
     & > div {
@@ -119,6 +117,9 @@
       &:hover {
         background-color: var(--brand2_3);
         color: var(--font_burgundy_100);
+        &:active {
+          box-shadow: inset 0 2px 5px rgb(0,0,0, 0.15);
+        }
 
       }
     }
@@ -144,6 +145,9 @@
       transition: background-color 0.5s;
       &:hover {
         background-color: #FFD687;
+        &:active {
+          box-shadow: inset 0 2px 5px rgb(0,0,0, 0.15);
+        }
 
       }
 
@@ -157,9 +161,8 @@
       width: 60%;
     }
   }
-
-
 }
+
 .login_alert{
   top: 82%;
   width: 100%;
@@ -168,5 +171,4 @@
   font-weight: 700;
   font-size: 1.2vw;
   color: var(--font_burgundy_100);
-
 }
