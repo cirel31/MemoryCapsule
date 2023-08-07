@@ -44,10 +44,7 @@ const NoticeListPage = () => {
     }
 
     return (
-        <>
-            <div>
-                <h2>공지사항</h2>
-            </div>
+        <div className="big_body">
             <AnnounceUserViewPage page={currentPage} size={itemsPerPage} setCurrentPage={setCurrentPage}/>
             <div>
             <CustomButton
@@ -58,7 +55,7 @@ const NoticeListPage = () => {
                 글작성
             </CustomButton>
             </div>
-        </>
+        </div>
     )
 }
 

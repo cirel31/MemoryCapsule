@@ -1,9 +1,10 @@
 import Modal from "react-modal";
 import React, {useEffect, useState} from "react";
-import "../../styles/MyPage.scss"
+import "../../styles/Announce.scss"
 import PostModal from "../../components/post/PostModal";
 import Pagination from "../../components/common/Pagination";
 import axios from "axios";
+import go_back from "../../assets/images/frield/go_back.svg";
 
 const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
   const API = '/notice'
@@ -39,26 +40,24 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
 
     // 실제 배포는 8000
     // 테스트 및 개발 서버는 7000
-    // axios.get(`${API}/list`)
-    //     .then((response) => {
-    //       console.log('게시글 전체 (All) successful : ', response.data);
-    //       setPostList(response.data);
-    //     })
-    //     .catch((error) => {
-    //       console.error('게시글 전체 (All) fail : ', error);
-    //     });
-
-    axios.get(`${API}/list?size=${size}&page=${page}`)
+    axios.get(`${API}/list`)
         .then((response) => {
-          console.log('게시글 선택 (size, page) successful : ', response.data);
+          console.log('게시글 전체 (All) successful : ', response.data);
           setPostList(response.data);
         })
         .catch((error) => {
           console.error('게시글 전체 (All) fail : ', error);
         });
+
+    // axios.get(`${API}/list?size=${size}&page=${page}`)
+    //     .then((response) => {
+    //       console.log('게시글 선택 (size, page) successful : ', response.data);
+    //       setPostList(response.data);
+    //     })
+    //     .catch((error) => {
+    //       console.error('게시글 전체 (All) fail : ', error);
+    //     });
   };
-
-
 
   /**
    * 2. 공지사항 자세하게 보기 [get]
@@ -96,65 +95,67 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
     setIsModal(true)
   }
 
+    // 뒤로가기
+    const handleBack = () => {
+        window.history.back()
+    }
+
   Modal.setAppElement("#root");
 
   return (
-    <div style={{ textAlign: 'center', alignItems: 'center', justifyContent: 'center', justifyItems: 'center'}}>
-    {/*  <div>*/}
-    {/*    <div>*/}
-    {/*      {console.log("[postList] : " , postList)}*/}
-    {/*      {postList.map((post) => (*/}
-    {/*          <div*/}
-    {/*              className="mypage_notice_part"*/}
-    {/*              key={post.id}*/}
-    {/*              // onClick={() => openModal(post.id)}*/}
-    {/*              onClick={() => openModal(post.title)}*/}
-    {/*          >*/}
-    {/*            <p>{post.title}</p>*/}
-    {/*          </div>*/}
-    {/*      ))}*/}
-    {/*    </div>*/}
-    {/*</div>*/}
-    <div>
-      <div>
-      {
-      postList.length === 0
-        ?
-        <div className="mypage_notice_part">
-          <p>등록된 공지사항이 없습니다.</p>
-        </div>
-        :
-          (
-            size === 3
-            ?
-              postList.map((post) => (
-                <div
-                  className="mypage_notice_part"
-                  key={post.noticeIdx}
-                  // onClick={() => openModal(post.id)}
-                  onClick={() => openModal(post.noticeIdx)}
-                >
-                  <p>{post.noticeTitle}</p>
-                </div>
-              ))
-            :
-              <Pagination
-                itemsPerPage={size}
-                postList={postList}
-                currentPage={page}
-                setCurrentPage={setCurrentPage}
-              />
-          )
-      }
-      </div>
-    </div>
-      <PostModal
-          selectedPost={selectedPost}
-          setSelectedPost={setSelectedPost}
-          modalIsOpen={isModal}
-          setModalIsOpen={setIsModal}
-      />
-  </div>
+      <>
+          <div className="announce_top"/>
+          <div className="announce_body">
+              <div className="announce_top_content">
+                  <div className="announce_title">공지사항</div>
+                  <div className="announce_back">
+                      <div onClick={handleBack} className="announce_back_button">
+                          <img src={go_back} alt="뒤로가기이미지" className="announce_back_button_img"/>
+                      </div>
+                  </div>
+              </div>
+              <div className="announce_list">
+                  {
+                      postList.length === 0
+                          ?
+                          <div className="announce_nothing">
+                              <p>등록된 공지사항이 없습니다.</p>
+                          </div>
+                          :
+                          (
+                              size === 3
+                                  ?
+                                  postList.map((post) => (
+                                      <div
+                                          className="mypage_notice_part"
+                                          key={post.noticeIdx}
+                                          onClick={() => openModal(post.noticeIdx)}
+                                      >
+                                          <p>{post.noticeTitle}</p>
+                                      </div>
+                                  ))
+                                  :
+                                  <Pagination
+                                      itemsPerPage={size}
+                                      postList={postList}
+                                      currentPage={page}
+                                      setCurrentPage={setCurrentPage}
+                                  />
+                          )
+                  }
+              </div>
+          </div>
+          <div className="">
+              <div>
+              </div>
+          </div>
+          <PostModal
+              selectedPost={selectedPost}
+              setSelectedPost={setSelectedPost}
+              modalIsOpen={isModal}
+              setModalIsOpen={setIsModal}
+          />
+      </>
   )
 }
 export default AnnounceUserViewPage;

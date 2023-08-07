@@ -57,23 +57,25 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
     }
 
     return (
-        <div>
+        <div className="announce_item">
             {/* 자체 페이지네이션 */}
             {
             currentItems.map((post) => (
-                <div>
+                <div className="announce_list_items">
                     <div
-                        className="mypage_notice_part"
+                        className="announce_list_item"
                         key={post.noticeIdx}
                         onClick={() => openModal(post.noticeIdx)}
                     >
                         <p>{post.noticeTitle}</p>
                     </div>
+                    <div className="announce_list_alarm"/>
                     <div>
-                        alarm
-                    </div>
-                    <div>
-                        <p>{post.noticeIdx}</p>
+                        <p>
+                            {/*function으로 return 값을 date.getDate() 같은거 써서 return*/}
+                            {
+                            Date(post.noticeCreated * 1000)
+                        }</p>
                     </div>
                 </div>
                 ))
@@ -81,11 +83,13 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
 
             {/* 페이지네이션 */}
             <div>
-                {Array.from(pageIndex()).map((index) => (
-                    <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
-                        {index + 1}
-                    </button>
-                ))}
+                {
+                    Array.from(pageIndex()).map((index) => (
+                        <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
+                            {index + 1}
+                        </button>
+                    ))
+                }
             </div>
             <PostModal
                 selectedPost={selectedPost}
