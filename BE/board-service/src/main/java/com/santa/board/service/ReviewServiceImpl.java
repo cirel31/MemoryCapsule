@@ -7,6 +7,8 @@ import com.santa.board.Enum.LogMessageEnum;
 import com.santa.board.Enum.ServiceNameEnum;
 import com.santa.board.entity.Liked;
 import com.santa.board.entity.LikedId;
+import com.santa.board.entity.Review;
+import com.santa.board.exception.DataException;
 import com.santa.board.repository.LikeRepository;
 import com.santa.board.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +27,18 @@ public class ReviewServiceImpl implements ReviewService {
     private final LikeRepository likeRepository;
     private final FileService fileService;
 
+    private Review getReviewByIdx(Long reviewIdx) throws Exception {
+        return reviewRepository.findByReviewIdxAndReviewDeletedFalse(reviewIdx).orElseThrow(() -> new DataException("idx에 맞는 리뷰글이 없습니다."));
+    }
+
     /**
      * 전체 리뷰 리스트를 얻는다.
      * @return 리뷰 리스트
      * @param pageable 페이지
-     * @throws Exception 에러
      */
     @Transactional(readOnly = true)
     @Override
-    public Page<ReviewResponseDTO> getReviewList(Pageable pageable) throws Exception {
+    public Page<ReviewResponseDTO> getReviewList(Pageable pageable) {
         Page<ReviewResponseDTO> responseDTOPage = new ReviewResponseDTO().toDtoList(reviewRepository.findByReviewDeletedFalse(pageable));
         log.info(LogMessageEnum.TOTAL_LIST_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, responseDTOPage));
         return responseDTOPage;
@@ -49,10 +54,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional(rollbackFor={Exception.class})
     @Override
     public ReviewResponseDTO getReviewByReviewId(Long userIdx, Long reviewIdx) throws Exception {
-        reviewRepository.incrementReviewHit(reviewIdx);
-        ReviewResponseDTO responseDTO = reviewRepository.findReviewWithIsLikedByReviewIdxAndUserIdx(userIdx, reviewIdx);
+        Review review = getReviewByIdx(reviewIdx);
+        review.incrementReviewHit();
         log.info(LogMessageEnum.FIND_BY_IDX_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
-        return responseDTO;
+        return new ReviewResponseDTO().toDto(review, likeRepository.findByIdLikedReviewIdxAndIdLikedUsrIdx(reviewIdx, userIdx));
+//        reviewRepository.incrementReviewHit(reviewIdx);
+//        ReviewResponseDTO responseDTO = reviewRepository.findReviewWithIsLikedByReviewIdxAndUserIdx(userIdx, reviewIdx);
+//        log.info(LogMessageEnum.FIND_BY_IDX_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
+//        return responseDTO;
     }
 
     /**
@@ -78,29 +87,25 @@ public class ReviewServiceImpl implements ReviewService {
     /**
      * 리뷰 글을 삭제한다.
      * @param reviewIdx 삭제할 리뷰 idx
-     * @return 성공유무
      */
     @Transactional
     @Override
-    public boolean deleteReview(long reviewIdx) throws Exception {
+    public void deleteReview(long reviewIdx) throws Exception {
+        Review review = getReviewByIdx(reviewIdx);
+        review.deletedReview();
         log.info(LogMessageEnum.DELETE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx));
-        return reviewRepository.deleteReviewByReviewIdx(reviewIdx) == 1;
     }
 
     /**
      * 리뷰 글을 수정한다.
      * @param modifyDto 수정할 리뷰의 idx
-     * @return 성공 유무
      */
     @Transactional
     @Override
-    public boolean modifyReviewById(ModifyDto modifyDto, MultipartFile file) throws Exception {
+    public void modifyReviewById(ModifyDto modifyDto, MultipartFile file) throws Exception {
+        Review review = getReviewByIdx(modifyDto.getIdx());
+        review.modifyReview(modifyDto.getTitle(), modifyDto.getContent(), fileService.getFileName(file));
         log.info(LogMessageEnum.MODIFY_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, modifyDto));
-        return reviewRepository.modifyNoticeByNoticeIdx
-                (modifyDto.getTitle(),
-                        modifyDto.getContent(),
-                        fileService.getFileName(file),
-                        modifyDto.getIdx()) == 1;
     }
 
     /**
@@ -132,7 +137,7 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Transactional(rollbackFor={Exception.class})
     @Override
-    public boolean unlikedReviewByReviewId(Long reviewIdx, Long userIdx) throws Exception {
+    public boolean unlikedReviewByReviewId(Long reviewIdx, Long userIdx) {
         reviewRepository.reductionReviewLike(reviewIdx);
         likeRepository.deleteByIdLikedReviewIdxAndIdLikedUsrIdx(reviewIdx, userIdx);
         log.info(LogMessageEnum.UNLIKE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
