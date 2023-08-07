@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8000
 
 spring:
   application:
@@ -25,7 +25,7 @@ spring:
           kakao:
             client-id: 50389ab406794f10677cfc8b7e3bcf4d
             client-secret: bz2JnPOVnr8G9y907sRzdQIWGLcTbAr3
-            redirect-uri: http://localhost:8001/login/oauth2/code/kakao
+            redirect-uri: http://localhost:8000/login/oauth2/code/kakao
             client-authentication-method: POST # 카카오 접근시 고정값
             authorization-grant-type: authorization_code
             client-name: Kakao
@@ -57,7 +57,7 @@ eureka:
 logging:
   level:
     com.example.user-service.client: DEBUG # Feign Client Logging 설정
-
+    org.springframework.security: DEBUG
 jwt:
   secret: asdfghjklqwertyuiopzxcvbnmasdfasdfweasdfwbzzgoooodItstootireddgdsasdfsawherhdsfbdfsgsadfsadvsvethegwfsdavbdfh
   token-validity-in-milliseconds: 100000000

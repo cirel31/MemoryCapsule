@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -28,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final CustomOAuth2UserService oAuth2UserService;
-    private final OAuth2FailHandler oAuth2FailHandler;
+    private final AuthenticationFailureHandler oAuth2FailHandler;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Override
