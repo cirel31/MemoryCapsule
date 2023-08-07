@@ -10,8 +10,8 @@ const ProjectListPage = () => {
   const [isHovered, setIsHovered] = useState(null)
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
-  // const API = 'http://i9a608.p.ssafy.io:8000/project/all'
-  const API = '/project/all'
+  const API = 'http://i9a608.p.ssafy.io:8000/project/all'
+  // const API = '/project/all'
   const [projects, setProjects] = useState([
 
   ]);

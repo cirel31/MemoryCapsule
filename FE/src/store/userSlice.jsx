@@ -5,7 +5,7 @@ export const loginUserThunk = createAsyncThunk(
     'user/loginUser',
     async (loginData, { dispatch, rejectWithValue }) => {
       try {
-        const response = await axios.post(`/user/login`, loginData, {
+        const response = await axios.post(`http://i9a608.p.ssafy.io:8000/user/login`, loginData, {
           headers: { "Content-Type": "application/json" }
         })
         console.log(response.data)
@@ -29,7 +29,7 @@ export const fetchUserInfoThunk = createAsyncThunk(
       const accessToken = sessionStorage.getItem("accessToken")
       console.log(accessToken)
       try {
-        const response = await axios.get(`/user/${userIdx}/detail`, {
+        const response = await axios.get(`http://i9a608.p.ssafy.io:8000/user/${userIdx}/detail`, {
           headers: { Authorization: `Bearer ${accessToken}` }
         })
         console.log(response.data)
@@ -57,11 +57,13 @@ export const logoutUserThunk = createAsyncThunk(
 export const findPassThunk = createAsyncThunk(
   'user/findPass',
   async ({email, phone}, { dispatch, rejectWithValue }) => {
+    const userData = {
+      "email" : {email},
+      "phone" : {phone},
+    }
     try {
-      const response = await axios.get(`/user/find_password`, {
+      const response = await axios.post(`http://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
         headers: {
-          "email" : {email},
-          "phone" : {phone},
           "Content-Type": "application/json"
         }
       })
