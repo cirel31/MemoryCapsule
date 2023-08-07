@@ -14,10 +14,8 @@ import com.santa.projectservice.jpa.QArticleImg;
 import com.santa.projectservice.jpa.QProject;
 import com.santa.projectservice.jpa.QRegister;
 import com.santa.projectservice.jpa.QUser;
-import com.santa.projectservice.repository.ArticleRepository;
-import com.santa.projectservice.repository.ProjectRepository;
-import com.santa.projectservice.repository.RegisterRepository;
-import com.santa.projectservice.repository.UserRepository;
+import com.santa.projectservice.mongo.Invite;
+import com.santa.projectservice.repository.*;
 import com.santa.projectservice.service.FileUploadService;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.vo.ProjectInfo;
@@ -47,6 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ModelMapper mapper;
     private final ArticleRepository articleRepository;
     private final FileUploadService fileUploadService;
+    private final InviteServiceImpl inviteService;
     private final JPAQueryFactory queryFactory;
     private QProject qProject = QProject.project;
     private QRegister qRegister = QRegister.register;
@@ -56,9 +55,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     public ProjectServiceImpl(RegisterRepository registerRepository,
                               ProjectRepository projectRepository,
-                              UserRepository userRepository, ArticleRepository articleRepository, FileUploadService fileUploadService, EntityManager em) {
+                              UserRepository userRepository, ArticleRepository articleRepository, FileUploadService fileUploadService, InviteServiceImpl inviteService, EntityManager em) {
         this.articleRepository = articleRepository;
         this.fileUploadService = fileUploadService;
+        this.inviteService = inviteService;
         this.queryFactory = new JPAQueryFactory(em);
         this.mapper = new ModelMapper();
         this.registerRepository = registerRepository;
@@ -77,46 +77,57 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional(rollbackOn =  RegisterMakeException.class)
     public Long createProject(ProjectDto projectDto, List<Long> userList, Long Owner, MultipartFile image) throws RegisterMakeException, ProjectNotFullfillException, IOException {
-
+        // 이미지를 올린 다음에
         String url = fileUploadService.upload(image);
-        Project project1 = Project.builder()
-                .content(projectDto.getContent())
-                .title(projectDto.getTitle())
-                .started(projectDto.getStarted())
-                .imgUrl(url)
-                .ended(projectDto.getEnded())
-                .build();
-        log.info(project1.toString());
+        // 프로젝트를  만들고
         Project project = null;
         try {
-            project = projectRepository.save(project1);
+            project = projectRepository.save(Project.builder()
+                    .content(projectDto.getContent())
+                    .title(projectDto.getTitle())
+                    .started(projectDto.getStarted())
+                    .imgUrl(url)
+                    .ended(projectDto.getEnded())
+                    .build());
         } catch (PropertyValueException e){
             throw new ProjectNotFullfillException("Title 혹은 Content가 비었습니다. ", e, e.getPropertyName());
         }
+        // 내가 주인인 레지스터 만들고
         try{
-            Register register = Register.builder()
-                            .user(userRepository.getReferenceById(Owner))
-                            .project(project)
-                            .type(true)
-                            .confirm(true)
-                            .alarm(false)
-                            .build();
-            registerRepository.save(register);
+            registerRepository.save(Register.builder()
+                    .user(userRepository.getReferenceById(Owner))
+                    .project(project)
+                    .type(true)
+                    .confirm(true)
+                    .alarm(false)
+                    .build());
             final Project regiProject = project;
+            // 사용자에 대해서 프로젝트 초대를 만듭니다
+            Optional<User> user = userRepository.findById(Owner);
             userList.forEach(id -> {
-                User user = userRepository.getReferenceById(id);
-                registerRepository.save(Register.builder()
-                        .user(userRepository.getReferenceById(Owner))
-                        .project(regiProject)
-                        .type(false)
-                        .confirm(true)
-                        .alarm(false)
-                        .build());
+                inviteService.createInvite(Invite.builder()
+                        .userId(id)
+                        .projectId(regiProject.getId())
+                        .inviter(user.get().getNickname())
+                        .build()
+                );
             });
         } catch (DataAccessException e){
             throw new RegisterMakeException("프로젝트 유저들을 초기화하는데 문제가 발생했습니다", e);
         }
         return project.getId();
+    }
+    @Override
+    public void createRegister(Long userId, Long projectId) {
+        log.info("createRegister까지");
+        Register register = Register.builder()
+                .user(userRepository.getReferenceById(userId))
+                .project(projectRepository.getReferenceById(projectId))
+                .confirm(true)
+                .alarm(false)
+                .build();
+        log.info("여기까진댐");
+        registerRepository.save(register);
     }
 
 
@@ -250,5 +261,7 @@ public class ProjectServiceImpl implements ProjectService {
     public Long projectNum(Long userId){
         return registerRepository.countByUser_Id(userId);
     }
+
+
 
 }

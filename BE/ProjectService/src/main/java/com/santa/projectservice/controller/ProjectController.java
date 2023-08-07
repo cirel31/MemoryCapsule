@@ -9,9 +9,12 @@ import com.santa.projectservice.exception.article.ArticleProjectNotFoundExceptio
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotFullfillException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
+import com.santa.projectservice.mongo.Invite;
+import com.santa.projectservice.repository.InviteRepository;
 import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.service.UserService;
+import com.santa.projectservice.service.impl.InviteServiceImpl;
 import com.santa.projectservice.vo.ProjectInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,10 +34,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -44,11 +45,13 @@ public class ProjectController {
     private final UserService userService;
     private final ProjectService projectService;
     private final ArticleService articleService;
+    private final InviteServiceImpl inviteService;
 
-    public ProjectController(UserService userService, ProjectService projectService, ArticleService articleService) {
+    public ProjectController(UserService userService, ProjectService projectService, ArticleService articleService, InviteServiceImpl inviteService) {
         this.userService = userService;
         this.projectService = projectService;
         this.articleService = articleService;
+        this.inviteService = inviteService;
     }
 
     @GetMapping("/all")
@@ -113,27 +116,24 @@ public class ProjectController {
     }
 
 
-    /* 프로젝트 생성
-     *  userId 필요
-     *
-     * */
     @PostMapping("/create")
-    @Operation(summary = "프로젝트를 생성합니다 ", description = "confirm이 1인걸 가져옵니다")
+    @Operation(summary = "프로젝트를 생성합니다 ", description = "프로젝트를 생성합니다")
     public ResponseEntity<Object> createProject(
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId,
             @RequestParam MultipartFile image,
-            @RequestBody Map<String, Object> map) throws RegisterMakeException, IOException {
-        List<Integer> list = (ArrayList<Integer>) map.get("userList");
-        List<Long> userList = new ArrayList<>();
-        list.forEach(L -> {userList.add(Long.valueOf(L.toString()));});
-        Map<String, String> pro = (Map<String, String>) map.get("project");
-        String title = pro.get("title"), content = pro.get("content");
-
-        LocalDateTime start = LocalDateTime.parse(pro.get("started").toString(), DateTimeFormatter.ISO_DATE_TIME);
-        LocalDateTime end = LocalDateTime.parse(pro.get("ended").toString(), DateTimeFormatter.ISO_DATE_TIME);
-        Date started = Date.from(start.atZone(ZoneId.systemDefault()).toInstant());
-        Date ended = Date.from(end.atZone(ZoneId.systemDefault()).toInstant());
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("userList") String users,
+            @RequestParam("started") String start,
+            @RequestParam("ended") String end) throws RegisterMakeException, IOException {
+        List<Long> userList = Arrays.stream(users.replaceAll("[\\[\\] ]", "").split(","))
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
+        LocalDateTime starts = LocalDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME);
+        LocalDateTime ends = LocalDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME);
+        Date started = Date.from(starts.atZone(ZoneId.systemDefault()).toInstant());
+        Date ended = Date.from(ends.atZone(ZoneId.systemDefault()).toInstant());
         if (title == null || content == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("title 혹은 content가 비어있습니다");
         }
