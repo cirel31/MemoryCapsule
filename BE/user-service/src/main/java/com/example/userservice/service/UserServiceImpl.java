@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public TokenDto login(UserDto.RequestLogin requestLogin) throws Exception {
+    public UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception {
         User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Not found"));
         if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
             throw new Exception("Password Not Matched!");
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
         // Logging 처리
         LocalDate now = LocalDateTime.now().toLocalDate();
-        List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByIdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
+        List<Access> byIdxAndAccessedAtIsBetween = accessRepository.findByUser_IdxAndAccessedAtIsBetween(user.getIdx(), now.atStartOfDay(), now.atTime(LocalTime.MAX));
         if(byIdxAndAccessedAtIsBetween == null || byIdxAndAccessedAtIsBetween.isEmpty()){
             accessRepository.save(Access.builder()
                             .user(user)
@@ -80,7 +81,8 @@ public class UserServiceImpl implements UserService {
                     .build());
         }
 
-        return TokenDto.builder()
+        return UserDto.ResponseLogin.builder()
+                .userIdx(user.getIdx())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -101,15 +103,9 @@ public class UserServiceImpl implements UserService {
         //TODO: User 회원가입
         // - 이메일 중복체크
         userRepository.findByEmail(signUpDto.getEmail()).ifPresent(m -> {
-            throw new IllegalStateException("이미 존재하는 회원");
+            if(m.isOAuthUser()) throw new IllegalStateException("Kakao로 로그인한 회원입니다.");
+            else throw new IllegalStateException("이미 회원가입한 회원입니다.");
         });
-
-//        String imgUrl = "https://www.computerhope.com/jargon/g/guest-user.png"; // Default Img
-//        // User ImgURl 처리
-//        if(multipartFile != null){
-//            String fileName = fileService.upload(multipartFile);
-//            imgUrl = defaultUrl + fileName;
-//        }
 
         // 회원가입 처리
         User saved = userRepository.save(
@@ -152,7 +148,7 @@ public class UserServiceImpl implements UserService {
         log.info(date.toString());
         LocalDateTime start = date.withDayOfMonth(1);
         LocalDateTime end = start.withDayOfMonth(date.toLocalDate().lengthOfMonth());
-        List<Access> accessList = accessRepository.findByIdxAndAccessedAtIsBetween(userId, start, end);
+        List<Access> accessList = accessRepository.findByUser_IdxAndAccessedAtIsBetween(userId, start, end);
 
         result.setAccessList(
                 accessList.stream().map(
@@ -173,7 +169,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .nickname(user.getNickName())
                 .totalFriend(user.getFriendList().size())
-                .imgurl(user.getImgUrl())
+                .imgUrl(user.getImgUrl())
                 .build();
     }
 

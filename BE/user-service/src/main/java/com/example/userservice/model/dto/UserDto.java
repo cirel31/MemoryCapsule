@@ -51,7 +51,16 @@ public class UserDto {
         private String password;
     }
 
-
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResponseLogin{
+        private Long userIdx;
+        private String accessToken;
+        private String refreshToken;
+    }
 
 
     @Getter
