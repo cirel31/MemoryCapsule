@@ -20,11 +20,11 @@ public class Invite {
     //테스트
     private Date expire;
     @Builder
-    public Invite(String id, Long userId, Long projectId, String inviter, String projecttitle, Date expire) {
+    public Invite(String id, Long userId, Long projectId, String inviter, String projectTitle, Date expire) {
         this.id = id;
         this.userId = userId;
         this.projectId = projectId;
-        this.projectTitle = projecttitle;
+        this.projectTitle = projectTitle;
         this.inviter = inviter;
         this.expire = expire;
     }
