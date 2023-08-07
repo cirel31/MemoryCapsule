@@ -225,4 +225,15 @@ public class UserServiceImpl implements UserService {
 
         return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
     }
+
+    @Override
+    public Boolean updatePoint(Long userId, Long point) throws Exception {
+        User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+        return user.updatePoint(point);
+    }
+
+    @Override
+    public Long getPoint(Long userId) throws Exception {
+        return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found")).getPoint();
+    }
 }

@@ -111,4 +111,29 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @GetMapping("/point/{userId}")
+    public ResponseEntity getUserPoint(@PathVariable("userId") Long userId) {
+        try {
+            Long point = userService.getPoint(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(point);
+        } catch (Exception e) {
+            log.error("Error - getUserPoint : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PutMapping("/point/{userId}")
+    public ResponseEntity updateUserPoint(
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "point", required = false, defaultValue = "0") Long point) {
+        try {
+            if (userService.updatePoint(userId, point)) {
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포인트가 부족하여 사용이 불가능합니다.");
+        } catch (Exception e) {
+            log.error("Error - updateUserPoint : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }
