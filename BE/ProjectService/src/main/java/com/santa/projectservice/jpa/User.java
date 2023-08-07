@@ -2,6 +2,7 @@ package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.santa.projectservice.vo.UserVo;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -78,6 +79,13 @@ public class User {
         this.imgurl = imgurl;
         this.registerList = registerList;
         this.articleList = articleList;
+    }
+    public UserVo toVo(){
+        return  UserVo.builder()
+                .nickname(this.nickname)
+                .name(this.name)
+                .imgurl(this.imgurl)
+                .build();
     }
 
     public User(Long userId){

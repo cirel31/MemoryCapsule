@@ -16,6 +16,7 @@ public class ProjectInfo {
     private Date created;
     private String imgUrl;
     private String shareurl;
+    private  String giftUrl;
     private int type;
     private Boolean state;
     private int limit;
@@ -54,6 +55,7 @@ public class ProjectInfo {
         this.limit = projectDto.getLimit();
         this.alarmType = projectDto.getAlarmType();
         this.alarm = projectDto.getAlarm();
+        this.giftUrl = projectDto.getGiftUrl();
         this.artielcNum = num;
     }
 }

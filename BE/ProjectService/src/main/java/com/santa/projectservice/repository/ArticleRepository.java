@@ -11,5 +11,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findByUser_IdAndProject_Id(Long userId, Long projectId);
     Optional<Article> findFirstByUser_IdAndProject_IdOrderByCreatedDesc(Long userId, Long projectId);
 
+    List<Article> findAllByProject_Id(Long projectId);
     long countByProjectId(Long projectId);
 }

@@ -16,13 +16,15 @@ public class Invite {
     private Long userId;
     private Long projectId;
     private String inviter;
+    private String projectTitle;
     //테스트
     private Date expire;
     @Builder
-    public Invite(String id, Long userId, Long projectId, String inviter, Date expire) {
+    public Invite(String id, Long userId, Long projectId, String inviter, String projecttitle, Date expire) {
         this.id = id;
         this.userId = userId;
         this.projectId = projectId;
+        this.projectTitle = projecttitle;
         this.inviter = inviter;
         this.expire = expire;
     }

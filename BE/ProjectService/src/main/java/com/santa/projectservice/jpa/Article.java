@@ -2,6 +2,7 @@ package com.santa.projectservice.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.santa.projectservice.dto.ArticleDto;
+import com.santa.projectservice.vo.ArticleVo;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -69,6 +70,16 @@ public class Article {
                 .id(this.id)
                 .projectId(this.project.getId())
                 .userId(this.user.getId())
+                .title(this.title)
+                .content(this.content)
+                .created(this.created)
+                .stamp(this.stamp)
+                .images(this.articleImgList.stream().map(ArticleImg::getImgurl).collect(Collectors.toList()))
+                .build();
+    }
+    public ArticleVo toVo(){
+        return ArticleVo.builder()
+                .userVo(this.user.toVo())
                 .title(this.title)
                 .content(this.content)
                 .created(this.created)

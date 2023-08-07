@@ -1,5 +1,8 @@
 package com.santa.projectservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.santa.projectservice.jpa.User;
+import com.santa.projectservice.vo.UserVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,5 +38,13 @@ public class UserDto {
         this.role = role;
         this.phone = phone;
         this.imgurl = imgurl;
+    }
+
+    public UserVo toVo(){
+        return UserVo.builder()
+                .imgurl(this.imgurl)
+                .name(this.name)
+                .nickname(this.nickname)
+                .build();
     }
 }

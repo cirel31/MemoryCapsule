@@ -1,6 +1,7 @@
 package com.santa.projectservice.service.impl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.santa.projectservice.dto.ArticleDto;
 import com.santa.projectservice.dto.ProjectDto;
 import com.santa.projectservice.dto.ProjectState;
 import com.santa.projectservice.dto.RegisterDto;
@@ -18,7 +19,10 @@ import com.santa.projectservice.mongo.Invite;
 import com.santa.projectservice.repository.*;
 import com.santa.projectservice.service.FileUploadService;
 import com.santa.projectservice.service.ProjectService;
+import com.santa.projectservice.vo.ArticleVo;
+import com.santa.projectservice.vo.ProjectGiftVo;
 import com.santa.projectservice.vo.ProjectInfo;
+import com.santa.projectservice.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.PropertyValueException;
 import org.modelmapper.ModelMapper;
@@ -109,6 +113,7 @@ public class ProjectServiceImpl implements ProjectService {
                         .userId(id)
                         .projectId(regiProject.getId())
                         .inviter(user.get().getNickname())
+                        .projecttitle(regiProject.getTitle())
                         .build()
                 );
             });
@@ -228,6 +233,7 @@ public class ProjectServiceImpl implements ProjectService {
         List<Long> numList = new ArrayList<>();
         List<ProjectInfo> projectInfos = new ArrayList<>();
         projectDtos.forEach(pjt -> {
+            log.info(pjt.toString());
             numList.add(articleRepository.countByProjectId(pjt.getId()));
         });
         for (int i = 0; i < numList.size(); i++) {
@@ -242,8 +248,8 @@ public class ProjectServiceImpl implements ProjectService {
         return queryFactory
                 .select(qRegister.project).from(qRegister)
                 .where(qRegister.user.id.eq(userId),
-                        state == ProjectState.DONE ? qRegister.confirm.isTrue() :
-                        state == ProjectState.CURRENT ? qRegister.confirm.isFalse() : null
+                        state == ProjectState.DONE ? qRegister.project.state.isTrue() :
+                        state == ProjectState.CURRENT ? qRegister.project.state.isFalse() : null
                 )
                 .fetch().stream().map(Project::toDto).collect(Collectors.toList());
     }
@@ -262,6 +268,39 @@ public class ProjectServiceImpl implements ProjectService {
         return registerRepository.countByUser_Id(userId);
     }
 
+    @Override
+    public ProjectGiftVo gift(String uuid){
+        Project project = queryFactory.select(qProject).from(qProject)
+                .where(qProject.giftUrl.eq(uuid)).fetchFirst();
+        List<ArticleVo> articleVos = articleRepository.findAllByProject_Id(project.getId())
+                .stream().map(Article::toVo).collect(Collectors.toList());
+        List<UserVo> userVos = queryFactory.select(qRegister.user).from(qRegister)
+                .where(qRegister.project.id.eq(project.getId())).fetch().stream()
+                .map(User::toVo).collect(Collectors.toList());
+        return ProjectGiftVo.builder()
+                .title(project.getTitle())
+                .content(project.getContent())
+                .started(project.getStarted())
+                .ended(project.getEnded())
+                .artielcNum(articleVos.size())
+                .articleVos(articleVos)
+                .userVos(userVos)
+                .build();
+    }
 
+    @Override
+    @Transactional
+    public String finishProject(Long userId, Long projectId) {
+        Project project = queryFactory.select(qRegister.project).from(qRegister)
+                .where(
+                        qRegister.project.id.eq(projectId),
+                        qRegister.user.id.eq(userId),
+                        qRegister.type.eq(true)
+                )
+                .fetchFirst();
+        project.finish();
+        projectRepository.save(project);
+        return project.getGiftUrl();
+    }
 
 }
