@@ -12,6 +12,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +35,19 @@ public class Notice {
         this.noticeCreatorIdx = noticeCreatorIdx;
         this.noticeTitle = noticeTitle;
         this.noticeContent = noticeContent;
+    }
+    public void deleteNoticeDeleted() {
+        this.noticeDeleted = true;
+    }
+
+    public void modifyNotice(String noticeTitle, String noticeContent, String noticeImgurl) {
+        this.noticeTitle = noticeTitle;
+        this.noticeContent = noticeContent;
+        this.noticeImgurl = noticeImgurl;
+        this.noticeUpdated = new Date();
+    }
+
+    public void incrementNoticeHit() {
+        this.noticeHit += 1;
     }
 }

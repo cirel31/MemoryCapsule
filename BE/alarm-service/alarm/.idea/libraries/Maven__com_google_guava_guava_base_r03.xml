@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: com.google.guava:guava-base:r03" type="java-imported" external-system-id="Maven">
+    <properties groupId="com.google.guava" artifactId="guava-base" version="r03" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava-base/r03/guava-base-r03.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava-base/r03/guava-base-r03-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava-base/r03/guava-base-r03-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -9,21 +9,16 @@ import com.example.userservice.service.CustomOAuth2UserService;
 import com.example.userservice.service.UserService;
 import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final CustomOAuth2UserService oAuth2UserService;
-    private final OAuth2FailHandler oAuth2FailHandler;
+    private final AuthenticationFailureHandler oAuth2FailHandler;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Override
@@ -55,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/favicon**").permitAll()
                 .antMatchers("/*/health-check").permitAll()
                 .antMatchers("/user/login").permitAll()
+                .antMatchers(("/user/find_password")).permitAll()
                 .antMatchers("/user/signup").permitAll()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers(("/friend/test")).permitAll()

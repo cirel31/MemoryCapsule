@@ -51,7 +51,7 @@ public class ReviewResponseDTO {
         return responseDTOPage;
     }
 
-    public ReviewResponseDTO toDto(Review review) {
+    public ReviewResponseDTO toDto(Review review, boolean isLiked) {
         ReviewResponseDTO responseDTOPage = ReviewResponseDTO.builder()
                 .reviewIdx(review.getReviewIdx())
                 .reviewTitle(review.getReviewTitle())
@@ -61,7 +61,7 @@ public class ReviewResponseDTO {
                 .reviewLike(review.getReviewLike())
                 .reviewCreated(review.getReviewCreated())
                 .writerNickname(review.getUser().getUserName())
-                .isLiked(review.isLike())
+                .isLiked(isLiked)
                 .build();
         return responseDTOPage;
     }
