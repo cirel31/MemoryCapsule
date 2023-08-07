@@ -26,4 +26,9 @@ public interface UserService extends UserDetailsService {
     
     //임시 비번 만들기
     String generateRandomPassword();
+
+    //point 변환
+    Boolean updatePoint(Long userId, Long point) throws Exception;
+
+    Long getPoint(Long userId) throws Exception;
 }

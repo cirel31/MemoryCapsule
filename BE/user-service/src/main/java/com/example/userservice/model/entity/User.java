@@ -83,9 +83,6 @@ public class User {
     @JsonIgnore
     private List<Project> projectList = new ArrayList<>();
 
-    // Article 목록
-    @OneToMany(fetch = FetchType.LAZY)
-
 
 
     public void deleteUser() {
@@ -96,5 +93,11 @@ public class User {
         this.nickName = nickName;
         this.passWord = passWord;
         this.imgUrl = file;
+    }
+
+    public boolean updatePoint(Long point) {
+        if (this.point + point < 0) return false;
+        this.point += point;
+        return true;
     }
 }
