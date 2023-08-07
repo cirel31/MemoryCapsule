@@ -107,7 +107,7 @@ public class ProjectServiceImpl implements ProjectService {
                         .userId(id)
                         .projectId(regiProject.getId())
                         .inviter(user.get().getNickname())
-                        .projecttitle(regiProject.getTitle())
+                        .projectTitle(regiProject.getTitle())
                         .build()
                 );
             });

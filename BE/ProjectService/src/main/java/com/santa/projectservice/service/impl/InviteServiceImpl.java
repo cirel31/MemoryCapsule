@@ -19,7 +19,6 @@ public class InviteServiceImpl {
     public void createInvite(Invite invite) {
         // 만료 시간 설정 (14일)
         Date expireDate = new Date(System.currentTimeMillis() + 14 * 24 * 60 * 60 * 1000);
-//        Date expireDate = new Date(System.currentTimeMillis() + 5 * 1000);
         invite.setExpire(expireDate);
         inviteRepository.save(invite);
     }
