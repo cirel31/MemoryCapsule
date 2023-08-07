@@ -2,8 +2,7 @@ package com.example.userservice.model.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Data

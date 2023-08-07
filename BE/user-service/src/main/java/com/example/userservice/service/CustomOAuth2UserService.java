@@ -14,8 +14,11 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.security.AuthProvider;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -42,19 +45,16 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
 
         // 등록된 회원이지 check 후, 미가입자 회원가입처리
-        userRepository.findByEmail((String) memberAttribute.get("email")).ifPresent(e -> {
-            throw new OAuth2AuthenticationException("이미 회원가입이 된 회원입니다.");
-        });
-
-        // 회원가입 처리
-        userRepository.save(User.builder()
-                        .nickName((String) memberAttribute.get("name"))
-                        .email((String) memberAttribute.get("email"))
-                        .passWord("")
-                        .imgUrl((String) memberAttribute.get("picture"))
-                        .oAuthUser(true)
-                .build());
-
+        Optional<User> byEmail = userRepository.findByEmail((String) memberAttribute.get("email"));
+        if(byEmail == null){
+            userRepository.save(User.builder()
+                            .nickName((String) memberAttribute.get("name"))
+                            .email((String) memberAttribute.get("email"))
+                            .passWord("")
+                            .imgUrl((String) memberAttribute.get("picture"))
+                            .oAuthUser(true)
+                    .build());
+        }
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),

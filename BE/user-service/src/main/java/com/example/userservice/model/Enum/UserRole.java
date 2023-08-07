@@ -2,6 +2,7 @@ package com.example.userservice.model.Enum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
