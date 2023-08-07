@@ -44,7 +44,7 @@ export const logoutUserThunk = createAsyncThunk(
     'user/logoutUser',
     async (_, { dispatch, rejectWithValue }) => {
       try {
-        // await axios.post('/user/logout');
+        // await axios.post('http://i9a608.p.ssafy.io:8000/user//user/logout');
         sessionStorage.clear();
         console.log('이메일 로그아웃 성공');
         return
