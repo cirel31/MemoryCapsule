@@ -83,9 +83,6 @@ public class User {
     @JsonIgnore
     private List<Project> projectList = new ArrayList<>();
 
-    // Article 목록
-//    @OneToMany(fetch = FetchType.LAZY)
-
 
 
     public void deleteUser() {

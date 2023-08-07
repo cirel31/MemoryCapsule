@@ -10,18 +10,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    
-    //리뷰 전체 찾기
-//    @Query("SELECT new com.santa.board.Dto.ReviewForListResponseDTO(r.reviewTitle, r.reviewHit, r.reviewLike, " +
-//            "r.reviewCreated, r.user.userNickname) FROM Review r")
-//    Page<ReviewForListResponseDTO> findAllReviewData(Pageable pageable);
-
     //리뷰 전체 찾기
     Page<Review> findByReviewDeletedFalse(Pageable pageable);
 
-    // reviewIdx에 맞는 정보 조회(userIdx가 그 리뷰를 좋아요 했는지의 유무 포함)
     // reviewIdx에 맞는 정보 조회(userIdx가 그 리뷰를 좋아요 했는지의 유무 포함)
     @Query("SELECT new com.santa.board.Dto.ReviewResponseDTO(r.reviewIdx, r.reviewTitle, r.reviewContent, r.reviewImgUrl, r.reviewHit, r.reviewLike, " +
             "r.reviewCreated, " +
@@ -31,14 +26,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "WHERE r.reviewIdx = :reviewIdx")
     ReviewResponseDTO findReviewWithIsLikedByReviewIdxAndUserIdx(@Param("userIdx") Long userIdx, @Param("reviewIdx") Long reviewIdx);
 
-
-
-    //hit + 1
-    @Modifying
-    @Query("UPDATE Review r " +
-            "SET r.reviewHit = r.reviewHit + 1 " +
-            "WHERE r.reviewIdx = :reviewIdx")
-    int incrementReviewHit(@Param("reviewIdx") Long reviewIdx);
+    Optional<Review> findByReviewIdxAndReviewDeletedFalse(Long reviewIdx);
 
     //리뷰 글 등록하기
     @Modifying
@@ -49,22 +37,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                       @Param("imgUrl") String imgUrl,
                       @Param("userIdx") Long userIdx);
 
-    // 리뷰 글 삭제
-    @Modifying
-    @Query("UPDATE Review r SET r.reviewDeleted = true WHERE r.reviewIdx = :reviewIdx")
-    int deleteReviewByReviewIdx(@Param("reviewIdx") Long reviewIdx);
-
-    //리뷰 글 수정
-    @Modifying
-    @Query("UPDATE Review r " +
-            "SET r.reviewTitle = :reviewTitle, r.reviewContent = :reviewContent, " +
-            "r.reviewImgUrl = :reviewImgUrl, r.reviewUpdated = CURRENT_TIMESTAMP " +
-            "WHERE r.reviewIdx = :reviewIdx")
-    int modifyNoticeByNoticeIdx(@Param("reviewTitle") String reviewTitle,
-                                @Param("reviewContent") String reviewContent,
-                                @Param("reviewImgUrl") String reviewImgUrl,
-                                @Param("reviewIdx") Long reviewIdx);
-
     //review에 like + 1
     @Modifying
     @Query("UPDATE Review r " +
@@ -72,13 +44,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "WHERE r.reviewIdx = :reviewIdx")
     int incrementReviewLike(@Param("reviewIdx") Long reviewIdx);
 
-    //좋아요 취소
-//    @Modifying
-//    @Query("DELETE FROM Liked l " +
-//            "WHERE l.id.likedReviewIdx = :reviewIdx " +
-//            "AND l.id.likedUsrIdx = :userIdx")
-//    int unlikedReview(@Param("reviewIdx") Long reviewIdx,
-//                      @Param("userIdx") Long userIdx);
 
     //review에 like - 1
     @Modifying
