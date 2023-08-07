@@ -61,7 +61,7 @@ $image_build_command
 ############################################################
 # [docker container run command]
 ############################################################
-container_run_command="sudo docker run -d --net santa -p 80:80 --name  $container_name $image_name:$tag_name"
+container_run_command="sudo docker run -d --net santa -p 80:80 -p 443:443 -v /etc/letsencrypt:/etc/letsencrypt  --name  $container_name $image_name:$tag_name"
 printf "\n"
 printf "=================================================\n"
 printf "| Docker container running !!\n"
