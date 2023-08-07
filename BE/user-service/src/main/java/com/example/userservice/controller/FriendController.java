@@ -1,6 +1,7 @@
 package com.example.userservice.controller;
 
 import com.example.userservice.model.dto.FriendDto;
+import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.service.FriendService;
 import lombok.RequiredArgsConstructor;
@@ -45,11 +46,12 @@ public class FriendController {
 
     @GetMapping("/find/{user_email}")
     public ResponseEntity findByUserEmail(@PathVariable String user_email) {
-        Optional<User> optionalUser = friendService.findUserEmail(user_email);
-        if (optionalUser.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(optionalUser.get());
+        try {
+            UserDto.showFriend userDto = friendService.findUserEmail(user_email);
+            return ResponseEntity.status(HttpStatus.OK).body(userDto);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
     }
 
     @DeleteMapping("/delete")

@@ -2,6 +2,7 @@ package com.example.userservice.service;
 
 import com.example.userservice.model.Enum.ProjectState;
 import com.example.userservice.model.dto.FriendDto;
+import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.ConnectId;
 import com.example.userservice.model.entity.Connected;
 import com.example.userservice.model.entity.Project;
@@ -61,8 +62,14 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public Optional<User> findUserEmail(String email) {
-        return userRepository.findByEmail(email);
+    public UserDto.showFriend findUserEmail(String email) throws Exception {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new Exception("User not found"));
+        return UserDto.showFriend.builder()
+                .userId(user.getIdx())
+                .email(user.getEmail())
+                .imgUrl(user.getImgUrl())
+                .nickname(user.getNickName())
+                .build();
     }
 
     @Override
