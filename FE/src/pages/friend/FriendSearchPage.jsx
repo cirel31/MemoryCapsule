@@ -5,8 +5,11 @@ import FriendForm from "../../components/friend/FriendForm";
 import FriendInfo from "../../components/friend/FriendInfo";
 import FriendDetail from "../../components/friend/FriendDetail";
 import axios from "axios";
+import {Link} from "react-router-dom";
+import go_back from "../../assets/images/frield/go_back.svg";
+import FriendListPage from "./FriendListPage";
 
-const FriendListPage = () => {
+const FriendSearchPage = () => {
     const [form, setForm] = useState({
         id: "",
         search : 'id',
@@ -67,11 +70,46 @@ const FriendListPage = () => {
         setForm(updatedForm);
     };
 
+    // 뒤로가기
+    const handleBack = () => {
+        window.history.back()
+    }
+
     return (
         <>
+
+            <div className="big_body">
+                <div className="friend_top"/>
+                <div className="friend_body">
+                    <div className="friend_top_content">
+                        <div className="friend_title">친구 찾기</div>
+                        <div className="friend_back">
+                            <div  onClick={handleBack} className="friend_back_button">
+                                <img src={go_back} alt="뒤로가기이미지" className="friend_back_button_img"/>
+                            </div>
+                        </div>
+                    </div>
+                    <FriendListPage
+                        friends={friends}
+                        setFriends={setFriends}
+                        rowFriends={friends}
+                        setRowFriends={setFriends}
+                        form={form}
+                        setForm={setForm}
+                    />
+                </div>
+            </div>
+            
+            
             <div>친구찾기 page</div>
             <div>
-                <FriendForm form={form} setForm={setForm} onChange={handleChange} isValidSearch={isValidSearch} setIsValidSearch={setIsValidSearch} />
+                <FriendForm
+                    form={form}
+                    setForm={setForm}
+                    onChange={handleChange}
+                    isValidSearch={isValidSearch}
+                    setIsValidSearch={setIsValidSearch}
+                />
             </div>
             <AuthFormGrid>
                 <div className="AuthFormGrid">
@@ -102,4 +140,4 @@ const FriendListPage = () => {
     )
 }
 
-export default FriendListPage;
+export default FriendSearchPage;

@@ -11,17 +11,6 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
   const [isModal, setIsModal] = useState(false)
 
   const [postList, setPostList] = useState([
-    /** Notice "TEST" Data Format
-     {
-            title: "",
-            content : 'id',
-            url : "test.com",
-            deleted : "",
-            createdAt : "",
-            updatedAt : ""
-        }
-     */
-
     /** Notice Data Format
      {
             noticeIdx : "BIGINT(20)",
@@ -50,7 +39,7 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
 
     // 실제 배포는 8000
     // 테스트 및 개발 서버는 7000
-    // axios.get(`${API}/list?page=${page}&size=${size}`)
+    // axios.get(`${API}/list`)
     //     .then((response) => {
     //       console.log('게시글 전체 (All) successful : ', response.data);
     //       setPostList(response.data);
@@ -61,7 +50,7 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
 
     axios.get(`${API}/list?size=${size}&page=${page}`)
         .then((response) => {
-          console.log('게시글 전체 (All) successful : ', response.data);
+          console.log('게시글 선택 (size, page) successful : ', response.data);
           setPostList(response.data);
         })
         .catch((error) => {
@@ -69,9 +58,41 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
         });
   };
 
-  const openModal = (id) => {
-    const index = postList.findIndex((post => post.noticeTitle === id))
-    setSelectedPost(postList[index])
+
+
+  /**
+   * 2. 공지사항 자세하게 보기 [get]
+   * http://localhost:8080/notice/2
+   * */
+  const getNoticesDataDetail = (e) => {
+    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
+
+    console.log("[getNoticesDataDetail]");
+
+    const index = e;
+
+    // 실제 배포는 8000
+    // 테스트 및 개발 서버는 7000
+
+    console.log(index);
+    axios.get(`${API}/${index}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          },
+        }
+        )
+        .then((response) => {
+          console.log('게시글 자세하게 (Detail) successful : ', response.data);
+          setSelectedPost(response.data);
+        })
+        .catch((error) => {
+          console.error('게시글 자세하게 (Detail) fail : ', error);
+        });
+  };
+
+  const openModal = (idx) => {
+    getNoticesDataDetail(idx);
     setIsModal(true)
   }
 
@@ -111,7 +132,7 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
                   className="mypage_notice_part"
                   key={post.noticeIdx}
                   // onClick={() => openModal(post.id)}
-                  onClick={() => openModal(post.noticeTitle)}
+                  onClick={() => openModal(post.noticeIdx)}
                 >
                   <p>{post.noticeTitle}</p>
                 </div>

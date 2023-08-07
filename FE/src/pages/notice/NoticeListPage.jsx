@@ -23,17 +23,6 @@ const NoticeListPage = () => {
     const [currentPage, setCurrentPage] = useState(0);
 
     const [post, setPost] = useState(
-        /** Notice "TEST" Data Format
-         {
-            title: "",
-            content : 'id',
-            url : "test.com",
-            deleted : "",
-            createdAt : "",
-            updatedAt : ""
-        }
-         */
-
         /** Notice Data Format*/
         {
             noticeIdx : 0,
@@ -47,40 +36,12 @@ const NoticeListPage = () => {
 
     // 처음 한 번 실행해서, 모든 공지사항 불러오기
     useEffect(() => {
-        console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
-        // setPost(
-        //     {
-        //         id : 0,
-        //         creator_id : 0,
-        //         title : "VARCHAR(255)",
-        //         content : "VARCHAR(5000)",
-        //     }
-        // )
-        // getNoticesDataDetail();
+        console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수')
      }, []);
 
     const openModal = () => {
         setIsModal(true)
     }
-
-    /**
-     * 2. 공지사항 자세하게 보기 [get]
-     * http://localhost:8080/notice/2
-     * */
-    const getNoticesDataDetail = (e) => {
-        console.log("[getNoticesDataDetail]");
-
-        // 실제 배포는 8000
-        // 테스트 및 개발 서버는 7000
-        axios.get(`${API}/list`)
-            .then((response) => {
-                console.log('게시글 자세하게 (Detail) successful : ', response.data);
-                setPost(response.data);
-            })
-            .catch((error) => {
-                console.error('게시글 자세하게 (Detail) fail : ', error);
-            });
-    };
 
     return (
         <>
@@ -97,12 +58,6 @@ const NoticeListPage = () => {
                 글작성
             </CustomButton>
             </div>
-            <PostModal
-                selectedPost={post}
-                setSelectedPost={setPost}
-                modalIsOpen={isModal}
-                setModalIsOpen={setIsModal}
-            />
         </>
     )
 }

@@ -1,8 +1,6 @@
 import { AuthFormBlock, FormBody, WhiteBox } from "../../styles/friendStyle";
 import {StyledSearchBar} from "../../styles/searchBarStyle";
 
-import axios from "axios";
-
 const FriendForm = ({form, setForm, isValidSearch, setIsValidSearch}) => {
 
     const handleChange = (e) => {
