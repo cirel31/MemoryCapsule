@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface LikeRepository extends JpaRepository<Liked, Long> {
     // 리뷰 idx와 유저 idx로 특정 좋아요 정보를 삭제
     void deleteByIdLikedReviewIdxAndIdLikedUsrIdx(Long likedReviewIdx, Long likedUsrIdx);
-    Boolean findByIdLikedReviewIdxAndIdLikedUsrIdx(Long likedReviewIdx, Long likedUsrIdx);
+    boolean existsByIdLikedReviewIdxAndIdLikedUsrIdx(Long likedReviewIdx, Long likedUsrIdx);
 }
