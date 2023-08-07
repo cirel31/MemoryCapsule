@@ -3,11 +3,10 @@ import PostModal from "../post/PostModal";
 
 const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => {
 
-    // Calculate the total number of pages
     const totalPages = Math.ceil(postList.length / itemsPerPage);
 
     // pagenation 처리를 위한 값들
-    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfLastItem = (currentPage+1) * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = postList.slice(indexOfFirstItem, indexOfLastItem);
 
@@ -17,8 +16,9 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
 
     const openModal = (id) => {
         // const index = postList.findIndex((post => post.id === id))
-        const index = postList.findIndex((post => post.title === id))
+        const index = postList.findIndex((post => post.noticeIdx === id))
         setSelectedPost(postList[index])
+        console.log("index : ", index);
         setIsModal(true)
     }
 
@@ -30,8 +30,6 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
 
     const pageIndex = () => {
         const range = 2; // 앞뒤로 보여줄 페이지 개수
-        // const indexOfMinPage = Math.max(0, currentPage - range);
-        // const indexOfMaxPage = Math.min(totalPages, currentPage + range+1);
         let indexOfMinPage = currentPage-range -1 < 0 ? 0 : currentPage-range -1;
         let indexOfMaxPage;
         if (indexOfMinPage === 0) {
@@ -66,17 +64,16 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
                 <div>
                     <div
                         className="mypage_notice_part"
-                        key={post.id}
-                        // onClick={() => openModal(post.id)} // 이걸로 수정해야 합니다!
-                        onClick={() => openModal(post.title)}
+                        key={post.noticeIdx}
+                        onClick={() => openModal(post.noticeIdx)}
                     >
-                        <p>{post.title}</p>
+                        <p>{post.noticeTitle}</p>
                     </div>
                     <div>
                         alarm
                     </div>
                     <div>
-                        <p>{post.id}</p>
+                        <p>{post.noticeIdx}</p>
                     </div>
                 </div>
                 ))

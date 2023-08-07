@@ -3,8 +3,10 @@ import React, {useEffect, useState} from "react";
 import "../../styles/MyPage.scss"
 import PostModal from "../../components/post/PostModal";
 import Pagination from "../../components/common/Pagination";
+import axios from "axios";
 
 const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
+  const API = '/notice'
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
 
@@ -22,15 +24,12 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
 
     /** Notice Data Format
      {
-            idx : "BIGINT(20)",
-            creator_idx : "BIGINT(20)",
-            title : "VARCHAR(255)",
-            content : "VARCHAR(5000)",
-            imgurl : "VARCHAR(2048)",
-            deleted : "TINYINT(1)",
-            created : "TIMESTAMP",
-            updated : "TIMESTAMP",
-            hit : "INT(11)",
+            noticeIdx : "BIGINT(20)",
+            noticeTitle : "VARCHAR(255)",
+            noticeContent : "VARCHAR(5000)",
+            noticeImgurl : "VARCHAR(2048)",
+            noticeCreated : "TIMESTAMP",
+            noticeHit : "INT(11)",
         }
      */
   ])
@@ -38,6 +37,7 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
 
   useEffect(() => {
     console.log('[AnnounceUserViewPage] 페이지 로딩 시 한 번만 실행되는 함수');
+    console.log(size, page)
     getNoticesData();
   }, []);
 
@@ -48,35 +48,29 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
   const getNoticesData = () => {
     console.log("[getNoticesData]");
 
-    // [ TEST ]
-    // ========== ERASE ==========
-    fetch("https://jsonplaceholder.typicode.com/posts")
-        .then(response => response.json())
-        .then((json) => {
-          setPostList(json);
-        });
-    // ========== //ERASE ==========
-
     // 실제 배포는 8000
     // 테스트 및 개발 서버는 7000
-    //axios.get(`${API}/list`,
-    //       params:{
-    //         page : page,
-    //         size : size
-    //       }
-    //     });
+    // axios.get(`${API}/list?page=${page}&size=${size}`)
     //     .then((response) => {
-    //         console.log('게시글 전체 (All) successful : ', response.data);
-    //         setNoticeList(response.data);
+    //       console.log('게시글 전체 (All) successful : ', response.data);
+    //       setPostList(response.data);
     //     })
     //     .catch((error) => {
-    //         console.error('게시글 전체 (All) fail : ', error);
+    //       console.error('게시글 전체 (All) fail : ', error);
     //     });
+
+    axios.get(`${API}/list?size=${size}&page=${page}`)
+        .then((response) => {
+          console.log('게시글 전체 (All) successful : ', response.data);
+          setPostList(response.data);
+        })
+        .catch((error) => {
+          console.error('게시글 전체 (All) fail : ', error);
+        });
   };
 
   const openModal = (id) => {
-    // const index = postList.findIndex((post => post.id === id))
-    const index = postList.findIndex((post => post.title === id))
+    const index = postList.findIndex((post => post.noticeTitle === id))
     setSelectedPost(postList[index])
     setIsModal(true)
   }
@@ -115,11 +109,11 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
               postList.map((post) => (
                 <div
                   className="mypage_notice_part"
-                  key={post.id}
+                  key={post.noticeIdx}
                   // onClick={() => openModal(post.id)}
-                  onClick={() => openModal(post.title)}
+                  onClick={() => openModal(post.noticeTitle)}
                 >
-                  <p>{post.title}</p>
+                  <p>{post.noticeTitle}</p>
                 </div>
               ))
             :

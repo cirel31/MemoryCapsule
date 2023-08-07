@@ -130,22 +130,16 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                             <h2 className="modal_inner_title">
                                 {
                                     state
-                                    ? <input disabled={disabledTitle} value={selectedPost.title}/>
-                                    : selectedPost.title
+                                    ? <input disabled={disabledTitle} value={selectedPost.noticeTitle}/>
+                                    : selectedPost.noticeTitle
                                 }
                                 <hr/>
                             </h2>
                             <p className="modal_inner_contents">
-                                {/*이걸로 바꿔야 합니다*/}
-                                {/*{*/}
-                                {/*    state*/}
-                                {/*        ?<input disabled={disabledContent} value={selectedPost.content}/>*/}
-                                {/*        :selectedPost.content*/}
-                                {/*}*/}
                                 {
                                     state
-                                    ? <input disabled={disabledContent} value={selectedPost.body}/>
-                                    : selectedPost.body
+                                    ? <input disabled={disabledContent} value={selectedPost.noticeContent}/>
+                                    : selectedPost.noticeContent
                                 }
                             </p>
                             {

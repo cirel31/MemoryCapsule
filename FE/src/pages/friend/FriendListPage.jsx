@@ -6,9 +6,14 @@ import FriendInfo from "../../components/friend/FriendInfo";
 import FriendDetail from "../../components/friend/FriendDetail";
 import {Link} from "react-router-dom";
 import "../../styles/friendStyle.scss";
+import go_back from "../../assets/images/frield/go_back.svg"
+import brand_gradation from "../../assets/images/frield/brand_gradation.svg"
+
+import {login, setUser} from '../../store/userSlice';
 
 const FriendListPage = () => {
-    const API = '/friend/search';
+    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
+    const API = '/friend';
     const [rowFriends, setRowFriends] = useState([]);
     const [friends, setFriends] = useState([]);
 
@@ -25,47 +30,71 @@ const FriendListPage = () => {
         setSelect({id : ""});
     }
 
-    //======== Erase ========
-    // 처음 한 번 실행 시, 내 친구 전부 불러오기
-    // useEffect(() => {
-    //     console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
-    //     getFriends("", "");
-    // }, []);
-    //======== //Erase ========
-
     // 처음 한 번 실행 시, 내 친구 전부 불러오기
     useEffect(() => {
         console.log("[useEffect]");
         getFriends("id", "");
+        console.log("login : ", login);
     }, []);
 
+
+    // const userInfoUpdate = (userIdx) => {
+    //     const accessToken = JSON.parse(sessionStorage.getItem("loginData")).accessToken
+    //     console.log(accessToken)
+    //     try {
+    //         axios.get(`/user/${userIdx}${infoURL}`, {
+    //             headers: {
+    //                 Authorization: `Bearer ${accessToken}`,
+    //             }
+    //         })
+    //             .then(res => {
+    //                 const userData = res.data
+    //                 dispatch(setUser(userData))
+    //             })
+    //             .then(() => {
+    //                 navigate('/profile')
+    //             })
+    //             .catch(err => {
+    //                 console.error('유저 정보를 가져오지 못함:', err)
+    //             })
+    //     }
+    //     catch (err) {
+    //         console.error('유저 정보를 가져오지 못함:', err)
+    //     }
+    // }
 
     function getFriends(searchId, searchValue) {
         console.log("[getFriends]");
 
         // 서버로부터 내 친구목록 가져오기
         // axios.get(`${API}/${user_id}`
-        // axios.get(`${API}/jdragon@ssafy.com`)
-        //     .then((response) => {
-        //         console.log('서버로부터 친구목록 가져오기 성공');
-        //         console.log(API);
-        //         console.log(response.data);
-        //         setFriends(response.data);
-        //     })
-        //     .catch((error) => {
-        //         console.error("서버로부터 친구목록 가져오기 실패", error);
-        //         console.error(error.code);
-        //     });
+        axios.get(`${API}/search/hharce1@cdbaby.com`,
+      {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+            }
+            )
+            .then((response) => {
+                console.log('서버로부터 친구목록 가져오기 성공');
+                console.log(API);
+                console.log(response.data);
+                setFriends(response.data);
+            })
+            .catch((error) => {
+                console.error("서버로부터 친구목록 가져오기 실패", error);
+                console.error(error.code);
+            });
 
         //======== Erase ========
         //test 데이터
-        fetch("https://jsonplaceholder.typicode.com/users")
-            .then(response => response.json())
-            .then((json) => {
-                    setRowFriends(json);
-                    setFriends(json);
-                }
-            );
+        // fetch("https://jsonplaceholder.typicode.com/users")
+        //     .then(response => response.json())
+        //     .then((json) => {
+        //             setRowFriends(json);
+        //             setFriends(json);
+        //         }
+        //     );
         //======== //Erase ========
 
         console.log(searchId, searchValue);
@@ -108,7 +137,9 @@ const FriendListPage = () => {
                 <div className="friend_top_content">
                     <div className="friend_title">친구 목록</div>
                     <div className="friend_back">
-                        <img alt="뒤로가기이미지" className="friend_back_button"/>
+                        <div className="friend_back_button">
+                            <img src={go_back} alt="뒤로가기이미지" className="friend_back_button_img"/>
+                        </div>
                     </div>
                 </div>
                 <div className="search_info">
@@ -155,7 +186,7 @@ const FriendListPage = () => {
                                 ?
                                 <div className="no_friend_list">
                                     <div className="textBlock">
-                                        <img src="../UserImg" alt="로고"/>
+                                        <img src={brand_gradation} alt="로고" className="brand_logo"/>
                                     </div>
                                 </div>
                                 :

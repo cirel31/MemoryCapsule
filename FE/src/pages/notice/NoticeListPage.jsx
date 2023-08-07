@@ -20,7 +20,7 @@ const NoticeListPage = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
 
     // 페이지네이션 현재 페이지 저장
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
 
     const [post, setPost] = useState(
         /** Notice "TEST" Data Format
@@ -36,29 +36,27 @@ const NoticeListPage = () => {
 
         /** Notice Data Format*/
         {
-            id : 0,
-            creator_id : 0,
-            title : "VARCHAR(255)",
-            content : "VARCHAR(5000)",
-            // imgurl : "VARCHAR(2048)",
-            // deleted : "TINYINT(1)",
-            // created : "TIMESTAMP",
-            // updated : "TIMESTAMP",
-            // hit : 0,
+            noticeIdx : 0,
+            noticeHit : 0,
+            noticeTitle : "VARCHAR(255)",
+            noticeContent : "VARCHAR(5000)",
+            noticeImgurl : "VARCHAR(2048)",
+            noticeCreated : "TIMESTAMP",
         }
     )
 
     // 처음 한 번 실행해서, 모든 공지사항 불러오기
     useEffect(() => {
         console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수');
-        setPost(
-            {
-                id : 0,
-                creator_id : 0,
-                title : "VARCHAR(255)",
-                content : "VARCHAR(5000)",
-            }
-        )
+        // setPost(
+        //     {
+        //         id : 0,
+        //         creator_id : 0,
+        //         title : "VARCHAR(255)",
+        //         content : "VARCHAR(5000)",
+        //     }
+        // )
+        // getNoticesDataDetail();
      }, []);
 
     const openModal = () => {
@@ -71,22 +69,17 @@ const NoticeListPage = () => {
      * */
     const getNoticesDataDetail = (e) => {
         console.log("[getNoticesDataDetail]");
-        e.preventDefault();
 
         // 실제 배포는 8000
         // 테스트 및 개발 서버는 7000
-        //axios.get(`${API}/`,
-        //       params:{
-        //         id: 12345
-        //       }
-        //     });
-        //     .then((response) => {
-        //         console.log('게시글 자세하게 (Detail) successful : ', response.data);
-        //         setNoticeDetail(response.data);
-        //     })
-        //     .catch((error) => {
-        //         console.error('게시글 자세하게 (Detail) fail : ', error);
-        //     });
+        axios.get(`${API}/list`)
+            .then((response) => {
+                console.log('게시글 자세하게 (Detail) successful : ', response.data);
+                setPost(response.data);
+            })
+            .catch((error) => {
+                console.error('게시글 자세하게 (Detail) fail : ', error);
+            });
     };
 
     return (
@@ -95,11 +88,6 @@ const NoticeListPage = () => {
                 <h2>공지사항</h2>
             </div>
             <AnnounceUserViewPage page={currentPage} size={itemsPerPage} setCurrentPage={setCurrentPage}/>
-            {/*<Link to='/notice/postcreate'>*/}
-            {/*    <CustomButton>*/}
-            {/*        글작성*/}
-            {/*    </CustomButton>*/}
-            {/*</Link>*/}
             <div>
             <CustomButton
                 key={post.id}
