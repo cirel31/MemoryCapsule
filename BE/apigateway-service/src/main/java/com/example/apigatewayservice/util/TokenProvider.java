@@ -3,10 +3,12 @@ package com.example.apigatewayservice.util;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.security.Key;
 import java.sql.Timestamp;
@@ -76,21 +78,22 @@ public class TokenProvider implements InitializingBean {
         }
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) throws Exception {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("잘못된 JWT 서명입니다.");
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException  e) {
+            throw new MalformedJwtException("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
-            log.info("만료된 JWT 토큰입니다.");
+            throw new ExpiredJwtException(getHeaders(token), parse(token), "만료된 JWT 토큰입니다.");
         } catch (UnsupportedJwtException e) {
-            log.info("지원되지 않는 JWT 토큰입니다.");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT 토큰이 잘못되었습니다.");
+            throw new UnsupportedJwtException("지원하지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e ) {
+            throw new IllegalArgumentException("JWT 토큰이 잘못되었습니다.");
         }
-        return false;
     }
+
+
     public Claims parse(String token) {
         return Jwts
                 .parserBuilder()
@@ -99,5 +102,12 @@ public class TokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
+    public JwsHeader getHeaders(String token){
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getHeader();
+    }
 }

@@ -1,20 +1,70 @@
 server:
-  port: ${API_GATEWAY_PORT}
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: ${DISCOVERY_URL}
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    hostname: localhost
+  port: 8000
 
 spring:
   application:
     name: apigateway-service
+  cloud:
+    gateway:
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Spring Cloud Gateway Global Filter
+            preLogger: true
+            postLogger: true
+            requestLogger: true
+      routes:
+        - id: SWAGGER
+          uri: lb://PROJECT-SERVICE
+          predicates:
+            - Path=/v3/api-docs
 
+        - id: user-service              # User-service without Token Check
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/health-check,/user/signup,/user/login,/user/find_password
+
+        - id: user-service              # User-service with Token required
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**,/login/**,/friend/**,/point/**
+          filters:
+            - AuthorizationHeaderFilter
+
+        - id: review-service            # Board-service with Token required
+          uri: lb://BOARD-SERVICE
+          predicates:
+            - Path=/review/**
+          filters:
+            - AuthorizationHeaderFilter
+
+        - id: notice-service            # Board-service without token check
+          uri: lb://BOARD-SERVICE
+          predicates:
+            - Path=/notice/**
+
+        - id: project-service
+          uri: lb://PROJECT-SERVICE
+          predicates:
+            - Path=/project/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/project/(?<remain>.*), /$\{remain}
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enables: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API GATEWAY SEVICE
+        primaryName: API Gateway Service
+      - url: /project/v3/api-docs
+        name: PROJECT-SERVICE
 
 jwt:
   secret: asdfghjklqwertyuiopzxcvbnmasdfasdfweasdfwbzzgoooodItstootireddgdsasdfsawherhdsfbdfsgsadfsadvsvethegwfsdavbdfh
@@ -26,4 +76,14 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, httptrace, busrefresh, info, metrics, prometheus
+        include: refresh, health, beans, httptrace, busrefresh, info, metrics, prometheus, env
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
