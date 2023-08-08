@@ -1,16 +1,17 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/user")
@@ -58,8 +59,8 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity userLogout(Authentication authentication) {
-        userService.logout(authentication);
+    public ResponseEntity userLogout(HttpServletRequest request) {
+        //
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

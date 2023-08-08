@@ -1,7 +1,6 @@
 package com.example.userservice.service;
 
 import com.example.userservice.model.Enum.UserRole;
-import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.Access;
 import com.example.userservice.model.entity.User;
@@ -14,11 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,18 +49,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception {
-        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Not found"));
+        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new IllegalArgumentException("Not found"));
         if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
             throw new Exception("Password Not Matched!");
 
-        ArrayList<SimpleGrantedAuthority> author = new ArrayList<>();
-        if (UserRole.ADMIN.equals(user.getRole())) author.add(new SimpleGrantedAuthority("ADMIN"));
-        else author.add(new SimpleGrantedAuthority("USER"));
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        Authentication auth = new UsernamePasswordAuthenticationToken(user.getIdx(), user.getPassWord(), author);
         // refresh Token && access Token 생성
-        String refreshToken = tokenProvider.createRefreshToken(auth);
-        String accessToken = tokenProvider.createToken(auth);
+        String refreshToken = tokenProvider.createRefreshToken(user.getIdx());
+        String accessToken = tokenProvider.createAccessToken(user.getIdx());
 
         // Redis 저장
         ops.set(user.getIdx().toString(), refreshToken);
@@ -89,13 +79,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout(Authentication authentication) {
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        String userIdx = principal.getUsername();
-        // 유효 회원 check
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        ops.getAndDelete(userIdx);
-        log.info("user logout - {}", userIdx);
+    public void logout(final Long userId) {
+
     }
 
     @Override
@@ -168,17 +153,6 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        User user = getUserByEmail(userEmail);
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getName())
-                .accountExpired(user.isDeleted())
-                .password(user.getPassWord())
-                .roles(user.getRole().name())
-                .build();
-    }
-
     @Transactional
     @Override
     public void deleteUser(Long userId) throws Exception {
@@ -243,7 +217,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
     }
 
-    private User getUserByEmail(String userEmail) throws UsernameNotFoundException {
-        return userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("user Not found"));
+    private User getUserByEmail(String userEmail) throws IllegalArgumentException {
+        return userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("user Not found"));
     }
 }
