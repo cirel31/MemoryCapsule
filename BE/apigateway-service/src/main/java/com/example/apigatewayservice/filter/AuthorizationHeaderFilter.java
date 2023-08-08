@@ -1,7 +1,10 @@
 package com.example.apigatewayservice.filter;
 
+import com.example.apigatewayservice.util.TokenProvider;
 import com.google.common.net.HttpHeaders;
 import io.jsonwebtoken.Jwts;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -16,21 +19,22 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
-    Environment env;
 
-    public AuthorizationHeaderFilter(Environment env) {
-        super(Config.class);
-        this.env = env;
-    }
+    private final Environment env;
+    private final TokenProvider tokenProvider;
 
+    @Data
     public static class Config {
         // Put configuration properties here
+        private String baseMessage;
     }
 
     @Override
     public GatewayFilter apply(Config config) {
+        log.info("AuthorizationHeaderFilter - {}", config.getBaseMessage());
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
 
@@ -40,17 +44,21 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
             String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
             String jwt = authorizationHeader.replace("Bearer", "");
-
+            String subject = tokenProvider.parse(jwt).getSubject();
             // Create a cookie object
 //            ServerHttpResponse response = exchange.getResponse();
 //            ResponseCookie c1 = ResponseCookie.from("my_token", "test1234").maxAge(60 * 60 * 24).build();
 //            response.addCookie(c1);
 
-            if (!isJwtValid(jwt)) {
-                return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED);
-            }
+            // Token Validating
+            if(!tokenProvider.validateToken(jwt)) return onError(exchange, "JWT token 이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
 
-            return chain.filter(exchange);
+            ServerWebExchange modified = exchange.mutate()
+                    .request(exchange.getRequest().mutate()
+                            .headers(httpHeaders -> httpHeaders.add("userIdx", String.valueOf(subject)))
+                            .build()
+                    ).build();
+            return chain.filter(modified);
         };
     }
 
@@ -62,24 +70,5 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         return response.setComplete();
     }
 
-    private boolean isJwtValid(String jwt) {
-        boolean returnValue = true;
-
-        String subject = null;
-
-        try {
-            subject = Jwts.parser().setSigningKey(env.getProperty("token.secret"))
-                    .parseClaimsJws(jwt).getBody()
-                    .getSubject();
-        } catch (Exception ex) {
-            returnValue = false;
-        }
-
-        if (subject == null || subject.isEmpty()) {
-            returnValue = false;
-        }
-
-        return returnValue;
-    }
 
 }

@@ -15,6 +15,13 @@ spring:
   application:
     name: apigateway-service
 
+
+jwt:
+  secret: asdfghjklqwertyuiopzxcvbnmasdfasdfweasdfwbzzgoooodItstootireddgdsasdfsawherhdsfbdfsgsadfsadvsvethegwfsdavbdfh
+  token-validity-in-milliseconds: 100000000
+  refresh-token: 987654321987654321
+  refresh-token-limit-days: 1
+
 management:
   endpoints:
     web:
