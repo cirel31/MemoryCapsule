@@ -1,5 +1,5 @@
-#server:
-#  port: 8081
+server:
+  port: 8081
 
 spring:
   mail:
@@ -15,33 +15,33 @@ spring:
           starttls:
             enable: true # 7
 
-#  datasource:
-#    driver-class-name: org.mariadb.jdbc.Driver
-#    username: dev
-#    password: dev
-#    url: jdbc:mariadb://i9a608.p.ssafy.io:3306/santa
-#    hikari:
-#      maximum-pool-size: 4
-#      connection-init-sql: SELECT 1
-#      connection-timeout: 5000
-#      idle-timeout: 600000
-#      max-lifetime: 1800000
-#      auto-commit: true
-#  jpa:
-#    hibernate:
-#      ddl-auto: validate
-#    properties:
-#      hibernate:
-#        show-sql: true
-#
-#  mvc:
-#    pathmatch:
-#      matching-strategy: ant_path_matcher
-#logging:
-#  level:
-#    org.hibernate:
-#      type.descriptor.sql: trace #show parameter binding
-#      SQL: DEBUG
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: dev
+    password: dev
+    url: jdbc:mariadb://i9a608.p.ssafy.io:3306/santa
+    hikari:
+      maximum-pool-size: 4
+      connection-init-sql: SELECT 1
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      auto-commit: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show-sql: true
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+logging:
+  level:
+    org.hibernate:
+      type.descriptor.sql: trace #show parameter binding
+      SQL: DEBUG
 
 #eureka:
 #  instance:
