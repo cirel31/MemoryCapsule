@@ -64,6 +64,12 @@
       display: grid;
       grid-template-rows: 35% 35%;
       margin-left: 10%;
+      & > input:active {
+        outline: solid 3px var(--point1_main);
+      }
+      & > input:focus {
+        outline: solid 3px var(--point1_main);
+      }
     }
     & > form > div > input {
       font-family: "IBM Plex Sans KR", sans-serif;

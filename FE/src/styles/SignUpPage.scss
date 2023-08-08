@@ -124,6 +124,12 @@
       height: 80%;
       width: 100%;
     }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
+    }
   }
   .phonenumber_part{
     display: grid;
@@ -144,6 +150,12 @@
 
       font-weight: 500;
       height: 80%;
+    }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
     }
   }
 }
@@ -172,6 +184,12 @@
       height: 80%;
       width: 80%;
     }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
+    }
   }
   .nickname_part{
     display: grid;
@@ -192,6 +210,12 @@
       font-weight: 500;
       height: 80%;
       width: 88%;
+    }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
     }
   }
 }
@@ -221,6 +245,13 @@
       font-weight: 500;
       height: 80%;
       width: 75%;
+
+    }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
     }
   }
 }
