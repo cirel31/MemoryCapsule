@@ -121,7 +121,7 @@ public class ProjectController {
             ProjectDto projectDto = projectService.findProjectByProjectIdAndUserId(userId, projectId);
             return ResponseEntity.status(HttpStatus.OK).body(projectDto);
         } catch (NullPointerException e) {
-            throw new UserNotFoundException("인증정보를 가져올 수 없습니다");
+            throw new UserNotFoundException("인증정보를 가져올 수 없습니다 내가 참여하고 있는게 아닌듯요");
         }
     }
 

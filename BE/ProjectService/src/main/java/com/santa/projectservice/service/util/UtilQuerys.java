@@ -3,6 +3,9 @@ package com.santa.projectservice.service.util;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.santa.projectservice.model.dto.ProjectDto;
 import com.santa.projectservice.model.jpa.*;
+import com.santa.projectservice.model.vo.UserInfo;
+import com.santa.projectservice.repository.ArticleRepository;
+import com.santa.projectservice.repository.RegisterRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +19,19 @@ public class UtilQuerys {
     private QArticle qArticle = QArticle.article;
     private QUser qUser = QUser.user;
     private QArticleImg qArticleImg = QArticleImg.articleImg;
+    private final ArticleRepository articleRepository;
+    private final RegisterRepository registerRepository;
 
-    public UtilQuerys(JPAQueryFactory queryFactory) {
+    public UtilQuerys(JPAQueryFactory queryFactory,
+                      ArticleRepository articleRepository,
+                      RegisterRepository registerRepository) {
         this.queryFactory = queryFactory;
+        this.articleRepository = articleRepository;
+        this.registerRepository = registerRepository;
+    }
+
+    public UserInfo userInfo(Long userId){
+        return new UserInfo(articleRepository.countAllByUserId(userId), registerRepository.countAllByUser_Id(userId));
     }
 
     /*
@@ -54,7 +67,7 @@ public class UtilQuerys {
                 .fetch()
                 .stream().map(Project::toDto).collect(Collectors.toList());
     }
-    // 모든 프로젝트
+    // 모든 프로젝
     public List<ProjectDto> allProjects(Long userId){
         return queryFactory.select(qRegister.project).from(qRegister)
                 .where(qRegister.user.id.eq(userId))
