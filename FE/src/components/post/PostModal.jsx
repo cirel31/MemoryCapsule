@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import axios from "axios";
 
 const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
+    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
     const API = '/notice';
 
     const [state, setState] = useState(false);
@@ -11,7 +12,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
     useEffect(() => {
         console.log("[PostModal]");
-        setState(selectedPost &&(selectedPost.id === 0 || state));
+        setState(selectedPost &&(selectedPost.noticeIdx === 0 || state));
     });
 
     // 공지사항 데이터 접근자가 관리자인지 확인
@@ -47,17 +48,23 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         console.log("[postNoticesDataCreateServer]");
         e.preventDefault();
 
-        // if (checkUserRole()) {
-        //     // 실제 배포는 8000
-        //     // 테스트 및 개발 서버는 7000
-        //     axios.post(`${API}/`, formData)
-        //         .then((response) => {
-        //             console.log('게시글 작성 POST successful : ', response.data);
-        //         })
-        //         .catch((error) => {
-        //             console.error('게시글 작성 POST fail : ', error);
-        //         });++++
-        // }
+        if (checkUserRole()) {
+            // 실제 배포는 8000
+            // 테스트 및 개발 서버는 7000
+            axios.post(`${API}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+
+                    },
+                })
+                .then((response) => {
+                    console.log('게시글 작성 POST successful : ', response.data);
+                })
+                .catch((error) => {
+                    console.error('게시글 작성 POST fail : ', error);
+                });
+        }
     }
 
     /**
@@ -70,19 +77,19 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
         if (checkUserRole()) {
             console.log("게시글 삭제 (제작중)");
-            // axios.delete(`${API}/list`,{
-            //       params:{
-            //         id: 12345
-            //       }
-            //     });
-            //     .then((response) => {
-            //         console.log('게시글 삭제 (Delete) successful : ', response.data);
-            //         setNoticeDetail("");
-            //         getAllNoticesDataServer(currentPage, itemsPerPage);
-            //     })
-            //     .catch((error) => {
-            //         console.error('게시글 삭제 (Delete) fail : ', error);
-            //     });
+            axios.delete(`${API}//${selectedPost.noticeIdx}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    },
+                })
+                .then((response) => {
+                    console.log('게시글 삭제 (Delete) successful : ', response.data);
+                    setSelectedPost([]);
+                })
+                .catch((error) => {
+                    console.error('게시글 삭제 (Delete) fail : ', error);
+                });
         }
     }
 

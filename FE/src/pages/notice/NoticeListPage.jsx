@@ -55,6 +55,19 @@ const NoticeListPage = () => {
                 글작성
             </CustomButton>
             </div>
+
+            <PostModal
+                selectedPost={{
+                    noticeIdx : 0,
+                    noticeHit : 0,
+                    noticeTitle : "VARCHAR(255)",
+                    noticeContent : "VARCHAR(5000)",
+                    noticeCreated : "TIMESTAMP",
+                }}
+                setSelectedPost={setPost}
+                modalIsOpen={isModal}
+                setModalIsOpen={setIsModal}
+            />
         </div>
     )
 }

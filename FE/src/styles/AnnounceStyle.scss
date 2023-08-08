@@ -72,7 +72,7 @@
         display: grid;
         align-content: center;
         align-items: center;
-        grid-template-columns: 80% 10% 10%;
+        text-align: center;
 
         height: 520px;
         width: 100%;
@@ -82,79 +82,9 @@
         -webkit-background-clip: text;
         font-size: clamp(0.5vw, 1vw, 2vw);
         font-weight: 700;
-
-        .mypage_notice_part {
-          height: 100%;
-          display: grid;
-          justify-items: center;
-          align-items: center;
-
-          .textBlock{
-            font-size: 24px;
-            color: var(--brand3_main);
-            .brand_logo{
-              width: 30px;
-              height: 30px;
-            }
-          }
-        }
-
-        div > .friendListItem {
-          display: grid;
-          align-items: center;
-          grid-template-columns: 20% 65% 15%;
-          width: auto;
-          height: 60px;
-          border-radius: 10px;
-          color: var(--font_gray_main);
-          background-color: var(--backGround_0);
-          margin: 10px;
-
-          .user_img_setting{
-            display: grid;
-            justify-items: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-            border: solid var(--brand3_main) 3pt;
-            .userImg {
-              border-radius: 100%;
-            }
-          }
-
-          .user_info{
-            .user_info_username{
-              font-size: 12pt;
-            }
-
-            .user_info_email{
-              font-size: 8pt;
-            }
-          }
-
-          .user_detail_button{
-            display: grid;
-            justify-items: center;
-            align-items: center;
-
-            background-color: var(--brand3_main);
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-            &:hover {
-              cursor: pointer;
-              background-color: var(--brand2_3);
-            }
-
-            .userDetailButtonImg{
-              width: 25px;
-            }
-          }
-        }
       }
 
-      .announce_item {
+      .announce_pagenation {
         display: grid;
         justify-items: center;
         align-items: center;
@@ -177,7 +107,6 @@
             margin: 5px;
             padding: 0px 0px 0px 10px;
 
-
             color: var(--white);
             font-size: 14px;
             font-weight: bold;
@@ -189,6 +118,35 @@
             border-radius: 100%;
             margin: 0px 1% 0px 0px;
             background-color: var(--point1_main);
+          }
+        }
+
+        .announce_pagenation_buttons{
+          width: 50%;
+          display: flex;
+          color: var(--white);
+          align-content: center;
+          justify-content: center;
+          margin: 10px;
+
+          .announce_pagenation_button{
+            width: 25px;
+            height: 25px;
+            border : none;
+            color: var(--white);
+            border-radius: 100%;
+            background-color: var(--brand3_3);
+            margin: 10px;
+          }
+
+          .selected_announce_pagenation_button{
+            width: 25px;
+            height: 25px;
+            border : none;
+            color: var(--white);
+            border-radius: 100%;
+            background-color: var(--brand3_main);
+            margin: 10px;
           }
         }
       }

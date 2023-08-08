@@ -4,7 +4,6 @@ import "../../styles/AnnounceStyle.scss"
 import PostModal from "../post/PostModal";
 import Pagination from "../common/Pagination";
 import axios from "axios";
-import go_back from "../../assets/images/frield/go_back.svg";
 
 const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
     const API = '/notice'
@@ -93,11 +92,6 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
     const openModal = (idx) => {
         getNoticesDataDetail(idx);
         setIsModal(true)
-    }
-
-    // 뒤로가기
-    const handleBack = () => {
-        window.history.back()
     }
 
     Modal.setAppElement("#root");

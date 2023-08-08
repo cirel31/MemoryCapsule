@@ -8,10 +8,9 @@ const FriendInfo = ({select, setSelect, friend, imageUrl}) => {
     // (친구인지 확인되면
     function isFriend() {
         if (friend) {
-
+            return true;
         }
-        return true;
-        return true;
+        return false;
     }
 
 
@@ -26,7 +25,6 @@ const FriendInfo = ({select, setSelect, friend, imageUrl}) => {
     return (
         <>
             <div className="user_img_setting">
-                {console.log("imageUrl : ", imageUrl)}
                 <img src={imageUrl} alt="유저 이미지" className="userImg"/>
             </div>
             <div className="user_info">

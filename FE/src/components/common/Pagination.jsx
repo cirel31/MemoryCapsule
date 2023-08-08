@@ -83,7 +83,7 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
     }
 
     return (
-        <div className="announce_item">
+        <div className="announce_pagenation">
             {/* 자체 페이지네이션 */}
             {
             currentItems.map((post) => (
@@ -114,10 +114,16 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
             }
 
             {/* 페이지네이션 */}
-            <div>
+            <div className="announce_pagenation_buttons">
                 {
                     Array.from(pageIndex()).map((index) => (
-                        <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
+                        currentPage===index
+                        ?
+                        <button key={index + 1} onClick={() => handlePageChange(index)} className="selected_announce_pagenation_button">
+                            {index + 1}
+                        </button>
+                        :
+                        <button key={index + 1} onClick={() => handlePageChange(index)} className="announce_pagenation_button">
                             {index + 1}
                         </button>
                     ))
