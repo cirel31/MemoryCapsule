@@ -11,14 +11,7 @@ name="user"
 container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
-<<<<<<< HEAD
-# .env file import
 run_option="-d --net santa --restart=unless-stopped -e PROFILE=$1"
-=======
-# ..env file import
-run_option="-d --net santa -e PROFILE=$1"
->>>>>>> 15ddfafb752061e48e2d728279c10ec0d6f40c1d
-
 
 stop_container_command="sudo docker stop $container_name"
 remove_container_command="sudo docker rm $container_name"

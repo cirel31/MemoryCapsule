@@ -12,14 +12,8 @@ name="apigateway"
 container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
-<<<<<<< HEAD
 # .env file import
 run_option="-dp 8000:8000 --net santa --restart=unless-stopped -e PROFILE=$1 --env-file=/var/jenkins_home/workspace/setup.env"
-=======
-# ..env file import
-run_option="-dp 8000:8000 --net santa -e PROFILE=$1 --env-file=/var/jenkins_home/workspace/setup.env"
->>>>>>> 15ddfafb752061e48e2d728279c10ec0d6f40c1d
-
 
 stop_container_command="sudo docker stop $container_name"
 remove_container_command="sudo docker rm $container_name"
