@@ -1,9 +1,11 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import defaultImg from "../../assets/images/stamp/stamp_best.svg";
 import {useRef, useState} from "react";
 import axios from "axios";
+import {fetchUserInfoThunk} from "../../store/userSlice";
 
 const EditProfilePage = () => {
+  const dispatch = useDispatch()
   const user = useSelector((state) => state.userState.user) || null
   console.log(user)
   const user_nickname = user?.nickname || 'james'
@@ -23,22 +25,30 @@ const EditProfilePage = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    const baseURL = 'http://i9a608.p.ssafy.io:8000'
+    const baseURL = 'https://i9a608.p.ssafy.io:8000'
     const subURL = '/user/change'
+    const accessToken = sessionStorage.getItem("accessToken")
     const userId = user.userId
     const formData = new FormData(formRef.current)
-    axios.put(`${baseURL}${subURL}`, formData, {
-      headers: {
-        "userId": {userId}
-      }
-    })
-      .then((response) => {
-        console.log("프로필 데이터 갱신 성공", response)
-        
+    try {
+      axios.put(`${baseURL}${subURL}`, formData, {
+        headers: {
+          "userId": {userId},
+          "Authorization": `Bearer ${accessToken}`,
+        }
       })
-      .catch((error) => {
-        console.log("프로필 데이터 갱신 실패", error)
-      })
+        .then((response) => {
+          console.log("프로필 데이터 갱신 성공", response)
+          dispatch(fetchUserInfoThunk(userId))
+        })
+        .catch((error) => {
+          console.log("프로필 데이터 갱신 실패", error)
+        })
+    }
+    catch (err) {
+      console.log("정보수정 서버에 전달도 안됐다고....", err)
+    }
+    
   };
   
   return (

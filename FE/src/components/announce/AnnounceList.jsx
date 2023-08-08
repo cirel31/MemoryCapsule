@@ -4,9 +4,11 @@ import "../../styles/AnnounceStyle.scss"
 import PostModal from "../post/PostModal";
 import Pagination from "../common/Pagination";
 import axios from "axios";
+import {useSelector} from "react-redux";
 
 const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
-    const API = '/notice'
+    const baseURL = 'https://i9a608.p.ssafy.io:8000'
+    const subURL = '/notice'
     const [selectedPost, setSelectedPost] = useState(null)
     const [isModal, setIsModal] = useState(false)
 
@@ -22,24 +24,14 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
         }
          */
     ])
-
-
+    
     useEffect(() => {
-        console.log('[AnnounceUserViewPage] 페이지 로딩 시 한 번만 실행되는 함수');
         console.log(size, page)
         getNoticesData();
     }, []);
-
-    /**
-     * 1. 전체 공지사항 [get]
-     * http://localhost:8080/notice/list?page=0&size=10
-     * */
+    
     const getNoticesData = () => {
-        console.log("[getNoticesData]");
-
-        // 실제 배포는 8000
-        // 테스트 및 개발 서버는 7000
-        axios.get(`${API}/list`)
+        axios.get(`${baseURL}${subURL}/list`)
             .then((response) => {
                 console.log('게시글 전체 (All) successful : ', response.data);
                 setPostList(response.data);
@@ -58,22 +50,11 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
         //     });
     };
 
-    /**
-     * 2. 공지사항 자세하게 보기 [get]
-     * http://localhost:8080/notice/2
-     * */
+
     const getNoticesDataDetail = (e) => {
-        const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
-
-        console.log("[getNoticesDataDetail]");
-
+        const accessToken = sessionStorage.getItem("accessToken") || null
         const index = e;
-
-        // 실제 배포는 8000
-        // 테스트 및 개발 서버는 7000
-
-        console.log(index);
-        axios.get(`${API}/${index}`,
+        axios.get(`${baseURL}${subURL}/${index}`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`

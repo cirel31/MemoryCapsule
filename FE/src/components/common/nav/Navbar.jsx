@@ -48,8 +48,6 @@ const Text = styled.div`
   color: white;
 `;
 
-
-
 export default function Navbar() {
   const dispatch = useDispatch()
   const [accessToken, setAccessToken] = useState(sessionStorage.getItem("accessToken"))
@@ -67,7 +65,6 @@ export default function Navbar() {
   const user = useSelector((state) => state.userState.user)
   useEffect(() => {
     const loginCheck = !!accessToken
-
     setIsLoggedIn(loginCheck)
     if (isLoggedIn) {
       const idx = sessionStorage.getItem("userIdx")
@@ -75,11 +72,10 @@ export default function Navbar() {
       dispatch(fetchUserInfoThunk(idx))
     }
   }, [isLoggedIn])
-
-
+  
   const user_nickname = user?.nickname || 'james'
   const user_email = user?.email || 'jimmy@raynersraiders.com'
-  const user_point = user?.point || 1000
+  const user_point = user?.point || 0
   const user_img = user?.imgUrl || profile_img
   console.log(user_img)
   return (
@@ -94,48 +90,23 @@ export default function Navbar() {
 
             <div className="nav_bar2">
               <div onClick={handlePageHome} >
-
                 <img src={logo_white} alt="LOGO" className="logo"/>
-
               </div>
               <img src={nav_line} className="line"/>
-
-              {/*<div>*/}
-              {/*  <button onClick={handlePageBack}>*/}
-              {/*    Back*/}
-              {/*  </button>*/}
-              {/*</div>*/}
+              
               <div className="profile_box">
                 <div className="profile_img_setting">
-                  {/*프로필 사진 있을경우 아래 className="profile_img" 달려있는
-              부분에 프로필사진, 프로필사진이 없을 경우 디폴트 이미지는 현재 지정된 사진으로*/}
                   <img src={user_img ? user_img:profile_img } className="profile_img"/>
                 </div>
 
-                {/*USER ID 있는 부분 닉네임 뜨게*/}
                 <p className="profile_id">{user_nickname}</p>
 
-                {/*example@kakao.com 부분 이메일 뜨게*/}
                 <p className="profile_email">{user_email}</p>
 
                 <div className="point_box">
                   <p className="point_box_txt"> my points</p>
-
-                  {/*이 아래껀 포인트 떠야함*/}
                   <p className="point_box_txt2">{user_point}</p>
                 </div>
-                {/*<div>*/}
-                {/*  <Link to='/login'>*/}
-                {/*    <button>*/}
-                {/*      Login*/}
-                {/*    </button>*/}
-                {/*  </Link>*/}
-                {/*  <Link to='/signup'>*/}
-                {/*    <button>*/}
-                {/*      signup*/}
-                {/*    </button>*/}
-                {/*  </Link>*/}
-                {/*</div>*/}
               </div>
               <div className="nav_btn_group">
                 <div>
@@ -182,13 +153,6 @@ export default function Navbar() {
               </div>
             </div>
             <button onClick={showSidebar} className="nav_bar_active_btn2"><img src={navbar_activate} className="navbar_pictogram"/></button>
-
-            {/*<div onClick={showSidebar}>*/}
-            {/*  <ImageWithText>*/}
-            {/*    <Image />*/}
-            {/*    <Text>안녕하세요</Text>*/}
-            {/*  </ImageWithText>*/}
-            {/*</div>*/}
           </nav>
         </SidebarNav>
       </>
