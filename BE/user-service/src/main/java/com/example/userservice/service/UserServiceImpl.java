@@ -132,11 +132,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkEmailDuplicated(String email) throws Exception {
-        return userRepository.findByEmail(email).isPresent();
-    }
-
-    @Override
     public UserDto.Detail getUserDetail(Long userId, int year, int month) throws Exception {
         //TODO: AccessList 추가
         UserDto.Detail result = getUserDetail(userId);
@@ -195,7 +190,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception {
         User user = getUserById(info.getUserId());
-        user.modifyUser(info.getNickName(), info.getPassword(), getImgUrl(multipartFile));
+        user.modifyUser(info.getNickName(), passwordEncoder.encode(info.getPassword()), getImgUrl(multipartFile));
+    }
+
+    @Override
+    public boolean checkEmailDuplicated(UserDto.RequestFindPass userInfo) {
+        User user = userRepository.findByEmail(userInfo.getEmail()).orElse(null);
+        if (user != null && user.getPhone().equals(userInfo.getPhone())) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -205,6 +209,12 @@ public class UserServiceImpl implements UserService {
         secureRandom.nextBytes(randomBytes);
 
         return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    }
+
+    @Override
+    public void modifyPassword(String userEmail, String code) {
+        User user = getUserByEmail(userEmail);
+        user.modifyPassword(passwordEncoder.encode(code));
     }
 
     @Override

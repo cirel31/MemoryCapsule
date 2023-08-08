@@ -83,17 +83,19 @@ public class UserController {
     }
 
     @GetMapping("/find_password")
-    public ResponseEntity findPwd(@RequestParam(value = "userEmail") String userEmail) throws Exception {
-        if (userService.checkEmailDuplicated(userEmail)) {
+    public ResponseEntity findPwd(@RequestBody UserDto.RequestFindPass userInfo) {
+
+        if (userService.checkEmailDuplicated(userInfo)) {
             String code = userService.generateRandomPassword();
             ResponseEntity<String> response = new RestTemplate().postForEntity(
-                    "http://notification-service:8081/email/register_verify/" + userEmail + "/" + code,
+                    "http://notification-service:8081/email/register_verify/" + userInfo.getEmail() + "/" + code,
                     null,
                     String.class
             );
             if (response.getStatusCode().isError()) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일 전송 실패");
             }
+            userService.modifyPassword(userInfo.getEmail(), code);
             return ResponseEntity.status(HttpStatus.CREATED).body("임시 비밀번호: " + code);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");

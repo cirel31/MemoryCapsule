@@ -19,13 +19,16 @@ public interface UserService extends UserDetailsService {
     void deleteUser(Long userId) throws Exception;
 
     // 이메일로 유저 찾기
-    boolean checkEmailDuplicated(final String email) throws Exception;
+    boolean checkEmailDuplicated(UserDto.RequestFindPass userInfo);
 
     //회원정보 수정
     void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception;
     
     //임시 비번 만들기
     String generateRandomPassword();
+    
+    //비밀번호 변경
+    void modifyPassword(String userEmail, String code);
 
     //point 변환
     Boolean updatePoint(Long userId, Long point) throws Exception;

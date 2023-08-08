@@ -56,6 +56,16 @@ public class UserDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class RequestFindPass{
+        private String email;
+        private String phone;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ResponseLogin{
         private Long userIdx;
         private String accessToken;
