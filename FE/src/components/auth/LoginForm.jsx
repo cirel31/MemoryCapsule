@@ -84,12 +84,20 @@ const LoginForm = ({ form, setForm }) => {
                 value={form.password}
                 onChange={handleChange}
                 required
-              />
+              />              
+              <div>
+                <Link to="/find-password" className="find_pw">
+                  비밀번호 찾기
+                </Link>
+              </div>
+
             </div>
             <div>
               <button onClick={sendLoginDataServer}>
                 로그인
               </button>
+              
+
             </div>
 
 
@@ -108,6 +116,7 @@ const LoginForm = ({ form, setForm }) => {
           </div>
           {!isValidEmail && <div className="login_alert">올바른 이메일 형식이 아닙니다.</div>}
 
+
         </div>
       </div>
       {/* 모달 창 */}
@@ -122,11 +131,7 @@ const LoginForm = ({ form, setForm }) => {
         </Modal>
       </div>
       
-      <button>
-        <Link to="/find-password">
-          비밀번호 찾기
-        </Link>
-      </button>
+
     </div>
   );
 };

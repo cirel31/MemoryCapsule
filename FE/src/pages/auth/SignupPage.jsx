@@ -14,6 +14,7 @@ const SignupPage = () => {
     setForm(updatedForm);
   };
 
+
   return (
     <>
       <div className="signup_body">
