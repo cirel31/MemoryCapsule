@@ -133,7 +133,7 @@ const ArticleCreateForm = () => {
                 이미지 업로드:
                 <br/>
                 <input
-                  name="article_img"
+                  name="article_images"
                   type="file"
                   accept="image/*"
                   multiple
@@ -176,14 +176,14 @@ const ArticleCreateForm = () => {
                 </Modal>
                 {/* 서버에 도장 정보 보낼 인풋 */}
                 <input
-                  name="article_stamp"
+                  name="stamp"
                   style={{display:"none"}}
                   type="number"
                   value={feelingStamp[0]}
                 />
               </div>
               <textarea
-                name="article_content"
+                name="content"
                 value={text}
                 onChange={handleTextChange}
                 maxLength={150}

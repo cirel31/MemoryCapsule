@@ -10,7 +10,8 @@ const UserInfoHeaderForm = () => {
   console.log('유저정보확인 : ', user)
   const userNickname = user?.nickname || '김싸피'
   const userEmail = user?.email || 'jdragon@ssafy.com'
-  const friendsCount = user?.totalFriend || 1
+  const friendsCount = user?.totalFriend || 0
+  const userProfileImg = user?.imgUrl || sample_img
   const handleEditProfile = () => {
     navigate('/profile/edit')
   }
@@ -21,9 +22,7 @@ const UserInfoHeaderForm = () => {
 
         <div className="header_sets">
           <div className="header_image">
-
-            {/*유저프로필이미지로 바꿔야 함*/}
-            <img src={sample_img} alt="프로필 이미지" className="header_profile_img"/>
+            <img src={userProfileImg} alt="프로필 이미지" className="header_profile_img"/>
 
           </div>
           <div className="header_user_info1">

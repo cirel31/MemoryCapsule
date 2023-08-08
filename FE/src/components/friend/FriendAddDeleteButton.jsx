@@ -35,11 +35,11 @@ const FriendAddDeleteButton = ({select}) => {
     }
     return (
         <>
-            <div>
+            <div className="friend_add_delete_button">
                 {
                     (1 === 1)
-                        ?<CustomButtonFriend className="CustomButtonFriend addFriend" value={select.id} onClick={addFriend}> + </CustomButtonFriend>
-                        :<CustomButtonFriend className="CustomButtonFriend discardFriend" value={select.id} onClick={discardFriend}> - </CustomButtonFriend>
+                        ?<button className="add_discard_button add_friend" value={select.id} onClick={addFriend}> 친구추가 </button>
+                        :<button className="add_discard_button discard_friend" value={select.id} onClick={discardFriend}> 친구삭제 </button>
                 }
             </div>
             {/* 모달 창 */}

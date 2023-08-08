@@ -9,18 +9,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
     // 모든 Notice 조회
     Page<Notice> findByNoticeDeletedFalse(Pageable pageable);
-    
+
     // notice_idx 를 통해 notice 정보 조회
-    Notice findByNoticeIdx(Long noticeIdx);
+    Optional<Notice> findByNoticeIdxAndNoticeDeletedFalse(Long noticeIdx);
+
 
     // 공지사항의 notice_hit 값을 1 증가시킴
-    @Modifying
-    @Query(value = "UPDATE notice SET notice_hit = notice_hit + 1 WHERE notice_idx = :noticeIdx", nativeQuery = true)
-    int incrementNoticeHit(@Param("noticeIdx") Long noticeIdx);
+//    @Modifying
+//    @Query(value = "UPDATE notice SET notice_hit = notice_hit + 1 WHERE notice_idx = :noticeIdx", nativeQuery = true)
+//    int incrementNoticeHit(@Param("noticeIdx") Long noticeIdx);
 
     // 공지사항에 새로운 글 등록
     @Modifying
@@ -30,20 +33,4 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
                         @Param("noticeTitle") String noticeTitle,
                         @Param("noticeContent") String noticeContent,
                         @Param("noticeImgUrl") String noticeImgUrl);
-
-    // 공지사항의 글을 삭제시 notice_delete = 1로 변경
-    @Modifying
-    @Query("UPDATE Notice n SET n.noticeDeleted = true WHERE n.noticeIdx = :noticeIdx")
-    int deleteNoticeByNoticeIdx(@Param("noticeIdx") Long noticeIdx);
-
-    // 공지사항 글을 수정한다.
-    @Modifying
-    @Query("UPDATE Notice n " +
-            "SET n.noticeTitle = :noticeTitle, n.noticeContent = :noticeContent, " +
-            "n.noticeImgurl = :noticeImgUrl, n.noticeUpdated = CURRENT_TIMESTAMP " +
-            "WHERE n.noticeIdx = :noticeIdx")
-    int modifyNoticeByNoticeIdx(@Param("noticeTitle") String noticeTitle,
-                                @Param("noticeContent") String noticeContent,
-                                @Param("noticeImgUrl") String noticeImgUrl,
-                                @Param("noticeIdx") Long noticeIdx);
 }

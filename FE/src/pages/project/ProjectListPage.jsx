@@ -1,39 +1,34 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import "../../styles/testPage.css"
 
 
 const ProjectListPage = () => {
-  const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(null)
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
-  const API = 'http://i9a608.p.ssafy.io:8000/project/all'
+  const baseURL = 'https://i9a608.p.ssafy.io:8000'
+  const subURL = '/project/all'
   // const API = '/project/all'
   const [projects, setProjects] = useState([
 
   ]);
 
   useEffect(() => {
-    // 서버로부터 프로젝트 가져오기
-    // 전체 프로젝트를 가져오고 선별 예정
-    axios.get(`${API}`
-    //   , {
-    //   headers: {
-    //     userId: 1001,
-    //   }
-    // }
-    ) // 추후 주소 갱신 예정
+    const accessToken = sessionStorage.getItem("accessToken")
+    axios.get(`${baseURL}${subURL}`, {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+      }
+    })
         .then((response) => {
-          console.log('성공')
-          console.log(API)
-          console.log(response.data)
+          console.log('프로젝트 리스트 가져오기 : ', response.data)
           setProjects(response.data);
         })
         .catch((error) => {
-          console.error("서버로부터 프로젝트 가져오기 실패", error);
+          console.error("프로젝트 리스트 가져오기 실패", error);
           console.error(error.code)
         });
   }, []);
@@ -53,7 +48,6 @@ const ProjectListPage = () => {
     setSelectedPost(null)
     setIsModal(false)
   }
-
 
   const [currentSection, setCurrentSection] = useState(0);
 

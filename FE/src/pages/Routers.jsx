@@ -10,8 +10,7 @@ import MyPage from "./user/MyPage";
 import EditProfilePage from "./user/EditProfilePage";
 import UserProfilePage from "./user/UserProfilePage";
 import CalendarForm from "../components/user/CalendarForm";
-import FriendListPage from "./friend/FriendListPage";
-import FriendSearchPage from "./friend/FriendSearchPage";
+import FriendPage from "./friend/FriendPage";
 import NoticeListPage from "./notice/NoticeListPage";
 import PostCreatePage from "./PostCreatePage";
 import ArticleCreatePage from "./project/ArticleCreatePage";
@@ -19,6 +18,7 @@ import ProjectDetailPage from "./project/ProjectDetailPage";
 import ProjectListPage from "./project/ProjectListPage";
 import ProjectCreatePage from "./project/ProjectCreatePage";
 import InviteProject from "./project/InviteProject";
+import KakaoLoginPage from "./auth/KakaoLoginPage";
 
 export default function Routers() {
 
@@ -36,8 +36,7 @@ export default function Routers() {
       <Route path='/project/:projectId' element={<ProjectDetailPage />} />
       <Route path='/project/article/write/:projectId' element={<ArticleCreatePage />} />
       <Route path='/project/invite' element={<InviteProject />}/>
-      <Route path='/friend' element={<FriendListPage />} />
-      <Route path='/friend/search' element={<FriendSearchPage />} />
+      <Route path='/friend' element={<FriendPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
       <Route path='/notice/postcreate' element={<PostCreatePage />} />
       
@@ -45,6 +44,9 @@ export default function Routers() {
       <Route path='/mypage' element={<MyPage />} />
 
       <Route path='/calendar' element={<CalendarForm />} />
+      
+      {/* 카카오 테스트 Router */}
+      <Route path='/login/kakao' element={<KakaoLoginPage />} />
 
       <Route path='/*' element={<NotFound />} />
     </Routes>
