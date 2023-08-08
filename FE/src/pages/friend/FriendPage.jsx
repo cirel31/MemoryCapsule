@@ -25,37 +25,6 @@ const FriendPage = () => {
         id: "",
     });
 
-    /**
-     * 1. 전체 내 친구 목록 불러오기
-     *
-     * Method : get
-     * URL : /friend/search/{user_id}
-     * */
-    // function addFriends(searchId) {
-    //     console.log("[addFriends]");
-    //
-    //     // 서버로부터 내 친구목록 가져오기
-    //     // axios.get(`${API}/search/${user_id}`,
-    //     axios.post(`${API}/add`,
-    //         {
-    //             headers: {
-    //                 Authorization: `Bearer ${accessToken}`,
-    //                 //userId
-    //                 //searchId
-    //             },
-    //         }
-    //     )
-    //         .then((response) => {
-    //             console.log('친구 추가 성공');
-    //             console.log(API);
-    //             console.log(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error("친구 추가 실패", error);
-    //             console.error(error.code);
-    //         });
-    // }
-
     // 뒤로가기
     const handleBack = () => {
         if (selectPage) {

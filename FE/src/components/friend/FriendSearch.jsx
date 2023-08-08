@@ -91,19 +91,23 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
                     <FriendForm
                         form={form}
                         setForm={setForm}
-                        isValidSearch={isValidSearch}
                         setIsValidSearch={setIsValidSearch}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="search_buttons">
                     <button onClick={sendFriendDataServer} className="search_friends_button button_front">
-                        <img src={searchIcon} alt="검색 아이콘" className="search_friends_button_img"/>
+                        <div className="search_friends_button_cover">
+                            <img src={searchIcon} alt="검색 아이콘" className="search_friends_button_img"/>
+                        </div>
                     </button>
                 </div>
             </div>
+            <div className="search_server_info">
+                {!isValidSearch && <div style={{ color: 'red' }}>한 글자 이상 입력해주세요</div>}
+            </div>
             <div className="search_friend_list">
-                <div className="friendListItems">
+                <div className="search_friend_list_items">
                     {
                         friends.length === 0
                             ?
@@ -113,10 +117,16 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
                                 </div>
                             </div>
                             // 스크롤 구현해야 하는 부분
-                            :<div>
+                            :<div className="search_friend_list_item">
                                 {
                                     friends.map((friend) => (
-                                        <FriendInfo select={select} setSelect={setSelect} key={friend.userId} friend={friend} />
+                                        <FriendInfo
+                                            select={select}
+                                            setSelect={setSelect}
+                                            key={friend.userId}
+                                            friend={friend}
+                                            imageUrl={friend.imgUrl}
+                                        />
                                     ))
                                 }
                             </div>

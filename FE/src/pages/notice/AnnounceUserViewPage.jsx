@@ -4,7 +4,7 @@ import "../../styles/AnnounceStyle.scss"
 import PostModal from "../../components/post/PostModal";
 import axios from "axios";
 import go_back from "../../assets/images/frield/go_back.svg";
-import AnnounceList from "./AnnounceList";
+import AnnounceList from "../../components/announce/AnnounceList";
 
 const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
     // 뒤로가기

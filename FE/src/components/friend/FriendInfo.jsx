@@ -1,11 +1,19 @@
 import { FriendItem } from "../../styles/friendStyle";
 import FriendAddDeleteButton from "./FriendAddDeleteButton";
 import React, {useState} from "react";
-import person from "../../assets/images/frield/person.svg"
+import add_friend from "../../assets/images/frield/add_friend.svg"
 
-const FriendInfo = ({select, setSelect, friend}) => {
+const FriendInfo = ({select, setSelect, friend, imageUrl}) => {
     // 친구인지 여부
-    const isFriend = true;
+    // (친구인지 확인되면
+    function isFriend() {
+        if (friend) {
+
+        }
+        return true;
+        return true;
+    }
+
 
     const selectFriend = () => {
         const selected = {
@@ -16,9 +24,10 @@ const FriendInfo = ({select, setSelect, friend}) => {
     }
 
     return (
-        <FriendItem className="friendListItem">
+        <>
             <div className="user_img_setting">
-                <img src="../userImg" alt="유저 이미지" className="userImg"/>
+                {console.log("imageUrl : ", imageUrl)}
+                <img src={imageUrl} alt="유저 이미지" className="userImg"/>
             </div>
             <div className="user_info">
                 <div className="user_info_username">
@@ -32,11 +41,11 @@ const FriendInfo = ({select, setSelect, friend}) => {
                 // 처음 로딩 시 친구여야 자세히보기 제공
                 isFriend
                     ?<div onClick={selectFriend} className="user_detail_button">
-                        <img src={person} alt="유저 자세히보기 이미지" className="userDetailButtonImg"/>
+                        <img src={add_friend} alt="유저 자세히보기 이미지" className="userDetailButtonImg"/>
                     </div>
                     :<FriendAddDeleteButton select={select}/>
             }
-        </FriendItem>
+        </>
     )
 }
 

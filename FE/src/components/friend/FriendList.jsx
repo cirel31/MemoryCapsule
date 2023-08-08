@@ -14,6 +14,7 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
     const API = '/friend';
 
+    const [imageUrl, setImageUrl] = useState('');
     const [friends, setFriends] = useState([]);
 
     const [form, setForm] = useState({
@@ -109,14 +110,15 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                     <FriendForm
                         form={form}
                         setForm={setForm}
-                        isValidSearch={isValidSearch}
                         setIsValidSearch={setIsValidSearch}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="search_buttons">
                     <button onClick={handleFriendData} className="search_friends_button button_front">
-                        <img src={searchIcon} alt="검색 아이콘" className="search_friends_button_img"/>
+                        <div className="search_friends_button_cover">
+                            <img src={searchIcon} alt="검색 아이콘" className="search_friends_button_img"/>
+                        </div>
                     </button>
                     <button onClick={searchPage} className="search_friends_button button_server">
                         친구찾기
@@ -127,18 +129,25 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                 <div className="friendListItems">
                     {
                         friends.length === 0
-                            ?
-                            <div className="no_friend_list">
-                                <div className="textBlock">
-                                    새로운 친구를 찾아보세요
-                                </div>
+                        ?
+                        <div className="no_friend_list">
+                            <div className="textBlock">
+                                새로운 친구를 찾아보세요
                             </div>
-                            // 스크롤 구현해야 하는 부분
-                            :<div>
-                                { friends.map((friend) => (
-                                    <FriendInfo select={select} setSelect={setSelect} key={friend.id} friend={friend} />
-                                ))}
-                            </div>
+                        </div>
+                        // 스크롤 구현해야 하는 부분
+                        :<div className="friend_list_item">
+                            {console.log("friends : ", friends)}
+                            { friends.map((friend) => (
+                                <FriendInfo
+                                    select={select}
+                                    setSelect={setSelect}
+                                    key={friend.id}
+                                    friend={friend}
+                                    imageUrl={friend.imgUrl}
+                                />
+                            ))}
+                        </div>
                     }
                 </div>
                 <div className="friendDetailItems">

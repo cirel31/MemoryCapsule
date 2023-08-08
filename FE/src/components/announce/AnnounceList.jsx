@@ -1,8 +1,8 @@
 import Modal from "react-modal";
 import React, {useEffect, useState} from "react";
 import "../../styles/AnnounceStyle.scss"
-import PostModal from "../../components/post/PostModal";
-import Pagination from "../../components/common/Pagination";
+import PostModal from "../post/PostModal";
+import Pagination from "../common/Pagination";
 import axios from "axios";
 import go_back from "../../assets/images/frield/go_back.svg";
 

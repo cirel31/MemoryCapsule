@@ -56,6 +56,32 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
         return showIndexList;
     }
 
+    // 날짜 처리
+    function addLeadingZero(number) {
+        return number < 10 ? `0${number}` : number;
+    }
+
+    function getTime(getTime) {
+        const getTimeChange = new Date(getTime);
+        const Year = getTimeChange.getFullYear();
+        const Month = getTimeChange.getMonth() + 1;
+        const Day = getTimeChange.getDate();
+
+
+
+        return(`${Year}-${addLeadingZero(Month)}-${addLeadingZero(Day)}`);
+    }
+
+    // 새 알람인지 구분 (일주일 기준)
+    function isNewAlame(getTime) {
+        const getTimeDate = new Date(getTime);
+        const curTimeDate = new Date() - (7 * 24 * 60 * 60 * 1000);
+        if (curTimeDate < getTimeDate) {
+            return true;
+        }
+        return false;
+    }
+
     return (
         <div className="announce_item">
             {/* 자체 페이지네이션 */}
@@ -69,13 +95,19 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
                     >
                         <p>{post.noticeTitle}</p>
                     </div>
-                    <div className="announce_list_alarm"/>
+                    {
+                        isNewAlame(post.noticeCreated)
+                        ?
+                        <div className="announce_list_alarm"/>
+                        :
+                        <div> </div>
+                    }
+
                     <div>
                         <p>
                             {/*function으로 return 값을 date.getDate() 같은거 써서 return*/}
-                            {
-                            Date(post.noticeCreated * 1000)
-                        }</p>
+                            {getTime(post.noticeCreated)}
+                        </p>
                     </div>
                 </div>
                 ))

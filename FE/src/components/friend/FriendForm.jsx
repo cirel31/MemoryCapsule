@@ -1,17 +1,17 @@
 import { AuthFormBlock, FormBody, WhiteBox } from "../../styles/friendStyle";
 import {StyledSearchBar} from "../../styles/searchBarStyle";
 
-const FriendForm = ({form, setForm, isValidSearch, setIsValidSearch}) => {
+const FriendForm = ({form, setForm, setIsValidSearch}) => {
 
-    const handleChange = (e) => {
-        const { value } = e.target;
-            const nextForm = {
-            ...form,
-            "search" : value,
-        };
-        setForm(nextForm);
-        console.log("handleChange : ", form);
-    };
+    // const handleChange = (e) => {
+    //     const { value } = e.target;
+    //         const nextForm = {
+    //         ...form,
+    //         "search" : value,
+    //     };
+    //     setForm(nextForm);
+    //     console.log("handleChange : ", form);
+    // };
 
     const valueChange = (e) => {
         const { value } = e.target;
@@ -41,7 +41,6 @@ const FriendForm = ({form, setForm, isValidSearch, setIsValidSearch}) => {
                     onChange={valueChange}
                     required
                 />
-                {!isValidSearch && <div style={{ color: 'red' }}>한 글자 이상 입력해주세요</div>}
             </form>
         </>
     );

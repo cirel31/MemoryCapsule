@@ -6,7 +6,7 @@ import {logout} from "../../store/userSlice";
 import "../../styles/MyPage.scss";
 import {useNavigate} from "react-router-dom";
 import CurrentProjectsPage from "./CurrentProjectsPage";
-import AnnounceList from "../notice/AnnounceList";
+import AnnounceList from "../../components/announce/AnnounceList";
 
 
 const MyPage = () => {
