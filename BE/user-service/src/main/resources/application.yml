@@ -56,6 +56,9 @@ eureka:
 
 logging:
   level:
+#    org.hibernate:
+#      type.descriptor.sql: trace # show parameter binding
+#      SQL: DEBUG
     com.example.user-service.client: DEBUG # Feign Client Logging 설정
     org.springframework.security: DEBUG
 jwt:
