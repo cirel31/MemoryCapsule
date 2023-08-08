@@ -1,15 +1,15 @@
 package com.example.userservice.service;
 
 import com.example.userservice.model.dto.UserDto;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
     // User 로그인
     UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception;
     // User 로그아웃
-    void logout(Authentication authentication);
+    void logout(final Long userId);
+    //이메일 중복 체크
+    boolean emailCheck(String userEmail);
     // User 회원가입
     UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile file) throws Exception;
 
@@ -25,7 +25,7 @@ public interface UserService extends UserDetailsService {
     void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception;
     
     //임시 비번 만들기
-    String generateRandomPassword();
+    String generateRandomCode();
     
     //비밀번호 변경
     void modifyPassword(String userEmail, String code);

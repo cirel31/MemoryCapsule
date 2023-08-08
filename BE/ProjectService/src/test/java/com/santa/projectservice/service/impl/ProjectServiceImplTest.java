@@ -1,7 +1,7 @@
 package com.santa.projectservice.service.impl;
 
-import com.santa.projectservice.dto.ProjectDto;
-import com.santa.projectservice.dto.RegisterDto;
+import com.santa.projectservice.model.dto.ProjectDto;
+import com.santa.projectservice.model.dto.RegisterDto;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.FileUploadService;
@@ -16,10 +16,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /*
 핵심 메소드
@@ -47,13 +49,13 @@ public class ProjectServiceImplTest {
 
 
     @Test
-    public void 프로젝트_생성() {
+    public void 프로젝트_생성() throws IOException {
         ProjectDto projectDto = ProjectDto.builder()
                 .title("프로젝트 테스트")
                 .content("컨텐츠 테스트")
                 .build();
         ArrayList<Long> userList = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L));
-        Long result = projectService.createProject(projectDto, userList, 1001L);
+        Long result = projectService.createProject(projectDto, userList, 1001L, null);
         ProjectDto resultDto = null;
         try {
             resultDto = projectService.findProjectById(result);
@@ -62,7 +64,7 @@ public class ProjectServiceImplTest {
             log.error(e.toString());
         }
         log.info(resultDto.toString());
-        assertEquals(result, resultDto.getIdx());
+        assertEquals(result, resultDto.getId());
 
     }
 
@@ -75,13 +77,13 @@ public class ProjectServiceImplTest {
     }
 
     @Test
-    public void 프로젝트_생성_후_레지스터_검색() {
+    public void 프로젝트_생성_후_레지스터_검색() throws IOException {
         ProjectDto projectDto = ProjectDto.builder()
                 .title("프로젝트 테스트")
                 .content("컨텐츠 테스트")
                 .build();
         ArrayList<Long> userList = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L));
-        Long result = projectService.createProject(projectDto, userList, 1001L);
+        Long result = projectService.createProject(projectDto, userList, 1001L, null);
         ProjectDto resultDto = null;
         try {
             resultDto = projectService.findProjectById(result);
@@ -90,7 +92,7 @@ public class ProjectServiceImplTest {
             log.error(e.toString());
         }
         log.info(resultDto.toString());
-        assertEquals(result, resultDto.getIdx());
+        assertEquals(result, resultDto.getId());
         List<RegisterDto> registerDtos = projectService.findRegistersByUserId(1001L);
         registerDtos.forEach(regi -> {
             System.out.println(regi.toString());
