@@ -73,12 +73,17 @@ public class UserController {
 
     @DeleteMapping("/delete")
     public ResponseEntity userDelete(@RequestParam(value = "user_id") Long user_id) {
-        userService.deleteUser(user_id);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try {
+            userService.deleteUser(user_id);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            log.error("Error - userDelete : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
     }
 
     @GetMapping("/find_password")
-    public ResponseEntity findPwd(@PathVariable("userEmail") String userEmail) throws Exception {
+    public ResponseEntity findPwd(@RequestParam(value = "userEmail") String userEmail) throws Exception {
         if (userService.checkEmailDuplicated(userEmail)) {
             String code = userService.generateRandomPassword();
             ResponseEntity<String> response = new RestTemplate().postForEntity(
@@ -124,7 +129,7 @@ public class UserController {
     @PutMapping("/point/{userId}")
     public ResponseEntity updateUserPoint(
             @PathVariable("userId") Long userId,
-            @RequestParam(value = "point", required = false, defaultValue = "0") Long point) {
+            @RequestParam(value = "point") Long point) {
         try {
             if (userService.updatePoint(userId, point)) {
                 return ResponseEntity.status(HttpStatus.OK).build();
