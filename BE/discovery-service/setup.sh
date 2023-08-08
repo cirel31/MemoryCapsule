@@ -15,7 +15,6 @@ tag_name="latest"
 run_option="-dp 8761:8761 --net santa --restart=unless-stopped --env-file=/var/jenkins_home/workspace/setup.env"
 
 
-
 stop_container_command="sudo docker stop $container_name"
 remove_container_command="sudo docker rm $container_name"
 remove_image_command="sudo docker rmi $image_name"

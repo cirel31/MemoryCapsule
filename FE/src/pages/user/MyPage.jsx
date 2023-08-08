@@ -1,12 +1,12 @@
 import CalendarForm from "../../components/user/CalendarForm";
 import UserInfoHeaderForm from "../../components/user/UserInfoHeaderForm";
-import AnnounceUserViewPage from "../notice/AnnounceUserViewPage";
 
 import {useDispatch} from "react-redux";
 import {logout} from "../../store/userSlice";
 import "../../styles/MyPage.scss";
 import {useNavigate} from "react-router-dom";
 import CurrentProjectsPage from "./CurrentProjectsPage";
+import AnnounceList from "../notice/AnnounceList";
 
 
 const MyPage = () => {
@@ -36,7 +36,7 @@ const MyPage = () => {
             <h1 className="mypage_notice_h1">공지사항</h1>
             <div className="parting_line"></div>
             <div>
-                <AnnounceUserViewPage page={0} size={3}/>
+                <AnnounceList page={0} size={3} setCurrentPage={0}/>
             </div>
             <br/>
             <h1 className="mypage_notice_h1">제작중인 캡슐 현황</h1>
