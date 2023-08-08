@@ -1,12 +1,12 @@
 import CalendarForm from "../../components/user/CalendarForm";
 import UserInfoHeaderForm from "../../components/user/UserInfoHeaderForm";
-
 import {useDispatch} from "react-redux";
 import {logout} from "../../store/userSlice";
 import "../../styles/MyPage.scss";
 import {useNavigate} from "react-router-dom";
 import CurrentProjectsPage from "./CurrentProjectsPage";
 import InviteProject from "../project/InviteProject";
+import AnnounceList from "../../components/announce/AnnounceList";
 
 
 const MyPage = () => {
