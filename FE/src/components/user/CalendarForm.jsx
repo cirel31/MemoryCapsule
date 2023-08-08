@@ -41,7 +41,8 @@ const CalendarForm = () => {
   },[isLoggedIn]);
 
   const [value, onChange] = useState(new Date())
-  const username = '김싸피'
+  const user = useSelector((state) => state.userState.user)
+  const username = user.nickname || '김싸피'
   const countMemory = 0
   const countProject = 0
   return (
