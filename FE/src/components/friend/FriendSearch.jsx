@@ -34,14 +34,16 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
         const accessToken = sessionStorage.getItem("accessToken")
         const Idx = parseInt(sessionStorage.getItem("userIdx"))
 
+        console.log(sessionStorage)
+        console.log(accessToken)
+        console.log(Idx)
+        console.log(searchId)
+
         // 서버로부터 내 친구목록 가져오기
         axios.get(`${baseURL}${API}/find/${searchId}`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
-                },
-                params: {
-                    host_id: `${Idx}`,
                 },
             })
             .then((response) => {

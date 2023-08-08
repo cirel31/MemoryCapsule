@@ -45,9 +45,10 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     function getFriends() {
         console.log("[getFriends]");
         const accessToken = sessionStorage.getItem("accessToken")
-        const host_id = sessionStorage.getItem("userIdx");
+        const host_id = Number(sessionStorage.getItem("userIdx"));
         // 서버로부터 내 친구목록 가져오기
         // axios.get(`${API}/search/${user_id}`,
+
         axios.get(`${baseURL}${API}/search/${host_id}`,
             {
                 headers: {
@@ -57,7 +58,7 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
             .then((response) => {
                 console.log('서버로부터 친구목록 가져오기 성공');
                 console.log(API);
-                console.log(response.data);
+                console.log("response.data : ", response.data);
                 setRowFriends(response.data);
             })
             .catch((error) => {
@@ -138,9 +139,9 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                         :<div className="friend_list_item">
                             { friends.map((friend) => (
                                 <FriendInfo
+                                    key={friend.id}
                                     select={select}
                                     setSelect={setSelect}
-                                    key={friend.id}
                                     friend={friend}
                                     imageUrl={friend.imgUrl}
                                 />

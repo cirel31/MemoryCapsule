@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import Modal from "react-modal";
 import axios from "axios";
 
-const FriendAddDeleteButton = ({friend, status, select}) => {
+const FriendAddDeleteButton = ({friend, status, from}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
     const API = '/friend';
 
@@ -25,14 +25,20 @@ const FriendAddDeleteButton = ({friend, status, select}) => {
         const guest_id = parseInt(friend.userId, 10);
 
         console.log(host_id, guest_id)
-        //https://i9a608.p.ssafy.io:8000/friend/add?guest_id=1014&host_id=2
-        axios.post(`${baseURL}${API}/add`, {
-                guest_id: guest_id,
-                host_id: host_id
-            }, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }})
+
+        // axios.post(`${baseURL}${API}/add`, null, {
+        //     guest_id: guest_id,
+        //     host_id: host_id
+        // }, {
+        // headers: {
+        //     Authorization: `Bearer ${accessToken}`
+        // }})
+        axios.post(`${baseURL}${API}/add?guest_id=${guest_id}&host_id=${host_id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
             .then((response) => {
                 console.log('서버로부터 친구 추가 성공');
                 setFriendModalIsOpen(1);
@@ -62,16 +68,22 @@ const FriendAddDeleteButton = ({friend, status, select}) => {
         console.log("host_id", host_id);
         console.log("guest_id", guest_id);
 
-        axios.delete(`${baseURL}${API}/delete`,
-            {
-                guest_id: guest_id,
-                host_id: host_id,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
-            })
+        // axios.delete(`${baseURL}${API}/delete`, null,
+        //     {
+        //         guest_id: guest_id,
+        //         host_id: host_id,
+        //     },
+        //     {
+        //         headers: {
+        //             Authorization: `Bearer ${accessToken}`
+        //         },
+        //     })
+        axios.delete(`${baseURL}${API}/delete?guest_id=${guest_id}&host_id=${host_id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    },
+                })
             .then((response) => {
                 console.log('서버로부터 친구 삭제 성공');
                 setFriendModalIsOpen(2);    //친구 삭제
@@ -87,22 +99,34 @@ const FriendAddDeleteButton = ({friend, status, select}) => {
         const guest_id = friend.userId*1;
         
         if (host_id === guest_id) {
-            return <button className="add_discard_button add_friend" value={select.id}> 본인입니다 </button>
+            return <button className="add_discard_button add_friend" value={friend.userId}> 본인입니다 </button>
         }
-        
-        switch (status) {
-            case 2 :
-                return <button className="add_discard_button add_friend" value={select.id} onClick={addFriend}> 친구추가2 </button>
-            case 3 :
-                return <button className="add_discard_button add_friend" value={select.id} onClick={addFriend}> 친구추가3 </button>
-            default:
-                return <button className="add_discard_button add_friend" value={select.id} onClick={addFriend}> 친구추가0 </button>
+        if (from === "FriendInfo"){
+            switch (status) {
+                case 1 :
+                    return <button className="status_button discard_friend" value={friend.userId} onClick={discardFriend}> <img src="../친구추가2_이미지" alt="친구삭제 이미지" /> </button>
+                case 2 :
+                    return <button className="status_button add_friend" value={friend.userId} onClick={addFriend}> <img src="../팔로우 중인 친구 이미지" alt="팔로우 중인 친구 이미지" /> </button>
+                case 3 :
+                    return <button className="status_button add_friend" value={friend.userId} onClick={addFriend}> <img src="../나를 팔로우하는 친구 이미지" alt="나를 팔로우하는 친구 이미지" /></button>
+                default:
+                    return <button className="status_button add_friend" value={friend.userId} onClick={addFriend}> <img src="../친구추가 이미지" alt="친구추가 이미지" /> </button>
+            }
+        } else if (from === "FriendDetail") {
+            switch (status) {
+                case 1 :
+                    return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={discardFriend}> 친구삭제 글자 </button>
+                default:
+                    return <button className="add_discard_button add_detail_friend" value={friend.userId} onClick={addFriend}> 친구추가 글자 </button>
+            }
+        } else {
+            return <button> Error 이미지 </button>
         }
     }
 
     return (
         <>
-            {console.log(select)}
+            {console.log(friend.userId)}
             <div className="friend_add_delete_button">
                 {
                     statusButton()

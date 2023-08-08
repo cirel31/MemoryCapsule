@@ -23,7 +23,7 @@ const FriendInfo = ({select, setSelect, friend, imageUrl}) => {
                     <img src={add_friend} alt="유저 자세히보기 이미지" className="userDetailButtonImg"/>
                 </div>
             default :    // 아무 관계가 아닌 경우
-                return <FriendAddDeleteButton friend={friend} status={status} select={select}/>
+                return <FriendAddDeleteButton friend={friend} status={status} select={select} from="SelectFriend"/>
         }
     }
 
