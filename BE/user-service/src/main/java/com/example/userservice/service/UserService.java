@@ -10,6 +10,8 @@ public interface UserService extends UserDetailsService {
     UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception;
     // User 로그아웃
     void logout(Authentication authentication);
+    //이메일 중복 체크
+    boolean emailCheck(String userEmail);
     // User 회원가입
     UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile file) throws Exception;
 
@@ -25,7 +27,7 @@ public interface UserService extends UserDetailsService {
     void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception;
     
     //임시 비번 만들기
-    String generateRandomPassword();
+    String generateRandomCode();
     
     //비밀번호 변경
     void modifyPassword(String userEmail, String code);

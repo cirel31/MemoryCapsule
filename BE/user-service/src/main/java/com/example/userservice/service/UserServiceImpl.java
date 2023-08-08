@@ -99,6 +99,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean emailCheck(String userEmail) {
+        return userRepository.findByEmail(userEmail).isPresent();
+    }
+
+    @Override
     public UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile multipartFile) throws Exception {
         //TODO: User 회원가입
         // - 이메일 중복체크
@@ -203,7 +208,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String generateRandomPassword() {
+    public String generateRandomCode() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] randomBytes = new byte[TMP_PWD_LENGTH];
         secureRandom.nextBytes(randomBytes);
