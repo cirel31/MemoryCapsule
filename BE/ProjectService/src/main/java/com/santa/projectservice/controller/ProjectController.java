@@ -1,5 +1,7 @@
 package com.santa.projectservice.controller;
 
+import com.santa.projectservice.exception.article.ArticleException;
+import com.santa.projectservice.exception.project.ProjectException;
 import com.santa.projectservice.model.dto.ArticleDto;
 import com.santa.projectservice.model.dto.ProjectDto;
 import com.santa.projectservice.model.dto.ProjectState;
@@ -50,6 +52,17 @@ public class ProjectController {
         this.articleService = articleService;
         this.inviteService = inviteService;
     }
+
+    private <T> void articleValidate(T value, String message) throws ArticleException {
+        Optional.ofNullable(value).orElseThrow(() -> new ArticleException(message + " 가 없습니다. 다시 확인해주세요"));
+    }
+    private <T> void projectValidate(T value, String message) throws ProjectException {
+        Optional.ofNullable(value).orElseThrow(() -> new ProjectException(message + " 가 없습니다. 프로젝트하는데 필요해요"));
+    }
+    private <T> void validate(T value, String message) throws Exception{
+        Optional.ofNullable(value).orElseThrow(() -> new Exception(message + "의 값이 없습니다."));
+    }
+
 
     @GetMapping("/all")
     @Operation(summary = "모든 프로젝트를 가져옵니다", deprecated = true, description = "테스트용 함수이니 사용하지 않는것을 권장합니다")
@@ -135,17 +148,13 @@ public class ProjectController {
         if (title == null || content == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("title 혹은 content가 비어있습니다");
         }
-        ProjectDto projectDto = null;
-        try {
-            projectDto = ProjectDto.builder()
+        ProjectDto projectDto = ProjectDto.builder()
                     .content(content)
                     .title(title)
                     .started(started)
                     .ended(ended)
                     .type(type)
                     .build();
-        } catch (Exception e) {throw new ProjectNotFullfillException("인자가 부족하네요!", e);}
-
         Long owner = userId;
         Long projectId = projectService.createProject(projectDto, userList, owner, image);
         return ResponseEntity.status(HttpStatus.OK).body(projectId);
@@ -157,7 +166,7 @@ public class ProjectController {
             @ApiResponse(responseCode = "200", description = "프로젝트의 UUID를 반환합니다. "),
             @ApiResponse(responseCode = "404", description = "데이터를 찾을 수 없습니다.")
     })
-    public ResponseEntity<String> finish(@PathVariable("projectId") Long projectId, @RequestHeader("userId") Long userId){
+    public ResponseEntity<String> finish(@PathVariable("projectId") Long projectId, @RequestHeader("userId") Long userId) throws ProjectNotFoundException {
         String uuid = projectService.finishProject(userId, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(uuid);
     }
@@ -189,15 +198,23 @@ public class ProjectController {
     @PostMapping("/{projectid}/article")
     @Operation(summary = "게시글을 작성합니다.", description = "특정 프로젝트의 게시글을 작성합니다.")
     public ResponseEntity<Boolean> writeArticle(@PathVariable("projectid") Long projectId,
-                                                @RequestParam("images") List<MultipartFile> files,
-                                                @ModelAttribute ArticleDto articleDto,
-                                                HttpServletRequest request) throws IOException {
+                                                @RequestParam(value = "files", required = false) List<MultipartFile> files,
+                                                @RequestParam(value = "content") String content,
+                                                @RequestParam(value = "title") String title,
+                                                @RequestParam(value = "stamp") Integer stamp,
+                                                HttpServletRequest request) throws IOException, ArticleException {
         Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
-        articleDto.setUserId(userId);
-        articleDto.setProjectId(projectId);
-        log.info(articleDto.toString());
-        Boolean result = articleService.writeArticle(articleDto, files);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        articleValidate(title, "title");
+        articleValidate(content, "content");
+        articleValidate(stamp, "stamp");
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                        articleService.writeArticle(ArticleDto.builder()
+                        .userId(userId)
+                        .projectId(projectId)
+                        .content(content)
+                        .title(title)
+                        .stamp(stamp).build(), files)
+        );
     }
 
 

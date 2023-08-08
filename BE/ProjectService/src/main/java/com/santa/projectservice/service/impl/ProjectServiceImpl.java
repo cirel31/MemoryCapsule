@@ -17,6 +17,7 @@ import com.santa.projectservice.model.vo.ArticleVo;
 import com.santa.projectservice.model.vo.ProjectGiftVo;
 import com.santa.projectservice.model.vo.ProjectInfo;
 import com.santa.projectservice.model.vo.UserVo;
+import com.santa.projectservice.service.util.UtilQuerys;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.PropertyValueException;
 import org.modelmapper.ModelMapper;
@@ -50,14 +51,17 @@ public class ProjectServiceImpl implements ProjectService {
     private QArticle qArticle = QArticle.article;
     private QUser qUser = QUser.user;
     private QArticleImg qArticleImg = QArticleImg.articleImg;
+    private UtilQuerys utilQuerys;
 
     public ProjectServiceImpl(RegisterRepository registerRepository,
                               ProjectRepository projectRepository,
-                              UserRepository userRepository, ArticleRepository articleRepository, FileUploadService fileUploadService, InviteServiceImpl inviteService, EntityManager em) {
+                              UserRepository userRepository, ArticleRepository articleRepository, FileUploadService fileUploadService, InviteServiceImpl inviteService, EntityManager em, JPAQueryFactory queryFactory, UtilQuerys utilQuerys) {
         this.articleRepository = articleRepository;
         this.fileUploadService = fileUploadService;
         this.inviteService = inviteService;
-        this.queryFactory = new JPAQueryFactory(em);
+        this.queryFactory = queryFactory;
+        this.utilQuerys = utilQuerys;
+
         this.mapper = new ModelMapper();
         this.registerRepository = registerRepository;
         this.projectRepository = projectRepository;
@@ -214,12 +218,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDto findProjectByProjectIdAndUserId(Long userId, Long projectId) throws ProjectNotFoundException {
-        return queryFactory
-                .select(qRegister.project)
-                .from(qRegister)
-                .where(qRegister.user.id.eq(userId), qRegister.project.id.eq(projectId))
-                .fetchFirst()
-                .toDto();
+        return utilQuerys.projectByUserIdAndProjectId(userId, projectId);
     }
 
     @Override
@@ -239,22 +238,12 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public List<ProjectDto> findProjectByUserIdAndState(Long userId, ProjectState state){
-        return queryFactory
-                .select(qRegister.project).from(qRegister)
-                .where(qRegister.user.id.eq(userId),
-                        state == ProjectState.DONE ? qRegister.project.state.isTrue() :
-                        state == ProjectState.CURRENT ? qRegister.project.state.isFalse() : null
-                )
-                .fetch().stream().map(Project::toDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProjectDto> findProjectsByUserId(Long userId){
-        return queryFactory
-                .select(qRegister.project)
-                .from(qRegister)
-                .where(qRegister.user.id.eq(userId)).fetch()
-                .stream().map(Project::toDto).collect(Collectors.toList());
+        switch (state){
+            case DONE: return utilQuerys.doneProjects(userId);
+            case CURRENT:return utilQuerys.currentProjects(userId);
+            case ALL: return utilQuerys.allProjects(userId);
+        }
+        return null;
     }
 
     @Override
@@ -284,14 +273,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public String finishProject(Long userId, Long projectId) {
-        Project project = queryFactory.select(qRegister.project).from(qRegister)
+    public String finishProject(Long userId, Long projectId) throws ProjectNotFoundException {
+        Project project = Optional.ofNullable(queryFactory.select(qRegister.project).from(qRegister)
                 .where(
                         qRegister.project.id.eq(projectId),
                         qRegister.user.id.eq(userId),
                         qRegister.type.eq(true)
                 )
-                .fetchFirst();
+                .fetchFirst())
+            .orElseThrow(() -> new ProjectNotFoundException("끝낼 수 있는 프로젝트가 존재하지 않는데요?"));
         project.finish();
         projectRepository.save(project);
         return project.getGiftUrl();

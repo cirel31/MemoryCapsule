@@ -74,13 +74,11 @@ public interface ProjectService {
     @Transactional
     List<ProjectDto> findProjectByUserIdAndState(Long userId, ProjectState projectState);
 
-    List<ProjectDto> findProjectsByUserId(Long userId);
-
     Long projectNum(Long userId);
 
     void createRegister(Long userId, Long projectId);
 
     ProjectGiftVo gift(String uuid);
 
-    String finishProject(Long userId, Long projectId);
+    String finishProject(Long userId, Long projectId) throws ProjectNotFoundException;
 }
