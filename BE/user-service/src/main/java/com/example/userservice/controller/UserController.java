@@ -1,6 +1,5 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +56,24 @@ public class UserController {
         }
     }
 
+    @PostMapping("/emailCheck")
+    public ResponseEntity emailCheck(@RequestParam(value = "user_email") String user_email) {
+        log.info("email-check");
+        if (userService.emailCheck(user_email)) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("이미 존재하는 이메일입니다.");
+        }
+        String code = userService.generateRandomCode();
+        ResponseEntity<String> response = new RestTemplate().postForEntity(
+                "http://notification-service:8081/email/register_verify/" + user_email + "/" + code,
+                null,
+                String.class
+        );
+        if (response.getStatusCode().isError()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일 전송 실패");
+        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("회원가입 인증 코드: " + code);
+    }
+
     @PostMapping("/logout")
     public ResponseEntity userLogout(Authentication authentication) {
         userService.logout(authentication);
@@ -86,17 +103,17 @@ public class UserController {
     public ResponseEntity findPwd(@RequestBody UserDto.RequestFindPass userInfo) {
 
         if (userService.checkEmailDuplicated(userInfo)) {
-            String code = userService.generateRandomPassword();
+            String tmp_pwd = userService.generateRandomCode();
             ResponseEntity<String> response = new RestTemplate().postForEntity(
-                    "http://notification-service:8081/email/register_verify/" + userInfo.getEmail() + "/" + code,
+                    "http://notification-service:8081/email/tmp_pwd/" + userInfo.getEmail() + "/" + tmp_pwd,
                     null,
                     String.class
             );
             if (response.getStatusCode().isError()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일 전송 실패");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일 전송 실패");
             }
-            userService.modifyPassword(userInfo.getEmail(), code);
-            return ResponseEntity.status(HttpStatus.CREATED).body("임시 비밀번호: " + code);
+            userService.modifyPassword(userInfo.getEmail(), tmp_pwd);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("임시 비밀번호: " + tmp_pwd);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
     }
