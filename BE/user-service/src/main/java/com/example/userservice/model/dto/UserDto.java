@@ -91,16 +91,4 @@ public class UserDto {
         private List<Date> accessList;
     }
 
-    @Getter
-    @Setter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class showFriend{
-        private Long userId;
-        private String email;
-        private String nickname;
-        private String imgUrl;
-    }
-
 }

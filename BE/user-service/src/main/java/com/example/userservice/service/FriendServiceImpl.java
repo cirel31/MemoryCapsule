@@ -39,37 +39,43 @@ public class FriendServiceImpl implements FriendService {
         //TODO: 친구 삭제 서비스
         connectedRepository.disconnectFriend(hostId, guestId);
         connectedRepository.disconnectFriend(guestId, hostId);
-//        ConnectId connectId = new ConnectId();
-//        connectId.setRequesterId(hostId);
-//        connectId.setRequesteeId(guestId);
-//
-//        boolean present = connectedRepository.findById(connectId).isPresent();
-//        log.info("첫번째 {}", present);
-//        if(present){
-//            log.info("분기는 탄다");
-//            connectedRepository.deleteById(connectId);
-//            log.info("딜리트 됐나?");
-//        }
-//        connectId.setRequesterId(guestId);
-//        connectId.setRequesteeId(hostId);
-//        boolean present1 = connectedRepository.findById(connectId).isPresent();
-//        log.info("두번쨰 {}", present1);
-//        if(present1){
-//            connectedRepository.deleteById(connectId);
-//        }
-////        connectedRepository.deleteConnection(connectId);
         return true;
     }
 
     @Override
-    public UserDto.showFriend findUserEmail(String email) throws Exception {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new Exception("User not found"));
-        return UserDto.showFriend.builder()
+    public FriendDto.showFriend findUserEmail(Long hostId, String guestEmail) throws Exception {
+        //TODO: Email로 user 검색 서비스
+        User user = userRepository.findByEmail(guestEmail).orElseThrow(() -> new Exception("User not found"));
+        Optional<Connected> connected = getConnected(hostId, user.getIdx());
+        /**
+         * 없으면 상대가 친구 신청했을수도 아니면 아예 관계 없음
+         * 있으면 내가 친구 신청했을수도 아니면 이미 친구관계
+         */
+        int status = 0;
+        if (connected.isPresent()) {
+            if (connected.get().getConfirm()) { // 이미 친구관계
+                status = 1;
+            } else {
+                status = 2; //친구 신청함
+            }
+        } else {
+            connected = getConnected(user.getIdx(), hostId);
+            if (connected.isPresent()) {
+                status = 3; //상대가 친구 신청함
+            }
+        }
+
+        return FriendDto.showFriend.builder()
                 .userId(user.getIdx())
                 .email(user.getEmail())
                 .imgUrl(user.getImgUrl())
                 .nickname(user.getNickName())
+                .status(status)
                 .build();
+    }
+
+    private Optional<Connected> getConnected(Long hostId, Long guestId) {
+        return connectedRepository.findByConnectIdRequesterIdAndConnectIdRequesteeId(hostId, guestId);
     }
 
     @Override
@@ -95,6 +101,7 @@ public class FriendServiceImpl implements FriendService {
                         .requesterId(guestId)
                         .requesteeId(hostId)
                         .build())
+                        .confirm(true)
                 .build());
         return true;
     }
@@ -110,9 +117,7 @@ public class FriendServiceImpl implements FriendService {
         return friendList.stream()
                 .map(e -> {
                     List<Project> projectList = e.getProjectList();
-                    long inProjectCount = projectList.stream().filter(k -> {
-                        return ProjectState.IN_PROGRESS.equals(k.getState());
-                    }).count();
+                    long inProjectCount = projectList.stream().filter(k -> ProjectState.IN_PROGRESS.equals(k.getState())).count();
 
                     Integer userTotalWrite = userRepository.wroteArticleTotal(e.getIdx());
 
