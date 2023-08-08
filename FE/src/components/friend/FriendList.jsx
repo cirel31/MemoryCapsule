@@ -1,16 +1,16 @@
 import { NoFriendList, AuthFormGrid, CustomButton } from "../../styles/friendStyle";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import FriendForm from "../../components/friend/FriendForm";
-import FriendInfo from "../../components/friend/FriendInfo";
-import FriendDetail from "../../components/friend/FriendDetail";
+import FriendForm from "./FriendForm";
+import FriendInfo from "./FriendInfo";
+import FriendDetail from "./FriendDetail";
 import {Link} from "react-router-dom";
 import "../../styles/friendStyle.scss";
 import brand_gradation from "../../assets/images/frield/brand_gradation.svg"
 import searchIcon from "../../assets/images/frield/searchIcon.svg"
 import {login} from "../../store/userSlice";
 
-const FriendListPage = ({rowFriends, setRowFriends, select, setSelect, setSelectPage}) => {
+const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage}) => {
     const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
     const API = '/friend';
 
@@ -30,6 +30,7 @@ const FriendListPage = ({rowFriends, setRowFriends, select, setSelect, setSelect
     // 처음 한 번 실행 시, 내 친구 전부 불러오기
     useEffect(() => {
         console.log("[useEffect]");
+        setSelect("");
         getFriends("id", "");
         console.log("login : ", login);
     }, []);
@@ -162,4 +163,4 @@ const FriendListPage = ({rowFriends, setRowFriends, select, setSelect, setSelect
     )
 }
 
-export default FriendListPage;
+export default FriendList;

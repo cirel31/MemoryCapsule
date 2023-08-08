@@ -4,9 +4,9 @@ import "../../styles/friendStyle.scss";
 import go_back from "../../assets/images/frield/go_back.svg"
 
 import {login, setUser} from '../../store/userSlice';
-import FriendListPage from "./FriendListPage";
+import FriendList from "../../components/friend/FriendList";
 import {Link} from "react-router-dom";
-import FriendSearchPage from "./FriendSearchPage";
+import FriendSearch from "../../components/friend/FriendSearch";
 
 const FriendPage = () => {
     const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
@@ -82,21 +82,23 @@ const FriendPage = () => {
                     </div>
                 </div>
                 {
-                    selectPage
-                    ? <FriendSearchPage
-                            friends={friends}
-                            setFriends={setFriends}
-                            select={select}
-                            setSelect={setSelect}
-                            setSelectPage={setSelectPage}
-                        />
-                    : <FriendListPage
-                            rowFriends={friends}
-                            setRowFriends={setFriends}
-                            select={select}
-                            setSelect={setSelect}
-                            setSelectPage={setSelectPage}
-                        />
+                    !selectPage
+                    ?
+                    <FriendList
+                        rowFriends={friends}
+                        setRowFriends={setFriends}
+                        select={select}
+                        setSelect={setSelect}
+                        setSelectPage={setSelectPage}
+                    />
+                    :
+                    <FriendSearch
+                        friends={friends}
+                        setFriends={setFriends}
+                        select={select}
+                        setSelect={setSelect}
+                        setSelectPage={setSelectPage}
+                    />
                 }
             </div>
         </div>

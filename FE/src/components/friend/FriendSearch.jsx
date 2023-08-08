@@ -1,12 +1,12 @@
 import { NoFriendList, AuthFormGrid, CustomButton } from "../../styles/friendStyle";
 
 import React, {useEffect, useState} from "react";
-import FriendForm from "../../components/friend/FriendForm";
-import FriendInfo from "../../components/friend/FriendInfo";
+import FriendForm from "./FriendForm";
+import FriendInfo from "./FriendInfo";
 import axios from "axios";
 import searchIcon from "../../assets/images/frield/searchIcon.svg";
 
-const FriendSearchPage = ({friends, setFriends, select, setSelect, setSelectPage}) => {
+const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) => {
     const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
     const API = '/friend';
 
@@ -127,4 +127,4 @@ const FriendSearchPage = ({friends, setFriends, select, setSelect, setSelectPage
     )
 }
 
-export default FriendSearchPage;
+export default FriendSearch;

@@ -9,7 +9,6 @@ import MyPage from "./user/MyPage";
 import UserProfilePage from "./user/UserProfilePage";
 import CalendarForm from "../components/user/CalendarForm";
 import FriendPage from "./friend/FriendPage";
-import FriendSearchPage from "./friend/FriendSearchPage";
 import NoticeListPage from "./notice/NoticeListPage";
 import PostCreatePage from "./PostCreatePage";
 import ArticleCreatePage from "./project/ArticleCreatePage";
@@ -31,7 +30,6 @@ export default function Routers() {
       <Route path='/project/:projectId' element={<ProjectDetailPage />} />
       <Route path='/project/article/write/:projectId' element={<ArticleCreatePage />} />
       <Route path='/friend' element={<FriendPage />} />
-      <Route path='/friend/search' element={<FriendSearchPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
       <Route path='/notice/postcreate' element={<PostCreatePage />} />
 
