@@ -3,6 +3,8 @@ import defaultImg from "../../assets/images/stamp/stamp_best.svg"
 import {useEffect, useState} from "react";
 import {fetchUserInfoThunk} from "../../store/userSlice";
 import {useDispatch, useSelector} from "react-redux";
+import "../../styles/LoginProfile.scss"
+import profile_bg from "../../assets/images/login_profile/profile_bg.svg"
 
 const UserProfilePage = () => {
   const dispatch = useDispatch()
@@ -26,18 +28,21 @@ const UserProfilePage = () => {
 
   return (
     <>
-      <div>
-        {/* 프로필 이미지 + 닉네임 + 유저 ID(email) */}
-        <div>
-          <img src={user_img ? user_img:defaultImg} alt="프로필 이미지를 불러올 수 없습니다." style={{width:"200px"}}/>
-          <p>{user_nickname}</p>
-          <p>{user_email}</p>
-          <p>{user_point}</p>
+
+      <div className="login_profile_body">
+        <img src={profile_bg} className="login_profile_page"/>
+        <div className="login_profile_box">
+          <div className="login_profile_form">
+            <img src={user_img ? user_img:defaultImg} alt="프로필 이미지를 불러올 수 없습니다."/>
+            <h1>{user_nickname}</h1>
+            <p>{user_email}</p>
+          </div>
+          {/* 마이페이지 이동 버튼 */}
+          <a href='/mypage'>
+            <button>시작하기</button>
+          </a>
         </div>
-        {/* 마이페이지 이동 버튼 */}
-        <a href='/mypage'>
-          <button>시작하기</button>
-        </a>
+
       </div>
     </>
   )

@@ -9,7 +9,7 @@ import btn_deco from "../../../assets/images/resource/nav_button_deco.svg"
 import profile_img from "../../../assets/images/stamp/stamp_best.svg"
 import navbar_activate from "../../../assets/images/resource/nav_bar_activate_inactivate_btn.svg"
 import {useDispatch, useSelector} from "react-redux";
-import {fetchUserInfoThunk} from "../../../store/userSlice";
+import {fetchUserInfoThunk, logout} from "../../../store/userSlice";
 
 
 const SidebarNav = styled.nav`
@@ -55,7 +55,11 @@ export default function Navbar() {
   const [accessToken, setAccessToken] = useState(sessionStorage.getItem("accessToken"))
   const [sidebar, setSidebar] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-
+  const LogoutUser = () => {
+    console.log('로그아웃 버튼 작동 테스트', sessionStorage)
+    dispatch(logout());
+    window.location.href ='/login'
+  }
   const showSidebar = () => setSidebar(!sidebar)
   const navigate = useNavigate()
   const handlePageBack = () => {
@@ -124,6 +128,8 @@ export default function Navbar() {
                   {/*이 아래껀 포인트 떠야함*/}
                   <p className="point_box_txt2">{user_point}</p>
                 </div>
+
+                <button onClick={LogoutUser} className="logout_btn_nav">Logout</button>
                 {/*<div>*/}
                 {/*  <Link to='/login'>*/}
                 {/*    <button>*/}

@@ -21,6 +21,8 @@ const UserInfoHeaderForm = () => {
 
         <div className="header_sets">
           <div className="header_image">
+
+            {/*유저프로필이미지로 바꿔야 함*/}
             <img src={sample_img} alt="프로필 이미지" className="header_profile_img"/>
 
           </div>
