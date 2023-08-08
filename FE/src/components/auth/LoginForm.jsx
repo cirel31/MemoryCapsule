@@ -18,7 +18,7 @@ const LoginForm = ({ form, setForm }) => {
 
   // 로그인 후 연동될 주소
   // const REDIRECT_URI_SITE = 'http://i9a608.p.ssafy.io:8000/oauth2/authorization/kakao'
-  const REDIRECT_URI_SITE = 'http://i9a608.p.ssafy.io:8000/login/oauth2/code/kakao'
+  const REDIRECT_URI_SITE = 'https://i9a608.p.ssafy.io:8000/login/oauth2/code/kakao'
   const SCOPES = 'profile_nickname profile_image account_email'
   // const STATE = '3ND87_7tW1y14gD3njjdzVhl3qkW_iqzETVdWBiSX74%3D'
   const OAUTH_KAKAO = `https://kauth.kakao.com/oauth/authorize?client_id=${API_KEY_KAKAO}&redirect_uri=${REDIRECT_URI_SITE}&response_type=code&scope=${SCOPES}`;
