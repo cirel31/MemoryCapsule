@@ -26,20 +26,30 @@ public class OAuth2FailHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        log.info("여기는 Oauth2FailerHandler 이다. {} , - {}", exception.getMessage(), exception.getCause());
         OutputStream outputStream = response.getOutputStream();
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(outputStream));
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
+        ErrorResponse errResponse = getErrResponse(response, exception);
+        printWriter.print(new ObjectMapper().writeValueAsString(errResponse));
+        printWriter.flush();
+    }
+
+    private ErrorResponse getErrResponse(HttpServletResponse response, AuthenticationException exception){
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.name(), "알수없는 에러");
+        String msg = ((OAuth2AuthenticationException) exception).getError().getErrorCode();
+        log.info("여기는 Oauth2FailerHandler 이다. - {}", msg);
         if(exception instanceof OAuth2AuthenticationException){
-            String msg = ((OAuth2AuthenticationException) exception).getError().getErrorCode();
-            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.name(), msg);
+            errorResponse = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.name(), msg);
             response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
-            printWriter.print(new ObjectMapper().writeValueAsString(errorResponse));
-            printWriter.flush();
         }
         else if(response instanceof  ServletException){
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
+            errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.name(), "Servlet Exception 발생");
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
+
+        return errorResponse;
     }
+
+
 }
