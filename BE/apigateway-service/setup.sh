@@ -13,7 +13,7 @@ container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
 # .env file import
-run_option="-dp 8000:8000 --net santa --restart=unless-stopped -e PROFILE=$1 --env-file=/var/jenkins_home/workspace/setup.env"
+run_option="-dp 8000:8000 --net santa --restart=unless-stopped -e PROFILE=$1 -v /etc/letsencrypt:/etc/letsencrypt"
 
 stop_container_command="sudo docker stop $container_name"
 remove_container_command="sudo docker rm $container_name"
