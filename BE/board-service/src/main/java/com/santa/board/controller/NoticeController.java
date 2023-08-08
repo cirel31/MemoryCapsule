@@ -45,19 +45,16 @@ public class NoticeController {
 
     @ApiOperation(value = "공지사항 등록하기", notes = "공지사항 글을 등록한다. 성공 유무 반환", response = String.class)
     @PostMapping("")
-    public ResponseEntity<ResponseStatus> writeNotice
+    public ResponseEntity<String> writeNotice
             (@RequestPart(value = "insertDto") InsertDto insertDto, HttpServletRequest request,
              @RequestPart(value = "file", required = false) MultipartFile file) {
         Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
         try {
-            if (noticeService.insertNotice(insertDto, user_idx, file)) {
-                return new ResponseEntity<>(ResponseStatus.SUCCESS, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("new noticeIdx : " + noticeService.insertNotice(insertDto, user_idx, file), HttpStatus.OK);
         } catch(Exception e) {
             log.error(e.getMessage());
         }
-        return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "공지사항 삭제하기", notes = "공지사항 id를 통해 공지사항의 글을 삭제한다. 성공 유무 반환", response = String.class)

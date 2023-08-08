@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -62,14 +64,11 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Transactional
     @Override
-    public boolean insertNotice(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
+    public Long insertNotice(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
         log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, insertDto, userIdx));
-        return noticeRepository.insertNewNotice
-                (userIdx,
-                        insertDto.getTitle(),
-                        insertDto.getContent(),
-                        fileService.getFileName(file)
-                ) > 0;
+
+        Notice notice = new Notice(userIdx, insertDto.getTitle(), insertDto.getContent(), fileService.getFileName(file));
+        return noticeRepository.save(notice).getNoticeIdx();
     }
 
     /**

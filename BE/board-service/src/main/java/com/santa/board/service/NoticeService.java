@@ -11,6 +11,6 @@ public interface NoticeService {
     Page<NoticeResponseDto> getNoticeList(Pageable pageable);
     NoticeResponseDto getNoticeDtoById(Long noticeIdx) throws Exception;
     void deleteNoticeById(Long noticeIdx) throws Exception;
-    boolean insertNotice(InsertDto insertDto, Long UserIdx, MultipartFile file) throws Exception;
+    Long insertNotice(InsertDto insertDto, Long UserIdx, MultipartFile file) throws Exception;
     void modifyNoticeById(ModifyDto modifyDto, MultipartFile file) throws Exception;
 }

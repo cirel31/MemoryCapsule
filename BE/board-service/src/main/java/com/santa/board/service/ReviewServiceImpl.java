@@ -70,14 +70,10 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Transactional
     @Override
-    public boolean insertReview(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
+    public Long insertReview(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
         log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, insertDto, userIdx));
-        return reviewRepository.insertReview
-                (insertDto.getTitle(),
-                        insertDto.getContent(),
-                        fileService.getFileName(file),
-                        userIdx
-                ) > 0;
+        Review review = new Review(userIdx, insertDto.getTitle(), insertDto.getContent(), fileService.getFileName(file));
+        return reviewRepository.save(review).getReviewIdx();
     }
 
     /**

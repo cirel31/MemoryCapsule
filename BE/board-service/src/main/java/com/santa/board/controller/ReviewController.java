@@ -50,10 +50,7 @@ public class ReviewController {
              @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
-            if (reviewService.insertReview(insertDto, user_idx, file)) {
-                return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);
-            }
-            return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("new reviewIdx + " + reviewService.insertReview(insertDto, user_idx, file), HttpStatus.OK);
         } catch(Exception e) {
             log.error(e.getMessage());
         }
