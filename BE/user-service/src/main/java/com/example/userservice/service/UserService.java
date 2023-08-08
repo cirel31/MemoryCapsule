@@ -1,15 +1,13 @@
 package com.example.userservice.service;
 
 import com.example.userservice.model.dto.UserDto;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
     // User 로그인
     UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception;
     // User 로그아웃
-    void logout(Authentication authentication);
+    void logout(final Long userId);
     //이메일 중복 체크
     boolean emailCheck(String userEmail);
     // User 회원가입

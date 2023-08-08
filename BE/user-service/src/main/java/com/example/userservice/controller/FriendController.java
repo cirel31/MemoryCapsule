@@ -1,8 +1,6 @@
 package com.example.userservice.controller;
 
 import com.example.userservice.model.dto.FriendDto;
-import com.example.userservice.model.dto.UserDto;
-import com.example.userservice.model.entity.User;
 import com.example.userservice.service.FriendService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/friend")
 @RestController
