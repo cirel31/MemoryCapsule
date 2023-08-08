@@ -42,6 +42,12 @@ public class OAuth2FailHandler implements AuthenticationFailureHandler {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.name(), "알수없는 에러");
         String msg = ((OAuth2AuthenticationException) exception).getError().getErrorCode();
         log.info("여기는 Oauth2FailerHandler 이다. - {}", msg);
+        log.info("getCause() : {}", exception.getCause());
+        log.info("getMessage() : {}", exception.getMessage());
+        log.info("getError-getDescription() : {}", ((OAuth2AuthenticationException) exception).getError().getDescription());
+        log.info("getError-getUri() : {}", ((OAuth2AuthenticationException) exception).getError().getUri());
+        log.info("getLocalizedMessage() : {}", exception.getLocalizedMessage());
+        log.info("getStackTrace() : {}", exception.getStackTrace());
         if(exception instanceof OAuth2AuthenticationException){
             errorResponse = new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.name(), msg);
             response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
