@@ -24,9 +24,7 @@ public class InviteController {
     @PostMapping("/accept")
     public ResponseEntity<String> Accept(@RequestHeader Long userId,@RequestParam String inviteId){
         Invite invite = inviteService.getInviteById(inviteId);
-        log.info(invite.toString());
-        log.info(userId.toString());
-        log.info(invite.getProjectId().toString());
+        log.info("invite info : userId : {}, invite :  {}, project :  {}", userId, invite.toString(), invite.getProjectId());
         projectService.createRegister(userId, invite.getProjectId());
         inviteService.deleteInviteById(inviteId);
         return ResponseEntity.status(HttpStatus.OK).body("수락 성공");
