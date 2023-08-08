@@ -19,4 +19,17 @@ public class FriendDto {
         private Long totalProjectCnt;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class showFriend{
+        private Long userId;
+        private String email;
+        private String nickname;
+        private String imgUrl;
+        private int status;
+    }
+
 }

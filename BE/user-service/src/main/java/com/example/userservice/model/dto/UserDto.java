@@ -56,6 +56,16 @@ public class UserDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class RequestFindPass{
+        private String email;
+        private String phone;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ResponseLogin{
         private Long userIdx;
         private String accessToken;
@@ -89,18 +99,6 @@ public class UserDto {
         private boolean admin;
         private int point;
         private List<Date> accessList;
-    }
-
-    @Getter
-    @Setter
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class showFriend{
-        private Long userId;
-        private String email;
-        private String nickname;
-        private String imgUrl;
     }
 
 }

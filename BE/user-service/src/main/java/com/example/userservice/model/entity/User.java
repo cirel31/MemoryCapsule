@@ -100,4 +100,8 @@ public class User {
         this.point += point;
         return true;
     }
+
+    public void modifyPassword(String code) {
+        this.passWord = code;
+    }
 }

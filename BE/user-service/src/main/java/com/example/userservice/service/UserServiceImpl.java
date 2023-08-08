@@ -132,11 +132,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkEmailDuplicated(String email) throws Exception {
-        return userRepository.findByEmail(email).isPresent();
-    }
-
-    @Override
     public UserDto.Detail getUserDetail(Long userId, int year, int month) throws Exception {
         //TODO: AccessList 추가
         UserDto.Detail result = getUserDetail(userId);
@@ -163,7 +158,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto.Detail getUserDetail(Long userId) throws Exception {
-        User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+        User user = getUserById(userId);
         return UserDto.Detail.builder()
                 .userId(user.getIdx())
                 .email(user.getEmail())
@@ -175,7 +170,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("user Not found"));
+        User user = getUserByEmail(userEmail);
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getName())
                 .accountExpired(user.isDeleted())
@@ -186,17 +181,51 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUser(Long userId) {
-        User user = userRepository.findById(userId).get();
+    public void deleteUser(Long userId) throws Exception {
+        User user = getUserById(userId);
         user.deleteUser();
     }
 
     @Transactional
     @Override
     public void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception {
-        User user = userRepository.findById(info.getUserId()).get();
+        User user = getUserById(info.getUserId());
+        user.modifyUser(info.getNickName(), passwordEncoder.encode(info.getPassword()), getImgUrl(multipartFile));
+    }
 
-        user.modifyUser(info.getNickName(), info.getPassword(), getImgUrl(multipartFile));
+    @Override
+    public boolean checkEmailDuplicated(UserDto.RequestFindPass userInfo) {
+        User user = userRepository.findByEmail(userInfo.getEmail()).orElse(null);
+        if (user != null && user.getPhone().equals(userInfo.getPhone())) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String generateRandomPassword() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] randomBytes = new byte[TMP_PWD_LENGTH];
+        secureRandom.nextBytes(randomBytes);
+
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    }
+
+    @Override
+    public void modifyPassword(String userEmail, String code) {
+        User user = getUserByEmail(userEmail);
+        user.modifyPassword(passwordEncoder.encode(code));
+    }
+
+    @Override
+    public Boolean updatePoint(Long userId, Long point) throws Exception {
+        User user = getUserById(userId);
+        return user.updatePoint(point);
+    }
+
+    @Override
+    public Long getPoint(Long userId) throws Exception {
+        return getUserById(userId).getPoint();
     }
 
     private String getImgUrl(MultipartFile multipartFile) throws IOException {
@@ -210,23 +239,11 @@ public class UserServiceImpl implements UserService {
         return imgUrl;
     }
 
-    @Override
-    public String generateRandomPassword() {
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] randomBytes = new byte[TMP_PWD_LENGTH];
-        secureRandom.nextBytes(randomBytes);
-
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    private User getUserById(Long userId) throws Exception {
+        return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
     }
 
-    @Override
-    public Boolean updatePoint(Long userId, Long point) throws Exception {
-        User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
-        return user.updatePoint(point);
-    }
-
-    @Override
-    public Long getPoint(Long userId) throws Exception {
-        return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found")).getPoint();
+    private User getUserByEmail(String userEmail) throws UsernameNotFoundException {
+        return userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("user Not found"));
     }
 }

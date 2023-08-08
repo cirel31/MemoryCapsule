@@ -73,22 +73,29 @@ public class UserController {
 
     @DeleteMapping("/delete")
     public ResponseEntity userDelete(@RequestParam(value = "user_id") Long user_id) {
-        userService.deleteUser(user_id);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try {
+            userService.deleteUser(user_id);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            log.error("Error - userDelete : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
     }
 
     @GetMapping("/find_password")
-    public ResponseEntity findPwd(@PathVariable("userEmail") String userEmail) throws Exception {
-        if (userService.checkEmailDuplicated(userEmail)) {
+    public ResponseEntity findPwd(@RequestBody UserDto.RequestFindPass userInfo) {
+
+        if (userService.checkEmailDuplicated(userInfo)) {
             String code = userService.generateRandomPassword();
             ResponseEntity<String> response = new RestTemplate().postForEntity(
-                    "http://notification-service:8081/email/register_verify/" + userEmail + "/" + code,
+                    "http://notification-service:8081/email/register_verify/" + userInfo.getEmail() + "/" + code,
                     null,
                     String.class
             );
             if (response.getStatusCode().isError()) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일 전송 실패");
             }
+            userService.modifyPassword(userInfo.getEmail(), code);
             return ResponseEntity.status(HttpStatus.CREATED).body("임시 비밀번호: " + code);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
@@ -124,7 +131,7 @@ public class UserController {
     @PutMapping("/point/{userId}")
     public ResponseEntity updateUserPoint(
             @PathVariable("userId") Long userId,
-            @RequestParam(value = "point", required = false, defaultValue = "0") Long point) {
+            @RequestParam(value = "point") Long point) {
         try {
             if (userService.updatePoint(userId, point)) {
                 return ResponseEntity.status(HttpStatus.OK).build();

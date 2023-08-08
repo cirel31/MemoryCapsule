@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.model.Enum.UserRole;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.util.OAuth2Attribute;
@@ -14,9 +15,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -43,14 +43,29 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
         log.info("UserParsing info - {}, {}, {}", String.valueOf(memberAttribute.get("name")), String.valueOf(memberAttribute.get("email")));
-        log.info("CustomOAuth2UserService - findByEmail({})", String.valueOf(memberAttribute.get("email")));
-        userRepository.findByEmail(String.valueOf(memberAttribute.get("email"))).ifPresent(e -> {
-            throw new OAuth2AuthenticationException("이미 등록된 유저입니다.");
-        });
-        log.info("여긴넘긴다?");
+        Optional<User> byEmail = userRepository.findByEmail(String.valueOf(memberAttribute.get("email")));
+
+        String nickname = "kakao-" + UUID.randomUUID().toString();
+
+        if(!byEmail.isPresent()){
+            User save = userRepository.save(User.builder()
+                            .name(String.valueOf(memberAttribute.get("name")))
+                            .nickName(nickname)
+                    .email((String) memberAttribute.get("email"))
+                            .point(0L)
+                    .passWord("")
+                    .imgUrl((String) memberAttribute.get("picture"))
+                    .oAuthUser(true)
+                            .createdAt(ZonedDateTime.now())
+                            .updatedAt(ZonedDateTime.now())
+                            .role(UserRole.USER)
+                    .build());
+            memberAttribute.put("userIdx", save.getIdx());
+        } else if(!byEmail.get().isOAuthUser()) throw new OAuth2AuthenticationException("자체 회원가입으로 등록된 유저입니다.");
+        else memberAttribute.put("userIdx", byEmail.get().getIdx());
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")),
                 memberAttribute, "email"
         );
     }
