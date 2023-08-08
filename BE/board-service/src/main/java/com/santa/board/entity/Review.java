@@ -12,6 +12,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +47,19 @@ public class Review {
     @Column(name = "review_updated", nullable = false)
     private Date reviewUpdated;
 
-    @Transient
-    private boolean isLike;
+    public void incrementReviewHit() {
+        this.reviewHit += 1;
+    }
+
+    public void deletedReview() {
+        this.reviewDeleted = true;
+    }
+
+    public void modifyReview(String reviewTitle, String reviewContent, String reviewImgUrl) {
+        this.reviewTitle = reviewTitle;
+        this.reviewContent = reviewContent;
+        this.reviewImgUrl = reviewImgUrl;
+        this.reviewUpdated = new Date();
+    }
 }
 

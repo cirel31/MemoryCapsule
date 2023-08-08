@@ -9,8 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Builder
-@ToString(exclude = {"accessList", "reqFriendList", "friendList"})
+@ToString(exclude = {"accessList", "reqFriendList", "friendList", "projectList"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,9 +53,7 @@ public class User {
     @Column(name = "user_isoauth")
     private boolean oAuthUser;
 
-    // User (1) : Access (N)
-    // 주인 Access
-    // ~주인 know Access
+    // 로그인 기록
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Access> accessList = new ArrayList<>();
@@ -77,4 +73,35 @@ public class User {
     @WhereJoinTable (clause = "connected_confirm = '1'")
     @JsonIgnore
     private List<User> friendList = new ArrayList<>();
+
+    // 프로젝트 목록
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "register",
+            joinColumns = {@JoinColumn(name = "rgstr_usr_idx", referencedColumnName = "user_idx", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "rgstr_pjt_idx", referencedColumnName = "pjt_idx", nullable = false)}
+    )
+    @JsonIgnore
+    private List<Project> projectList = new ArrayList<>();
+
+
+
+    public void deleteUser() {
+        this.deleted = true;
+    }
+
+    public void modifyUser(String nickName, String passWord, String file) {
+        this.nickName = nickName;
+        this.passWord = passWord;
+        this.imgUrl = file;
+    }
+
+    public boolean updatePoint(Long point) {
+        if (this.point + point < 0) return false;
+        this.point += point;
+        return true;
+    }
+
+    public void modifyPassword(String code) {
+        this.passWord = code;
+    }
 }

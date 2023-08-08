@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>알람 메일</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f7f7f7;
+    }
+
+    h1 {
+      color: #007bff;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h1>안녕하세요!</h1>
+  <p>저희 서비스를 이용해 주셔서 감사합니다.</p>
+  <p><div th:text="${user_nickName}"/>님이 가입하신 <div th:text="${pjt_title}"/>에 글을 작성하지 않으셔서 알림 메일을 보냅니다</p>
+  <p>더 궁금한 사항이 있으시면 언제든지 문의해주세요.</p>
+  <p>감사합니다!</p>
+</div>
+</body>
+
+</html>

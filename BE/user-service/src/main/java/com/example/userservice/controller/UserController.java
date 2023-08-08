@@ -2,19 +2,15 @@ package com.example.userservice.controller;
 
 import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
-import com.example.userservice.model.entity.User;
-import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.UserService;
-import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -32,6 +28,10 @@ public class UserController {
             UserDto.Basic signup = userService.signup(signUpDto, file);
             return ResponseEntity.status(HttpStatus.CREATED).body(signup);
         } catch (Exception e) {
+            if(e instanceof IllegalStateException){
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            }
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -64,18 +64,41 @@ public class UserController {
     }
 
     @PutMapping("/change")
-    public ResponseEntity userChangeInfo() {
-        return null;
+    public ResponseEntity userChangeInfo(
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @ModelAttribute UserDto.modify modifyDto) throws Exception {
+        userService.modifyUser(modifyDto, file);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity userDelete() {
-        return null;
+    public ResponseEntity userDelete(@RequestParam(value = "user_id") Long user_id) {
+        try {
+            userService.deleteUser(user_id);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            log.error("Error - userDelete : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
     }
 
     @GetMapping("/find_password")
-    public ResponseEntity findPwd() {
-        return null;
+    public ResponseEntity findPwd(@RequestBody UserDto.RequestFindPass userInfo) {
+
+        if (userService.checkEmailDuplicated(userInfo)) {
+            String code = userService.generateRandomPassword();
+            ResponseEntity<String> response = new RestTemplate().postForEntity(
+                    "http://notification-service:8081/email/register_verify/" + userInfo.getEmail() + "/" + code,
+                    null,
+                    String.class
+            );
+            if (response.getStatusCode().isError()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일 전송 실패");
+            }
+            userService.modifyPassword(userInfo.getEmail(), code);
+            return ResponseEntity.status(HttpStatus.CREATED).body("임시 비밀번호: " + code);
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
     }
 
     @GetMapping("/{userId}/detail")
@@ -90,6 +113,32 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(userDetail);
         } catch(Exception e){
             log.error("Error - userDetail : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping("/point/{userId}")
+    public ResponseEntity getUserPoint(@PathVariable("userId") Long userId) {
+        try {
+            Long point = userService.getPoint(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(point);
+        } catch (Exception e) {
+            log.error("Error - getUserPoint : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PutMapping("/point/{userId}")
+    public ResponseEntity updateUserPoint(
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "point") Long point) {
+        try {
+            if (userService.updatePoint(userId, point)) {
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포인트가 부족하여 사용이 불가능합니다.");
+        } catch (Exception e) {
+            log.error("Error - updateUserPoint : {}", e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }

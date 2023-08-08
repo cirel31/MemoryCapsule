@@ -27,67 +27,63 @@ public class NoticeController {
 
     @ApiOperation(value = "공지사항 목록", notes = "공지사항 리스트들을 반환한다.", response = NoticeResponseDto.class)
     @GetMapping("/list")
-    public ResponseEntity<NoticeResponseDto> getNoticeList(Pageable pageable) {
-        try {
-            return new ResponseEntity(noticeService.getNoticeList(pageable).getContent(), HttpStatus.OK);
-        } catch(Exception e) {
-            return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
-        }
+    public ResponseEntity getNoticeList(Pageable pageable) {
+        return new ResponseEntity(noticeService.getNoticeList(pageable).getContent(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "공지사항 상세보기", notes = "공지사항 id를 통해 공지사항 정보를 가져온다. ", response = NoticeResponseDto.class)
     @GetMapping("/{notice_idx}")
-    public ResponseEntity<NoticeResponseDto> getNoticeById
+    public ResponseEntity getNoticeById
             (@PathVariable("notice_idx") @ApiParam(value = "공지사항 번호", required = true) Long noticeIdx) {
         try {
-            return new ResponseEntity<>(noticeService.getNoticeById(noticeIdx), HttpStatus.OK);
+            return new ResponseEntity<>(noticeService.getNoticeDtoById(noticeIdx), HttpStatus.OK);
         } catch(Exception e) {
-            return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+            log.error(e.getMessage());
         }
+        return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "공지사항 등록하기", notes = "공지사항 글을 등록한다. 성공 유무 반환", response = String.class)
     @PostMapping("")
-    public ResponseEntity<String> writeNotice
+    public ResponseEntity<ResponseStatus> writeNotice
             (@RequestPart(value = "insertDto") InsertDto insertDto, HttpServletRequest request,
              @RequestPart(value = "file", required = false) MultipartFile file) {
         Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
         try {
             if (noticeService.insertNotice(insertDto, user_idx, file)) {
-                return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);
+                return new ResponseEntity<>(ResponseStatus.SUCCESS, HttpStatus.OK);
             }
-            return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
         } catch(Exception e) {
-            return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+            log.error(e.getMessage());
         }
+        return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "공지사항 삭제하기", notes = "공지사항 id를 통해 공지사항의 글을 삭제한다. 성공 유무 반환", response = String.class)
     @DeleteMapping("/{notice_idx}")
-    public ResponseEntity<String> deleteNotice
+    public ResponseEntity<ResponseStatus> deleteNotice
             (@PathVariable("notice_idx") @ApiParam(value = "공지사항 번호", required = true) Long noticeIdx) {
         try {
-            if (noticeService.deleteNoticeById(noticeIdx)) {
-                return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);
-            }
-            return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
+            noticeService.deleteNoticeById(noticeIdx);
+            return new ResponseEntity<>(ResponseStatus.SUCCESS, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+            log.error(e.getMessage());
         }
+        return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "공지사항 수정하기", notes = "공지사항 글을 수정한다. 성공 유무 반환", response = String.class)
     @PutMapping("")
-    public ResponseEntity<String> modifyNotice (
+    public ResponseEntity<ResponseStatus> modifyNotice (
             @RequestPart(value = "modifyDto") ModifyDto modifyDto,
              @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
-            if (noticeService.modifyNoticeById(modifyDto, file)) {
-                return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);
-            }
-            return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
+            noticeService.modifyNoticeById(modifyDto, file);
+            return new ResponseEntity<>(ResponseStatus.SUCCESS, HttpStatus.OK);
         } catch(Exception e) {
-            return new ResponseEntity(ResponseStatus.ERROR, HttpStatus.NO_CONTENT);
+            log.error(e.getMessage());
         }
+        return new ResponseEntity<>(ResponseStatus.ERROR, HttpStatus.BAD_REQUEST);
     }
 }

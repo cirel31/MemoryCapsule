@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.model.Enum.UserRole;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.util.OAuth2Attribute;
@@ -14,11 +15,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.security.AuthProvider;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -34,6 +32,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // TODO: ACCESS TOKEN 을 이용해 서드파티 서버로부터 사용자 정보를 받아온다.
         //  - 이미 회원가입 되어있는지 check
         //  - 비회원은 가입처리
+        log.info("loadUser start!!");
         OAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(oAuth2UserRequest);
         String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId(); // Kakao 인지 google인지 확인하는 코드
@@ -43,21 +42,30 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
+        log.info("UserParsing info - {}, {}, {}", String.valueOf(memberAttribute.get("name")), String.valueOf(memberAttribute.get("email")));
+        Optional<User> byEmail = userRepository.findByEmail(String.valueOf(memberAttribute.get("email")));
 
-        // 등록된 회원이지 check 후, 미가입자 회원가입처리
-        Optional<User> byEmail = userRepository.findByEmail((String) memberAttribute.get("email"));
-        if(byEmail == null){
-            userRepository.save(User.builder()
-                            .nickName((String) memberAttribute.get("name"))
-                            .email((String) memberAttribute.get("email"))
-                            .passWord("")
-                            .imgUrl((String) memberAttribute.get("picture"))
-                            .oAuthUser(true)
+        String nickname = "kakao-" + UUID.randomUUID().toString();
+
+        if(!byEmail.isPresent()){
+            User save = userRepository.save(User.builder()
+                            .name(String.valueOf(memberAttribute.get("name")))
+                            .nickName(nickname)
+                    .email((String) memberAttribute.get("email"))
+                            .point(0L)
+                    .passWord("")
+                    .imgUrl((String) memberAttribute.get("picture"))
+                    .oAuthUser(true)
+                            .createdAt(ZonedDateTime.now())
+                            .updatedAt(ZonedDateTime.now())
+                            .role(UserRole.USER)
                     .build());
-        }
+            memberAttribute.put("userIdx", save.getIdx());
+        } else if(!byEmail.get().isOAuthUser()) throw new OAuth2AuthenticationException("자체 회원가입으로 등록된 유저입니다.");
+        else memberAttribute.put("userIdx", byEmail.get().getIdx());
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")),
                 memberAttribute, "email"
         );
     }
