@@ -4,7 +4,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 export const loginUserThunk = createAsyncThunk(
     'user/loginUser',
     async (loginData, { dispatch, rejectWithValue }) => {
-      const loginURL = 'https://i9a608.p.ssafy.io:8000/user/login'
+      const loginURL = 'http://i9a608.p.ssafy.io:8000/user/login'
+      console.log(loginData)
       try {
         const response = await axios.post(`${loginURL}`, loginData, {
           headers: { "Content-Type": "application/json" }
@@ -32,7 +33,7 @@ export const fetchUserInfoThunk = createAsyncThunk(
       const accessToken = sessionStorage.getItem("accessToken")
       console.log(accessToken)
       try {
-        const response = await axios.get(`https://i9a608.p.ssafy.io:8000/user/${userIdx}/detail`, {
+        const response = await axios.get(`http://i9a608.p.ssafy.io:8000/user/${userIdx}/detail`, {
           headers: { Authorization: `Bearer ${accessToken}` }
         })
         console.log(response.data)
@@ -65,7 +66,7 @@ export const findPassThunk = createAsyncThunk(
       "phone" : {phone},
     }
     try {
-      const response = await axios.post(`https://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
+      const response = await axios.post(`http://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
         headers: {
           "Content-Type": "application/json"
         }

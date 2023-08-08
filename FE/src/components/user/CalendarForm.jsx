@@ -10,7 +10,7 @@ import goodstamp from "../../assets/images/stamp/stamp_best.svg"
 const CalendarForm = () => {
   // const navigate = useNavigate()
   const isLoggedIn = useSelector((state) => state.userState.isLoggedIn)
-  const attend = useSelector((state) => state.userState.user.accessList)
+  const attend = useSelector((state) => state.userState.user?.accessList)
   console.log('로그인 상태 : ', isLoggedIn)
   console.log(attend)
 
