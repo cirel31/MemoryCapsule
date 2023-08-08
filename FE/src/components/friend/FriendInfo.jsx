@@ -4,14 +4,6 @@ import React, {useState} from "react";
 import add_friend from "../../assets/images/frield/add_friend.svg"
 
 const FriendInfo = ({select, setSelect, friend, imageUrl}) => {
-    // 친구인지 여부
-    // (친구인지 확인되면
-    function isFriend() {
-        if (friend) {
-            return true;
-        }
-        return false;
-    }
 
 
     const selectFriend = () => {
@@ -20,6 +12,19 @@ const FriendInfo = ({select, setSelect, friend, imageUrl}) => {
         };
         setSelect(selected);
         console.log("[selectFriend] ", friend.userId);
+    }
+
+    // 친구인지 여부
+    // (친구인지 확인되면
+    function isFriend(status) {
+        switch (status){
+            case 1 :    // 친구인 경우
+                return <div onClick={selectFriend} className="user_detail_button">
+                    <img src={add_friend} alt="유저 자세히보기 이미지" className="userDetailButtonImg"/>
+                </div>
+            default :    // 아무 관계가 아닌 경우
+                return <FriendAddDeleteButton friend={friend} status={status} select={select}/>
+        }
     }
 
     return (
@@ -37,11 +42,7 @@ const FriendInfo = ({select, setSelect, friend, imageUrl}) => {
             </div>
             {
                 // 처음 로딩 시 친구여야 자세히보기 제공
-                isFriend
-                    ?<div onClick={selectFriend} className="user_detail_button">
-                        <img src={add_friend} alt="유저 자세히보기 이미지" className="userDetailButtonImg"/>
-                    </div>
-                    :<FriendAddDeleteButton select={select}/>
+                isFriend(friend.status)
             }
         </>
     )

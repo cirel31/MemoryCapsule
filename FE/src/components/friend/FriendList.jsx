@@ -11,7 +11,7 @@ import searchIcon from "../../assets/images/frield/searchIcon.svg"
 import {login} from "../../store/userSlice";
 
 const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage}) => {
-    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
+    const baseURL = 'https://i9a608.p.ssafy.io:8000';
     const API = '/friend';
 
     const [imageUrl, setImageUrl] = useState('');
@@ -32,7 +32,7 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     useEffect(() => {
         console.log("[useEffect]");
         setSelect("");
-        getFriends("id", "");
+        getFriends();
         console.log("login : ", login);
     }, []);
 
@@ -42,18 +42,18 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
      * Method : get
      * URL : /friend/search/{user_id}
      * */
-    function getFriends(searchId, searchValue) {
+    function getFriends() {
         console.log("[getFriends]");
-
+        const accessToken = sessionStorage.getItem("accessToken")
+        const host_id = sessionStorage.getItem("userIdx");
         // 서버로부터 내 친구목록 가져오기
         // axios.get(`${API}/search/${user_id}`,
-        axios.get(`${API}/search/2`,
+        axios.get(`${baseURL}${API}/search/${host_id}`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 },
-            }
-        )
+            })
             .then((response) => {
                 console.log('서버로부터 친구목록 가져오기 성공');
                 console.log(API);
@@ -64,7 +64,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                 console.error("서버로부터 친구목록 가져오기 실패", error);
                 console.error(error.code);
             });
-        console.log(searchId, searchValue);
     }
 
     // 검색
@@ -137,7 +136,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                         </div>
                         // 스크롤 구현해야 하는 부분
                         :<div className="friend_list_item">
-                            {console.log("friends : ", friends)}
                             { friends.map((friend) => (
                                 <FriendInfo
                                     select={select}

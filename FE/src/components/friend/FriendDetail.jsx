@@ -35,7 +35,7 @@ const FriendDetail = ({select, closeFriendDetail}) => {
                         개
                     </p>
                 </div>
-            <FriendAddDeleteButton select={select}/>
+            <FriendAddDeleteButton status={select.status} select={select}/>
         </>
     );
 };

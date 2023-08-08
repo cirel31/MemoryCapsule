@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import axios from "axios";
 
 const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
-    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
+    const baseURL = 'https://i9a608.p.ssafy.io:8000';
     const API = '/notice';
 
     const [state, setState] = useState(false);
@@ -45,6 +45,9 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     });
 
     const postNoticesDataCreateServer = (e) => {
+        const accessToken = sessionStorage.getItem("accessToken")
+        const user_id = sessionStorage.getItem("userIdx")*1;
+
         console.log("[postNoticesDataCreateServer]");
         e.preventDefault();
 
@@ -55,8 +58,9 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
-
                     },
+                    params: {}
+
                 })
                 .then((response) => {
                     console.log('게시글 작성 POST successful : ', response.data);
@@ -72,6 +76,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      *http://localhost:8080/notice/2
      */
     const deletePost = (e) => {
+        const accessToken = sessionStorage.getItem("accessToken")
         console.log("[deletePost]");
         e.preventDefault();
 
@@ -104,6 +109,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      * }
      */
     const putNoticesDataEditServer = (e) => {
+        const accessToken = sessionStorage.getItem("accessToken")
         // console.log("[putNoticesDataEditServer]");
         // e.preventDefault();
         //
@@ -130,43 +136,43 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
     return (
         <>
-                <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="notice_modal_part">
-                    {
-                        selectedPost &&(
-                        <div className="modal_contents_box">
-                            <h2 className="modal_inner_title">
-                                {
-                                    state
-                                    ? <input disabled={disabledTitle} value={selectedPost.noticeTitle}/>
-                                    : selectedPost.noticeTitle
-                                }
-                                <hr/>
-                            </h2>
-                            <p className="modal_inner_contents">
-                                {
-                                    state
-                                    ? <input disabled={disabledContent} value={selectedPost.noticeContent}/>
-                                    : selectedPost.noticeContent
-                                }
-                            </p>
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="notice_modal_part">
+                {
+                    selectedPost &&(
+                    <div className="modal_contents_box">
+                        <h2 className="modal_inner_title">
                             {
                                 state
-                                ?
-                                <div>
-                                    <button onClick={closeModal}>닫기</button>
-                                    <button onClick={closeModal}>등록</button>
-                                </div>
-                                :
-                                <div>
-                                    <button onClick={closeModal}>닫기</button>
-                                    <button onClick={editPost}>수정</button>
-                                    <button onClick={deletePost}>삭제</button>
-                                </div>
+                                ? <input disabled={disabledTitle} value={selectedPost.noticeTitle}/>
+                                : selectedPost.noticeTitle
                             }
-                        </div>
-                        )
-                    }
-                    </Modal>
+                            <hr/>
+                        </h2>
+                        <p className="modal_inner_contents">
+                            {
+                                state
+                                ? <input disabled={disabledContent} value={selectedPost.noticeContent}/>
+                                : selectedPost.noticeContent
+                            }
+                        </p>
+                        {
+                            state
+                            ?
+                            <div>
+                                <button onClick={closeModal}>닫기</button>
+                                <button onClick={closeModal}>등록</button>
+                            </div>
+                            :
+                            <div>
+                                <button onClick={closeModal}>닫기</button>
+                                <button onClick={editPost}>수정</button>
+                                <button onClick={deletePost}>삭제</button>
+                            </div>
+                        }
+                    </div>
+                    )
+                }
+                </Modal>
 
         </>
     )

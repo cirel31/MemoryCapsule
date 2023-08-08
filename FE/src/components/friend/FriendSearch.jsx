@@ -7,7 +7,7 @@ import axios from "axios";
 import searchIcon from "../../assets/images/frield/searchIcon.svg";
 
 const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) => {
-    const accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMDA0IiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2OTE0NzQ0Mjl9.sEfQti6mAsm4LGJYG46ZtkAkd-_YTKaJ-koV5aiTPsi1cvYG2AOITPSpdCNJOebSJZ4Kl_Y2ZBzre7GftUz-Cw";
+    const baseURL = 'https://i9a608.p.ssafy.io:8000';
     const API = '/friend';
 
     const [form, setForm] = useState({
@@ -29,14 +29,19 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
      * Method : get
      * URL : /friend/search/{user_id}
      * */
-    function getFriendsByServer(searchId, searchValue) {
-        console.log("[getFriendsByServer]");
+    function getFriendsByServer(searchId) {
+        console.log("[getFriendsByServer]", searchId);
+        const accessToken = sessionStorage.getItem("accessToken")
+        const Idx = parseInt(sessionStorage.getItem("userIdx"))
 
         // 서버로부터 내 친구목록 가져오기
-        axios.get(`${API}/find/${searchId}`,
+        axios.get(`${baseURL}${API}/find/${searchId}`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
+                },
+                params: {
+                    host_id: `${Idx}`,
                 },
             })
             .then((response) => {
@@ -60,7 +65,7 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
         const sendSearch = form.search;
 
         if (sendId.length > 0) {
-            getFriendsByServer(sendId, sendSearch);
+            getFriendsByServer(sendId);
         } else {
             console.log("한 글자 이상 입력해주세요");
             setIsValidSearch(false);

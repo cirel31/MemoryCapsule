@@ -50,7 +50,7 @@ const SignupForm = ({ form, setForm,  }) => {
 
   const sendSignupData = (e) => {
     e.preventDefault()
-    const baseURL = 'http://i9a608.p.ssafy.io:8000'
+    const baseURL = 'https://i9a608.p.ssafy.io:8000'
     const signupURL = '/user/signup'
     const formData = new FormData(formRef.current);
     for (const [key, value] of formData.entries()) {

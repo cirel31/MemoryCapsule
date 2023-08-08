@@ -6,13 +6,14 @@ import Pagination from "../common/Pagination";
 import axios from "axios";
 
 const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
-    const API = '/notice'
+    const baseURL = 'https://i9a608.p.ssafy.io:8000';
+    const API = '/notice';
     const [selectedPost, setSelectedPost] = useState(null)
     const [isModal, setIsModal] = useState(false)
 
     const [postList, setPostList] = useState([
-        /** Notice Data Format
-         {
+        /** Notice Data Format*/
+        {
             noticeIdx : "BIGINT(20)",
             noticeTitle : "VARCHAR(255)",
             noticeContent : "VARCHAR(5000)",
@@ -20,26 +21,44 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
             noticeCreated : "TIMESTAMP",
             noticeHit : "INT(11)",
         }
-         */
     ])
 
 
     useEffect(() => {
         console.log('[AnnounceUserViewPage] 페이지 로딩 시 한 번만 실행되는 함수');
         console.log(size, page)
-        getNoticesData();
+        if (size === 3) {
+            getNoticesData();
+        }else {
+            getNoticesAllData();
+        }
     }, []);
 
     /**
-     * 1. 전체 공지사항 [get]
+     * 1-1. 전체 공지사항 [get]
      * http://localhost:8080/notice/list?page=0&size=10
      * */
     const getNoticesData = () => {
         console.log("[getNoticesData]");
 
-        // 실제 배포는 8000
-        // 테스트 및 개발 서버는 7000
-        axios.get(`${API}/list`)
+        axios.get(`${baseURL}${API}/list?size=${size}&page=${page}`)
+            .then((response) => {
+              console.log('게시글 선택 (size, page) successful : ', response.data);
+              setPostList(response.data);
+            })
+            .catch((error) => {
+              console.error('게시글 전체 (size, page) fail : ', error);
+            });
+    };
+
+    /**
+     * 1-2. 전체 공지사항 [get]
+     * http://localhost:8080/notice/list?page=0&size=10
+     * */
+    const getNoticesAllData = () => {
+        console.log("[getNoticesAllData]");
+
+        axios.get(`${baseURL}${API}/list`)
             .then((response) => {
                 console.log('게시글 전체 (All) successful : ', response.data);
                 setPostList(response.data);
@@ -48,16 +67,7 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
                 console.error('게시글 전체 (All) fail : ', error);
             });
 
-        // axios.get(`${API}/list?size=${size}&page=${page}`)
-        //     .then((response) => {
-        //       console.log('게시글 선택 (size, page) successful : ', response.data);
-        //       setPostList(response.data);
-        //     })
-        //     .catch((error) => {
-        //       console.error('게시글 전체 (All) fail : ', error);
-        //     });
     };
-
     /**
      * 2. 공지사항 자세하게 보기 [get]
      * http://localhost:8080/notice/2
@@ -73,7 +83,7 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
         // 테스트 및 개발 서버는 7000
 
         console.log(index);
-        axios.get(`${API}/${index}`,
+        axios.get(`${baseURL}${API}/${index}`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`

@@ -2,9 +2,6 @@ import { NoFriendList, AuthFormGrid, CustomButton } from "../../styles/friendSty
 
 import React, { useState, useEffect } from "react";
 // import NoticeInfo from "../components/notice/NoticeInfo";
-import SearchBar from "../../components/SearchBar"
-import axios from "axios";
-import Pagination from "../../components/common/Pagination";
 import AnnounceUserViewPage from "./AnnounceUserViewPage";
 
 import {Link} from "react-router-dom";
@@ -27,10 +24,10 @@ const NoticeListPage = () => {
         {
             noticeIdx : 0,
             noticeHit : 0,
-            noticeTitle : "VARCHAR(255)",
-            noticeContent : "VARCHAR(5000)",
-            noticeImgurl : "VARCHAR(2048)",
-            noticeCreated : "TIMESTAMP",
+            noticeTitle : "",
+            noticeContent : "",
+            noticeImgurl : "",
+            noticeCreated : "",
         }
     )
 
@@ -60,9 +57,9 @@ const NoticeListPage = () => {
                 selectedPost={{
                     noticeIdx : 0,
                     noticeHit : 0,
-                    noticeTitle : "VARCHAR(255)",
-                    noticeContent : "VARCHAR(5000)",
-                    noticeCreated : "TIMESTAMP",
+                    noticeTitle : "",
+                    noticeContent : "",
+                    noticeCreated : "",
                 }}
                 setSelectedPost={setPost}
                 modalIsOpen={isModal}
