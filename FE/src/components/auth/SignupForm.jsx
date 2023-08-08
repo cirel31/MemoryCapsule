@@ -105,7 +105,6 @@ const SignupForm = ({ form, setForm,  }) => {
       (form.password === form.passwordCheck) &&
       isChecked
     ) {
-      // get으로 서버에서 데이터 안받는 api 만들어보기
       axios.post(`${baseURL}${signupURL}`, formData, {
         headers : {
           "Content-Type": "multipart/form-data",
@@ -149,7 +148,7 @@ const SignupForm = ({ form, setForm,  }) => {
                 alt="프로필 이미지"
               />
               <input
-                name="imgUrl"
+                name="file"
                 type="file"
                 accept="image/*"
                 id="profileImg"
