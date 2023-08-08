@@ -26,7 +26,7 @@ public class FriendController {
     }
 
     @GetMapping("/search/{user_id}")
-    public ResponseEntity findFriendByUserId(@PathVariable Long user_id) {
+    public ResponseEntity findFriendByUserId(@PathVariable("user_id") Long user_id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(friendService.findByAllFriends(user_id));
         } catch (Exception e) {
@@ -45,10 +45,11 @@ public class FriendController {
     }
 
     @GetMapping("/find/{user_email}")
-    public ResponseEntity findByUserEmail(@PathVariable String user_email) {
+    public ResponseEntity findByUserEmail(@RequestParam(value = "host_id") Long host_id,
+                                          @PathVariable("user_email") String user_email) {
         try {
-            UserDto.showFriend userDto = friendService.findUserEmail(user_email);
-            return ResponseEntity.status(HttpStatus.OK).body(userDto);
+            FriendDto.showFriend friendDto = friendService.findUserEmail(host_id, user_email);
+            return ResponseEntity.status(HttpStatus.OK).body(friendDto);
         } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
         }

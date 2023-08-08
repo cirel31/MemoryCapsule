@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto.Detail getUserDetail(Long userId) throws Exception {
-        User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+        User user = getUserById(userId);
         return UserDto.Detail.builder()
                 .userId(user.getIdx())
                 .email(user.getEmail())
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("user Not found"));
+        User user = getUserByEmail(userEmail);
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getName())
                 .accountExpired(user.isDeleted())
@@ -186,28 +186,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUser(Long userId) {
-        User user = userRepository.findById(userId).get();
+    public void deleteUser(Long userId) throws Exception {
+        User user = getUserById(userId);
         user.deleteUser();
     }
 
     @Transactional
     @Override
     public void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception {
-        User user = userRepository.findById(info.getUserId()).get();
-
+        User user = getUserById(info.getUserId());
         user.modifyUser(info.getNickName(), info.getPassword(), getImgUrl(multipartFile));
-    }
-
-    private String getImgUrl(MultipartFile multipartFile) throws IOException {
-        String imgUrl = "https://www.computerhope.com/jargon/g/guest-user.png"; // Default Img
-        // User ImgURl 처리
-        if(multipartFile != null){
-            String fileName = fileService.upload(multipartFile);
-            imgUrl = defaultUrl + fileName;
-        }
-
-        return imgUrl;
     }
 
     @Override
@@ -221,12 +209,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean updatePoint(Long userId, Long point) throws Exception {
-        User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+        User user = getUserById(userId);
         return user.updatePoint(point);
     }
 
     @Override
     public Long getPoint(Long userId) throws Exception {
-        return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found")).getPoint();
+        return getUserById(userId).getPoint();
+    }
+
+    private String getImgUrl(MultipartFile multipartFile) throws IOException {
+        String imgUrl = "https://www.computerhope.com/jargon/g/guest-user.png"; // Default Img
+        // User ImgURl 처리
+        if(multipartFile != null){
+            String fileName = fileService.upload(multipartFile);
+            imgUrl = defaultUrl + fileName;
+        }
+
+        return imgUrl;
+    }
+
+    private User getUserById(Long userId) throws Exception {
+        return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+    }
+
+    private User getUserByEmail(String userEmail) throws UsernameNotFoundException {
+        return userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("user Not found"));
     }
 }

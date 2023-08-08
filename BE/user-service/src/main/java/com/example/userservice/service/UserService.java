@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService {
     UserDto.Detail getUserDetail(Long userId, int year, int month) throws Exception;
     UserDto.Detail getUserDetail(Long userId) throws Exception;
     //회원 탈퇴
-    void deleteUser(Long userId);
+    void deleteUser(Long userId) throws Exception;
 
     // 이메일로 유저 찾기
     boolean checkEmailDuplicated(final String email) throws Exception;
