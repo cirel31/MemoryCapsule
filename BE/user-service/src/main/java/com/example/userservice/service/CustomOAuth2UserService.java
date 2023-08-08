@@ -32,6 +32,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // TODO: ACCESS TOKEN 을 이용해 서드파티 서버로부터 사용자 정보를 받아온다.
         //  - 이미 회원가입 되어있는지 check
         //  - 비회원은 가입처리
+        log.info("loadUser start!!");
         OAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(oAuth2UserRequest);
         String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId(); // Kakao 인지 google인지 확인하는 코드
@@ -41,7 +42,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
-        log.info("CustomOAuth2UserService");
+        log.info("UserParsing info - {}, {}, {}", String.valueOf(memberAttribute.get("name")), String.valueOf(memberAttribute.get("email")));
+        log.info("CustomOAuth2UserService - findByEmail({})", String.valueOf(memberAttribute.get("email")));
         userRepository.findByEmail(String.valueOf(memberAttribute.get("email"))).ifPresent(e -> {
             throw new OAuth2AuthenticationException("이미 등록된 유저입니다.");
         });

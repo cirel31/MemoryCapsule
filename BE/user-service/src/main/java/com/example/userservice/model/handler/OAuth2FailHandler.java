@@ -26,6 +26,9 @@ public class OAuth2FailHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+        log.info("OAuth2FailHandler 시작");
+        log.info("{}", request.toString());
+        log.info("{}", response.toString());
         OutputStream outputStream = response.getOutputStream();
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(outputStream));
         response.setCharacterEncoding("UTF-8");
