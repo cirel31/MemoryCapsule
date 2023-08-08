@@ -1,0 +1,152 @@
+@import "theme.css";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
+
+.profile_edit_body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  .profile_edit_back {
+    width: 100%;
+  }
+}
+.profile_edit_forms_body {
+  font-family: "Inconsolata", sans-serif;
+  position: absolute;
+  width: 40vw;
+  height: 60%;
+  top: 20%;
+  left: 12%;
+  //background: var(--white);
+  filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+
+  & > .img_editupload {
+    position: absolute;
+    width: 30vw;
+    height: 35vw;
+    background-color: var(--white);
+    left: 0;
+    top: 0;
+    rotate: -8deg;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    align-items: center;
+    align-content: center;
+    filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.25));
+    z-index: 5;
+    border-radius: 1rem;
+    outline: dashed 2px var(--brand3_main) ;
+    outline-offset: -2vw;
+    & > img {
+      width: 20vw;
+      height: 20vw;
+      object-fit: cover;
+      overflow: hidden;
+    }
+
+    & > label {
+      display: grid;
+      grid-template-columns: auto auto;
+      font-family: "IBM Plex Sans KR", sans-serif;
+      font-weight: 600;
+      color: var(--white);
+      background-color: var(--point1_4);
+      border-radius: 4rem;
+      width: 12vw;
+      height: 3vw;
+      font-size: 1.25vw;
+      align-items: center;
+      align-content: center;
+      justify-items: center;
+      justify-content: center;
+      margin: 10% 0 0 0;
+
+      & > img {
+        width: 2vw;
+        margin: 0 1.2vw 0 0;
+      }
+
+
+    }
+
+    & > input[type="file"] {
+      display: none;
+    }
+
+    & > input[type="file"] + label {
+      cursor: pointer;
+    }
+
+  }
+
+
+  & > .nickname_edit {
+    position: absolute;
+    width: 30vw;
+    height: 25vw;
+    background-color: var(--white);
+    left: 70%;
+    top: 20%;
+    rotate: 6deg;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    align-items: center;
+    align-content: center;
+    filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.25));
+    & > div {
+      width: 25vw;
+      height: 16vw;
+      background-color: var(--brand3_main);
+      display: grid;
+      justify-items: center;
+      grid-template-columns: 1fr;
+      align-items: center;
+      align-content: center;
+      & > h2{
+        font-family: "IBM Plex Sans KR",sans-serif;
+        font-weight: 600;
+        color: white;
+      }
+      & > input {
+        width: 15vw;
+        height: 4vw;
+        border: none;
+        border-radius: 4rem;
+        font-family: "IBM Plex Sans KR",sans-serif;
+        font-weight: 500;
+        font-size: 1.6vw;
+        padding: 0 0 0 3vw;
+      }
+      & > input[type="text"]:active {
+        outline: solid 3px var(--point1_main);
+      }
+      & > input[type="text"]:focus {
+        outline: solid 3px var(--point1_main);
+      }
+    }
+    & > button {
+      border: none;
+      font-family: "IBM Plex Sans KR", sans-serif;
+      font-weight: 600;
+      color: var(--white);
+      background-color: var(--point1_4);
+      border-radius: 4rem;
+      width: 12vw;
+      height: 2vw;
+      font-size: 1.25vw;
+      align-items: center;
+      align-content: center;
+      justify-items: center;
+      justify-content: center;
+      margin-top: 1vw;
+      margin-left: 13vw;
+      cursor: pointer;
+    }
+  }
+
+}
+

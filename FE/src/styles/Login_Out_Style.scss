@@ -23,7 +23,7 @@
     left: 12%;
     height: 70%;
     width: 40vw;
-    font-family: "Inconsolata";
+    font-family: "Inconsolata", sans-serif;
     font-weight: 600;
 
     color: var(--font_gray_main);
@@ -64,9 +64,15 @@
       display: grid;
       grid-template-rows: 35% 35%;
       margin-left: 10%;
+      & > input:active {
+        outline: solid 3px var(--point1_main);
+      }
+      & > input:focus {
+        outline: solid 3px var(--point1_main);
+      }
     }
     & > form > div > input {
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-weight: 700;
       height: 80%;
       border-radius: 4rem;
@@ -83,7 +89,7 @@
       border-radius: 4rem;
       border: none;
       background-color: var(--white);
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-weight: 700;
       font-size: 1.2vw;
       color: var(--font_burgundy_100);
@@ -108,7 +114,7 @@
       border: none;
       background-color: var(--brand2_main);
       color: var(--white);
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-weight: 700;
       font-size: 1.2vw;
       border-radius: 4rem;
@@ -137,7 +143,7 @@
       justify-content: center;
       align-content: center;
       align-items: center;
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-weight: 700;
       font-size: 1.2vw;
       border-radius: 4rem;
@@ -167,7 +173,7 @@
   top: 82%;
   width: 100%;
   position: absolute;
-  font-family: "IBM Plex Sans KR";
+  font-family: "IBM Plex Sans KR", sans-serif;
   font-weight: 700;
   font-size: 1.2vw;
   color: var(--font_burgundy_100);

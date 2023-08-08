@@ -2,9 +2,10 @@ import {useNavigate} from "react-router-dom";
 import {useState, useRef} from "react";
 import Modal from "react-modal";
 import useSignup from "../../hooks/useSignup";
-import kokona from "../../assets/images/kokona.png"
+import defaultimg from "../../assets/images/stamp/stamp_best.svg"
 import axios from "axios";
 import {setUser} from "../../store/userSlice";
+import photo_picto from "../../assets/images/signup/upload.svg"
 import Swal from "sweetalert2";
 import goback_btn from "../../assets/images/signup/go_back.svg";
 
@@ -94,6 +95,7 @@ const SignupForm = ({ form, setForm,  }) => {
   const sendSignupData = (e) => {
     e.preventDefault()
     const formData = new FormData(formRef.current);
+    // console.log(formRef.current)
     for (const [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
@@ -141,19 +143,23 @@ const SignupForm = ({ form, setForm,  }) => {
         <div className="form_set">
           <form onSubmit={sendSignupData} ref={formRef} id="loginForm">
             {/* 프로필 디폴트 이미지 변경 시 imgFile : 뒤의 값 변경  */}
-            {/*<img*/}
-            {/*  src={imgFile ? imgFile:kokona}*/}
-            {/*  alt="프로필 이미지"*/}
-            {/*  style={{width:"100px"}}*/}
-            {/*/>*/}
-            {/*<input*/}
-            {/*  name="imgUrl"*/}
-            {/*  type="file"*/}
-            {/*  accept="image/*"*/}
-            {/*  id="profileImg"*/}
-            {/*  onChange={saveImgFile}*/}
-            {/*  ref={imgRef}*/}
-            {/*/>*/}
+            <div className="imgupload">
+              <img
+                src={imgFile ? imgFile:defaultimg}
+                alt="프로필 이미지"
+              />
+              <input
+                name="imgUrl"
+                type="file"
+                accept="image/*"
+                id="profileImg"
+                onChange={saveImgFile}
+                ref={imgRef}
+              />
+              <label htmlFor="profileImg">
+                <img src={photo_picto}/><p>사진 올리기</p>
+              </label>
+            </div>
             <div className="forms_namepart">
               <div className="name_part">
                 <p>Name</p>
