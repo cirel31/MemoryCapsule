@@ -19,14 +19,14 @@
   margin-bottom: 20px;
 }
 .mypage_h1 {
-  font-family: Inconsolata;
+  font-family: "Inconsolata", sans-serif;
   color: var(--font_gray_main);
   margin-top: 40px;
   margin-bottom: 20px;
   font-size: 25pt;
 }
 .mypage_notice_h1 {
-  font-family: "IBM Plex Sans KR";
+  font-family: "IBM Plex Sans KR", sans-serif;
   color: var(--font_gray_main);
   margin-top: 40px;
   margin-bottom: 20px;
@@ -77,6 +77,10 @@
       clip-path: circle(55px);
       background-color: white;
       overflow: hidden;
+      justify-content: center;
+      justify-items: center;
+      align-items: center;
+      align-content: center;
     }
   }
 
@@ -87,14 +91,14 @@
     align-items: center;
   }
   .header_user_name {
-    font-family: "IBM Plex Sans KR";
+    font-family: "IBM Plex Sans KR", sans-serif;
     font-size: 12pt;
     color: var(--font_gray_main);
     font-weight: 700;
     text-align: left;
   }
   .header_user_email {
-    font-family: "Inconsolata";
+    font-family: "Inconsolata", sans-serif;
     font-size: 13pt;
     color: var(--font_gray_main);
     font-weight: 500;
@@ -118,7 +122,7 @@
       align-items: center;
     }
     .header_user_friend_txt {
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-size: 10pt;
       color: var(--white);
       font-weight: 700;
@@ -128,7 +132,7 @@
     }
 
     .header_user_friend_txt2 {
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-size: 15pt;
       color: var(--font_gray_main);
       font-weight: 700;
@@ -147,7 +151,7 @@
     align-items: center;
     text-align: center;
     .profile_edit_txt{
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-weight: 700;
       color: var(--white);
       margin: 0;
@@ -168,7 +172,7 @@
   justify-content: center;
   justify-items: center;
   .mypage_shorts_info {
-    font-family: "IBM Plex Sans KR";
+    font-family: "IBM Plex Sans KR", sans-serif;
     font-weight: 700;
     width: 320px;
     height: 420px;
@@ -240,7 +244,7 @@
     display: grid;
     align-items: center;
     height: 50px;
-    font-family: "IBM Plex Sans KR";
+    font-family: "IBM Plex Sans KR", sans-serif;
     font-weight: 600;
     margin: 0;
     text-align: center;
@@ -276,7 +280,7 @@
     align-items: center;
     .modal_inner_title {
       text-align: center;
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-weight: 700;
       font-size: 22pt;
       color: var(--font_gray_main);
@@ -290,7 +294,7 @@
     .modal_inner_contents {
       height: 380px;
       text-align: left;
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-weight: 500;
       font-size: 15pt;
       color: var(--font_gray_main);
@@ -325,7 +329,7 @@
       text-align: center;
       color: var(--white);
       background-color: var(--brand3_main);
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       font-weight: 700;
       font-size: 15pt;
       cursor: pointer;

@@ -2,9 +2,10 @@ import {useNavigate} from "react-router-dom";
 import {useState, useRef} from "react";
 import Modal from "react-modal";
 import useSignup from "../../hooks/useSignup";
-import kokona from "../../assets/images/kokona.png"
+import defaultimg from "../../assets/images/stamp/stamp_best.svg"
 import axios from "axios";
 import {setUser} from "../../store/userSlice";
+import photo_picto from "../../assets/images/signup/upload.svg"
 import Swal from "sweetalert2";
 import goback_btn from "../../assets/images/signup/go_back.svg";
 
@@ -12,6 +13,9 @@ const SignupForm = ({ form, setForm,  }) => {
   const formRef = useRef(null)
   const navigate = useNavigate()
   const [policyModalIsOpen, setPolicyModalIsOpen] = useState(false)
+  const [emailModalIsOpen, setEmailModalIsOpen] = useState(false)
+  const [emailChecking, setEmailChecking] = useState(false)
+  const [isAuthentication, setIsAuthentication] = useState(false)
   const {
     isChecked,
     isValidEmail,
@@ -24,6 +28,10 @@ const SignupForm = ({ form, setForm,  }) => {
 
   const [imgFile, setImgFile] = useState(null);
   const imgRef = useRef();
+
+  const baseURL = 'https://i9a608.p.ssafy.io:8000'
+  const signupURL = '/user/signup'
+  const authorizationURL = ''
 
   const saveImgFile = () => {
     const file = imgRef.current.files[0];
@@ -50,7 +58,7 @@ const SignupForm = ({ form, setForm,  }) => {
 
   const sendSignupData = (e) => {
     e.preventDefault()
-    const baseURL = 'https://i9a608.p.ssafy.io:8000'
+    const baseURL = 'http://i9a608.p.ssafy.io:8000'
     const signupURL = '/user/signup'
     const formData = new FormData(formRef.current);
     for (const [key, value] of formData.entries()) {

@@ -27,7 +27,7 @@
     left: 26%;
     height: 4vh;
     width: 30vw;
-    font-family: "IBM Plex Sans KR";
+    font-family: "IBM Plex Sans KR", sans-serif;
     font-weight: 500;
     font-size: clamp(2vw , 2.4vw, 4vw);
     color: var(--font_gray_main);
@@ -63,7 +63,7 @@
     position: absolute;
     top: 64%;
     left: 30%;
-    font-family: Inconsolata;
+    font-family: "Inconsolata", sans-serif;
     font-weight: 600;
     color: var(--brand3_main);
     text-align: center;

@@ -4,6 +4,7 @@ import "../../styles/AnnounceStyle.scss"
 import PostModal from "../post/PostModal";
 import Pagination from "../common/Pagination";
 import axios from "axios";
+import {useSelector} from "react-redux";
 
 const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';

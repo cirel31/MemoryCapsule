@@ -10,7 +10,7 @@
   }
 }
 .signup_forms_body {
-  font-family: Inconsolata;
+  font-family: "Inconsolata", sans-serif;
   position: absolute;
   width: 40vw;
   height: 70%;
@@ -43,6 +43,57 @@
         display: grid;
         grid-template-rows: 21% 21% 31% 30%;
       }
+      & > form > .imgupload {
+        position: absolute;
+        width: 15vw;
+        height: 18vw;
+        background-color: var(--white);
+        left: 93%;
+        top: 30%;
+        rotate: 8deg;
+        display: grid;
+        justify-items: center;
+        grid-template-columns: 1fr;
+        align-items: center;
+        align-content: center;
+        filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.25));
+        & > img {
+          width: 11vw;
+          height: 11vw;
+          object-fit: cover;
+          overflow: hidden;
+        }
+        & > label {
+          display: grid;
+          grid-template-columns: auto auto;
+          font-family: "IBM Plex Sans KR",sans-serif;
+          font-weight: 600;
+          color: var(--white);
+          background-color: var(--point1_4);
+          border-radius: 4rem;
+          width: 12vw;
+          height: 3vw;
+          font-size: 1.25vw;
+          align-items: center;
+          align-content: center;
+          justify-items: center;
+          justify-content: center;
+          margin: 10% 0 0 0;
+
+          & > img {
+            width: 2vw;
+            margin: 0 1.2vw 0 0;
+          }
+
+
+        }
+        & > input[type="file"] {
+          display: none;
+        }
+        & > input[type="file"] + label {
+          cursor: pointer;
+        }
+      }
     }
 
   }
@@ -65,13 +116,19 @@
       color: var(--white);
     }
     & > input {
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       border: none;
       border-radius: 4rem;
       padding-left: 25%;
       font-weight: 500;
       height: 80%;
       width: 100%;
+    }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
     }
   }
   .phonenumber_part{
@@ -86,13 +143,19 @@
       color: var(--white);
     }
     & > input {
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       border: none;
       border-radius: 4rem;
       padding-left: 10%;
 
       font-weight: 500;
       height: 80%;
+    }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
     }
   }
 }
@@ -113,13 +176,19 @@
       color: var(--white);
     }
     & > input {
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       border: none;
       border-radius: 4rem;
       padding-left: 10%;
       font-weight: 500;
       height: 80%;
       width: 80%;
+    }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
     }
   }
   .nickname_part{
@@ -134,13 +203,19 @@
       color: var(--white);
     }
     & > input {
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       border: none;
       border-radius: 4rem;
       padding-left: 10%;
       font-weight: 500;
       height: 80%;
       width: 88%;
+    }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
     }
   }
 }
@@ -163,13 +238,20 @@
     //margin: 0 0 0 10%;
 
     & > input {
-      font-family: "IBM Plex Sans KR";
+      font-family: "IBM Plex Sans KR", sans-serif;
       border: none;
       border-radius: 4rem;
       padding-left: 10%;
       font-weight: 500;
       height: 80%;
       width: 75%;
+
+    }
+    & > input:active {
+      outline: solid 3px var(--point1_main);
+    }
+    & > input:focus {
+      outline: solid 3px var(--point1_main);
     }
   }
 }
@@ -185,7 +267,7 @@
     cursor: pointer;
     border: none;
     border-radius: 4rem;
-    font-family: "IBM Plex Sans KR";
+    font-family: "IBM Plex Sans KR", sans-serif;
     font-weight: 600;
     font-size: 1.25vw;
     background-color: var(--point1_main);
@@ -214,7 +296,7 @@
     display: grid;
     grid-template-columns: auto 8%;
     margin-left: 4%;
-    font-family: "IBM Plex Sans KR";
+    font-family: "IBM Plex Sans KR", sans-serif;
     font-weight: 600;
     font-size: 1.25vw;
     color: var(--font_gray_main);
@@ -265,7 +347,7 @@
     cursor: pointer;
     border: none;
     border-radius: 4rem;
-    font-family: "IBM Plex Sans KR";
+    font-family: "IBM Plex Sans KR", sans-serif;
     font-weight: 600;
     font-size: 1.25vw;
     background-color: var(--brand3_main);
@@ -286,7 +368,7 @@
 }
 .signup_alert_id {
   position: absolute;
-  font-family: "IBM Plex Sans KR";
+  font-family: "IBM Plex Sans KR", sans-serif;
   font-weight: 600;
   color: var(--font_burgundy_100);
   font-size: 1vw;
@@ -295,7 +377,7 @@
 }
 .signup_alert_nickname {
   position: absolute;
-  font-family: "IBM Plex Sans KR";
+  font-family: "IBM Plex Sans KR", sans-serif;
   font-weight: 600;
   color: var(--font_burgundy_100);
   font-size: 1vw;
@@ -304,7 +386,7 @@
 }
 .signup_alert_password {
   position: absolute;
-  font-family: "IBM Plex Sans KR";
+  font-family: "IBM Plex Sans KR", sans-serif;
   font-weight: 600;
   color: var(--font_burgundy_100);
   font-size: 1vw;

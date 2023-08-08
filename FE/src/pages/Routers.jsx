@@ -18,6 +18,7 @@ import ProjectDetailPage from "./project/ProjectDetailPage";
 import ProjectListPage from "./project/ProjectListPage";
 import ProjectCreatePage from "./project/ProjectCreatePage";
 import InviteProject from "./project/InviteProject";
+import KakaoLoginPage from "./auth/KakaoLoginPage";
 
 export default function Routers() {
 
@@ -43,6 +44,9 @@ export default function Routers() {
       <Route path='/mypage' element={<MyPage />} />
 
       <Route path='/calendar' element={<CalendarForm />} />
+      
+      {/* 카카오 테스트 Router */}
+      <Route path='/login/kakao' element={<KakaoLoginPage />} />
 
       <Route path='/*' element={<NotFound />} />
     </Routes>
