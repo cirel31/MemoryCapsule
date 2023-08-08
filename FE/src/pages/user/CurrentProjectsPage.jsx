@@ -2,24 +2,28 @@ import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Modal from "react-modal";
+import {useSelector} from "react-redux";
 
 const CurrentProjectsPage = () => {
   const [isHovered, setIsHovered] = useState(null)
-  const [selectedPost, setSelectedPost] = useState(null)
-  const [isModal, setIsModal] = useState(false)
-  const API = '/project/myproject/current'
+  // const [selectedPost, setSelectedPost] = useState(null)
+  // const [isModal, setIsModal] = useState(false)
+  const baseURL = 'http://i9a608.p.ssafy.io:8000'
+  const subURL = '/project/myproject/current'
   const [projects, setProjects] = useState([]);
+  const user = useSelector((state) => state.userState.user) || null
 
   useEffect(() => {
-    const userId = JSON.parse(sessionStorage.getItem("loginData"))?.userId || ''
+    const userId = user?.userId || ''
     // const userId = 1001
-    axios.get(`${API}`, {
+    axios.get(`${baseURL}${subURL}`, {
       headers : {
-        userId: `${userId}`,
+        "userId": `${userId}`,
       }
     })
       .then((response) => {
         setProjects(response.data);
+        console.log("현재 진행 중인 프로젝트 받아오기 성공")
       })
       .catch((error) => {
         console.error(error.code)
@@ -91,6 +95,13 @@ const CurrentProjectsPage = () => {
         </div>
         <button onClick={rightBTN}>▶</button>
         <button onClick={endBTN}>▶▶</button>
+      </div>
+      <div>
+        <Link to='/project/create'>
+          <button>
+            새로운 추억 생성
+          </button>
+        </Link>
       </div>
     </div>
   );
