@@ -1,11 +1,9 @@
 package com.example.userservice.service;
 
 import com.example.userservice.model.dto.FriendDto;
-import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface FriendService {
     List<User> findByAllFriends(Long userId) throws Exception;
