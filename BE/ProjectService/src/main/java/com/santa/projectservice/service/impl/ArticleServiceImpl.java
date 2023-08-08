@@ -1,11 +1,11 @@
 package com.santa.projectservice.service.impl;
 
-import com.santa.projectservice.dto.ArticleDto;
+import com.santa.projectservice.model.dto.ArticleDto;
 import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotAuthorizedException;
-import com.santa.projectservice.jpa.Article;
-import com.santa.projectservice.jpa.ArticleImg;
-import com.santa.projectservice.jpa.Project;
+import com.santa.projectservice.model.jpa.Article;
+import com.santa.projectservice.model.jpa.ArticleImg;
+import com.santa.projectservice.model.jpa.Project;
 import com.santa.projectservice.repository.ArticleImgRepository;
 import com.santa.projectservice.repository.ArticleRepository;
 import com.santa.projectservice.repository.ProjectRepository;
@@ -13,16 +13,14 @@ import com.santa.projectservice.repository.UserRepository;
 import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -30,7 +28,6 @@ public class ArticleServiceImpl implements ArticleService {
     private final ProjectRepository projectRepository;
     private final ArticleRepository articleRepository;
     private final ArticleImgRepository articleImgRepository;
-    private final ModelMapper mapper;
     private final UserRepository userRepository;
     private final FileUploadService fileUploadService;
 
@@ -40,9 +37,6 @@ public class ArticleServiceImpl implements ArticleService {
         this.articleRepository = articleRepository;
         this.articleImgRepository = articleImgRepository;
         this.fileUploadService = fileUploadService;
-        this.mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-
         this.userRepository = userRepository;
     }
 
@@ -66,19 +60,19 @@ public class ArticleServiceImpl implements ArticleService {
                 .stamp(articleDto.getStamp())
                 .build();
         Article writeArticle = articleRepository.save(article);
-        if(images != null) {
-            images.forEach(file -> {
-                try {
-                    String url = fileUploadService.upload(file);
-                    articleImgRepository.save(ArticleImg.builder()
-                            .article(writeArticle)
-                            .imgurl(url)
-                            .build()
-                    );
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        int order = 0;
+        try {
+            for (int i = 0; i < images.size(); i++) {
+                String url = fileUploadService.upload(images.get(i));
+                articleImgRepository.save(ArticleImg.builder()
+                        .article(writeArticle)
+                        .order(order++)
+                        .imgurl(url)
+                        .build()
+                );
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return true;
     }
@@ -100,18 +94,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleDto> allProjectArticleList(Long userId, Long projectId) {
         List<Article> articleList = articleRepository.findByUser_IdAndProject_Id(userId, projectId);
-        List<ArticleDto> resultList = new ArrayList<>();
-        for(Article article : articleList){
-            resultList.add(ArticleDto.builder()
-                            .userId(article.getId())
-                            .projectId(article.getProject().getId())
-                            .stamp(article.getStamp())
-                            .content(article.getContent())
-                            .title(article.getTitle())
-                            .created(article.getCreated())
-                    .build());
-        }
-        return resultList;
+        List<ArticleDto> results = articleList.stream().map(Article::toDto).collect(Collectors.toList());
+        return results;
     }
 
     @Override
