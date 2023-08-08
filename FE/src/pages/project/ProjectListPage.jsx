@@ -45,7 +45,7 @@ const ProjectListPage = () => {
     setIsHovered(null)
   }
   const openModal = (id) => {
-    const postIndex = projects.findIndex((post => post.idx === id))
+    const postIndex = projects.findIndex((post => post.id === id))
     setSelectedPost(projects[postIndex])
     setIsModal(true)
   }
@@ -86,11 +86,11 @@ const ProjectListPage = () => {
             <div>
               {currentPosts.map((project) => (
                   <div
-                    key={project.idx}
-                    className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
-                    onMouseEnter={() => handleMouseEnter(project.idx)}
+                    key={project.id}
+                    className={`normal ${(isHovered === project.id) ? "chosen" : ""}`}
+                    onMouseEnter={() => handleMouseEnter(project.id)}
                     onMouseLeave={handleMouseLeave}
-                    onClick={() => openModal(project.idx)}
+                    onClick={() => openModal(project.id)}
                   >
                     프로젝트 제목 : {project.title}
                   </div>
@@ -114,7 +114,7 @@ const ProjectListPage = () => {
               </h3>
               <hr/>
               <br/>
-              <Link to={`/project/${selectedPost.idx}`}>상세 페이지로 이동</Link>
+              <Link to={`/project/${selectedPost.id}`}>상세 페이지로 이동</Link>
               <br/><br/>
               <button onClick={closeModal}>닫기</button>
             </div>

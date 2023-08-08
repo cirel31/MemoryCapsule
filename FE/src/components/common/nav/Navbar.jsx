@@ -89,7 +89,6 @@ export default function Navbar() {
             <button onClick={showSidebar} className="nav_bar_active_btn"><img src={navbar_activate} className="navbar_pictogram"/></button>
           </div>
         )}
-
         <SidebarNav sidebar={sidebar}>
           <nav className="nav_bar">
 

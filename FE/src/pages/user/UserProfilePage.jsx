@@ -21,7 +21,7 @@ const UserProfilePage = () => {
   const user = useSelector((state) => state.userState.user)
   const user_nickname = user?.nickname || 'james'
   const user_email = user?.email || 'jimmy@raynersraiders.com'
-  const user_point = user?.point || 1000
+  const user_point = user?.point
   const user_img = user?.imgUrl || defaultImg
 
   return (
@@ -32,6 +32,7 @@ const UserProfilePage = () => {
           <img src={user_img ? user_img:defaultImg} alt="프로필 이미지를 불러올 수 없습니다." style={{width:"200px"}}/>
           <p>{user_nickname}</p>
           <p>{user_email}</p>
+          <p>{user_point}</p>
         </div>
         {/* 마이페이지 이동 버튼 */}
         <a href='/mypage'>

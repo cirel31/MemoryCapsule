@@ -10,7 +10,9 @@ import goodstamp from "../../assets/images/stamp/stamp_best.svg"
 const CalendarForm = () => {
   // const navigate = useNavigate()
   const isLoggedIn = useSelector((state) => state.userState.isLoggedIn)
-  const attend = useSelector((state) => state.userState.user.accessList)
+  const attend = useSelector((state) => state.userState.user?.accessList)
+  const userId = useSelector((state) => state.userState.user?.userId)
+  const [finishedProject, setFinishedProject] = useState('')
   console.log('로그인 상태 : ', isLoggedIn)
   console.log(attend)
 
@@ -38,12 +40,38 @@ const CalendarForm = () => {
   useEffect(() => {
     const myAttendance = attend?.map(date => date.slice(0, 10)) || attendanceDates
     setAttendanceDates(myAttendance)
-  },[isLoggedIn]);
+  },[]);
+  
+  useEffect(() => {
+    const countCapsuleURL = 'http://i9a608.p.ssafy.io:8000/project/myproject/done'
+    try {
+      axios.get(`${countCapsuleURL}`, {
+        headers: {
+          'userId': userId,
+        }
+      })
+        .then((response) => {
+          console.log(response)
+          // console.log('결과', response.data)
+          const finishedCapsules = response.data.length || 0
+          console.log('완료된 캡슐', finishedCapsules)
+          setFinishedProject(finishedCapsules)
+        })
+        .catch(() => {
+          const finishedCapsules = 0
+          setFinishedProject(finishedCapsules)
+        })
+    }
+    catch (error) {
+      console.log('에러에러 : ', error)
+    }
+  },[]);
 
   const [value, onChange] = useState(new Date())
-  const username = '김싸피'
+  const user = useSelector((state) => state.userState.user)
+  const username = user?.nickname || '김싸피'
   const countMemory = 0
-  const countProject = 0
+  const countProject = finishedProject
   return (
     <div>
       <div className="mypage_calenders">

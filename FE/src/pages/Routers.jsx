@@ -7,6 +7,7 @@ import LoginPage from "./auth/LoginPage";
 import FindPassWordPage from "./auth/FindPassWordPage";
 import SignupPage from "./auth/SignupPage";
 import MyPage from "./user/MyPage";
+import EditProfilePage from "./user/EditProfilePage";
 import UserProfilePage from "./user/UserProfilePage";
 import CalendarForm from "../components/user/CalendarForm";
 import FriendListPage from "./friend/FriendListPage";
@@ -28,6 +29,7 @@ export default function Routers() {
       <Route path='/signup' element={<SignupPage />} />
       <Route path='/find-password' element={<FindPassWordPage />} />
       <Route path='/profile' element={<UserProfilePage />} />
+      <Route path='profile/edit' element={<EditProfilePage />} />
       <Route path='/main' element={<MainPage />} />
       <Route path='/project' element={<ProjectListPage />} />
       <Route path='/project/create' element={<ProjectCreatePage />} />
