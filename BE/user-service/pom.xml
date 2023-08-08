@@ -16,6 +16,10 @@
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
+        <sonar.projectKey>memory-capsule</sonar.projectKey>
+        <sonar.projectName>${project.name}</sonar.projectName>
+        <sonar.source>src/main</sonar.source>
+        <sonar.test>src/test</sonar.test>
     </properties>
     <dependencies>
         <dependency>
@@ -108,8 +112,6 @@
             <version>0.11.5</version>
             <scope>runtime</scope>
         </dependency>
-
-
 
 
         <!--        maria db-->

@@ -15,12 +15,19 @@
     <module>board-service</module>
     <module>config-service</module>
     <module>discovery-service</module>
-    <module>ProjectService</module>
     <module>user-service</module>
   </modules>
 
   <!-- 여기에 루트 프로젝트에 대한 설정 추가 -->
   <!-- 예: 소나큐브 플러그인 추가, 소나큐브 프로젝트 키 설정 등 -->
-
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.9.0.2155</version>
+      </plugin>
+    </plugins>
+  </build>
     
 </project>
