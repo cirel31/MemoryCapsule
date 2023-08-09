@@ -70,7 +70,7 @@ public class UserController {
                 null,
                 String.class
         );
-        if (response.getStatusCode().isError()) {
+        if (response.getStatusCodeValue() == HttpStatus.OK.value()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일 전송 실패");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 인증 코드: " + code);
