@@ -45,8 +45,8 @@ public class FriendController {
 
     @DeleteMapping("/delete") //친구 삭제함
     public ResponseEntity deleteFriend(
-            @RequestParam("hostId") Long hostId,
-            @RequestParam("guestId") Long guestId
+            @RequestParam("host_Id") Long hostId,
+            @RequestParam("guest_Id") Long guestId
     ){
         boolean result = friendService.deleteFirend(hostId, guestId);
         if(result) return ResponseEntity.status(HttpStatus.OK).build();
