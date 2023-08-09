@@ -39,7 +39,7 @@ public class FriendController {
             FriendDto.showFriend friendDto = friendService.findUserEmail(host_id, user_email);
             return ResponseEntity.status(HttpStatus.OK).body(friendDto);
         } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class FriendController {
     ){
         boolean result = friendService.deleteFirend(hostId, guestId);
         if(result) return ResponseEntity.status(HttpStatus.OK).build();
-        else return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @GetMapping("/getDetailedFriendList/{userId}")

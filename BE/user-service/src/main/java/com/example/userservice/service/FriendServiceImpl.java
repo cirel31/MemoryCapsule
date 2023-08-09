@@ -36,8 +36,8 @@ public class FriendServiceImpl implements FriendService {
     public FriendDto.showFriend findUserEmail(Long hostId, String guestEmail) throws Exception {
         //TODO: Email로 user 검색 서비스
         User user = userRepository.findByEmail(guestEmail).orElseThrow(() -> new Exception("User not found"));
-        if (hostId == user.getIdx()) {
-            throw new Exception("User not found");
+        if (hostId.equals(user.getIdx())) {
+            throw new Exception("본인입니다.");
         }
         Optional<Connected> connected = getConnected(hostId, user.getIdx());
         /**
