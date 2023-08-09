@@ -75,8 +75,8 @@ public class User {
     private List<User> friendList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)})
+    @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)})
     @WhereJoinTable (clause = "connected_confirm = '0'")
     @JsonIgnore
     private List<User> comeRequestFriendList = new ArrayList<>();
