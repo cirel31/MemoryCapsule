@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.domain.Page;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -37,8 +39,8 @@ public class ReviewResponseDTO {
 
     }
 
-    public Page<ReviewResponseDTO> toDtoList(Page<Review> reviewPage) {
-        Page<ReviewResponseDTO> responseDTOPage = reviewPage.map(review -> ReviewResponseDTO.builder()
+    public List<ReviewResponseDTO> toDtoList(Page<Review> reviewPage) {
+        List<ReviewResponseDTO> responseDTOList = reviewPage.map(review -> ReviewResponseDTO.builder()
                 .reviewIdx(review.getReviewIdx())
                 .reviewTitle(review.getReviewTitle())
                 .reviewContent(review.getReviewContent())
@@ -47,8 +49,8 @@ public class ReviewResponseDTO {
                 .reviewLike(review.getReviewLike())
                 .reviewCreated(review.getReviewCreated())
                 .writerNickname(review.getUser().getUserName())
-                .build());
-        return responseDTOPage;
+                .build()).stream().collect(Collectors.toList());
+        return responseDTOList;
     }
 
     public ReviewResponseDTO toDto(Review review, boolean isLiked) {
