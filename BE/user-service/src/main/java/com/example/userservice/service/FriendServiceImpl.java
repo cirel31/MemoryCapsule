@@ -98,6 +98,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
+    @Transactional
     public boolean cancelUserAddFriend(Long hostId, Long guestId) {
         //TODO: 친구 요청 보내기 취소 서비스
         if (connectedRepository.disconnectFriend(hostId, guestId) == 1) return true;
@@ -122,6 +123,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
+    @Transactional
     public boolean userRejectFriend(Long hostId, Long guestId) {
         //TODO: 친구 요청이 온걸 거절하는 서비스
         if (connectedRepository.disconnectFriend(guestId, hostId) == 1) return true;
