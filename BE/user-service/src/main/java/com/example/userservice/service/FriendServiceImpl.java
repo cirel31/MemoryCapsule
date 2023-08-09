@@ -109,9 +109,11 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     @Transactional
-    public boolean userConfirmFriend(Long hostId, Long guestId) {
+    public boolean userConfirmFriend(Long hostId, Long guestId) throws Exception {
         //TODO: 친구 수락 서비스
-        connectedRepository.updateConfirmStateByerIdAndeeId(hostId, guestId, true);
+        Connected connected = connectedRepository.findByConnectIdRequesterIdAndConnectIdRequesteeId(hostId, guestId).orElseThrow(() -> new Exception("수락할 친구 요청이 없습니다"));
+//        connectedRepository.updateConfirmStateByerIdAndeeId(hostId, guestId, true);
+        connected.setConfirm(true);
         connectedRepository.save(Connected.builder()
                 .connectId(ConnectId.builder()
                         .requesterId(guestId)

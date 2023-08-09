@@ -14,7 +14,7 @@ public interface FriendService {
     //친구 요청 취소
     boolean cancelUserAddFriend(Long hostId, Long guestId);
     //친구 요청 온걸 수락
-    boolean userConfirmFriend(Long hostId, Long guestId);
+    boolean userConfirmFriend(Long hostId, Long guestId) throws Exception;
     //친구 요청 온걸 거절
     boolean userRejectFriend(Long hostId, Long guestId);
 

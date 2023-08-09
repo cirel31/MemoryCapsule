@@ -28,11 +28,11 @@ public interface ConnectedRepository extends JpaRepository<Connected, ConnectId>
     int addFriend(@Param("hostId") Long hostId,
                   @Param("guestId") Long guestId);
 
-    @Modifying
-    @Query(value = "UPDATE Connected " +
-            "SET Connected .confirm = :state " +
-            "where Connected .connectId.requesterId = :erId and Connected .connectId.requesteeId = :eeId", nativeQuery = true)
-    int updateConfirmStateByerIdAndeeId(@Param("erId") final Long erId,@Param("eeId") final Long eeId,@Param("state") final Boolean state);
+//    @Modifying
+//    @Query(value = "UPDATE Connected " +
+//            "SET Connected.confirm = :state " +
+//            "where Connected.connectId.requesterId = :erId and Connected.connectId.requesteeId = :eeId", nativeQuery = true)
+//    int updateConfirmStateByerIdAndeeId(@Param("erId") final Long erId, @Param("eeId") final Long eeId, @Param("state") final Boolean state);
 
     Optional<Connected> findByConnectIdRequesterIdAndConnectIdRequesteeId(Long connectId_requesterId, Long connectId_requesteeId);
 }
