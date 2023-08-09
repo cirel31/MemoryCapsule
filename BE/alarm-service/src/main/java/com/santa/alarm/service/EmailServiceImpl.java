@@ -6,7 +6,6 @@ import com.santa.alarm.dto.EmailDto;
 import com.santa.alarm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
@@ -14,7 +13,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
@@ -60,8 +58,8 @@ public class EmailServiceImpl implements EmailService {
     public ResponseEntity<String> sendMail(EmailDto emailDto, EmailType emailType) {
         try {
             javaMailSender.send(makeMail(emailDto, emailType));
-        } catch (MailSendException e) {
-            return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
         log.info(String.format("send mail to %s for %s", emailDto.getTo(), emailType));
         return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);
@@ -81,6 +79,7 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setSubject(emailType.getEmailTitle()); // 메일 제목
             mimeMessageHelper.setText(setContext(emailDto.getContextData(), emailType.name()), true); // 메일 본문 내용, HTML 여부
         } catch (MessagingException e) {
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return mimeMessage;
