@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import PostModal from "../post/PostModal";
+import Modal from "react-modal";
 
-const Pagination = ({ postList, currentPage, setCurrentPage }) => {
+const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
     //페이지네이션 처리해야 함
-    const [totalPages, setTotalPoges] = useState(postList.totalPages);
-
-    const currentItems = postList.content;
+    const totalPages = postList.totalPages;
+    Modal.setAppElement("#root");
 
     // 모달창 컨트롤을 위한 값
     const [selectedPost, setSelectedPost] = useState(null)
@@ -13,8 +13,8 @@ const Pagination = ({ postList, currentPage, setCurrentPage }) => {
 
     const openModal = (id) => {
         // const index = postList.findIndex((post => post.id === id))
-        const index = currentItems.findIndex((post => post.noticeIdx === id))
-        setSelectedPost(currentItems[index]);
+        const index = postList.content.findIndex((post => post.noticeIdx === id))
+        setSelectedPost(postList.content[index]);
         console.log("index : ", index);
         setIsModal(true);
     }
@@ -79,9 +79,8 @@ const Pagination = ({ postList, currentPage, setCurrentPage }) => {
 
     return (
         <div className="announce_pagenation">
-            {/* 자체 페이지네이션 */}
             {
-            currentItems.map((post) => (
+            postList.content.map((post) => (
                 <div className="announce_list_items">
                     <div
                         className="announce_list_item"
@@ -108,7 +107,6 @@ const Pagination = ({ postList, currentPage, setCurrentPage }) => {
                 ))
             }
 
-            {/* 페이지네이션 */}
             <div className="announce_pagenation_buttons">
                 {
                     Array.from(pageIndex()).map((index) => (

@@ -27,6 +27,12 @@ const AnnounceUserViewPage = ({page, size}) => {
         getNoticesData(page, size);
     }, []);
 
+    useEffect(() => {
+        console.log('[AnnounceUserViewPage] 페이지 로딩 시 한 번만 실행되는 함수');
+        console.log(page, size);
+        getNoticesData(page, size);
+    }, [currentPage]); // currentPage 변경시에만 실행
+
     /**
      * 1-1. 전체 공지사항 [get]
      * http://localhost:8080/notice/list?page=0&size=10
@@ -96,10 +102,9 @@ const AnnounceUserViewPage = ({page, size}) => {
         setIsModal(true)
     }
 
-    function isPostGetSuccess(postDetail) {
-        console.log("postDetail: ", postDetail);
+    function isPostGetSuccess() {
         try {
-            if (postDetail.totalElements === 0) {
+            if (postList.totalElements === 0) {
                 return true;
             }
             return false;
@@ -108,16 +113,17 @@ const AnnounceUserViewPage = ({page, size}) => {
         }
     }
 
-    const updatePage = () => {
+    const isUpdateNotice = (updatedNotice) => {
+        console.log("[isUpdateNotice]");
         getNoticesData();
+        isPostGetSuccess();
     }
 
     return (
         <>
             <div className="announce_list">
-
                 {
-                    isPostGetSuccess(postList)
+                    isPostGetSuccess()
                     ?
                     <div className="announce_nothing">
                         <p>등록된 공지사항이 없습니다.</p>
@@ -141,7 +147,7 @@ const AnnounceUserViewPage = ({page, size}) => {
                             setPostList={setPostList}
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
-                            onChange={updatePage}
+                            onChange={isUpdateNotice}
                         />
                     )
                 }
