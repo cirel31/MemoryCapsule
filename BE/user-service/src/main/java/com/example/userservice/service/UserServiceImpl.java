@@ -169,10 +169,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception {
         User user = getUserById(info.getUserId());
-        if (!info.getNickName().isEmpty())  user.setNickName(info.getNickName());
-        if (!info.getPassword().isEmpty())  user.setPassWord(info.getPassword());
-        if (!multipartFile.isEmpty())   user.setImgUrl(getImgUrl(multipartFile));
-//        user.modifyUser(info.getNickName(), passwordEncoder.encode(info.getPassword()), getImgUrl(multipartFile));
+        if (info.getNickName() != null)  user.setNickName(info.getNickName());
+        if (info.getPassword() != null)  user.setPassWord(info.getPassword());
+        if (multipartFile != null)   user.setImgUrl(getImgUrl(multipartFile));
     }
 
     @Override
