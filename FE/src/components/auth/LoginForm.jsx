@@ -106,13 +106,13 @@ const LoginForm = ({ form, setForm }) => {
 
           <div>
             <button onClick={handleSignupPage}>회원가입 페이지로</button>
-            <a href={OAUTH_KAKAO}>
-              <div >
-                <p>카카오톡으로 로그인</p>
-                <img src={kakao_login_img}/>
-              </div>
-
-            </a>
+            {/*<a href={OAUTH_KAKAO}>*/}
+            {/*  <div >*/}
+            {/*    <p>카카오톡으로 로그인</p>*/}
+            {/*    <img src={kakao_login_img}/>*/}
+            {/*  </div>*/}
+            
+            {/*</a>*/}
 
           </div>
           {!isValidEmail && <div className="login_alert">올바른 이메일 형식이 아닙니다.</div>}

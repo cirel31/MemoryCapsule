@@ -101,7 +101,15 @@ const ProjectListPage = () => {
         </div>
         <h1>현재 진행 중인 프로젝트</h1>
         {filteredProjects.length === 0 ? (
-          <p>프로젝트가 아직 없습니다.</p>
+          <div
+            style={{ width: '200px', height: "400px", border:'solid black 1px' }}
+          >
+            <Link to='/project/create'>
+              <button>
+                새로운 추억 생성
+              </button>
+            </Link>
+          </div>
         ) : (
           <div>
             {currentPosts.map((project) => (
