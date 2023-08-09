@@ -80,7 +80,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(final Long userId) {
-
+        // user Logout
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        String andDelete = ops.getAndDelete(String.valueOf(userId));
+        if(andDelete != null)
+            log.info("{} - logout!!", userId);
     }
 
     @Override
