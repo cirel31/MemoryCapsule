@@ -121,10 +121,8 @@ public class User {
         this.imgUrl = imgUrl;
     }
 
-    public boolean updatePoint(Long point) {
-        if (this.point + point < 0) return false;
-        this.point += point;
-        return true;
+    public void setPoint(Long point) {
+        this.point = point;
     }
 
     public void modifyPassword(String code) {

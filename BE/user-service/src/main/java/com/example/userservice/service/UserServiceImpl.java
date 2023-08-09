@@ -201,7 +201,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean updatePoint(Long userId, Long point) throws Exception {
         User user = getUserById(userId);
-        return user.updatePoint(point);
+        if (user.getPoint() + point < 0) return false;
+        user.setPoint(user.getPoint() + point);
+        return true;
     }
 
     @Override
