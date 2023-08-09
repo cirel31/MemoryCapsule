@@ -1,12 +1,10 @@
-package com.santa.projectservice.jpa;
+package com.santa.projectservice.model.jpa;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.santa.projectservice.model.dto.RegisterDto;
 import com.sun.istack.NotNull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -16,7 +14,7 @@ import javax.ws.rs.DefaultValue;
 
 @Entity
 @Table(name = "register")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Getter
 @ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -52,15 +50,31 @@ public class Register {
     @DefaultValue("0")
     private Boolean alarm;
 
-    public Register(User user, Project project, Boolean rgstr_type, Boolean rgstr_confirm, Boolean rgstr_alarm) {
+    @Builder
+    public Register(long id, User user, Project project, Boolean type, Boolean confirm, Boolean alarm) {
+        this.id = id;
         this.user = user;
         this.project = project;
-        this.type = rgstr_type;
-        this.confirm = rgstr_confirm;
-        this.alarm = rgstr_alarm;
+        this.type = type;
+        this.confirm = confirm;
+        this.alarm = alarm;
     }
 
-    public void confirm() {
+    public RegisterDto toDto(){
+        return RegisterDto.builder()
+                .id(this.id)
+                .userId(this.user.getId())
+                .pjtId(this.project.getId())
+                .type(this.type)
+                .confirm(this.confirm)
+                .alarm(this.alarm)
+                .build();
+    }
+
+
+    public void confirm(){
         this.confirm = true;
     }
+
+
 }

@@ -30,16 +30,19 @@ const ProjectForm = () => {
   const SubmitURL = "https://i9a608.p.ssafy.io:8000/project/create"
   const handleSubmit = (e) => {
     e.preventDefault()
-    const users = selectedUsers.map(user => Number(user))
+    const users = selectedUsers.map(user => Number(user)) || null
+    console.log(users)
     const formData = new FormData(formRef.current)
     formData.append('started', moment(startDate).format("YYYY-MM-DD[T]00:00:00"))
     formData.append('ended', moment(endDate).format("YYYY-MM-DD[T]00:00:00"))
-    formData.append('userList', JSON.stringify(users))
+    if (users.length > 0) {
+      formData.append('userList', JSON.stringify(users))
+    }
     formData.append('type', 1)
     for (const [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
-    const accessToken = sessionStorage.getItem("accessToken")
+    // const accessToken = sessionStorage.getItem("accessToken")
     try {
       axios.post(`${SubmitURL}`, formData, {
         headers: {

@@ -1,4 +1,4 @@
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
 import icon01 from "../../../assets/images/nav_icon_test_01.png";
@@ -9,7 +9,7 @@ import btn_deco from "../../../assets/images/resource/nav_button_deco.svg"
 import profile_img from "../../../assets/images/stamp/stamp_best.svg"
 import navbar_activate from "../../../assets/images/resource/nav_bar_activate_inactivate_btn.svg"
 import {useDispatch, useSelector} from "react-redux";
-import {fetchUserInfoThunk, logout} from "../../../store/userSlice";
+import {fetchUserInfoThunk, logoutUserThunk} from "../../../store/userSlice";
 
 
 const SidebarNav = styled.nav`
@@ -25,29 +25,6 @@ const SidebarNav = styled.nav`
   z-index: 10;
 `;
 
-const ImageWithText = styled.div`
-  position: relative;
-  width: 200px;
-`;
-
-const Image = styled.div`
-  background-image: url(${icon01});
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 100%;
-  height: 100px;
-`;
-
-const Text = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 18px;
-  color: white;
-`;
-
 export default function Navbar() {
   const dispatch = useDispatch()
   const [accessToken, setAccessToken] = useState(sessionStorage.getItem("accessToken"))
@@ -55,14 +32,11 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const LogoutUser = () => {
     console.log('로그아웃 버튼 작동 테스트', sessionStorage)
-    dispatch(logout());
-    window.location.href ='/login'
+    dispatch(logoutUserThunk());
   }
   const showSidebar = () => setSidebar(!sidebar)
   const navigate = useNavigate()
-  const handlePageBack = () => {
-    navigate(-1)
-  }
+
   const handlePageHome = () => {
     navigate('/')
   }
@@ -96,7 +70,7 @@ export default function Navbar() {
               <div onClick={handlePageHome} >
                 <img src={logo_white} alt="LOGO" className="logo"/>
               </div>
-              <img src={nav_line} className="line"/>
+              <img src={nav_line} alt="이미지 존재하지 않음" className="line"/>
               
               <div className="profile_box">
                 <div className="profile_img_setting">
@@ -113,24 +87,13 @@ export default function Navbar() {
                 </div>
 
                 <button onClick={LogoutUser} className="logout_btn_nav">Logout</button>
-                {/*<div>*/}
-                {/*  <Link to='/login'>*/}
-                {/*    <button>*/}
-                {/*      Login*/}
-                {/*    </button>*/}
-                {/*  </Link>*/}
-                {/*  <Link to='/signup'>*/}
-                {/*    <button>*/}
-                {/*      signup*/}
-                {/*    </button>*/}
-                {/*  </Link>*/}
-                {/*</div>*/}
               </div>
+              
               <div className="nav_btn_group">
                 <div>
                   <Link to='/mypage' className="link_txt" >
                     <button className="nav_button" >
-                      <img src={btn_deco} className="button_deco"/>
+                      <img src={btn_deco} alt="이미지 존재하지 않음" className="button_deco"/>
                       <p>MY PAGE</p>
                     </button>
                   </Link>
@@ -138,7 +101,7 @@ export default function Navbar() {
                 <div>
                   <Link to='/project' className="link_txt">
                     <button className="nav_button" >
-                      <img src={btn_deco} className="button_deco"/>
+                      <img src={btn_deco} alt="이미지 존재하지 않음" className="button_deco"/>
                       <p>MY MEMORY</p>
                     </button>
                   </Link>
@@ -146,7 +109,7 @@ export default function Navbar() {
                 <div>
                   <Link to='/friend' className="link_txt">
                     <button className="nav_button" >
-                      <img src={btn_deco} className="button_deco"/>
+                      <img src={btn_deco} alt="이미지 존재하지 않음" className="button_deco"/>
                       <p>CAPSULE BOX</p>
                     </button>
                   </Link>
@@ -155,7 +118,7 @@ export default function Navbar() {
                   {/*리뷰페이지로 router추가해야함*/}
                   <Link to='/reviews' className="link_txt">
                     <button className="nav_button" >
-                      <img src={btn_deco} className="button_deco"/>
+                      <img src={btn_deco} alt="이미지 존재하지 않음" className="button_deco"/>
                       <p>REVIEW</p>
                     </button>
                   </Link>
@@ -163,14 +126,14 @@ export default function Navbar() {
                 <div>
                   <Link to='/announce' className="link_txt">
                     <button className="nav_button" >
-                      <img src={btn_deco} className="button_deco"/>
+                      <img src={btn_deco} alt="이미지 존재하지 않음" className="button_deco"/>
                       <p>NOTICE</p>
                     </button>
                   </Link>
                 </div>
               </div>
             </div>
-            <button onClick={showSidebar} className="nav_bar_active_btn2"><img src={navbar_activate} className="navbar_pictogram"/></button>
+            <button onClick={showSidebar} className="nav_bar_active_btn2"><img src={navbar_activate} alt="이미지 존재하지 않음" className="navbar_pictogram"/></button>
           </nav>
         </SidebarNav>
       </>

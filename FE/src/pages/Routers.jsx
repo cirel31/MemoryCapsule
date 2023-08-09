@@ -19,6 +19,7 @@ import ProjectListPage from "./project/ProjectListPage";
 import ProjectCreatePage from "./project/ProjectCreatePage";
 import InviteProject from "./project/InviteProject";
 import KakaoLoginPage from "./auth/KakaoLoginPage";
+import ProjectLockerPage from "./project/ProjectLockerPage";
 
 export default function Routers() {
 
@@ -34,8 +35,9 @@ export default function Routers() {
       <Route path='/project' element={<ProjectListPage />} />
       <Route path='/project/create' element={<ProjectCreatePage />} />
       <Route path='/project/:projectId' element={<ProjectDetailPage />} />
-      <Route path='/project/article/write/:projectId' element={<ArticleCreatePage />} />
+      <Route path='/project/:projectId/article' element={<ArticleCreatePage />} />
       <Route path='/project/invite' element={<InviteProject />}/>
+      <Route path='/project/locker' element={<ProjectLockerPage />} />
       <Route path='/friend' element={<FriendPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
       <Route path='/notice/postcreate' element={<PostCreatePage />} />

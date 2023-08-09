@@ -6,19 +6,19 @@ import profileedit_bg from "../../assets/images/signup/Sign_up.svg"
 import "../../styles/EditProfile.scss"
 import photo_picto from "../../assets/images/signup/upload.svg"
 import {fetchUserInfoThunk} from "../../store/userSlice";
-// <<<<<<< HEAD
-// =======
-//
-// >>>>>>> 58ccac9394c625ecd351fcef1219fdc06bed5203
+import goback_btn from "../../assets/images/signup/go_back.svg";
+import {useNavigate} from "react-router-dom";
+
 
 const EditProfilePage = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const user = useSelector((state) => state.userState.user) || null
   console.log(user)
   const user_nickname = user?.nickname || 'james'
   const user_img = user?.imgUrl || defaultImg
   const [imgFile, setImgFile] = useState(user_img);
-  const [originNickname, setoriginNickname] = useState(user_nickname);
+  const [originNickname, setOriginNickname] = useState(user_nickname);
   const imgRef = useRef();
   const nickRef = useRef()
   const formRef = useRef()
@@ -28,25 +28,29 @@ const EditProfilePage = () => {
   };
   const saveNickname = () => {
     const nickname = nickRef.current.value
-    setoriginNickname(nickname)
+    setOriginNickname(nickname)
   }
   const handleSubmit = (e) => {
     e.preventDefault();
     const baseURL = 'https://i9a608.p.ssafy.io:8000'
     const subURL = '/user/change'
     const accessToken = sessionStorage.getItem("accessToken")
+    console.log(accessToken)
     const userId = user.userId
     const formData = new FormData(formRef.current)
+    formData.append('userId', userId)
+
     try {
       axios.put(`${baseURL}${subURL}`, formData, {
         headers: {
-          "userId": {userId},
+          // "userId": {userId},
           "Authorization": `Bearer ${accessToken}`,
         }
       })
         .then((response) => {
           console.log("프로필 데이터 갱신 성공", response)
           dispatch(fetchUserInfoThunk(userId))
+          window.location.href ='/mypage'
         })
         .catch((error) => {
           console.log("프로필 데이터 갱신 실패", error)
@@ -55,8 +59,11 @@ const EditProfilePage = () => {
     catch (err) {
       console.log("정보수정 서버에 전달도 안됐다고....", err)
     }
-    
+
   };
+  const handleMyPage = () => {
+    navigate('/mypage')
+  }
   
   return (
     <>
@@ -70,10 +77,11 @@ const EditProfilePage = () => {
               alt="프로필 이미지를 불러올 수 없습니다."
             />
             <input
-              name="imgUrl"
+              name="file"
               type="file"
               accept="image/*"
               onChange={saveImgFile}
+              // value={imgFile}
               ref={imgRef}
               id="edit_image"
             />
@@ -85,7 +93,7 @@ const EditProfilePage = () => {
             <div>
               <h2>닉네임 변경하기</h2>
               <input
-                name="nickname"
+                name="nickName"
                 type="text"
                 value={originNickname}
                 onChange={saveNickname}
@@ -96,9 +104,8 @@ const EditProfilePage = () => {
             <button>비밀번호 변경하기</button>
           </div>
         </form>
-        
+        <button onClick={handleMyPage}><img src={goback_btn}/></button>
       </div>
-
     </>
   )
 }

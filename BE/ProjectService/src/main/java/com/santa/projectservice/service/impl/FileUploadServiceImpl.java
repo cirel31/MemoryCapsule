@@ -24,6 +24,8 @@ public class FileUploadServiceImpl implements FileUploadService {
         this.amazonS3 = amazonS3;
     }
 
+    @Value("${S3Url}")
+    private String s3Url;
 
     private static String getUuid() {
         return UUID.randomUUID().toString().replaceAll("-", "");
@@ -51,6 +53,6 @@ public class FileUploadServiceImpl implements FileUploadService {
             log.error(e.getMessage());
             return "FAIL";
         }
-        return fileName;
+        return s3Url + fileName;
     }
 }

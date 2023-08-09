@@ -43,7 +43,7 @@ const CalendarForm = () => {
   },[]);
   
   useEffect(() => {
-    const countCapsuleURL = 'http://i9a608.p.ssafy.io:8000/project/myproject/done'
+    const countCapsuleURL = 'https://i9a608.p.ssafy.io:8000/project/myproject/done'
     try {
       axios.get(`${countCapsuleURL}`, {
         headers: {

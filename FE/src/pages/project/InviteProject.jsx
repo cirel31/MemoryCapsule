@@ -3,12 +3,12 @@ import {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 
 const InviteProject = () => {
-  const baseURL = 'http://i9a608.p.ssafy.io:8000'
+  const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const inviteURL = '/project/invite'
   const [inviteLists, setInviteLists] = useState([])
   useEffect(() => {
     const searchInvite = async () => {
-      const accessToken = sessionStorage.getItem("accessToken")
+      // const accessToken = sessionStorage.getItem("accessToken")
       try {
         await axios.get(`${baseURL}${inviteURL}`, {
           headers: {
