@@ -200,11 +200,9 @@ public class ProjectController {
     public ResponseEntity<Boolean> writeArticle(@PathVariable("projectid") Long projectId,
                                                 @RequestParam(value = "files", required = false) List<MultipartFile> files,
                                                 @RequestParam(value = "content") String content,
-                                                @RequestParam(value = "title") String title,
                                                 @RequestParam(value = "stamp") Integer stamp,
                                                 HttpServletRequest request) throws IOException, ArticleException {
         Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
-        articleValidate(title, "title");
         articleValidate(content, "content");
         articleValidate(stamp, "stamp");
         return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -212,7 +210,6 @@ public class ProjectController {
                         .userId(userId)
                         .projectId(projectId)
                         .content(content)
-                        .title(title)
                         .stamp(stamp).build(), files)
         );
     }
