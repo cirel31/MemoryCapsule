@@ -20,11 +20,10 @@ const ProjectListPage = () => {
   useEffect(() => {
     const userId = user?.userId || ''
     console.log(userId)
-    // const accessToken = sessionStorage.getItem("accessToken")
     axios.get(`${baseURL}${subURL}`, {
       headers: {
         // "userId": `${userId}`,
-        "userId": 1004,
+        "userId": userId,
       }
     })
         .then((response) => {
@@ -117,7 +116,7 @@ const ProjectListPage = () => {
               </h3>
               <hr/>
               <br/>
-              <Link to={`/project/${selectedPost.id}`}>상세 페이지로 이동</Link>
+              <Link to={`/project/${selectedPost.idx}`}>상세 페이지로 이동</Link>
               <br/><br/>
               <button onClick={closeModal}>닫기</button>
             </div>
