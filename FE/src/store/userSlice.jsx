@@ -68,7 +68,7 @@ export const findPassThunk = createAsyncThunk(
       "phone" : {phone},
     }
     try {
-      const response = await axios.post(`http://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
+      const response = await axios.post(`https://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
         headers: {
           "Content-Type": "application/json"
         }

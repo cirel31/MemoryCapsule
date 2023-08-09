@@ -5,6 +5,7 @@ import axios from "axios";
 import profileedit_bg from "../../assets/images/signup/Sign_up.svg"
 import "../../styles/EditProfile.scss"
 import photo_picto from "../../assets/images/signup/upload.svg"
+import {fetchUserInfoThunk} from "../../store/userSlice";
 
 
 const EditProfilePage = () => {
