@@ -117,7 +117,6 @@ const userSlice = createSlice({
           state.status = 'succeeded';
           state.user = action.payload;
           console.log(state.user)
-          window.location.href ='/profile'
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
           state.isLoggedIn = false
