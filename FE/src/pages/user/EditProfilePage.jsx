@@ -6,10 +6,13 @@ import profileedit_bg from "../../assets/images/signup/Sign_up.svg"
 import "../../styles/EditProfile.scss"
 import photo_picto from "../../assets/images/signup/upload.svg"
 import {fetchUserInfoThunk} from "../../store/userSlice";
+import goback_btn from "../../assets/images/signup/go_back.svg";
+import {useNavigate} from "react-router-dom";
 
 
 const EditProfilePage = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const user = useSelector((state) => state.userState.user) || null
   console.log(user)
   const user_nickname = user?.nickname || 'james'
@@ -32,12 +35,17 @@ const EditProfilePage = () => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000'
     const subURL = '/user/change'
     const accessToken = sessionStorage.getItem("accessToken")
+    console.log(accessToken)
     const userId = user.userId
     const formData = new FormData(formRef.current)
+    formData.append('userId', userId)
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
     try {
       axios.put(`${baseURL}${subURL}`, formData, {
         headers: {
-          "userId": {userId},
+          // "userId": {userId},
           "Authorization": `Bearer ${accessToken}`,
         }
       })
@@ -54,6 +62,9 @@ const EditProfilePage = () => {
     }
     
   };
+  const handleMyPage = () => {
+    navigate('/mypage')
+  }
   
   return (
     <>
@@ -67,7 +78,7 @@ const EditProfilePage = () => {
               alt="프로필 이미지를 불러올 수 없습니다."
             />
             <input
-              name="imgUrl"
+              name="file"
               type="file"
               accept="image/*"
               onChange={saveImgFile}
@@ -82,7 +93,7 @@ const EditProfilePage = () => {
             <div>
               <h2>닉네임 변경하기</h2>
               <input
-                name="nickname"
+                name="nickName"
                 type="text"
                 value={originNickname}
                 onChange={saveNickname}
@@ -93,9 +104,8 @@ const EditProfilePage = () => {
             <button>비밀번호 변경하기</button>
           </div>
         </form>
-        
+        <button onClick={handleMyPage}><img src={goback_btn}/></button>
       </div>
-
     </>
   )
 }

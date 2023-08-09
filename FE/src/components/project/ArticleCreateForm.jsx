@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {useSelector} from "react-redux";
+// import {useSelector} from "react-redux";
 import stamp_best from "../../assets/images/stamp/stamp_best.svg"
 import stamp_angry from "../../assets/images/stamp/stamp_angry.svg"
 import stamp_hansum from "../../assets/images/stamp/stamp_hansum.svg"
@@ -17,7 +17,7 @@ const ArticleCreateForm = () => {
   const articleId = window.location.href.replace(window.location.origin, "")
   const [stampModalOpen, setStampModalOpen] = useState(false)
   const [feelingStamp, setFellingStamp] = useState([])
-  const baseURL = "http://i9a608.p.ssafy.io:8000"
+  const baseURL = "https://i9a608.p.ssafy.io:8000"
   const subURL = articleId
   const stamps = [
     {

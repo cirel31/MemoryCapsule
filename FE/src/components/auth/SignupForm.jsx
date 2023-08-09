@@ -11,11 +11,13 @@ import goback_btn from "../../assets/images/signup/go_back.svg";
 
 const SignupForm = ({ form, setForm,  }) => {
   const formRef = useRef(null)
+  const validationCodeRef = useRef()
   const navigate = useNavigate()
   const [policyModalIsOpen, setPolicyModalIsOpen] = useState(false)
   const [emailModalIsOpen, setEmailModalIsOpen] = useState(false)
   const [emailChecking, setEmailChecking] = useState(false)
   const [isAuthentication, setIsAuthentication] = useState(false)
+  const [validationCode, setValidationCode] = useState('')
   const {
     isChecked,
     isValidEmail,
@@ -31,7 +33,7 @@ const SignupForm = ({ form, setForm,  }) => {
   
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const signupURL = '/user/signup'
-  const authorizationURL = ''
+  const authorizationURL = '/user/emailCheck?user_email='
   
   const saveImgFile = () => {
     const file = imgRef.current.files[0];
@@ -60,26 +62,23 @@ const SignupForm = ({ form, setForm,  }) => {
   }
   const emailCheckServer = (e) => {
     e.preventDefault()
-    console.log(form.id)
     const emailData = form.id
-    setEmailChecking(true)
-    Swal.fire("사용 가능한 이메일입니다.")
-    
-    
-    // axios.post(`${baseURL}${authorizationURL}`, emailData)
-    //   .then((response) => {
-    //     console.log("이메일 사용 가능:", response)
-    //     Swal.fire("사용 가능한 이메일입니다.")
-    //     setEmailChecking(true)
-    //   })
-    //   .catch((error) => {
-    //     console.log("이메일 존재 :", error)
-    //     Swal.fire("이미 가입된 이메일입니다.")
-    //   })
+    axios.post(`${baseURL}${authorizationURL}${emailData}`)
+      .then((response) => {
+        console.log("이메일 사용 가능:", response)
+        Swal.fire("사용 가능한 이메일입니다.")
+        setEmailChecking(true)
+      })
+      .catch((error) => {
+        console.log(error)
+        if (error.response?.status === 406) {
+          Swal.fire(error.response.data)
+        }
+      })
   }
   const emailAuthentication = (e) => {
     e.preventDefault()
-    const authenticationCode = ''
+    const authenticationCode = validationCodeRef
     axios.post(`${baseURL}${authorizationURL}`, authenticationCode)
       .then((response) => {
         console.log("코드 인증 성공 : ", response)
@@ -292,7 +291,7 @@ const SignupForm = ({ form, setForm,  }) => {
             <label>인 증 코 드 : </label>
             <input
               type="text"
-              value=""
+              ref={validationCodeRef}
             />
             <button onClick={emailAuthentication}>이메일 인증하기</button>
           </div>

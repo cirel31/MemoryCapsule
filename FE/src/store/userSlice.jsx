@@ -48,7 +48,7 @@ export const logoutUserThunk = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
       const accessToken = sessionStorage.getItem("accessToken")
       try {
-        await axios.post(`https://i9a608.p.ssafy.io:8000/user//user/logout`, _, {
+        await axios.post(`https://i9a608.p.ssafy.io:8000/user/logout`, _, {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
         sessionStorage.clear();
@@ -120,7 +120,7 @@ const userSlice = createSlice({
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
           state.isLoggedIn = false
-
+          window.location.href ='/login'
         })
   }
 })

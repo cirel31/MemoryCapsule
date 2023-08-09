@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import "../../styles/testPage.css"
+import {useSelector} from "react-redux";
 
 
 const ProjectListPage = () => {
@@ -10,17 +11,20 @@ const ProjectListPage = () => {
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
-  const subURL = '/project/all'
-  // const API = '/project/all'
+  const subURL = '/project/myproject'
+  const user = useSelector((state) => state.userState.user) || null
   const [projects, setProjects] = useState([
 
   ]);
 
   useEffect(() => {
-    const accessToken = sessionStorage.getItem("accessToken")
+    const userId = user?.userId || ''
+    console.log(userId)
+    // const accessToken = sessionStorage.getItem("accessToken")
     axios.get(`${baseURL}${subURL}`, {
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        // "userId": `${userId}`,
+        "userId": 1004,
       }
     })
         .then((response) => {
@@ -40,7 +44,7 @@ const ProjectListPage = () => {
     setIsHovered(null)
   }
   const openModal = (id) => {
-    const postIndex = projects.findIndex((post => post.id === id))
+    const postIndex = projects.findIndex((post => post.idx === id))
     setSelectedPost(projects[postIndex])
     setIsModal(true)
   }
@@ -81,12 +85,14 @@ const ProjectListPage = () => {
               {currentPosts.map((project) => (
                   <div
                     key={project.id}
-                    className={`normal ${(isHovered === project.id) ? "chosen" : ""}`}
-                    onMouseEnter={() => handleMouseEnter(project.id)}
+                    className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
+                    onMouseEnter={() => handleMouseEnter(project.idx)}
                     onMouseLeave={handleMouseLeave}
-                    onClick={() => openModal(project.id)}
+                    onClick={() => openModal(project.idx)}
+                    style={{width:'200px'}}
                   >
                     프로젝트 제목 : {project.title}
+                    <img src={project.imgUrl} alt="" style={{width:'200px'}}/>
                   </div>
               ))}
             </div>
@@ -94,12 +100,15 @@ const ProjectListPage = () => {
         <Modal isOpen={isModal} onRequestClose={closeModal}>
           {selectedPost && (
             <div>
+              {console.log(selectedPost)}
               <h2>
                 {selectedPost.idx}
                 <hr/>
                 {selectedPost.title}
               </h2>
               <h3>
+                이미지 : {selectedPost.image}
+                <hr/>
                 내용 : {selectedPost.content}
                 <hr/>
                 시작 : {selectedPost.started}

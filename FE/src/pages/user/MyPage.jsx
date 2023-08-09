@@ -1,7 +1,7 @@
 import CalendarForm from "../../components/user/CalendarForm";
 import UserInfoHeaderForm from "../../components/user/UserInfoHeaderForm";
 import {useDispatch} from "react-redux";
-import {logout} from "../../store/userSlice";
+import {logout, logoutUserThunk} from "../../store/userSlice";
 import "../../styles/MyPage.scss";
 import CurrentProjectsPage from "./CurrentProjectsPage";
 import InviteProject from "../project/InviteProject";
@@ -12,8 +12,7 @@ const MyPage = () => {
   const dispatch = useDispatch();
   const LogoutUser = () => {
     console.log('로그아웃 버튼 작동 테스트', sessionStorage)
-    dispatch(logout());
-    window.location.href ='/login'
+    dispatch(logoutUserThunk());
   }
 
   return (
