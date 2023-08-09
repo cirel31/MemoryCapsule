@@ -101,7 +101,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
     }
 
-    @GetMapping("/find_password")
+    @PostMapping("/find_password")
     public ResponseEntity findPwd(@RequestBody UserDto.RequestFindPass userInfo) {
 
         if (userService.checkEmailDuplicated(userInfo)) {
