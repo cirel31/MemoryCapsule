@@ -35,9 +35,7 @@ public class UserDto {
     public static class modify{
         @NotNull
         private Long userId;
-        @NotNull
         private String nickName;
-        @NotNull
         private String password;
     }
 

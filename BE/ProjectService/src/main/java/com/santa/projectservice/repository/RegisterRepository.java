@@ -20,4 +20,5 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
 
 
     Long countByUser_Id(Long userId);
+    Integer countAllByUser_Id(Long userId);
 }

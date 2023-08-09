@@ -70,15 +70,16 @@ public class UserController {
                 null,
                 String.class
         );
-        if (response.getStatusCode().isError()) {
+        if (response.getStatusCodeValue() != HttpStatus.OK.value()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일 전송 실패");
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("회원가입 인증 코드: " + code);
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 인증 코드: " + code);
     }
 
     @PostMapping("/logout")
     public ResponseEntity userLogout(HttpServletRequest request) {
-        //
+        Long userId = Long.valueOf(request.getHeader("userId").toString());
+        userService.logout(userId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -101,7 +102,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
     }
 
-    @GetMapping("/find_password")
+    @PostMapping("/find_password")
     public ResponseEntity findPwd(@RequestBody UserDto.RequestFindPass userInfo) {
 
         if (userService.checkEmailDuplicated(userInfo)) {
@@ -153,7 +154,7 @@ public class UserController {
             @RequestParam(value = "point") Long point) {
         try {
             if (userService.updatePoint(userId, point)) {
-                return ResponseEntity.status(HttpStatus.OK).build();
+                return ResponseEntity.status(HttpStatus.OK).body("성공");
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포인트가 부족하여 사용이 불가능합니다.");
         } catch (Exception e) {

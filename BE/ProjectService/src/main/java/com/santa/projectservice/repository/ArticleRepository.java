@@ -13,4 +13,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<Article> findAllByProject_Id(Long projectId);
     long countByProjectId(Long projectId);
+
+    Integer countAllByUserId(Long userId);
 }

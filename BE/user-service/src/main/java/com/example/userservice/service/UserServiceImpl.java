@@ -80,7 +80,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(final Long userId) {
-
+        // user Logout
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        String andDelete = ops.getAndDelete(String.valueOf(userId));
+        if(andDelete != null)
+            log.info("{} - logout!!", userId);
     }
 
     @Override
@@ -169,7 +173,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception {
         User user = getUserById(info.getUserId());
-        user.modifyUser(info.getNickName(), passwordEncoder.encode(info.getPassword()), getImgUrl(multipartFile));
+        if (info.getNickName() != null)  user.setNickName(info.getNickName());
+        if (info.getPassword() != null)  user.setPassWord(info.getPassword());
+        if (multipartFile != null)   user.setImgUrl(getImgUrl(multipartFile));
     }
 
     @Override
@@ -196,10 +202,13 @@ public class UserServiceImpl implements UserService {
         user.modifyPassword(passwordEncoder.encode(code));
     }
 
+    @Transactional
     @Override
     public Boolean updatePoint(Long userId, Long point) throws Exception {
         User user = getUserById(userId);
-        return user.updatePoint(point);
+        if (user.getPoint() + point < 0) return false;
+        user.setPoint(user.getPoint() + point);
+        return true;
     }
 
     @Override

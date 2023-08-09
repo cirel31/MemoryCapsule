@@ -27,7 +27,7 @@ public class ReviewController {
     @ApiOperation(value = "리뷰 목록", notes = "리뷰 리스트들을 반환한다.", response = ReviewResponseDTO.class)
     @GetMapping("/list")
     public ResponseEntity<ReviewResponseDTO> getReviewList(Pageable pageable) {
-        return new ResponseEntity(reviewService.getReviewList(pageable).getContent(), HttpStatus.OK);
+        return new ResponseEntity(reviewService.getReviewList(pageable), HttpStatus.OK);
     }
 
     @ApiOperation(value = "리뷰 상세보기", notes = "리뷰 id를 통해 리뷰 상세정보를 가져온다. 또한 로그인한 유저 id를 통해 리뷰의 좋아요 유무도 포함되어있다.", response = ReviewResponseDTO.class)
@@ -50,10 +50,7 @@ public class ReviewController {
              @RequestPart(value = "file", required = false) MultipartFile file) {
         try {
             Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
-            if (reviewService.insertReview(insertDto, user_idx, file)) {
-                return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);
-            }
-            return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("new reviewIdx + " + reviewService.insertReview(insertDto, user_idx, file), HttpStatus.OK);
         } catch(Exception e) {
             log.error(e.getMessage());
         }

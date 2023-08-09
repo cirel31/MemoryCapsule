@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ReviewService {
     Page<ReviewResponseDTO> getReviewList(Pageable pageable);
     ReviewResponseDTO getReviewByReviewId(Long userIdx, Long reviewIdx) throws Exception;
-    boolean insertReview(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception;
+    Long insertReview(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception;
     void deleteReview(long reviewIdx) throws Exception;
     void modifyReviewById(ModifyDto modifyDto, MultipartFile file) throws Exception;
     boolean likedReviewByReviewId(Long reviewIdx, Long userIdx);

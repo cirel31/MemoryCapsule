@@ -32,15 +32,6 @@ public class FriendController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @PostMapping("/add")
-    public ResponseEntity connectedUser(
-            @RequestParam(value = "host_id") Long host_id,
-            @RequestParam(value = "guest_id") Long guest_id
-    ) {
-        friendService.userAddFriend(host_id, guest_id);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
     @GetMapping("/find/{user_email}")
     public ResponseEntity findByUserEmail(@RequestParam(value = "host_id") Long host_id,
                                           @PathVariable("user_email") String user_email) {
@@ -48,18 +39,18 @@ public class FriendController {
             FriendDto.showFriend friendDto = friendService.findUserEmail(host_id, user_email);
             return ResponseEntity.status(HttpStatus.OK).body(friendDto);
         } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete") //친구 삭제함
     public ResponseEntity deleteFriend(
-            @RequestParam("hostId") Long hostId,
-            @RequestParam("guestId") Long guestId
+            @RequestParam("host_id") Long hostId,
+            @RequestParam("guest_id") Long guestId
     ){
         boolean result = friendService.deleteFirend(hostId, guestId);
         if(result) return ResponseEntity.status(HttpStatus.OK).build();
-        else return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @GetMapping("/getDetailedFriendList/{userId}")
@@ -68,10 +59,52 @@ public class FriendController {
     ){
         try {
             List<FriendDto.basicFriendInfo> friendsInfo = friendService.getFriendsInfo(userId);
+
             return ResponseEntity.status(HttpStatus.OK).body(friendsInfo);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
+    @PostMapping("/add") //내가 요청 보냄
+    public ResponseEntity sendRequestFriend(
+            @RequestParam(value = "host_id") Long host_id,
+            @RequestParam(value = "guest_id") Long guest_id
+    ) {
+        if (friendService.userAddFriend(host_id, guest_id))
+            return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 친구 신청을 했거나 잘못된 요청입니다.");
+    }
+
+    @DeleteMapping("/add") //내가 요청 보낸걸 취소함
+    public ResponseEntity cancelSendRequestFriend(
+            @RequestParam(value = "host_id") Long host_id,
+            @RequestParam(value = "guest_id") Long guest_id
+    ) {
+        if (friendService.cancelUserAddFriend(host_id, guest_id))
+            return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("친구 요청을 이미 취소 했거나 잘못된 요청입니다.");
+    }
+
+    @PutMapping("/request") //요청이 온걸 수락함
+    public ResponseEntity requestInsert(@RequestParam(value = "host_id") Long host_id,
+                                        @RequestParam(value = "guest_id") Long guest_id
+    ) {
+        try {
+            if (friendService.userConfirmFriend(host_id, guest_id))
+                return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("친구 요청을 이미 수락했거나 잘못된 요청입니다.");
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/request") //요청이 온걸 거절함
+    public ResponseEntity requestDelete(@RequestParam(value = "host_id") Long host_id,
+                                        @RequestParam(value = "guest_id") Long guest_id
+    ) {
+        if (friendService.userRejectFriend(host_id, guest_id))
+            return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("친구 요청을 이미 거절했거나 잘못된 요청입니다.");
+    }
 }

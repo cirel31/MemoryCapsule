@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: org.springframework.integration:spring-integration-amqp:5.5.18" type="java-imported" external-system-id="Maven">
+    <properties groupId="org.springframework.integration" artifactId="spring-integration-amqp" version="5.5.18" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/integration/spring-integration-amqp/5.5.18/spring-integration-amqp-5.5.18.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/integration/spring-integration-amqp/5.5.18/spring-integration-amqp-5.5.18-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/integration/spring-integration-amqp/5.5.18/spring-integration-amqp-5.5.18-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

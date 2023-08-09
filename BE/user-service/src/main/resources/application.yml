@@ -25,7 +25,7 @@ oauth2:
       kakao:
         client-id: 50389ab406794f10677cfc8b7e3bcf4d
         client-secret: bz2JnPOVnr8G9y907sRzdQIWGLcTbAr3
-        redirect-uri: http://localhost:8000/login/oauth2/code/kakao
+        redirect-uri: http://localhost:3000/login/kakao
         authorization-grant-type: authorization_code
         client-name: Kakao
         scope:

@@ -74,6 +74,20 @@ public class User {
     @JsonIgnore
     private List<User> friendList = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)})
+    @WhereJoinTable (clause = "connected_confirm = '0'")
+    @JsonIgnore
+    private List<User> comeRequestFriendList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)})
+    @WhereJoinTable (clause = "connected_confirm = '0'")
+    @JsonIgnore
+    private List<User> sendRequestFriendList = new ArrayList<>();
+
     // 프로젝트 목록
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "register",
@@ -83,22 +97,24 @@ public class User {
     @JsonIgnore
     private List<Project> projectList = new ArrayList<>();
 
-
-
     public void deleteUser() {
         this.deleted = true;
     }
 
-    public void modifyUser(String nickName, String passWord, String file) {
+    public void setNickName(String nickName) {
         this.nickName = nickName;
-        this.passWord = passWord;
-        this.imgUrl = file;
     }
 
-    public boolean updatePoint(Long point) {
-        if (this.point + point < 0) return false;
-        this.point += point;
-        return true;
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public void setPoint(Long point) {
+        this.point = point;
     }
 
     public void modifyPassword(String code) {
