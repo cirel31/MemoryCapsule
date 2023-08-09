@@ -18,7 +18,7 @@ const EditProfilePage = () => {
   const user_nickname = user?.nickname || 'james'
   const user_img = user?.imgUrl || defaultImg
   const [imgFile, setImgFile] = useState(user_img);
-  const [originNickname, setoriginNickname] = useState(user_nickname);
+  const [originNickname, setOriginNickname] = useState(user_nickname);
   const imgRef = useRef();
   const nickRef = useRef()
   const formRef = useRef()
@@ -28,7 +28,7 @@ const EditProfilePage = () => {
   };
   const saveNickname = () => {
     const nickname = nickRef.current.value
-    setoriginNickname(nickname)
+    setOriginNickname(nickname)
   }
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,9 +39,7 @@ const EditProfilePage = () => {
     const userId = user.userId
     const formData = new FormData(formRef.current)
     formData.append('userId', userId)
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+
     try {
       axios.put(`${baseURL}${subURL}`, formData, {
         headers: {
@@ -52,6 +50,7 @@ const EditProfilePage = () => {
         .then((response) => {
           console.log("프로필 데이터 갱신 성공", response)
           dispatch(fetchUserInfoThunk(userId))
+          window.location.href ='/mypage'
         })
         .catch((error) => {
           console.log("프로필 데이터 갱신 실패", error)
@@ -60,7 +59,7 @@ const EditProfilePage = () => {
     catch (err) {
       console.log("정보수정 서버에 전달도 안됐다고....", err)
     }
-    
+
   };
   const handleMyPage = () => {
     navigate('/mypage')
@@ -82,6 +81,7 @@ const EditProfilePage = () => {
               type="file"
               accept="image/*"
               onChange={saveImgFile}
+              // value={imgFile}
               ref={imgRef}
               id="edit_image"
             />

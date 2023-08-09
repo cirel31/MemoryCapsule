@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import {useSelector} from "react-redux";
+import arona from "../../assets/images/kokona.png"
 
 const CurrentProjectsPage = () => {
   const [isHovered, setIsHovered] = useState(null)
@@ -85,7 +86,6 @@ const CurrentProjectsPage = () => {
 
   return (
     <div>
-      <h1>제작 중인 캡슐 현황</h1>
       {/* 모양 때문에 일단 정렬만 해둠 */}
       <div style={{display: "flex", alignItems:"center"}}>
         <button onClick={startBTN}>◀◀</button>
@@ -98,19 +98,19 @@ const CurrentProjectsPage = () => {
           ) : (
             <div style={{display:'flex', alignItems:'center'}}>
               {currentPosts.map((project) => (
+                
                 <Link
                   to={`/project/${project.idx}`}
                   key={project.idx}
                 >
                   
-                  {/* normal chosen을 원하는 효과 넣은 클래스로 변경 ㄱㄱ */}
                   <div
                     onMouseEnter={() => handleMouseEnter(project.idx)}
                     onMouseLeave={() => handleMouseLeave(project)}
                     onMouseMove={(event) => handleMouseMove(project.idx, event)}
                     style={{
                         width: '200px',
-                        height: '200px',
+                        height: '250px',
                         margin: '1rem',
                         background: 'lightblue',
                         display: 'flex',
@@ -121,14 +121,15 @@ const CurrentProjectsPage = () => {
                         transition: 'transform 0.1s'
                       }}
                   >
-                    <div
-                      style={{padding: '0.5rem'}}
-                    >
-                      {console.log(project.ar)}
+                    
+                    <div style={{width:'200px', height:"300px"}}>
                       <p>{project.title}</p>
+                      <img src={arona} alt="아로나" style={{width:'200px'}}/>
                       <p>기록한 추억 : {project.articleNum || 0}</p>
                     </div>
+                    
                   </div>
+                  
                 </Link>
               ))}
             </div>

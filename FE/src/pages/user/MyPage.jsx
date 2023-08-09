@@ -1,11 +1,13 @@
 import CalendarForm from "../../components/user/CalendarForm";
 import UserInfoHeaderForm from "../../components/user/UserInfoHeaderForm";
 import {useDispatch} from "react-redux";
-import {logout, logoutUserThunk} from "../../store/userSlice";
+import {logoutUserThunk} from "../../store/userSlice";
 import "../../styles/MyPage.scss";
 import CurrentProjectsPage from "./CurrentProjectsPage";
 import InviteProject from "../project/InviteProject";
 import AnnounceList from "../../components/announce/AnnounceList";
+import locker_img from "../../assets/images/present_box.jpg";
+import {Link} from "react-router-dom"
 
 
 const MyPage = () => {
@@ -48,6 +50,11 @@ const MyPage = () => {
             <br/>
             <br/>
             <h1 className="mypage_notice_h1">보관함</h1>
+            <div>
+              <Link to='/project/locker'>
+                <img src={locker_img} alt="보관함"/>
+              </Link>
+            </div>
             <div className="parting_line"></div>
         </div>
     </div>

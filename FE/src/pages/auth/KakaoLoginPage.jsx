@@ -35,6 +35,7 @@ const KakaoLoginPage = () => {
   return (
     <>
       <div>
+        Now Loading...
       </div>
     </>
   );
