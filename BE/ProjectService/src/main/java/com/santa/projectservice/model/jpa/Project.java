@@ -1,7 +1,7 @@
-package com.santa.projectservice.jpa;
+package com.santa.projectservice.model.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.inject.BindingAnnotation;
+import com.santa.projectservice.model.dto.ProjectDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,14 +12,14 @@ import javax.ws.rs.DefaultValue;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @ToString(exclude = {"registerList","articleList"})
 @Entity
 @Getter
 @Table(name = "project")
 @DynamicInsert //insert 시 null 인필드 제외
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@NoArgsConstructor
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,11 +46,11 @@ public class Project {
     private Date created;
 
     @Column(name = "pjt_imgurl", length = 2048)
-    private String imgurl;
+    private String imgUrl;
     @Column(name = "pjt_shareurl", length = 2048)
-    private String shareurl;
+    private String shareUrl;
     @Column(name = "pjt_type")
-    private int type;
+    private Integer type;
     @Column(name = "pjt_state")
     private Boolean state;
     @Column(name = "pjt_gift_url")
@@ -75,24 +75,16 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Article> articleList = new ArrayList<>();
 
-    public void delete() {
-        this.deleted = true;
-    }
-
-    public void editComment(String content) {
-        this.content = content;
-    }
-
     @Builder
-    public Project(Long id, String title, String content, Date started, Date ended, Date created, String imgurl, String shareurl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm) {
+    public Project(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, Integer type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm, List<Register> registerList, List<Article> articleList) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.started = started;
         this.ended = ended;
         this.created = created;
-        this.imgurl = imgurl;
-        this.shareurl = shareurl;
+        this.imgUrl = imgUrl;
+        this.shareUrl = shareUrl;
         this.type = type;
         this.state = state;
         this.giftUrl = giftUrl;
@@ -100,5 +92,40 @@ public class Project {
         this.deleted = deleted;
         this.alarmType = alarmType;
         this.alarm = alarm;
+        this.registerList = registerList;
+        this.articleList = articleList;
+    }
+
+    public ProjectDto toDto(){
+        return ProjectDto.builder()
+                .id(this.id)
+                .title(this.title)
+                .content(this.content)
+                .started(this.started)
+                .ended(this.ended)
+                .created(this.created)
+                .imgUrl(this.imgUrl)
+                .shareurl(this.shareUrl)
+                .type(this.type)
+                .state(this.state)
+                .giftUrl(this.giftUrl)
+                .limit(this.limit)
+                .deleted(this.deleted)
+                .alarmType(this.alarmType)
+                .alarm(this.alarm)
+                .build();
+    }
+
+    public void delete() {
+        this.deleted = true;
+    }
+    public String finish() {
+        this.state = true;
+        this.giftUrl = UUID.randomUUID().toString().replaceAll("-", "");
+        return this.giftUrl;
+    }
+
+    public void editComment(String content) {
+        this.content = content;
     }
 }
