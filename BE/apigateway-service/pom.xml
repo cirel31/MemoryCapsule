@@ -16,6 +16,10 @@
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2020.0.0</spring-cloud.version>
+        <sonar.projectName>apigateway-service</sonar.projectName>
+        <sonar.projectVersion>1.0.0</sonar.projectVersion>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
     </properties>
     <dependencies>
         <dependency>
@@ -139,12 +143,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.4.0.905</version>
-            </plugin>
-
         </plugins>
     </build>
     <repositories>

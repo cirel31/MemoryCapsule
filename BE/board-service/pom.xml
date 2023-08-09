@@ -9,13 +9,17 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.santa</groupId>
-	<artifactId>board</artifactId>
+	<artifactId>board-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>board</name>
 	<description>board service</description>
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.8</spring-cloud.version>
+		<sonar.projectName>board-service</sonar.projectName>
+        <sonar.projectVersion>1.0.0</sonar.projectVersion>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -197,11 +201,6 @@
 						</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.4.0.905</version>
 			</plugin>
 		</plugins>
 	</build>
