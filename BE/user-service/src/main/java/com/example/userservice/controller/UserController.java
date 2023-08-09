@@ -153,7 +153,7 @@ public class UserController {
             @RequestParam(value = "point") Long point) {
         try {
             if (userService.updatePoint(userId, point)) {
-                return ResponseEntity.status(HttpStatus.OK).build();
+                return ResponseEntity.status(HttpStatus.OK).body("성공");
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포인트가 부족하여 사용이 불가능합니다.");
         } catch (Exception e) {
