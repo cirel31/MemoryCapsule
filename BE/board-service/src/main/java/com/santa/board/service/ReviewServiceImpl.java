@@ -14,10 +14,13 @@ import com.santa.board.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -39,9 +42,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional(readOnly = true)
     @Override
     public Page<ReviewResponseDTO> getReviewList(Pageable pageable) {
-        Page<ReviewResponseDTO> responseDTOPage = new ReviewResponseDTO().toDtoList(reviewRepository.findByReviewDeletedFalse(pageable));
-        log.info(LogMessageEnum.TOTAL_LIST_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, responseDTOPage));
-        return responseDTOPage;
+        Page<Review> reviewPage = reviewRepository.findByReviewDeletedFalse(pageable);
+        List<ReviewResponseDTO> responseDTOList = new ReviewResponseDTO().toDtoList(reviewPage);
+        log.info(LogMessageEnum.TOTAL_LIST_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, responseDTOList));
+        return new PageImpl<>(responseDTOList, pageable, reviewPage.getTotalElements());
     }
 
     /**
