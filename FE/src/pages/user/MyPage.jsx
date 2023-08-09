@@ -5,7 +5,6 @@ import {logoutUserThunk} from "../../store/userSlice";
 import "../../styles/MyPage.scss";
 import CurrentProjectsPage from "./CurrentProjectsPage";
 import InviteProject from "../project/InviteProject";
-import AnnounceList from "../../components/announce/AnnounceList";
 import locker_img from "../../assets/images/present_box.jpg";
 import {Link} from "react-router-dom"
 
@@ -37,7 +36,7 @@ const MyPage = () => {
             <h1 className="mypage_notice_h1">공지사항</h1>
             <div className="parting_line"></div>
             <div>
-                <AnnounceList page={0} size={3} setCurrentPage={0}/>
+              나중에 공지게시판 수정해서 넣을 것
             </div>
             <br/>
             <h1 className="mypage_notice_h1">제작중인 캡슐 현황</h1>
