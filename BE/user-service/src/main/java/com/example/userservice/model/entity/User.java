@@ -97,17 +97,9 @@ public class User {
     @JsonIgnore
     private List<Project> projectList = new ArrayList<>();
 
-
-
     public void deleteUser() {
         this.deleted = true;
     }
-
-//    public void modifyUser(String nickName, String passWord, String file) {
-//        this.nickName = nickName;
-//        this.passWord = passWord;
-//        this.imgUrl = file;
-//    }
 
     public void setNickName(String nickName) {
         this.nickName = nickName;

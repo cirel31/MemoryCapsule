@@ -198,6 +198,7 @@ public class UserServiceImpl implements UserService {
         user.modifyPassword(passwordEncoder.encode(code));
     }
 
+    @Transactional
     @Override
     public Boolean updatePoint(Long userId, Long point) throws Exception {
         User user = getUserById(userId);
