@@ -140,6 +140,7 @@
     }
   }
   .header_edit_profile_btn {
+    cursor: pointer;
     height: 30px;
     width: 130px;
     margin-left: 30px;
@@ -187,7 +188,8 @@
     grid-template-rows: 80px 80px 80px;
     .mypage_txt_group1{
       display: grid;
-      grid-template-columns: 100px 180px;
+      width: 100%;
+      grid-template-columns: auto auto;
       text-align: left;
       align-items: center;
       margin-left: 20px;
@@ -207,7 +209,7 @@
       margin-left: 20px;
     }
     .mypage_shorts_highlight{
-      font-size: 20pt;
+      font-size: 2em;
       color: var(--font_burgundy_100);
       font-weight: 700;
     }
