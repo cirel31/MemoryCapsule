@@ -28,7 +28,7 @@ public class NoticeController {
     @ApiOperation(value = "공지사항 목록", notes = "공지사항 리스트들을 반환한다.", response = NoticeResponseDto.class)
     @GetMapping("/list")
     public ResponseEntity getNoticeList(Pageable pageable) {
-        return new ResponseEntity(noticeService.getNoticeList(pageable).getContent(), HttpStatus.OK);
+        return new ResponseEntity(noticeService.getNoticeList(pageable), HttpStatus.OK);
     }
 
     @ApiOperation(value = "공지사항 상세보기", notes = "공지사항 id를 통해 공지사항 정보를 가져온다. ", response = NoticeResponseDto.class)
