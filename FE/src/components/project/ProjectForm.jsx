@@ -8,7 +8,12 @@ import ProjectAddFriends from "../../components/project/ProjectAddFriends";
 import {useDispatch, useSelector} from "react-redux";
 import {removeAll} from "../../store/selectFriendSlice";
 import moment from "moment";
-
+import photo_picto from "../../assets/images/signup/upload.svg";
+import solo_w from "../../assets/images/projectcreate/solo_white.svg";
+import create_w from "../../assets/images/projectcreate/write.svg";
+import group_w from "../../assets/images/projectcreate/Group_white.svg";
+import group_r from "../../assets/images/projectcreate/Group_red.svg";
+import def_img from "../../assets/images/stamp/stamp_best.svg"
 
 const ProjectForm = () => {
   const formRef = useRef(null)
@@ -89,23 +94,22 @@ const ProjectForm = () => {
   };
   
   return (
-    <div>
+    <div className="project_create_forms_body">
       <div>
         <form ref={formRef}>
-          <div>
-            <label id="title">캡슐 이름</label>
-            <br/>
-            <input
-              id="title"
-              name="title"
-              className="title"
-              // required
-            />
-          </div>
-          <br/>
-          <div>
-            <label id="image">프로젝트 이미지</label>
-            <br/>
+          <div className="img_createupload">
+            <div>
+              {photos.map((photo, index) => (
+                <div key={index}>
+                  <img
+                    src={photo}
+                    alt={`미리보기 이미지 ${index+1}`}
+
+                  />
+                  <button type="button" onClick={() => deletePhoto(index)}>삭제</button>
+                </div>
+              ))}
+            </div>
             <input
               id="image"
               name="image"
@@ -114,76 +118,91 @@ const ProjectForm = () => {
               className="image"
               onChange={handleImage}
             />
-            <div>
-              {photos.map((photo, index) => (
-                <div key={index}>
-                  <img
-                    src={photo}
-                    alt={`미리보기 이미지 ${index+1}`}
-                    style={{ width: '300px', height: '300px', objectFit: 'cover' }}
-                  />
-                  <button type="button" onClick={() => deletePhoto(index)}>삭제</button>
-                </div>
-              ))}
-            </div>
-          </div>
-          <br/>
-          <div>
-            <label>제작 기간</label>
-            <br />
-            <div>
-              {/* 시작일 */}
-              <input
-                // name="started"
-                type="text"
-                onClick={() => setShowStartDateModal(true)}
-                value={startDate ? startDate.toLocaleDateString() : ""}
-                // required
-                readOnly
-              />
-              <Modal isOpen={showStartDateModal} onRequestClose={() => setShowStartDateModal(false)}>
-                <Calendar
-                  value={startDate}
-                  onChange={handleStartDateChange}
-                  onClickDay={() => setShowStartDateModal(false)}
-                  dateFormat="yyyy-MM-dd"
-                />
-              </Modal>
+            <label htmlFor="image"><img src={photo_picto}/><p>캡슐 대표 이미지</p></label>
 
-              >>>>>
-
-              {/* 종료일 */}
-              <input
-                // name="ended"
-                type="text"
-                onClick={() => setShowEndDateModal(true)}
-                value={endDate ? endDate.toLocaleDateString() : ""}
-                // required
-                readOnly
-              />
-              <Modal isOpen={showEndDateModal} onRequestClose={() => setShowEndDateModal(false)}>
-                <Calendar
-                  value={endDate}
-                  onChange={handleEndDateChange}
-                  onClickDay={() => setShowEndDateModal(false)}
-                  minDate={startDate ? new Date(startDate.getTime() + 86400000) : undefined}
-                  dateFormat="yyyy-MM-dd"
-                />
-              </Modal>
-            </div>
 
           </div>
-          <br/>
-          <div>
-            <label id="example">캡슐설명</label>
-            <br/>
-            <textarea
-              name="content"
-              id="example"
-              className='example'
+          <div className="project_contents_createupload">
+            <h1>새로운 캡슐 만들기</h1>
+
+            <h2>캡슐 이름</h2>
+            <input
+              id="title"
+              name="title"
+              className="title"
               // required
             />
+
+            <h2>제작 기간</h2>
+            <div className="project_contents">
+
+              <div className="dates">
+                {/* 시작일 */}
+                <input
+                  className="dateselect"
+                  // name="started"
+                  type="text"
+                  onClick={() => setShowStartDateModal(true)}
+                  value={startDate ? startDate.toLocaleDateString() : ""}
+                  // required
+                  readOnly
+                />
+                <Modal isOpen={showStartDateModal} onRequestClose={() => setShowStartDateModal(false)}>
+                  <Calendar
+                    value={startDate}
+                    onChange={handleStartDateChange}
+                    onClickDay={() => setShowStartDateModal(false)}
+                    dateFormat="yyyy-MM-dd"
+                  />
+                </Modal>
+
+                <p>>>></p>
+
+                {/* 종료일 */}
+                <input
+                  className="dateselect"
+                  // name="ended"
+                  type="text"
+                  onClick={() => setShowEndDateModal(true)}
+                  value={endDate ? endDate.toLocaleDateString() : ""}
+                  // required
+                  readOnly
+                />
+                <Modal isOpen={showEndDateModal} onRequestClose={() => setShowEndDateModal(false)}>
+                  <Calendar
+                    value={endDate}
+                    onChange={handleEndDateChange}
+                    onClickDay={() => setShowEndDateModal(false)}
+                    minDate={startDate ? new Date(startDate.getTime() + 86400000) : undefined}
+                    dateFormat="yyyy-MM-dd"
+                  />
+                </Modal>
+
+              </div>
+              <h2>캡슐설명</h2>
+
+              <textarea
+                name="content"
+                id="example"
+                className='example'
+                spellCheck="false"
+                // required
+              />
+            </div>
+            <div>
+
+            </div>
           </div>
+
+          <br/>
+
+
+
+          <br/>
+
+
+          <br/>
+
           <br/>
           {/* 일부러 none 걸어논 거 */}
           <div style={{display:'none'}}>
@@ -195,15 +214,17 @@ const ProjectForm = () => {
           </div>
         </form>
         <div>
-          {/* 지금은 버튼으로 만들어둠 나중에 이미지로 바꾸십시오 */}
-          <div>
+          {/* 버튼이 눌린상태로 유지되어야 함. */}
+          <div className="project_create_solo_button">
             <button onClick={() => dispatch(removeAll())}>
-              혼자 할거야!
+              <img src={solo_w}/>
+              <p>혼자 할게요!</p>
             </button>
           </div>
-          <div>
+          <div className="project_create_group_button">
             <button onClick={() => setMultiplayModal(true)}>
-              여러명이서 할거야!
+              <img src={group_w}/>
+              <p>여러명이서 할게요!</p>
             </button>
             <Modal isOpen={multiplayModal} onRequestClose={() => setMultiplayModal(false)}>
               <ProjectAddFriends />
@@ -212,17 +233,19 @@ const ProjectForm = () => {
         </div>
       </div>
 
-      <div>
-        <h3>참여자 애들 프로필 사진 띄울 거</h3>
-        <div>
+      <div className="friends_with">
+        <p className="friends_with_titles">함께 하는 친구들</p>
+        <div className="friends_with_profile_imgs">
           {selectedUsers.map((userId) => (
-            <p key={userId}>{userId}</p>
+            <img
+              key={userId}
+              src={def_img}
+            />
           ))}
         </div>
       </div>
-      <div>
-        <button style={{marginTop:'1rem '}} onClick={handleSubmit}>생성하기</button>
-      </div>
+      <button style={{marginTop:'1rem '}} onClick={handleSubmit}>생성하기 <img src={create_w}/></button>
+
     </div>
   )
 }
