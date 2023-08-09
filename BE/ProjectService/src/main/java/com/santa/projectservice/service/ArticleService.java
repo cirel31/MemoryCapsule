@@ -1,10 +1,9 @@
 package com.santa.projectservice.service;
 
-import com.santa.projectservice.dto.ArticleDto;
+import com.santa.projectservice.model.dto.ArticleDto;
 import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
-import com.santa.projectservice.jpa.Article;
-import com.santa.projectservice.jpa.ArticleImg;
-import com.santa.projectservice.jpa.User;
+import com.santa.projectservice.model.jpa.Article;
+import com.santa.projectservice.model.jpa.ArticleImg;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

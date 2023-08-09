@@ -2,7 +2,6 @@ package com.example.userservice.service;
 
 import com.example.userservice.model.Enum.ProjectState;
 import com.example.userservice.model.dto.FriendDto;
-import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.ConnectId;
 import com.example.userservice.model.entity.Connected;
 import com.example.userservice.model.entity.Project;
@@ -11,7 +10,6 @@ import com.example.userservice.repository.ConnectedRepository;
 import com.example.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -110,7 +108,7 @@ public class FriendServiceImpl implements FriendService {
     @Transactional
     public List<FriendDto.basicFriendInfo> getFriendsInfo(Long userId) throws Exception {
         //TODO: 친구  정보 조회
-        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(String.format("%ld 의 유저는 존재하지 않습니다.", userId)));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(String.format("%ld 의 유저는 존재하지 않습니다.", userId)));
         List<User> friendList = user.getFriendList();
 
 

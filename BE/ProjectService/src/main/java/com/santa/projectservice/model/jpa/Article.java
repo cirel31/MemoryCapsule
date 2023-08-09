@@ -1,6 +1,8 @@
-package com.santa.projectservice.jpa;
+package com.santa.projectservice.model.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.santa.projectservice.model.dto.ArticleDto;
+import com.santa.projectservice.model.vo.ArticleVo;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,12 +12,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@ToString(exclude = {"articleList"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(exclude = {"articleImgList", "user"})
+@NoArgsConstructor
 @Entity
 @Getter
-@Setter
 @Table(name = "article")
 @DynamicInsert
 public class Article {
@@ -52,7 +54,7 @@ public class Article {
     private List<ArticleImg> articleImgList = new ArrayList<>();
 
     @Builder
-    public Article(Long id, Project project, User user,String title, String content, Date created, Integer stamp) {
+    public Article(Long id, Project project, User user, String title, String content, Date created, Integer stamp, List<ArticleImg> articleImgList) {
         this.id = id;
         this.project = project;
         this.user = user;
@@ -60,5 +62,29 @@ public class Article {
         this.content = content;
         this.created = created;
         this.stamp = stamp;
+        this.articleImgList = articleImgList;
+    }
+
+    public ArticleDto toDto(){
+        return ArticleDto.builder()
+                .id(this.id)
+                .projectId(this.project.getId())
+                .userId(this.user.getId())
+                .title(this.title)
+                .content(this.content)
+                .created(this.created)
+                .stamp(this.stamp)
+                .images(this.articleImgList.stream().map(ArticleImg::getImgurl).collect(Collectors.toList()))
+                .build();
+    }
+    public ArticleVo toVo(){
+        return ArticleVo.builder()
+                .userVo(this.user.toVo())
+                .title(this.title)
+                .content(this.content)
+                .created(this.created)
+                .stamp(this.stamp)
+                .images(this.articleImgList.stream().map(ArticleImg::getImgurl).collect(Collectors.toList()))
+                .build();
     }
 }
