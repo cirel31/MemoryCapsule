@@ -78,7 +78,8 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity userLogout(HttpServletRequest request) {
-        //
+        Long userId = Long.valueOf(request.getHeader("userId").toString());
+        userService.logout(userId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
