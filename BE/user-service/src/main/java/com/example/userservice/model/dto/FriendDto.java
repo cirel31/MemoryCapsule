@@ -17,6 +17,7 @@ public class FriendDto {
         private Long totalWriteCnt;
         private Long totalInProjectCnt;
         private Long totalProjectCnt;
+        private int status;
     }
 
     @Getter

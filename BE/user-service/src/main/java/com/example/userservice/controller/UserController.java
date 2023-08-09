@@ -73,7 +73,7 @@ public class UserController {
         if (response.getStatusCode().isError()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일 전송 실패");
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("회원가입 인증 코드: " + code);
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 인증 코드: " + code);
     }
 
     @PostMapping("/logout")
