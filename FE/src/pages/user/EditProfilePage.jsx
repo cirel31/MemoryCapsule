@@ -6,10 +6,10 @@ import profileedit_bg from "../../assets/images/signup/Sign_up.svg"
 import "../../styles/EditProfile.scss"
 import photo_picto from "../../assets/images/signup/upload.svg"
 import {fetchUserInfoThunk} from "../../store/userSlice";
-<<<<<<< HEAD
-=======
-
->>>>>>> 58ccac9394c625ecd351fcef1219fdc06bed5203
+// <<<<<<< HEAD
+// =======
+//
+// >>>>>>> 58ccac9394c625ecd351fcef1219fdc06bed5203
 
 const EditProfilePage = () => {
   const dispatch = useDispatch()

@@ -173,8 +173,11 @@
     height: 3vw;
     outline: dashed 2px var(--brand3_main);
     border: none;
+    padding: 0 0 0 5%;
     border-radius: 1rem;
     margin: 0 0 5% 0;
+    font-size: 1.15vw;
+    font-weight: 500;
   }
   & > input:active {
     outline: solid 2px var(--point1_main);
