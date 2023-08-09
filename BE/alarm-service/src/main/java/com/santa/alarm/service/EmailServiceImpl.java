@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailSendException;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -38,12 +38,12 @@ public class EmailServiceImpl implements EmailService {
      *  알람 서비스 -> 스케줄러로 실행함
      *  매일 23시 59분에 알람 보낼 유저들에게 이메일을 보낸다.
      */
-//    @Scheduled(cron = "0 59 23 * * *")
-//    private void dailyTaskAlarm() {
-//        for (EmailDto emailDto : userRepository.findUsersAndProjectsWithCriteria()) {
-//            sendMail(emailDto, EmailType.Alarm);
-//        }
-//    }
+    @Scheduled(cron = "0 59 23 * * *")
+    private void dailyTaskAlarm() {
+        for (EmailDto emailDto : userRepository.findUsersAndProjectsWithCriteria()) {
+            sendMail(emailDto, EmailType.Alarm);
+        }
+    }
 
     /**
      * 이메일을 보내는 함수
@@ -55,7 +55,6 @@ public class EmailServiceImpl implements EmailService {
      */
     @Async("mailExecutor")
     public ResponseEntity<String> sendMail(EmailDto emailDto, EmailType emailType) {
-        System.out.println("왔니");
         try {
             javaMailSender.send(makeMail(emailDto, emailType));
         } catch (Exception e) {
