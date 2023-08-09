@@ -90,9 +90,13 @@ public class FriendController {
     public ResponseEntity requestInsert(@RequestParam(value = "host_id") Long host_id,
                                         @RequestParam(value = "guest_id") Long guest_id
     ) {
-        if (friendService.userConfirmFriend(host_id, guest_id))
-            return ResponseEntity.status(HttpStatus.OK).build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("친구 요청을 이미 수락했거나 잘못된 요청입니다.");
+        try {
+            if (friendService.userConfirmFriend(host_id, guest_id))
+                return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("친구 요청을 이미 수락했거나 잘못된 요청입니다.");
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/request") //요청이 온걸 거절함
