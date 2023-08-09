@@ -38,7 +38,7 @@ const UserProfilePage = () => {
             <p>{user_email}</p>
           </div>
           {/* 마이페이지 이동 버튼 */}
-          <a href='/mypage'>
+          <a href='/project'>
             <button>시작하기</button>
           </a>
         </div>
