@@ -12,7 +12,6 @@ const useLoginEmail = () => {
     try {
       await dispatch(loginUserThunk(loginData));
       console.log(loginData)
-      navigate('/profile');
     } catch (err) {
       console.error("로그인 에러 발생", err);
     }

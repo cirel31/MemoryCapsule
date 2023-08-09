@@ -1,10 +1,12 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import {useNavigate} from "react-router-dom";
 
 export const loginUserThunk = createAsyncThunk(
     'user/loginUser',
     async (loginData, { dispatch, rejectWithValue }) => {
       const loginURL = 'https://i9a608.p.ssafy.io:8000/user/login'
+      const navigate = useNavigate()
       try {
         const response = await axios.post(`${loginURL}`, loginData, {
           headers: { "Content-Type": "application/json" }
@@ -18,6 +20,7 @@ export const loginUserThunk = createAsyncThunk(
         const userIdx = sessionStorage.getItem("userIdx");
         console.log(userIdx)
         dispatch(fetchUserInfoThunk(userIdx))
+        await navigate('/profile');
       } catch (error) {
         console.error("서버와 통신 실패로 로그인 에러 발생", error)
         console.log(loginURL)
@@ -48,7 +51,7 @@ export const logoutUserThunk = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
       const accessToken = sessionStorage.getItem("accessToken")
       try {
-        await axios.post(`https://i9a608.p.ssafy.io:8000/user//user/logout`, _, {
+        await axios.post(`https://i9a608.p.ssafy.io:8000/user/logout`, _, {
           headers: { Authorization: `Bearer ${accessToken}` }
         });
         sessionStorage.clear();
@@ -68,7 +71,7 @@ export const findPassThunk = createAsyncThunk(
       "phone" : {phone},
     }
     try {
-      const response = await axios.post(`http://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
+      const response = await axios.post(`https://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -120,7 +123,7 @@ const userSlice = createSlice({
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
           state.isLoggedIn = false
-
+          window.location.href ='/login'
         })
   }
 })

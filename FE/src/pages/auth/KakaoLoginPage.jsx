@@ -24,6 +24,7 @@ const KakaoLoginPage = () => {
           console.log(sessionStorage)
           const userIdx = sessionStorage.getItem("userIdx");
           dispatch(fetchUserInfoThunk(userIdx))
+          window.location.href ='/profile'
         })
         .catch((error) => {
           console.log("서버로부터 받지 못함", error);
@@ -34,7 +35,7 @@ const KakaoLoginPage = () => {
   return (
     <>
       <div>
-        <p>code : {code}</p>
+        Now Loading...
       </div>
     </>
   );

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import "../../styles/testPage.css"
+import {useSelector} from "react-redux";
 
 
 const ProjectListPage = () => {
@@ -10,17 +11,22 @@ const ProjectListPage = () => {
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
-  const subURL = '/project/all'
-  // const API = '/project/all'
+  const subURL = '/project/myproject'
+  const user = useSelector((state) => state.userState.user) || null
   const [projects, setProjects] = useState([
 
   ]);
-
+  const [searchTerm, setSearchTerm] = useState(''); // 입력한 검색어
+  const [filteredProjects, setFilteredProjects] = useState([]); // 필터된 프로젝트 목록
+  
+  
   useEffect(() => {
-    const accessToken = sessionStorage.getItem("accessToken")
+    const userId = user?.userId || ''
+    console.log(userId)
     axios.get(`${baseURL}${subURL}`, {
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        // "userId": `${userId}`,
+        "userId": userId,
       }
     })
         .then((response) => {
@@ -32,7 +38,14 @@ const ProjectListPage = () => {
           console.error(error.code)
         });
   }, []);
-
+  
+  useEffect(() => {
+    const results = projects.filter(project =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProjects(results);
+  }, [searchTerm, projects])
+  
   const handleMouseEnter = (id) => {
     setIsHovered(id)
   };
@@ -40,7 +53,7 @@ const ProjectListPage = () => {
     setIsHovered(null)
   }
   const openModal = (id) => {
-    const postIndex = projects.findIndex((post => post.id === id))
+    const postIndex = projects.findIndex((post => post.idx === id))
     setSelectedPost(projects[postIndex])
     setIsModal(true)
   }
@@ -51,7 +64,7 @@ const ProjectListPage = () => {
 
   const [currentSection, setCurrentSection] = useState(0);
 
-  const currentPosts = projects.slice(
+  const currentPosts = filteredProjects.slice(
     currentSection,
     (currentSection + 3),
   );
@@ -68,38 +81,64 @@ const ProjectListPage = () => {
   const endBTN = (e) => {
     setCurrentSection((prev) => projects.length  - 1);
   };
-
+  
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  
   Modal.setAppElement("#root");
 
   return (
       <div>
+        <div>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="프로젝트 검색..."
+          />
+          <button onClick={handleSearchChange}>검색</button>
+        </div>
         <h1>현재 진행 중인 프로젝트</h1>
-        {projects.length === 0 ? (
-            <p>프로젝트가 아직 없습니다.</p>
+        {filteredProjects.length === 0 ? (
+          <div
+            style={{ width: '200px', height: "400px", border:'solid black 1px' }}
+          >
+            <Link to='/project/create'>
+              <button>
+                새로운 추억 생성
+              </button>
+            </Link>
+          </div>
         ) : (
-            <div>
-              {currentPosts.map((project) => (
-                  <div
-                    key={project.id}
-                    className={`normal ${(isHovered === project.id) ? "chosen" : ""}`}
-                    onMouseEnter={() => handleMouseEnter(project.id)}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={() => openModal(project.id)}
-                  >
-                    프로젝트 제목 : {project.title}
-                  </div>
-              ))}
-            </div>
+          <div>
+            {currentPosts.map((project) => (
+              <div
+                key={project.id}
+                className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
+                onMouseEnter={() => handleMouseEnter(project.idx)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => openModal(project.idx)}
+                style={{ width: '200px' }}
+              >
+                프로젝트 제목 : {project.title}
+                <img src={project.imgUrl} alt="" style={{ width: '200px' }} />
+              </div>
+            ))}
+          </div>
         )}
         <Modal isOpen={isModal} onRequestClose={closeModal}>
           {selectedPost && (
             <div>
+              {console.log(selectedPost)}
               <h2>
                 {selectedPost.idx}
                 <hr/>
                 {selectedPost.title}
               </h2>
               <h3>
+                이미지 : {selectedPost.image}
+                <hr/>
                 내용 : {selectedPost.content}
                 <hr/>
                 시작 : {selectedPost.started}
@@ -108,7 +147,7 @@ const ProjectListPage = () => {
               </h3>
               <hr/>
               <br/>
-              <Link to={`/project/${selectedPost.id}`}>상세 페이지로 이동</Link>
+              <Link to={`/project/${selectedPost.idx}`}>상세 페이지로 이동</Link>
               <br/><br/>
               <button onClick={closeModal}>닫기</button>
             </div>

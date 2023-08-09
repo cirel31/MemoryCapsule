@@ -11,11 +11,13 @@ import goback_btn from "../../assets/images/signup/go_back.svg";
 
 const SignupForm = ({ form, setForm,  }) => {
   const formRef = useRef(null)
+  const validationCodeRef = useRef()
   const navigate = useNavigate()
   const [policyModalIsOpen, setPolicyModalIsOpen] = useState(false)
   const [emailModalIsOpen, setEmailModalIsOpen] = useState(false)
   const [emailChecking, setEmailChecking] = useState(false)
   const [isAuthentication, setIsAuthentication] = useState(false)
+  const [validationCode, setValidationCode] = useState('')
   const {
     isChecked,
     isValidEmail,
@@ -28,11 +30,11 @@ const SignupForm = ({ form, setForm,  }) => {
 
   const [imgFile, setImgFile] = useState(null);
   const imgRef = useRef();
-
+  
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const signupURL = '/user/signup'
-  const authorizationURL = ''
-
+  const authorizationURL = '/user/emailCheck?user_email='
+  
   const saveImgFile = () => {
     const file = imgRef.current.files[0];
     setImgFile(URL.createObjectURL(file));
@@ -54,24 +56,56 @@ const SignupForm = ({ form, setForm,  }) => {
     e.preventDefault();
     setPolicyModalIsOpen(true);
   }
-
+  const emailCheckPaper = (e) => {
+    e.preventDefault();
+    setEmailModalIsOpen(true);
+  }
+  const emailCheckServer = (e) => {
+    e.preventDefault()
+    const emailData = form.id
+    // axios.post(`${baseURL}${authorizationURL}${emailData}`)
+    //   .then((response) => {
+    //     console.log("이메일 사용 가능:", response)
+    //     Swal.fire("사용 가능한 이메일입니다.")
+    //     setEmailChecking(true)
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //     if (error.response?.status === 406) {
+    //       Swal.fire(error.response.data)
+    //     }
+    //   })
+    console.log(emailData)
+  }
+  const emailAuthentication = (e) => {
+    e.preventDefault()
+    // const authenticationCode = validationCodeRef
+    // console.log(authenticationCode)
+    // axios.post(`${baseURL}${authorizationURL}`, authenticationCode)
+    //   .then((response) => {
+    //     console.log("코드 인증 성공 : ", response)
+    //     Swal.fire("이메일 인증에 성공하였습니다.")
+    //     setIsAuthentication(true)
+    //   })
+    //   .catch((error) => {
+    //     console.log("이메일 존재 : ", error)
+    //     Swal.fire("입력하신 코드가 올바르지 않습니다.")
+    //   })
+  }
 
   const sendSignupData = (e) => {
     e.preventDefault()
-    const baseURL = 'http://i9a608.p.ssafy.io:8000'
-    const signupURL = '/user/signup'
     const formData = new FormData(formRef.current);
+    // console.log(formRef.current)
     for (const [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
-
     if (
       (form.id.length > 0 && isValidEmail) &&
       (form.nickname.length > 1) &&
       (form.password === form.passwordCheck) &&
       isChecked
     ) {
-      // get으로 서버에서 데이터 안받는 api 만들어보기
       axios.post(`${baseURL}${signupURL}`, formData, {
         headers : {
           "Content-Type": "multipart/form-data",
@@ -108,20 +142,23 @@ const SignupForm = ({ form, setForm,  }) => {
 
         <div className="form_set">
           <form onSubmit={sendSignupData} ref={formRef} id="loginForm">
-            {/* 프로필 디폴트 이미지 변경 시 imgFile : 뒤의 값 변경  */}
-            {/*<img*/}
-            {/*  src={imgFile ? imgFile:kokona}*/}
-            {/*  alt="프로필 이미지"*/}
-            {/*  style={{width:"100px"}}*/}
-            {/*/>*/}
-            {/*<input*/}
-            {/*  name="imgUrl"*/}
-            {/*  type="file"*/}
-            {/*  accept="image/*"*/}
-            {/*  id="profileImg"*/}
-            {/*  onChange={saveImgFile}*/}
-            {/*  ref={imgRef}*/}
-            {/*/>*/}
+            <div className="imgupload">
+              <img
+                src={imgFile ? imgFile:defaultimg}
+                alt="프로필 이미지"
+              />
+              <input
+                name="file"
+                type="file"
+                accept="image/*"
+                id="profileImg"
+                onChange={saveImgFile}
+                ref={imgRef}
+              />
+              <label htmlFor="profileImg">
+                <img src={photo_picto}/><p>사진 올리기</p>
+              </label>
+            </div>
             <div className="forms_namepart">
               <div className="name_part">
                 <p>Name</p>
@@ -155,7 +192,7 @@ const SignupForm = ({ form, setForm,  }) => {
                   type="email"
                   placeholder="example@example.com"
                   value={form.id}
-                  onChange={handleChange}
+                  onClick={emailCheckPaper}
                   required
                 />
               </div>
@@ -196,9 +233,6 @@ const SignupForm = ({ form, setForm,  }) => {
                 />
               </div>
             </div>
-
-
-
             <div className="signup_button_group">
               <div>
                 <button onClick={policyPaper}>약관 보기</button>
@@ -211,31 +245,23 @@ const SignupForm = ({ form, setForm,  }) => {
                     id="custom"
                   />
                   <label htmlFor="custom" className="custumlabel"></label>
-
                 </label>
               </div>
-
               <button type="submit">
                 회원가입
               </button>
             </div>
-
-
-
-
           </form>
           <div className="signup_alert_id">
             {!isValidEmail && <p>올바른 이메일 형식이 아닙니다!</p>}
           </div>
           <div className="signup_alert_nickname">
             { ((form.nickname.length > 0) && (form.nickname.length < 2)) && <p>닉네임은 2글자 이상이어야 합니다!</p> }
-
           </div>
           <div className="signup_alert_password">
             { ((form.password.length > 0) && (form.password.length < 4)) && <p>비밀번호는 4글자 이상이어야 합니다!</p> }
             { ((form.passwordCheck.length > 0) && !passwordChecking(form.password, form.passwordCheck)) && <p>비밀번호가 일치하지 않습니다!</p> }
           </div>
-
           <button onClick={handleLoginPage} className="goback_button"><img src={goback_btn}/></button>
         </div>
       </div>
@@ -246,6 +272,36 @@ const SignupForm = ({ form, setForm,  }) => {
           본 과정은 삼성 청년 소프트웨어 아카데미(SSAFY)의 일환으로 만들어진 것입니다.
         </div>
       </Modal>
+      <Modal isOpen={emailModalIsOpen}>
+        <div>
+          <label>
+            E-mail :
+          </label>
+          <input
+            name="email"
+            id="id"
+            type="email"
+            placeholder="example@example.com"
+            value={form.id}
+            onChange={handleChange}
+          />
+          <button onClick={emailCheckServer}>이메일 중복 확인</button>
+        </div>
+        {emailChecking &&
+          <div>
+            <label>인 증 코 드 : </label>
+            <input
+              type="text"
+              ref={validationCodeRef}
+            />
+            <button onClick={emailAuthentication}>이메일 인증하기</button>
+          </div>
+        }
+        
+        <button onClick={() => setEmailModalIsOpen(false)}>닫기</button>
+      </Modal>
+      
+      
     </div>
 
   )

@@ -138,7 +138,7 @@ const ProjectDetailPage = () => {
 
         </div>
         <br/><br/>
-        <Link to={`/project/article/write/${projectId}`}>
+        <Link to={`/project/${projectId}/article`}>
           <button>
             오늘의 게시글 생성
           </button>
