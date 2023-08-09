@@ -93,13 +93,13 @@ public class Oauth2Service {
         MediaType mediaType = new MediaType(MediaType.APPLICATION_FORM_URLENCODED, StandardCharsets.UTF_8);
         httpHeaders.setContentType(mediaType);
         ResponseEntity<KakaoDto.KakaoUserResponse> kakaoUserResponseResponseEntity = null;
-
+        log.info("kakao server send - getUserInfo");
         kakaoUserResponseResponseEntity = restTemplate.postForEntity(
                 oauth2Client.getUserInfoUri(),
                 new HttpEntity<>(httpHeaders),
                 KakaoDto.KakaoUserResponse.class
         );
-
+        log.info("kakao server received - getUserInfo");
         return kakaoUserResponseResponseEntity.getBody();
     }
 
@@ -117,11 +117,13 @@ public class Oauth2Service {
         MediaType mediaType = new MediaType(MediaType.APPLICATION_FORM_URLENCODED, StandardCharsets.UTF_8);
         httpHeaders.setContentType(mediaType);
         HttpEntity entity = new HttpEntity<>(parameters, httpHeaders);
+        log.info("kakao server send - getToken");
         ResponseEntity<KakaoDto.KakaoTokenResponse> result = restTemplate.postForEntity(
                 oauth2Client.getTokenUri(),
                 entity,
                 KakaoDto.KakaoTokenResponse.class
         );
+        log.info("kakao server received - getToken");
         return result.getBody();
     }
 
