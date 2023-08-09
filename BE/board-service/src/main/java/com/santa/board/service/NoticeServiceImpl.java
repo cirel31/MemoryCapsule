@@ -11,12 +11,14 @@ import com.santa.board.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -38,9 +40,10 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional(readOnly = true)
     @Override
     public Page<NoticeResponseDto> getNoticeList(Pageable pageable) {
-        Page<NoticeResponseDto> responseDTOPage = new NoticeResponseDto().toDtoList(noticeRepository.findByNoticeDeletedFalse(pageable));
-        log.info(LogMessageEnum.TOTAL_LIST_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, responseDTOPage));
-        return responseDTOPage;
+        Page<Notice> noticePage = noticeRepository.findByNoticeDeletedFalse(pageable);
+        List<NoticeResponseDto> responseDTOList = new NoticeResponseDto().toDtoList(noticePage);
+        log.info(LogMessageEnum.TOTAL_LIST_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, responseDTOList));
+        return new PageImpl<>(responseDTOList, pageable, noticePage.getTotalElements());
     }
 
     /**
