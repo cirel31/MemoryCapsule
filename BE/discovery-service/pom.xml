@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>discoveryservice</artifactId>
+    <artifactId>discovery-service</artifactId>
 <!--    <version>0.0.1-SNAPSHOT</version>-->
     <version>1.0</version>
     <name>discoveryservice</name>
@@ -17,6 +17,10 @@
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2020.0.0</spring-cloud.version>
+        <sonar.projectName>discovery-service</sonar.projectName>
+        <sonar.projectVersion>1.0.0</sonar.projectVersion>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <sonar.sources>src/main/java</sonar.sources>
     </properties>
     <dependencies>
         <dependency>
@@ -55,11 +59,6 @@
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.4.0.905</version>
             </plugin>
         </plugins>
     </build>
