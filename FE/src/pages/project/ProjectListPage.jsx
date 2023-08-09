@@ -16,7 +16,10 @@ const ProjectListPage = () => {
   const [projects, setProjects] = useState([
 
   ]);
-
+  const [searchTerm, setSearchTerm] = useState(''); // 입력한 검색어
+  const [filteredProjects, setFilteredProjects] = useState([]); // 필터된 프로젝트 목록
+  
+  
   useEffect(() => {
     const userId = user?.userId || ''
     console.log(userId)
@@ -35,7 +38,14 @@ const ProjectListPage = () => {
           console.error(error.code)
         });
   }, []);
-
+  
+  useEffect(() => {
+    const results = projects.filter(project =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProjects(results);
+  }, [searchTerm, projects])
+  
   const handleMouseEnter = (id) => {
     setIsHovered(id)
   };
@@ -54,7 +64,7 @@ const ProjectListPage = () => {
 
   const [currentSection, setCurrentSection] = useState(0);
 
-  const currentPosts = projects.slice(
+  const currentPosts = filteredProjects.slice(
     currentSection,
     (currentSection + 3),
   );
@@ -71,30 +81,43 @@ const ProjectListPage = () => {
   const endBTN = (e) => {
     setCurrentSection((prev) => projects.length  - 1);
   };
-
+  
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  
   Modal.setAppElement("#root");
 
   return (
       <div>
+        <div>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="프로젝트 검색..."
+          />
+          <button onClick={handleSearchChange}>검색</button>
+        </div>
         <h1>현재 진행 중인 프로젝트</h1>
-        {projects.length === 0 ? (
-            <p>프로젝트가 아직 없습니다.</p>
+        {filteredProjects.length === 0 ? (
+          <p>프로젝트가 아직 없습니다.</p>
         ) : (
-            <div>
-              {currentPosts.map((project) => (
-                  <div
-                    key={project.id}
-                    className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
-                    onMouseEnter={() => handleMouseEnter(project.idx)}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={() => openModal(project.idx)}
-                    style={{width:'200px'}}
-                  >
-                    프로젝트 제목 : {project.title}
-                    <img src={project.imgUrl} alt="" style={{width:'200px'}}/>
-                  </div>
-              ))}
-            </div>
+          <div>
+            {currentPosts.map((project) => (
+              <div
+                key={project.id}
+                className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
+                onMouseEnter={() => handleMouseEnter(project.idx)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => openModal(project.idx)}
+                style={{ width: '200px' }}
+              >
+                프로젝트 제목 : {project.title}
+                <img src={project.imgUrl} alt="" style={{ width: '200px' }} />
+              </div>
+            ))}
+          </div>
         )}
         <Modal isOpen={isModal} onRequestClose={closeModal}>
           {selectedPost && (

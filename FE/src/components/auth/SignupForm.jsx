@@ -63,32 +63,34 @@ const SignupForm = ({ form, setForm,  }) => {
   const emailCheckServer = (e) => {
     e.preventDefault()
     const emailData = form.id
-    axios.post(`${baseURL}${authorizationURL}${emailData}`)
-      .then((response) => {
-        console.log("이메일 사용 가능:", response)
-        Swal.fire("사용 가능한 이메일입니다.")
-        setEmailChecking(true)
-      })
-      .catch((error) => {
-        console.log(error)
-        if (error.response?.status === 406) {
-          Swal.fire(error.response.data)
-        }
-      })
+    // axios.post(`${baseURL}${authorizationURL}${emailData}`)
+    //   .then((response) => {
+    //     console.log("이메일 사용 가능:", response)
+    //     Swal.fire("사용 가능한 이메일입니다.")
+    //     setEmailChecking(true)
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //     if (error.response?.status === 406) {
+    //       Swal.fire(error.response.data)
+    //     }
+    //   })
+    console.log(emailData)
   }
   const emailAuthentication = (e) => {
     e.preventDefault()
-    const authenticationCode = validationCodeRef
-    axios.post(`${baseURL}${authorizationURL}`, authenticationCode)
-      .then((response) => {
-        console.log("코드 인증 성공 : ", response)
-        Swal.fire("이메일 인증에 성공하였습니다.")
-        setIsAuthentication(true)
-      })
-      .catch((error) => {
-        console.log("이메일 존재 : ", error)
-        Swal.fire("입력하신 코드가 올바르지 않습니다.")
-      })
+    // const authenticationCode = validationCodeRef
+    // console.log(authenticationCode)
+    // axios.post(`${baseURL}${authorizationURL}`, authenticationCode)
+    //   .then((response) => {
+    //     console.log("코드 인증 성공 : ", response)
+    //     Swal.fire("이메일 인증에 성공하였습니다.")
+    //     setIsAuthentication(true)
+    //   })
+    //   .catch((error) => {
+    //     console.log("이메일 존재 : ", error)
+    //     Swal.fire("입력하신 코드가 올바르지 않습니다.")
+    //   })
   }
 
   const sendSignupData = (e) => {
@@ -140,7 +142,6 @@ const SignupForm = ({ form, setForm,  }) => {
 
         <div className="form_set">
           <form onSubmit={sendSignupData} ref={formRef} id="loginForm">
-            {/* 프로필 디폴트 이미지 변경 시 imgFile : 뒤의 값 변경  */}
             <div className="imgupload">
               <img
                 src={imgFile ? imgFile:defaultimg}

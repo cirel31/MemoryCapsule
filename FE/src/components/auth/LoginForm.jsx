@@ -116,8 +116,7 @@ const LoginForm = ({ form, setForm }) => {
 
           </div>
           {!isValidEmail && <div className="login_alert">올바른 이메일 형식이 아닙니다.</div>}
-
-
+          
         </div>
       </div>
       {/* 모달 창 */}
