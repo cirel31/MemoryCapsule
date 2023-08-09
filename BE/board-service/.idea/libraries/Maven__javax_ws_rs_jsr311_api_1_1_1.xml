@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Maven: javax.ws.rs:jsr311-api:1.1.1" type="java-imported" external-system-id="Maven">
+    <properties groupId="javax.ws.rs" artifactId="jsr311-api" version="1.1.1" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/javax/ws/rs/jsr311-api/1.1.1/jsr311-api-1.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

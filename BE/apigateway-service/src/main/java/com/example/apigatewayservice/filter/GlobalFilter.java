@@ -32,45 +32,24 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            log.info("Global Filter baseMessage: {}, {}", config.getBaseMessage(), request.getRemoteAddress());
-            if (config.isPreLogger()) {
-                log.info("Global Filter Start: request id -> {}", request.getId());
-            }
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n+-----Global Filter baseMessage: ").append(config.getBaseMessage()).append("\n");
 
             if(config.isRequestLogger()) {
-                log.warn("요청이 들어와서 로깅을 시작합니다.");
-
-                log.info("메서드 정보 " + request.getMethod().toString());
-                log.info("요청 Id : " + request.getId().toString());
-
-                HttpHeaders headers = request.getHeaders();
-                log.info("Headers: {}", headers);
-
-                MultiValueMap<String, HttpCookie> cookies = request.getCookies();
-                log.info("Cookies: {}", cookies);
-
-                MultiValueMap<String, String> queryParams = request.getQueryParams();
-                log.info("Request Parameters: {}", queryParams);
-                if(request.getURI() != null) {
-                    log.info("URI: {}", request.getURI().toString());
-                }
-                if (null != request.getLocalAddress()) {
-                    log.info("LocalAddress: {}", request.getLocalAddress().toString());
-                }
-                if(request.getPath() != null) {
-                    log.info("RequestPath: {}", request.getPath().toString());
-                }
-                if(request.getSslInfo() != null) {
-                    log.info("SSLInfo: {}", request.getSslInfo().toString());
-                }
-                if(request.getRemoteAddress() != null) {
-                    log.info("RemoteAddress: {}", request.getRemoteAddress().toString());
-                }
+                sb.append("|Method: ").append(request.getMethod()).append("\n");
+                sb.append("|URI: ").append(request.getURI()).append("\n");
+                sb.append("|Headers:\n\t").append(request.getHeaders()).append("\n");
+                sb.append("|Cookies:\n\t").append(request.getCookies()).append("\n");
+                sb.append("|Query Params:\n\t").append(request.getQueryParams()).append("\n");
+                sb.append("|Path: ").append(request.getPath()).append("\n");
+                sb.append("|Remote Address: ").append(request.getRemoteAddress()).append("\n");
+                sb.append("|Local Address: ").append(request.getLocalAddress()).append("\n");
+                sb.append("|SslInfo: ").append(request.getSslInfo()).append("\n");
+                sb.append("|Id: ").append(request.getId()).append("\n");
             }
+            sb.append("+---------------------------> response : ").append(response.getStatusCode()).append("\n");
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
-                if (config.isPostLogger()) {
-                    log.info("Global Filter End: response code -> {}", response.getStatusCode());
-                }
+                log.info("{}", sb.toString());
             }));
         });
     }

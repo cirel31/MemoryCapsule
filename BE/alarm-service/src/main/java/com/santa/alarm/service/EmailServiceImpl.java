@@ -6,15 +6,13 @@ import com.santa.alarm.dto.EmailDto;
 import com.santa.alarm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailSendException;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
@@ -40,12 +38,13 @@ public class EmailServiceImpl implements EmailService {
      *  알람 서비스 -> 스케줄러로 실행함
      *  매일 23시 59분에 알람 보낼 유저들에게 이메일을 보낸다.
      */
-//    @Scheduled(cron = "0 59 23 * * *")
-//    private void dailyTaskAlarm() {
-//        for (EmailDto emailDto : userRepository.findUsersAndProjectsWithCriteria()) {
-//            sendMail(emailDto, EmailType.Alarm);
-//        }
-//    }
+    @Override
+    @Scheduled(cron = "0 59 23 * * *")
+    public void dailyTaskAlarm() {
+        for (EmailDto emailDto : userRepository.findUsersAndProjectsWithCriteria()) {
+            sendMail(emailDto, EmailType.Alarm);
+        }
+    }
 
     /**
      * 이메일을 보내는 함수
@@ -57,11 +56,10 @@ public class EmailServiceImpl implements EmailService {
      */
     @Async("mailExecutor")
     public ResponseEntity<String> sendMail(EmailDto emailDto, EmailType emailType) {
-        System.out.println("왔니");
         try {
             javaMailSender.send(makeMail(emailDto, emailType));
-        } catch (MailSendException e) {
-            return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_GATEWAY);
         }
         log.info(String.format("send mail to %s for %s", emailDto.getTo(), emailType));
         return new ResponseEntity(ResponseStatus.SUCCESS, HttpStatus.OK);
@@ -81,6 +79,7 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setSubject(emailType.getEmailTitle()); // 메일 제목
             mimeMessageHelper.setText(setContext(emailDto.getContextData(), emailType.name()), true); // 메일 본문 내용, HTML 여부
         } catch (MessagingException e) {
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
         return mimeMessage;

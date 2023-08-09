@@ -35,9 +35,7 @@ public class UserDto {
     public static class modify{
         @NotNull
         private Long userId;
-        @NotNull
         private String nickName;
-        @NotNull
         private String password;
     }
 
@@ -49,6 +47,16 @@ public class UserDto {
     public static class RequestLogin{
         private String email;
         private String password;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RequestFindPass{
+        private String email;
+        private String phone;
     }
 
     @Getter

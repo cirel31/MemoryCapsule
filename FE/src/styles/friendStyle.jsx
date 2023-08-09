@@ -9,7 +9,7 @@ const AuthFormBlock = styled.div`
     font-weight: bold;
     padding : 1rem;
   }
-  
+
   select {
     appearance:none;
     color : ${theme.theme.brand3_main};
@@ -30,11 +30,11 @@ const NoFriendList = styled.div`
     grid-template-rows: minmax(1fr, auto);
     background-color: ${theme.theme.backGround_main};
     text-align : center;
-    gap: 1rem;    
+    gap: 1rem;
     width : 1fr;
     padding : 1rem;
   }
-  
+
   .NoFriendList .textBlock {
     font-weight : bold;
     color : ${theme.theme.point1_main};
@@ -49,7 +49,7 @@ const AuthFormGrid = styled.div`
   .AuthFormGrid {
     display : grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;    
+    gap: 1rem;
     width : 1fr;
     padding : 1rem;
   }
@@ -80,13 +80,13 @@ const FreindEditor = styled.div`
       text-align: center;
       padding: 20px;
     }
-    
+
     .DiaryEditor input,
     textarea {
       margin-bottom: 20px;
       width: 500px;
     }
-    
+
     .DiaryEditor input {
       padding: 10px;
     }
@@ -94,13 +94,13 @@ const FreindEditor = styled.div`
       padding: 10px;
       height: 150px;
     }
-    
+
     .DiaryEditor select {
       width: 300px;
       padding: 10px;
       margin-bottom: 20px;
     }
-    
+
     .DiaryEditor button {
       width: 500px;
       padding: 10px;
@@ -110,17 +110,17 @@ const FreindEditor = styled.div`
 export { FreindEditor }
 
 
-const FriendItem = styled.div`    
+const FriendItem = styled.div`
     .FriendItem {
       background-color: ${theme.theme.backGround_main};
       margin-bottom: 10px;
       padding: 20px;
     }
-    
+
     .FriendItem span {
       margin-right: 10px;
     }
-    
+
     .FriendItem .info {
       display: flex;
       justify-content: space-between;
@@ -131,29 +131,29 @@ const FriendItem = styled.div`
     .FriendItem .date {
       color: gray;
     }
-    
+
     .FriendItem .content {
       margin-bottom: 30px;
       margin-top: 30px;
       font-weight: bold;
     }
-    
+
     .FriendItem textarea {
       padding: 10px;
     }
-    
+
     .FriendItem .CustomButtonFriend {
         margin : 1rem;
         height: 3rem;
         width: 3rem;
         border-radius : 100%;
     }
-    
+
   .FriendItem .addFriend {
         color : ${theme.theme.brand1_main};
         background-color : ${theme.theme.point1_main};
   }
-  
+
   .FriendItem .discardFriend {
         color : ${theme.theme.point1_main};
         background-color : ${theme.theme.brand1_main};
@@ -168,7 +168,7 @@ const FriendList = styled.div`
       padding: 20px;
       margin-top: 20px;
     }
-    
+
     .DiaryList h2 {
       text-align: center;
     }
@@ -183,8 +183,8 @@ const StyledBox = styled.div`
     text-align: center;
     font-weight: bold;
     letter-spacing: 2px;
-  }  
-  
+  }
+
   grid-column: 2 / 3;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.025);
   padding: 2rem;

@@ -1,16 +1,17 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/user")
@@ -57,9 +58,27 @@ public class UserController {
         }
     }
 
+    @PostMapping("/emailCheck")
+    public ResponseEntity emailCheck(@RequestParam(value = "user_email") String user_email) {
+        log.info("email-check");
+        if (userService.emailCheck(user_email)) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("이미 존재하는 이메일입니다.");
+        }
+        String code = userService.generateRandomCode();
+        ResponseEntity<String> response = new RestTemplate().postForEntity(
+                "http://notification-service:8081/email/register_verify/" + user_email + "/" + code,
+                null,
+                String.class
+        );
+        if (response.getStatusCodeValue() != HttpStatus.OK.value()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일 전송 실패");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 인증 코드: " + code);
+    }
+
     @PostMapping("/logout")
-    public ResponseEntity userLogout(Authentication authentication) {
-        userService.logout(authentication);
+    public ResponseEntity userLogout(HttpServletRequest request) {
+        //
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -73,23 +92,30 @@ public class UserController {
 
     @DeleteMapping("/delete")
     public ResponseEntity userDelete(@RequestParam(value = "user_id") Long user_id) {
-        userService.deleteUser(user_id);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try {
+            userService.deleteUser(user_id);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            log.error("Error - userDelete : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일과 일치하는 유저가 없습니다.");
     }
 
-    @GetMapping("/find_password")
-    public ResponseEntity findPwd(@PathVariable("userEmail") String userEmail) throws Exception {
-        if (userService.checkEmailDuplicated(userEmail)) {
-            String code = userService.generateRandomPassword();
+    @PostMapping("/find_password")
+    public ResponseEntity findPwd(@RequestBody UserDto.RequestFindPass userInfo) {
+
+        if (userService.checkEmailDuplicated(userInfo)) {
+            String tmp_pwd = userService.generateRandomCode();
             ResponseEntity<String> response = new RestTemplate().postForEntity(
-                    "http://notification-service:8081/email/register_verify/" + userEmail + "/" + code,
+                    "http://notification-service:8081/email/tmp_pwd/" + userInfo.getEmail() + "/" + tmp_pwd,
                     null,
                     String.class
             );
             if (response.getStatusCode().isError()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일 전송 실패");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이메일 전송 실패");
             }
-            return ResponseEntity.status(HttpStatus.CREATED).body("임시 비밀번호: " + code);
+            userService.modifyPassword(userInfo.getEmail(), tmp_pwd);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("임시 비밀번호: " + tmp_pwd);
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
     }
@@ -106,6 +132,32 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(userDetail);
         } catch(Exception e){
             log.error("Error - userDetail : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping("/point/{userId}")
+    public ResponseEntity getUserPoint(@PathVariable("userId") Long userId) {
+        try {
+            Long point = userService.getPoint(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(point);
+        } catch (Exception e) {
+            log.error("Error - getUserPoint : {}", e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PutMapping("/point/{userId}")
+    public ResponseEntity updateUserPoint(
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "point") Long point) {
+        try {
+            if (userService.updatePoint(userId, point)) {
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포인트가 부족하여 사용이 불가능합니다.");
+        } catch (Exception e) {
+            log.error("Error - updateUserPoint : {}", e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }

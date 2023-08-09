@@ -1,7 +1,6 @@
 package com.example.userservice.service;
 
 import com.example.userservice.model.Enum.UserRole;
-import com.example.userservice.model.dto.TokenDto;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.Access;
 import com.example.userservice.model.entity.User;
@@ -14,11 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,18 +49,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception {
-        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Not found"));
+        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new IllegalArgumentException("Not found"));
         if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
             throw new Exception("Password Not Matched!");
 
-        ArrayList<SimpleGrantedAuthority> author = new ArrayList<>();
-        if (UserRole.ADMIN.equals(user.getRole())) author.add(new SimpleGrantedAuthority("ADMIN"));
-        else author.add(new SimpleGrantedAuthority("USER"));
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        Authentication auth = new UsernamePasswordAuthenticationToken(user.getIdx(), user.getPassWord(), author);
         // refresh Token && access Token 생성
-        String refreshToken = tokenProvider.createRefreshToken(auth);
-        String accessToken = tokenProvider.createToken(auth);
+        String refreshToken = tokenProvider.createRefreshToken(user.getIdx());
+        String accessToken = tokenProvider.createAccessToken(user.getIdx());
 
         // Redis 저장
         ops.set(user.getIdx().toString(), refreshToken);
@@ -89,13 +79,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout(Authentication authentication) {
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        String userIdx = principal.getUsername();
-        // 유효 회원 check
-        ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        ops.getAndDelete(userIdx);
-        log.info("user logout - {}", userIdx);
+    public void logout(final Long userId) {
+
+    }
+
+    @Override
+    public boolean emailCheck(String userEmail) {
+        return userRepository.findByEmail(userEmail).isPresent();
     }
 
     @Override
@@ -132,11 +122,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkEmailDuplicated(String email) throws Exception {
-        return userRepository.findByEmail(email).isPresent();
-    }
-
-    @Override
     public UserDto.Detail getUserDetail(Long userId, int year, int month) throws Exception {
         //TODO: AccessList 추가
         UserDto.Detail result = getUserDetail(userId);
@@ -163,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto.Detail getUserDetail(Long userId) throws Exception {
-        User user = userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+        User user = getUserById(userId);
         return UserDto.Detail.builder()
                 .userId(user.getIdx())
                 .email(user.getEmail())
@@ -173,34 +158,59 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new UsernameNotFoundException("user Not found"));
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getName())
-                .accountExpired(user.isDeleted())
-                .password(user.getPassWord())
-                .roles(user.getRole().name())
-                .build();
-    }
-
     @Transactional
     @Override
-    public void deleteUser(Long userId) {
-        User user = userRepository.findById(userId).get();
+    public void deleteUser(Long userId) throws Exception {
+        User user = getUserById(userId);
         user.deleteUser();
     }
 
     @Transactional
     @Override
     public void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception {
-        User user = userRepository.findById(info.getUserId()).get();
+        User user = getUserById(info.getUserId());
+        if (info.getNickName() != null)  user.setNickName(info.getNickName());
+        if (info.getPassword() != null)  user.setPassWord(info.getPassword());
+        if (multipartFile != null)   user.setImgUrl(getImgUrl(multipartFile));
+    }
 
-        user.modifyUser(info.getNickName(), info.getPassword(), getImgUrl(multipartFile));
+    @Override
+    public boolean checkEmailDuplicated(UserDto.RequestFindPass userInfo) {
+        User user = userRepository.findByEmail(userInfo.getEmail()).orElse(null);
+        if (user != null && user.getPhone().equals(userInfo.getPhone())) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String generateRandomCode() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] randomBytes = new byte[TMP_PWD_LENGTH];
+        secureRandom.nextBytes(randomBytes);
+
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    }
+
+    @Override
+    public void modifyPassword(String userEmail, String code) {
+        User user = getUserByEmail(userEmail);
+        user.modifyPassword(passwordEncoder.encode(code));
+    }
+
+    @Override
+    public Boolean updatePoint(Long userId, Long point) throws Exception {
+        User user = getUserById(userId);
+        return user.updatePoint(point);
+    }
+
+    @Override
+    public Long getPoint(Long userId) throws Exception {
+        return getUserById(userId).getPoint();
     }
 
     private String getImgUrl(MultipartFile multipartFile) throws IOException {
-        String imgUrl = "https://www.computerhope.com/jargon/g/guest-user.png"; // Default Img
+        String imgUrl = "https://ssafysanta.s3.ap-northeast-2.amazonaws.com/stamp_best.svg"; // Default Img
         // User ImgURl 처리
         if(multipartFile != null){
             String fileName = fileService.upload(multipartFile);
@@ -210,12 +220,11 @@ public class UserServiceImpl implements UserService {
         return imgUrl;
     }
 
-    @Override
-    public String generateRandomPassword() {
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] randomBytes = new byte[TMP_PWD_LENGTH];
-        secureRandom.nextBytes(randomBytes);
+    private User getUserById(Long userId) throws Exception {
+        return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
+    }
 
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    private User getUserByEmail(String userEmail) throws IllegalArgumentException {
+        return userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("user Not found"));
     }
 }
