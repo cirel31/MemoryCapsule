@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import PostModal from "../post/PostModal";
 
-const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => {
+const Pagination = ({ postList, currentPage, setCurrentPage }) => {
+    //페이지네이션 처리해야 함
+    const [totalPages, setTotalPoges] = useState(postList.totalPages);
 
-    const totalPages = Math.ceil(postList.length / itemsPerPage);
-
-    // pagenation 처리를 위한 값들
-    const indexOfLastItem = (currentPage+1) * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = postList.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = postList.content;
 
     // 모달창 컨트롤을 위한 값
     const [selectedPost, setSelectedPost] = useState(null)
@@ -16,15 +13,15 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
 
     const openModal = (id) => {
         // const index = postList.findIndex((post => post.id === id))
-        const index = postList.findIndex((post => post.noticeIdx === id))
-        setSelectedPost(postList[index])
+        const index = currentItems.findIndex((post => post.noticeIdx === id))
+        setSelectedPost(currentItems[index]);
         console.log("index : ", index);
-        setIsModal(true)
+        setIsModal(true);
     }
 
-    // Handle page changes
     const handlePageChange = (pageNumber) => {
-        console.log(currentItems);
+        console.log("currentPage:", currentPage);
+        console.log("pageNumber:", pageNumber);
         setCurrentPage(pageNumber);
     };
 
@@ -52,7 +49,7 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
             showIndexList.push(i);
         }
 
-        console.log("showIndexList : ", showIndexList);
+        console.log("showIndexList : ", totalPages);
         return showIndexList;
     }
 
@@ -66,8 +63,6 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
         const Year = getTimeChange.getFullYear();
         const Month = getTimeChange.getMonth() + 1;
         const Day = getTimeChange.getDate();
-
-
 
         return(`${Year}-${addLeadingZero(Month)}-${addLeadingZero(Day)}`);
     }
@@ -119,7 +114,7 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
                     Array.from(pageIndex()).map((index) => (
                         currentPage===index
                         ?
-                        <button key={index + 1} onClick={() => handlePageChange(index)} className="selected_announce_pagenation_button">
+                        <button key={index + 1} className="selected_announce_pagenation_button">
                             {index + 1}
                         </button>
                         :

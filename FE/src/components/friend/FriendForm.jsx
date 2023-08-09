@@ -13,6 +13,12 @@ const FriendForm = ({form, setForm, setIsValidSearch}) => {
     //     console.log("handleChange : ", form);
     // };
 
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+        };
+    }, true);
+
     const valueChange = (e) => {
         const { value } = e.target;
         const nextForm = {
@@ -27,12 +33,6 @@ const FriendForm = ({form, setForm, setIsValidSearch}) => {
     return (
         <>
             <form className="friend_form_info">
-                {/*<select id="search" name="search" onChange={handleChange}>*/}
-                {/*    <option value={"id"}>e-mail</option>*/}
-                {/*    <option value={"name"}>name</option>*/}
-                {/*    <option value={"nickname"}>nickname</option>*/}
-                {/*</select>*/}
-
                 <StyledSearchBar
                     className="styled_search_bar"
                     id="id"

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import FriendForm from "./FriendForm";
 import FriendInfo from "./FriendInfo";
 import FriendDetail from "./FriendDetail";
-import {Link} from "react-router-dom";
 import "../../styles/friendStyle.scss";
 import brand_gradation from "../../assets/images/frield/brand_gradation.svg"
 import searchIcon from "../../assets/images/frield/searchIcon.svg"
@@ -14,7 +13,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
     const API = '/friend';
 
-    const [imageUrl, setImageUrl] = useState('');
     const [friends, setFriends] = useState([]);
 
     const [form, setForm] = useState({
@@ -32,7 +30,7 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     useEffect(() => {
         console.log("[useEffect]");
         setSelect("");
-        getFriends();
+        getDetailedFriendList();
         console.log("login : ", login);
     }, []);
 
@@ -42,27 +40,74 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
      * Method : get
      * URL : /friend/search/{user_id}
      * */
-    function getFriends() {
-        console.log("[getFriends]");
-        const accessToken = sessionStorage.getItem("accessToken")
-        const host_id = Number(sessionStorage.getItem("userIdx"));
-        // 서버로부터 내 친구목록 가져오기
-        // axios.get(`${API}/search/${user_id}`,
+    // function getFriends() {
+    //     console.log("[getFriends]");
+    //     const accessToken = sessionStorage.getItem("accessToken")
+    //     const host_id = Number(sessionStorage.getItem("userIdx"));
+    //     // 서버로부터 내 친구목록 가져오기
+    //     // axios.get(`${API}/search/${user_id}`,
+    //
+    //     axios.get(`${baseURL}${API}/search/${host_id}`,
+    //         {
+    //             headers: {
+    //                 Authorization: `Bearer ${accessToken}`
+    //             },
+    //         })
+    //         .then((response) => {
+    //             console.log('서버로부터 친구목록 가져오기 성공');
+    //             console.log(API);
+    //             console.log("response.data : ", response.data);
+    //             setRowFriends(response.data);
+    //             setFriends(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.error("서버로부터 친구목록 가져오기 실패", error);
+    //             console.error(error.code);
+    //         });
+    // }
 
-        axios.get(`${baseURL}${API}/search/${host_id}`,
+
+    /**
+     5. 친구 상세목록 불러오기
+     /friend/getDetailedFriendList/{userId}	친구들의 글목록/작성글수/프로젝트수 조회
+     * 토큰 필요 *
+     사용자고유ID(userId) : Number
+
+     [{
+     "idx": Number,
+     "name": String,
+     "nickname": String,
+     "imgUrl": String,
+     "totalWriteCnt": Number ,      //작성한 Article 총수
+     "totalInProjectCnt": Number,   //진행중인 프로젝트 총수
+     "totalProjectCnt": Number      //총 프로젝트 수
+     }]
+     - idx: user id
+     - name: user
+     */
+
+    const getDetailedFriendList = () => {
+        console.log("[addFriend]");
+        const accessToken = sessionStorage.getItem("accessToken")
+        const user_id = parseInt(sessionStorage.getItem("userIdx"), 10);
+
+        console.log(user_id)
+        ///friend/getDetailedFriendList/{userId}
+        axios.get(`${baseURL}${API}/getDetailedFriendList/${user_id}`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
-                },
+                }
             })
             .then((response) => {
-                console.log('서버로부터 친구목록 가져오기 성공');
-                console.log(API);
+                console.log('친구 상세목록 불러오기 성공');
+                console.log("friend.status : ", response)
                 console.log("response.data : ", response.data);
                 setRowFriends(response.data);
+                setFriends(response.data);
             })
             .catch((error) => {
-                console.error("서버로부터 친구목록 가져오기 실패", error);
+                console.error("친구 상세목록 불러오기 실패", error);
                 console.error(error.code);
             });
     }
@@ -136,10 +181,11 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                             </div>
                         </div>
                         // 스크롤 구현해야 하는 부분
-                        :<div className="friend_list_item">
+                        :<div>
                             { friends.map((friend) => (
                                 <FriendInfo
                                     key={friend.id}
+                                    from="FriendList"
                                     select={select}
                                     setSelect={setSelect}
                                     friend={friend}
@@ -151,7 +197,7 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                 </div>
                 <div className="friendDetailItems">
                     {
-                        !select.id
+                        !select.idx
                         ?
                         <div className="no_friend_list">
                             <div className="textBlock">
@@ -159,11 +205,8 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                             </div>
                         </div>
                         :
-                        <div className="friend_detail_guide">
-                            <div className="friend_detail_item">
-                                <FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
-                            </div>
-                        </div>
+                        <FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
+
                     }
                 </div>
             </div>

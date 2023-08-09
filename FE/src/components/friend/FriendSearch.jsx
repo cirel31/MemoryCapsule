@@ -32,12 +32,9 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
     function getFriendsByServer(searchId) {
         console.log("[getFriendsByServer]", searchId);
         const accessToken = sessionStorage.getItem("accessToken")
-        const Idx = parseInt(sessionStorage.getItem("userIdx"))
+        const Idx = sessionStorage.getItem("userIdx")
 
-        console.log(sessionStorage)
-        console.log(accessToken)
-        console.log(Idx)
-        console.log(searchId)
+        const host_id = parseInt(Idx, 10);
 
         // 서버로부터 내 친구목록 가져오기
         axios.get(`${baseURL}${API}/find/${searchId}`,
@@ -45,6 +42,9 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 },
+                params: {
+                    host_id: host_id
+                }
             })
             .then((response) => {
                 console.log('서버로부터 친구목록 가져오기 성공');
