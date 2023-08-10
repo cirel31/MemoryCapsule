@@ -1,7 +1,11 @@
 package com.example.userservice.controller;
 
+import com.amazonaws.services.kms.model.NotFoundException;
+import com.example.userservice.model.ErrorResponse;
 import com.example.userservice.model.dto.UserDto;
+import com.example.userservice.model.entity.User;
 import com.example.userservice.service.UserService;
+import com.example.userservice.util.RegexUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/user")
@@ -20,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final RegexUtil regexUtil;
+
 
     @PostMapping(value = "/signup")
     public ResponseEntity userSignup(
@@ -63,13 +70,28 @@ public class UserController {
     public ResponseEntity emailCheck(@RequestParam(value = "user_email") String user_email) {
         log.info("email-check");
         int status = userService.emailCheck(user_email);
-        if (status == -1) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("이미 존재하는 이메일입니다.");
+
+        //TODO
+        // - 1. 이메일 형식인지 check, 409
+        // - 2. 이메일 존재하는데 탈퇴되지 않은회원 경우, NOT_ACCEPTABLE
+        // -    이메일 존재하는데 탈퇴된 회원, 209
+        // -    이메일 존재하지않는 경우 201
+        if(!regexUtil.isEmail(user_email)) return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(HttpStatus.CONFLICT.name(), "Email 형식이 아닙니다."));
+
+
+        try {
+            String emailCode = userService.checkingUserOrSendEmail(user_email);
+            return ResponseEntity.status(HttpStatus.CREATED).body(emailCode);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이메일 전송 실패 입니다.");
+        } catch (IllegalArgumentException e) {
+            // 이미 회원이 가입한 경우 - 탈퇴되지 않은 회원인 경우
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.name(), "'이미 회원이 가입된 이메일입니다."));
+        } catch( NotFoundException e){
+            return ResponseEntity.status(209).body(new ErrorResponse("Content Returned", "이미 탈퇴된 회원입니다."));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.name(), "내부 서버오류입니다. 관리자에게 문의하세요"));
         }
-        if (status == 0) {
-            return ResponseEntity.status(209).body("탈퇴한 회원입니다. 복구하시겠습니까?");
-        }
-        return getResponseEntity(user_email);
     }
 
     @PostMapping("/deletedEmailCheck")

@@ -34,4 +34,7 @@ public interface UserService {
     Boolean updatePoint(Long userId, Long point) throws Exception;
 
     Long getPoint(Long userId) throws Exception;
+
+    String checkingUserOrSendEmail(String userEmail) throws Exception;
+
 }

@@ -1,11 +1,13 @@
 package com.example.userservice.service;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.Access;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.repository.AccessRepository;
 import com.example.userservice.repository.ConnectedRepository;
 import com.example.userservice.repository.UserRepository;
+import com.example.userservice.util.RegexUtil;
 import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -42,6 +47,8 @@ public class UserServiceImpl implements UserService {
     private final FileService fileService;
     private final ConnectedRepository connectedRepository;
     private final Environment env;
+    private final RegexUtil regexUtil;
+
 
     @Value("${S3Url}")
     private String defaultUrl;
@@ -92,13 +99,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int emailCheck(String userEmail) {
-        Optional<User> userOptional = userRepository.findByEmail(userEmail);
-        if (userOptional.isPresent()) {
-            if (userOptional.get().isDeleted()) {
-                return 0;
-            }
-            return -1;
-        }
+        // 0 : 탈퇴한 회원
+        // 1: 존재하지 않는 이메일
+        // -1 : 이미 있는 이메일
         return 1;
     }
 
@@ -243,7 +246,27 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
     }
 
-    private User getUserByEmail(String userEmail) throws IllegalArgumentException {
-        return userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalArgumentException("user Not found"));
+    public User getUserByEmail(String userEmail) throws IllegalStateException {
+        return userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalStateException("user Not found"));
+    }
+
+    @Override
+    public String checkingUserOrSendEmail(String userEmail) throws Exception {
+        userRepository.findByEmail(userEmail).ifPresent((e) -> {
+            if(e.isDeleted()) throw new NotFoundException("이미 삭제된 회원입니다.");
+            else throw new IllegalArgumentException("이미 회원가입한 이메일입니다.");
+        });
+
+        String randomCode = generateRandomCode();
+        ResponseEntity<String> response = new RestTemplate().postForEntity(
+                "http://notification-service:8081/email/register_verify/" + userEmail + "/" + randomCode,
+                null,
+                String.class
+        );
+        if (response.getStatusCodeValue() != HttpStatus.OK.value()) {
+            throw new IllegalStateException("이메일 전송 실패");
+        }
+        return randomCode;
+
     }
 }
