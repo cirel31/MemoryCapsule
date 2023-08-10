@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
-import "../../styles/testPage.css"
 import {useSelector} from "react-redux";
 import "../../styles/MainPage.scss"
 import main_bg from "../../assets/images/mainpage/Mainback.svg"
-
+import search_picto from "../../assets/images/mainpage/search.svg"
+import clamp from "../../assets/images/mainpage/clamp.svg"
+import plus_btn from "../../assets/images/mainpage/plus.svg"
+import right_btn from "../../assets/images/mainpage/right.svg"
+import left_btn from "../../assets/images/mainpage/left.svg"
+import start_btn from "../../assets/images/mainpage/start.svg"
+import end_btn from "../../assets/images/mainpage/end.svg"
 
 const ProjectListPage = () => {
   const [isHovered, setIsHovered] = useState(null)
@@ -90,82 +95,99 @@ const ProjectListPage = () => {
   Modal.setAppElement("#root");
 
   return (
-      <div>
-        <div>
+      <div className="main_project_body">
+        <img src={main_bg} className="main_project_back"/>
+        <div className="search_bar">
           <input
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
             placeholder="프로젝트 검색..."
           />
-          <button onClick={handleSearchChange}>검색</button>
+          <button onClick={handleSearchChange}><img src={search_picto}/></button>
         </div>
-        <h1>현재 진행 중인 프로젝트</h1>
-        {filteredProjects.length === 0 ? (
-          <div
-            style={{ width: '200px', height: "400px", border:'solid black 1px' }}
-          >
-            <Link to='/project/create'>
-              <button>
-                새로운 추억 생성
-              </button>
-            </Link>
-          </div>
-        ) : (
-          <div>
-            {currentPosts.map((project) => (
-              <div
-                key={project.id}
-                className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
-                onMouseEnter={() => handleMouseEnter(project.idx)}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => openModal(project.idx)}
-                style={{ width: '200px' }}
-              >
-                프로젝트 제목 : {project.title}
-                <img src={project.imgUrl} alt="" style={{ width: '200px' }} />
+        <div className="decoration_1"></div>
+        <div className="decoration_2"></div>
+        <div className="main_project_list_body">
+          {filteredProjects.length === 0 ? (
+            <div>
+
+              <div className="project_is_none">
+                <img src={clamp} className="deco_clamp2"/>
+                <Link to='/project/create'>
+                  <button>
+                    <img src={plus_btn}/>
+                  </button>
+                </Link>
+                <p>아직 제작한 캡슐이 없어요!</p>
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          ) : (
+            <div>
+              <div>
+                <div className="move_btn_group_1">
+                  <button onClick={leftBTN}><img src={left_btn}/></button>
+                  <button onClick={rightBTN}><img src={right_btn}/></button>
+                </div>
+
+                <div className="move_btn_group_2">
+                  <button onClick={startBTN}><img src={start_btn}/></button>
+
+                  <button onClick={endBTN}><img src={end_btn}/></button>
+
+                </div>
+              </div>
+              {currentPosts.map((project) => (
+                <div
+                  key={project.id}
+                  className={`project_shortcut ${(isHovered === project.idx) ? "project_shortcut_hovered" : ""}`}
+                  onMouseEnter={() => handleMouseEnter(project.idx)}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={() => openModal(project.idx)}
+
+                >
+                  <img src={clamp} className="deco_clamp"/>
+                  <img src={project.imgUrl} alt="" className="photos"/>
+                  <p>{project.title}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+        </div>
+
         <Modal isOpen={isModal} onRequestClose={closeModal}>
           {selectedPost && (
             <div>
               {console.log(selectedPost)}
+              <img src="https://ssafysanta.s3.ap-northeast-2.amazonaws.com/34f4345d4f324844896e975f27abfb98.svg" alt=""/>
               <h2>
-                {selectedPost.idx}
                 <hr/>
                 {selectedPost.title}
               </h2>
+              <p>현재까지 등록된 추억 : {selectedPost.artielcNum}</p>
               <h3>
-                이미지 : {selectedPost.image}
                 <hr/>
                 내용 : {selectedPost.content}
                 <hr/>
-                시작 : {selectedPost.started}
+                시작 :  {selectedPost.started.slice(2,4)}년 {selectedPost.started.slice(5, 7)}월 {selectedPost.started.slice(8, 10)}일
                 <hr/>
-                종료 : {selectedPost.ended}
+                종료 :  {selectedPost.ended.slice(2,4)}년 {selectedPost.ended.slice(5, 7)}월 {selectedPost.ended.slice(8, 10)}일
               </h3>
               <hr/>
               <br/>
-              <Link to={`/project/${selectedPost.idx}`}>상세 페이지로 이동</Link>
+              <Link to={`/project/${selectedPost.id}`}>상세 페이지로 이동</Link>
               <br/><br/>
               <button onClick={closeModal}>닫기</button>
             </div>
           )}
         </Modal>
-        <div>
-          <div ></div>
-          <button onClick={startBTN}>◀◀</button>
-          <button onClick={leftBTN}>◀</button>
-          <button onClick={rightBTN}>▶</button>
-          <button onClick={endBTN}>▶▶</button>
-          <div></div>
-        </div>
-        <div>
+
+        <div className="project_create_btn">
           <Link to='/project/create'>
-            <button>
-              새로운 추억 생성
+            <button className="create_button_styles">
+              <p>새로운 캡슐 생성하기</p>
+              <img src={plus_btn}/>
             </button>
           </Link>
         </div>
