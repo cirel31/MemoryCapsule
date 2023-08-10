@@ -8,13 +8,12 @@ import add_friend from "../../assets/images/frield/add_friend.svg";
 import person from "../../assets/images/frield/person.svg";
 
 
-const FriendAddDeleteButton = ({friend, status, from}) => {
+const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
     const API = '/friend';
 
     Modal.setAppElement("#root");
 
-    const [curStatus, setCurStatus] = useState(status)
     const [friendModalIsOpen, setFriendModalIsOpen] = useState(0);
 
     /**
@@ -171,8 +170,7 @@ const FriendAddDeleteButton = ({friend, status, from}) => {
         console.log("guest_id", guest_id);
 
         //https://i9a608.p.ssafy.io:8000/friend/delete?guest_id=1014&host_id=5
-        // axios.delete(`${baseURL}${API}/delete`,
-        axios.delete(`https://i9a608.p.ssafy.io:8000/friend/delete?host_id=1013&guest_id=1014`,
+        axios.delete(`https://i9a608.p.ssafy.io:8000/friend/delete?host_id=${host_id}&guest_id=${guest_id}`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
@@ -201,7 +199,7 @@ const FriendAddDeleteButton = ({friend, status, from}) => {
         }
 
         if (from === "FriendList"){
-            switch (curStatus) {
+            switch (status) {
                 case 1 :    // 친구 삭제
                     return <button className="status_button discard_friend" value={friend.userId} onClick={discardFriend}> <img src={person} alt="now friend img" className="discard_friend_img"/> </button>
                 case 2 :    // 친구추가요청 철회
@@ -216,9 +214,9 @@ const FriendAddDeleteButton = ({friend, status, from}) => {
                 case 1 :
                     return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={discardFriend}> 친구 삭제 </button>
                 case 2 :
-                    return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addRequestFriend}> 내가 팔로우 중 </button>
+                    return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addRequestDiscardFriend}> 내가 팔로우 중 </button>
                 case 3 :
-                    return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addRequestFriend}> 맞 팔로우 하기 </button>
+                    return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addFriend}> 맞 팔로우 하기 </button>
                 default:
                     return <button className="add_discard_button add_detail_friend" value={friend.userId} onClick={addRequestFriend}> 팔로우하기 </button>
             }
@@ -229,7 +227,6 @@ const FriendAddDeleteButton = ({friend, status, from}) => {
 
     return (
         <>
-            {console.log(friend.userId)}
             <div className="friend_add_delete_button">
                 {
                     statusButton()

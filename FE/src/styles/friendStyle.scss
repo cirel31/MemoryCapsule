@@ -287,62 +287,6 @@
               }
             }
           }
-
-          .friend_list_item {
-            display: grid;
-            align-items: center;
-            grid-template-columns: 20% 65% 15%;
-            width: auto;
-            height: 60px;
-            border-radius: 10px;
-            color: var(--font_gray_main);
-            background-color: var(--backGround_1);
-            margin: 10px;
-
-            .user_img_setting{
-              display: grid;
-              justify-items: center;
-              align-items: center;
-              width: 40px;
-              height: 40px;
-              border-radius: 100%;
-              border: solid var(--brand3_main) 3pt;
-              .userImg {
-                width: 40px;
-                height: 40px;
-                border-radius: 100%;
-              }
-            }
-
-            .user_info{
-              .user_info_username{
-                font-size: 12pt;
-              }
-
-              .user_info_email{
-                font-size: 8pt;
-              }
-            }
-
-            .user_detail_button{
-              display: grid;
-              justify-items: center;
-              align-items: center;
-
-              background-color: var(--brand3_main);
-              width: 40px;
-              height: 40px;
-              border-radius: 100%;
-              &:hover {
-                cursor: pointer;
-                background-color: var(--brand2_3);
-              }
-
-              .userDetailButtonImg{
-                width: 25px;
-              }
-            }
-          }
         }
 
         .friendDetailItems {
@@ -438,124 +382,126 @@
           }
         }
       }
+    }
+  }
+}
 
-      .search_friend_list {
-        width: 80%;
+.search_friend_list {
+  width: 80%;
+  display: grid;
+  align-items: center;
+
+  margin-left: 10%;
+
+
+  .search_friend_list_items {
+    display: grid;
+
+    height: 520px;
+    width: 100%;
+    margin: 20px 0;
+    background: var(--transpar);
+    color: var(--font_gray_main);
+    -webkit-background-clip: text;
+    font-size: clamp(0.5vw, 1vw, 2vw);
+    font-weight: 700;
+
+    //============== 스크롤바 관련 (시작) ==============
+    overflow-y: scroll;
+
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    table-layout:fixed;
+
+    &::-webkit-scrollbar {
+      width: 9px;  /* 스크롤바의 너비 */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      height: auto; /* 스크롤바의 길이 */
+      width: 7px;
+      background: var(--brand3_main); /* 스크롤바의 색상 */
+
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+      border-radius: 10px;
+    }
+    //============== 스크롤바 관련 (끝) ==============
+    .no_friend_list {
+      height: 100%;
+      display: grid;
+      justify-items: center;
+      align-items: center;
+
+      .textBlock{
+        font-size: 24px;
+        color: var(--brand3_main);
+        .brand_logo{
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+
+
+
+    .friend_list_item {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 20% 65% 15%;
+      width: auto;
+      height: 60px;
+      border-radius: 10px;
+      color: var(--font_gray_main);
+      background-color: var(--backGround_1);
+      margin: 10px;
+
+      .user_img_setting{
         display: grid;
+        justify-items: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        border: solid var(--brand3_main) 3pt;
+        .userImg {
+          width: 40px;
+          height: 40px;
+          border-radius: 100%;
+        }
+      }
+
+      .user_info{
+        .user_info_username{
+          font-size: 12pt;
+        }
+
+        .user_info_email{
+          font-size: 8pt;
+        }
+      }
+
+      .user_detail_button{
+        display: grid;
+        justify-items: center;
         align-items: center;
 
-        margin-left: 10%;
+        background-color: var(--brand3_main);
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        &:hover {
+          cursor: pointer;
+          background-color: var(--brand2_3);
+        }
 
-        .search_friend_list_items {
-          display: grid;
-
-          height: 520px;
-          width: 100%;
-          margin: 20px 0;
-          background: var(--transpar);
-          color: var(--font_gray_main);
-          -webkit-background-clip: text;
-          font-size: clamp(0.5vw, 1vw, 2vw);
-          font-weight: 700;
-
-          //============== 스크롤바 관련 (시작) ==============
-          overflow-y: scroll;
-
-          scroll-behavior: smooth;
-          scrollbar-gutter: stable;
-          text-overflow: ellipsis;
-          word-break: break-all;
-          table-layout:fixed;
-
-          &::-webkit-scrollbar {
-            width: 9px;  /* 스크롤바의 너비 */
-          }
-
-          &::-webkit-scrollbar-thumb {
-            height: auto; /* 스크롤바의 길이 */
-            width: 7px;
-            background: var(--brand3_main); /* 스크롤바의 색상 */
-
-            border-radius: 10px;
-          }
-
-          &::-webkit-scrollbar-track {
-            background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
-            border-radius: 10px;
-          }
-          //============== 스크롤바 관련 (끝) ==============
-          .no_friend_list {
-            height: 100%;
-            display: grid;
-            justify-items: center;
-            align-items: center;
-
-            .textBlock{
-              font-size: 24px;
-              color: var(--brand3_main);
-              .brand_logo{
-                width: 25px;
-                height: 25px;
-              }
-            }
-          }
-          .search_friend_list_item{
-            display: grid;
-            justify-content: center;
-            align-items: center;
-            grid-template-columns: 20% 65% 10%;
-            width: 95%;
-            height: 60px;
-            border-radius: 10px;
-            color: var(--font_gray_main);
-            background-color: var(--backGround_0);
-            margin: 10px;
-
-            .user_img_setting{
-              display: grid;
-              justify-items: center;
-              align-items: center;
-              width: 40px;
-              height: 40px;
-              border-radius: 100%;
-              border: solid var(--brand3_main) 3pt;
-              .userImg {
-                width: 40px;
-                height: 40px;
-                border-radius: 100%;
-              }
-            }
-
-            .user_info{
-              .user_info_username{
-                font-size: 12pt;
-              }
-
-              .user_info_email{
-                font-size: 8pt;
-              }
-            }
-
-            .user_detail_button{
-              display: grid;
-              justify-items: center;
-              align-items: center;
-
-              background-color: var(--brand3_main);
-              width: 40px;
-              height: 40px;
-              border-radius: 100%;
-              &:hover {
-                cursor: pointer;
-                background-color: var(--brand2_3);
-              }
-
-              .userDetailButtonImg{
-                width: 25px;
-                height: 25px;
-              }
-            }
-          }
+        .userDetailButtonImg{
+          width: 25px;
         }
       }
     }
@@ -673,6 +619,64 @@
     &:hover {
       cursor: pointer;
       background-color: var(--point1_3);
+    }
+  }
+}
+
+
+
+.friend_list_item {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 20% 65% 15%;
+  width: auto;
+  height: 60px;
+  border-radius: 10px;
+  color: var(--font_gray_main);
+  background-color: var(--backGround_1);
+  margin: 10px;
+
+  .user_img_setting{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: solid var(--brand3_main) 3pt;
+    .userImg {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+    }
+  }
+
+  .user_info{
+    .user_info_username{
+      font-size: 12pt;
+    }
+
+    .user_info_email{
+      font-size: 8pt;
+    }
+  }
+
+  .user_detail_button{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    background-color: var(--brand3_main);
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand2_3);
+    }
+
+    .userDetailButtonImg{
+      width: 25px;
     }
   }
 }

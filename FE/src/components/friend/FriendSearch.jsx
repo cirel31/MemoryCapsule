@@ -21,7 +21,14 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
     useEffect(() => {
         setFriends([]);
         setSelect("");
+        setCurStatus(friends[0])
     }, []);
+
+
+    const [curStatus, setCurStatus] = useState(0)
+    useEffect(() => {
+        console.log("[useEffect] friends" , friends);
+    }, [curStatus]);
 
     /**
      * 1. 전체 친구 목록 중 검색한 것 불러오기
@@ -124,18 +131,16 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
                                 </div>
                             </div>
                             // 스크롤 구현해야 하는 부분
-                            :<div className="search_friend_list_item">
-                                {
-                                    friends.map((friend) => (
-                                        <FriendInfo
-                                            select={select}
-                                            setSelect={setSelect}
-                                            key={friend.userId}
-                                            friend={friend}
-                                            imageUrl={friend.imgUrl}
-                                        />
-                                    ))
-                                }
+                            :<div>
+                                <FriendInfo
+                                    select={select}
+                                    setSelect={setSelect}
+                                    key={friends[0].userId}
+                                    friend={friends[0]}
+                                    curStatus={curStatus}
+                                    setCurStatus={setCurStatus}
+                                    imageUrl={friends[0].imgUrl}
+                                />
                             </div>
                     }
                 </div>

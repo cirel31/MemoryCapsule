@@ -1,11 +1,9 @@
 import { FriendItem } from "../../styles/friendStyle";
 import FriendAddDeleteButton from "./FriendAddDeleteButton";
-import React, {useState} from "react";
-import add_friend from "../../assets/images/frield/add_friend.svg"
-import axios from "axios";
+import React, {useEffect, useState} from "react";
 import FriendDetailButton from "./FriendDetailButton";
 
-const FriendInfo = ({from, select, setSelect, friend, imageUrl}) => {
+const FriendInfo = ({from, select, setSelect, curStatus, setCurStatus, friend, imageUrl}) => {
 
     return (
         <div className="friend_list_item">
@@ -22,7 +20,9 @@ const FriendInfo = ({from, select, setSelect, friend, imageUrl}) => {
                 ?
                 <FriendAddDeleteButton
                     friend={friend}
-                    status={friend.status}
+                    status={curStatus}
+                    curStatus={curStatus}
+                    setCurStatus ={setCurStatus}
                     from="FriendList"
                 />
                 :

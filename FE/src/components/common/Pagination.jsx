@@ -15,6 +15,7 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
         // const index = postList.findIndex((post => post.id === id))
         const index = postList.content.findIndex((post => post.noticeIdx === id))
         setSelectedPost(postList.content[index]);
+        console.log("selectedPost : ", selectedPost);
         console.log("index : ", index);
         setIsModal(true);
     }
@@ -67,10 +68,10 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
         return(`${Year}-${addLeadingZero(Month)}-${addLeadingZero(Day)}`);
     }
 
-    // 새 알람인지 구분 (일주일 기준)
-    function isNewAlame(getTime) {
+    // 새 알람인지 구분 (3일 기준)
+    function isNewAlame (getTime) {
         const getTimeDate = new Date(getTime);
-        const curTimeDate = new Date() - (7 * 24 * 60 * 60 * 1000);
+        const curTimeDate = new Date() - (3 * 24 * 60 * 60 * 1000);
         if (curTimeDate < getTimeDate) {
             return true;
         }
@@ -79,7 +80,7 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
 
     return (
         <div className="announce_pagenation">
-            {
+            postList && {
             postList.content.map((post) => (
                 <div className="announce_list_items">
                     <div
@@ -108,7 +109,7 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
             }
 
             <div className="announce_pagenation_buttons">
-                {
+                pageIndex && {
                     Array.from(pageIndex()).map((index) => (
                         currentPage===index
                         ?

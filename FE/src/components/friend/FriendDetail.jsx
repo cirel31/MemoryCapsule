@@ -1,10 +1,11 @@
 import {AuthFormBlock, CustomButtonFriend, FormBody, WhiteBox} from "../../styles/friendStyle";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import FriendAddDeleteButton from "./FriendAddDeleteButton";
 import close from "../../assets/images/frield/close.svg"
 
-const FriendDetail = ({select, closeFriendDetail}) => {
+const FriendDetail = ({select, setSelect, closeFriendDetail}) => {
+    const [curStatus, setCurStatus] = useState(select.status)
 
     return (
         <div className="friend_detail_guide">
@@ -34,7 +35,13 @@ const FriendDetail = ({select, closeFriendDetail}) => {
                             개
                         </p>
                     </div>
-                <FriendAddDeleteButton friend={select} status={select.status} from="FriendDetail"/>
+                <FriendAddDeleteButton
+                    friend={select}
+                    status={select.status}
+                    curStatus={curStatus}
+                    setCurStatus={setCurStatus}
+                    from="FriendDetail"
+                />
             </div>
         </div>
     );
