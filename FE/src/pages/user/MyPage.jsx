@@ -7,6 +7,7 @@ import CurrentProjectsPage from "./CurrentProjectsPage";
 import InviteProject from "../project/InviteProject";
 import locker_img from "../../assets/images/present_box.jpg";
 import {Link} from "react-router-dom"
+import AnnounceList from "../../components/announce/AnnounceList";
 
 
 const MyPage = () => {

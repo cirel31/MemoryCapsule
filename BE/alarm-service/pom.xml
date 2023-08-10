@@ -9,12 +9,16 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.santa</groupId>
-    <artifactId>alarm</artifactId>
+    <artifactId>alarm-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>alarm</name>
     <description>project for alarm</description>
     <properties>
         <java.version>11</java.version>
+        <sonar.projectName>alarm-service</sonar.projectName>
+        <sonar.projectVersion>1.0.0</sonar.projectVersion>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -219,11 +223,6 @@
                         </exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.4.0.905</version>
             </plugin>
         </plugins>
     </build>

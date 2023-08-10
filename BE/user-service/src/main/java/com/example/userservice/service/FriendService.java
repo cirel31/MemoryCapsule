@@ -9,10 +9,14 @@ public interface FriendService {
     List<User> findByAllFriends(Long userId) throws Exception;
     // 친구삭제
     boolean deleteFirend(Long hostId, Long guestId);
-    // 친구추가
+    // 친구 요청
     boolean userAddFriend(Long hostId, Long guestId);
-
-    boolean userConfirmFriend(Long hostId, Long guestId);
+    //친구 요청 취소
+    boolean cancelUserAddFriend(Long hostId, Long guestId);
+    //친구 요청 온걸 수락
+    boolean userConfirmFriend(Long hostId, Long guestId) throws Exception;
+    //친구 요청 온걸 거절
+    boolean userRejectFriend(Long hostId, Long guestId);
 
     FriendDto.showFriend findUserEmail(Long hostId, String guestEmail) throws Exception;
 

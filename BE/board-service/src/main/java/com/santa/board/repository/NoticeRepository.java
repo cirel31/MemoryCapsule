@@ -19,18 +19,14 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
     // notice_idx 를 통해 notice 정보 조회
     Optional<Notice> findByNoticeIdxAndNoticeDeletedFalse(Long noticeIdx);
 
-
-    // 공지사항의 notice_hit 값을 1 증가시킴
-//    @Modifying
-//    @Query(value = "UPDATE notice SET notice_hit = notice_hit + 1 WHERE notice_idx = :noticeIdx", nativeQuery = true)
-//    int incrementNoticeHit(@Param("noticeIdx") Long noticeIdx);
-
     // 공지사항에 새로운 글 등록
     @Modifying
     @Query(value = "INSERT INTO notice (notice_creator_idx, notice_title, notice_content, notice_imgurl, notice_hit) " +
-            "VALUES (:noticeCreatorIdx, :noticeTitle, :noticeContent, :noticeImgUrl, 0)", nativeQuery = true)
-    int insertNewNotice(@Param("noticeCreatorIdx") Long noticeCreatorIdx,
-                        @Param("noticeTitle") String noticeTitle,
-                        @Param("noticeContent") String noticeContent,
-                        @Param("noticeImgUrl") String noticeImgUrl);
+            "VALUES (:noticeCreatorIdx, :noticeTitle, :noticeContent, :noticeImgUrl, 0) " +
+            "RETURNING notice_idx", nativeQuery = true)
+    Long insertNewNotice(@Param("noticeCreatorIdx") Long noticeCreatorIdx,
+                         @Param("noticeTitle") String noticeTitle,
+                         @Param("noticeContent") String noticeContent,
+                         @Param("noticeImgUrl") String noticeImgUrl);
+
 }

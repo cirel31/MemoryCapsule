@@ -17,8 +17,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Optional;
@@ -60,10 +63,7 @@ public class Oauth2Service {
 
         //TODO AccessToekn/RefreshToekn 처리
         ValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
-        // TODO:
-        //  - 토큰 발급 (AccessToken, RefreshToken)
-        //  - 1. RefreshToken 이 존재하는 경우 (Redis)
-        String redisRefresh = opsForValue.get(user.getIdx());
+        String redisRefresh = opsForValue.get(String.valueOf(user.getIdx()));
         String refreshToken;
         String accessToken;
         if (redisRefresh != null) {
@@ -84,24 +84,28 @@ public class Oauth2Service {
                 .build();
     }
 
-    public KakaoDto.KakaoUserResponse getUserInfo(final KakaoDto.KakaoTokenResponse response){
+    public KakaoDto.KakaoUserResponse getUserInfo(final KakaoDto.KakaoTokenResponse response) throws Exception {
+        log.info("getUserInfo start!");
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.AUTHORIZATION, response.getAccess_token());
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        ResponseEntity<KakaoDto.KakaoUserResponse> kakaoUserResponseResponseEntity = restTemplate.postForEntity(
+        httpHeaders.set(HttpHeaders.AUTHORIZATION, "Bearer " + response.getAccess_token());
+        MediaType mediaType = new MediaType(MediaType.APPLICATION_FORM_URLENCODED, StandardCharsets.UTF_8);
+        httpHeaders.setContentType(mediaType);
+        ResponseEntity<KakaoDto.KakaoUserResponse> kakaoUserResponseResponseEntity = null;
+        log.info("kakao server send - getUserInfo");
+        kakaoUserResponseResponseEntity = restTemplate.postForEntity(
                 oauth2Client.getUserInfoUri(),
-                null,
+                new HttpEntity<>(httpHeaders),
                 KakaoDto.KakaoUserResponse.class
         );
+        log.info("kakao server received - getUserInfo");
         return kakaoUserResponseResponseEntity.getBody();
     }
 
 
     public KakaoDto.KakaoTokenResponse getToken(String code){
-
+        log.info("getToken start");
         RestTemplate restTemplate = new RestTemplate();
         LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.add("grant_type", oauth2Client.getAuthorizationGrantType());
@@ -110,16 +114,16 @@ public class Oauth2Service {
         parameters.add("code", code);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
+        MediaType mediaType = new MediaType(MediaType.APPLICATION_FORM_URLENCODED, StandardCharsets.UTF_8);
+        httpHeaders.setContentType(mediaType);
         HttpEntity entity = new HttpEntity<>(parameters, httpHeaders);
+        log.info("kakao server send - getToken");
         ResponseEntity<KakaoDto.KakaoTokenResponse> result = restTemplate.postForEntity(
                 oauth2Client.getTokenUri(),
                 entity,
                 KakaoDto.KakaoTokenResponse.class
         );
-
+        log.info("kakao server received - getToken");
         return result.getBody();
     }
 
