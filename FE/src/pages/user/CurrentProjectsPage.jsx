@@ -101,7 +101,6 @@ const CurrentProjectsPage = () => {
                   to={`/project/${project.id}`}
                   key={project.id}
                 >
-                  
                   <div
                     onMouseEnter={() => handleMouseEnter(project.id)}
                     onMouseLeave={() => handleMouseLeave(project)}
@@ -119,10 +118,9 @@ const CurrentProjectsPage = () => {
                         transition: 'transform 0.1s'
                       }}
                   >
-                    
                     <div style={{width:'200px', height:"300px"}}>
                       <p>{project.title}</p>
-                      <img src={arona} alt="아로나" style={{width:'200px'}}/>
+                      <img src={project.imgUrl} alt="아로나" style={{width:'200px'}}/>
                       <p>기록한 추억 : {project.artielcNum || 0}</p>
                     </div>
                     
