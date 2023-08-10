@@ -3,18 +3,15 @@ package com.example.apigatewayservice.util;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 import java.security.Key;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
