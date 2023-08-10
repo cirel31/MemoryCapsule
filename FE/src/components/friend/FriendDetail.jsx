@@ -7,6 +7,11 @@ import close from "../../assets/images/frield/close.svg"
 const FriendDetail = ({select, setSelect, closeFriendDetail}) => {
     const [curStatus, setCurStatus] = useState(select.status)
 
+    useEffect(() => {
+        console.log("[useEffect] friends" , select);
+        console.log(select)
+    }, [curStatus]);
+
     return (
         <div className="friend_detail_guide">
             <div className="friend_detail_item">

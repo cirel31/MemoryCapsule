@@ -217,9 +217,14 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
                 case 1 :    // 친구 삭제
                     return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={discardFriend}> 친구 삭제 </button>
                 case 2 :    // 친구추가요청 철회
-                    return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addRequestDiscardFriend}> 내가 팔로우 중 </button>
+                    return <>
+                        <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addRequestDiscardFriend}> 팔로우 중 </button>
+                    </>
                 case 3 :    //  친구 추가
-                    return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addFriend}> 맞 팔로우 하기 </button>
+                    return <>
+                        <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addRequestDiscardFriend}> 팔로우 거절 </button>
+                        <button className="add_discard_button follower_detail_friend" value={friend.userId} onClick={addFriend}> 맞 팔로우 하기 </button>
+                    </>
                 default:    // 친구추가요청
                     return <button className="add_discard_button add_detail_friend" value={friend.userId} onClick={addRequestFriend}> 팔로우하기 </button>
             }

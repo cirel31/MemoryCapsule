@@ -585,17 +585,18 @@
     width: 200px;
     border-radius: 24px;
     border: none;
+    margin: 10px;
   }
 
   .discard_detail_friend{
-    background-color: var(--brand3_main);
+    background-color: var(--point1_main);
 
     &:hover {
-      background-color: var(--brand3_3);
+      background-color: var(--point1_3);
     }
   }
 
-  .discard_detail_friend{
+  .follower_detail_friend{
     background-color: var(--brand3_4);
 
     &:hover {
@@ -603,20 +604,12 @@
     }
   }
 
-  .discard_detail_friend{
-    background-color: var(--brand4_4);
-
-    &:hover {
-      background-color: var(--brand4_2);
-    }
-  }
-
   .add_detail_friend{
-    background-color: var(--point1_main);
+    background-color: var(--brand3_4);
 
     &:hover {
       cursor: pointer;
-      background-color: var(--point1_3);
+      background-color: var(--brand3_2);
     }
   }
 }
