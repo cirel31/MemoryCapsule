@@ -36,7 +36,6 @@ const MyPage = () => {
             <h1 className="mypage_notice_h1">공지사항</h1>
             <div className="parting_line"></div>
             <div>
-              나중에 공지게시판 수정해서 넣을 것
             </div>
             <br/>
             <h1 className="mypage_notice_h1">제작중인 캡슐 현황</h1>

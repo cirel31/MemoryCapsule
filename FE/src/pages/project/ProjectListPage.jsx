@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import "../../styles/testPage.css"
 import {useSelector} from "react-redux";
+import "../../styles/MainPage.scss"
+import main_bg from "../../assets/images/mainpage/Mainback.svg"
 
 
 const ProjectListPage = () => {
