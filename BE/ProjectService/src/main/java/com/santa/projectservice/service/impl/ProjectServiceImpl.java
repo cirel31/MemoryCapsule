@@ -106,15 +106,17 @@ public class ProjectServiceImpl implements ProjectService {
             final Project regiProject = project;
             // 사용자에 대해서 프로젝트 초대를 만듭니다
             Optional<User> user = userRepository.findById(Owner);
-            userList.forEach(id -> {
-                inviteService.createInvite(Invite.builder()
-                        .userId(id)
-                        .projectId(regiProject.getId())
-                        .inviter(user.get().getNickname())
-                        .projectTitle(regiProject.getTitle())
-                        .build()
-                );
-            });
+            if(userList != null) {
+                userList.forEach(id -> {
+                    inviteService.createInvite(Invite.builder()
+                            .userId(id)
+                            .projectId(regiProject.getId())
+                            .inviter(user.get().getNickname())
+                            .projectTitle(regiProject.getTitle())
+                            .build()
+                    );
+                });
+            }
         } catch (DataAccessException e){
             throw new RegisterMakeException("프로젝트 유저들을 초기화하는데 문제가 발생했습니다", e);
         }
