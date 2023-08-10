@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 public class ProjectInfo {
-    private Long idx;
+    private Long id;
     private String title;
     private String content;
     private Date started;
@@ -25,8 +25,8 @@ public class ProjectInfo {
     private long artielcNum;
 
     @Builder
-    public ProjectInfo(Long idx, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareurl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum) {
-        this.idx = idx;
+    public ProjectInfo(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareurl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.started = started;
@@ -42,7 +42,7 @@ public class ProjectInfo {
         this.artielcNum = artielcNum;
     }
     public ProjectInfo(ProjectDto projectDto, Long num){
-        this.idx = projectDto.getId();
+        this.id = projectDto.getId();
         this.title = projectDto.getTitle();
         this.content = projectDto.getContent();
         this.started = projectDto.getStarted();
