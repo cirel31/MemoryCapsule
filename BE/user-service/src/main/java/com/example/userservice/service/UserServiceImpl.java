@@ -96,6 +96,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(userEmail).isPresent();
     }
 
+    @Transactional
     @Override
     public UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile multipartFile) throws Exception {
         //TODO: User 회원가입
