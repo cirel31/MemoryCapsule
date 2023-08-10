@@ -97,9 +97,9 @@ public class UserServiceImpl implements UserService {
             if (userOptional.get().isDeleted()) {
                 return 0;
             }
-            return 1;
+            return -1;
         }
-        return -1;
+        return 1;
     }
 
     @Transactional
