@@ -220,7 +220,7 @@ public class UserServiceImpl implements UserService {
     private String getImgUrl(MultipartFile multipartFile) throws IOException {
         String imgUrl = "https://ssafysanta.s3.ap-northeast-2.amazonaws.com/stamp_best.svg"; // Default Img
         // User ImgURl 처리
-        if(multipartFile != null){
+        if(!multipartFile.isEmpty()){
             String fileName = fileService.upload(multipartFile);
             imgUrl = defaultUrl + fileName;
         }
