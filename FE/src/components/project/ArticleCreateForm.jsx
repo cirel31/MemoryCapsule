@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {useSelector} from "react-redux";
+// import {useSelector} from "react-redux";
 import stamp_best from "../../assets/images/stamp/stamp_best.svg"
 import stamp_angry from "../../assets/images/stamp/stamp_angry.svg"
 import stamp_hansum from "../../assets/images/stamp/stamp_hansum.svg"
@@ -9,17 +9,18 @@ import stamp_soso from "../../assets/images/stamp/stamp_soso.svg"
 import stamp_wow from "../../assets/images/stamp/stamp_wow.svg"
 import Modal from "react-modal";
 import axios from "axios"
+import {useSelector} from "react-redux";
 
 const ArticleCreateForm = () => {
   const formRef = useRef(null)
   const [photos, setPhotos] = useState([])
   const [text, setText] = useState("");
-  const userPoint = useSelector((state) => state.userState.point);
   const articleId = window.location.href.replace(window.location.origin, "")
   const [stampModalOpen, setStampModalOpen] = useState(false)
   const [feelingStamp, setFellingStamp] = useState([])
-  const MAIN_URL = "http://i9a608.p.ssafy.io:8000"
-  const SUB_URL = articleId
+  const baseURL = "https://i9a608.p.ssafy.io:8000"
+  const subURL = articleId
+  const user = useSelector((state) => state.userState.user) || null
   const stamps = [
     {
       "id": 1,
@@ -57,9 +58,6 @@ const ArticleCreateForm = () => {
   const closeStampModal = () => {
     setStampModalOpen(false)
   }
-  useEffect(() => {
-    console.log(userPoint);
-  });
   useEffect(() => {
     console.log(articleId)
   })
@@ -104,35 +102,24 @@ const ArticleCreateForm = () => {
     e.preventDefault();
     console.log("제출버튼 누름")
     const formData = new FormData(e.target)
+    // 재현님 타이틀 없애준다면서요......
+    formData.append("title", "끼야아아아앗호우")
     console.log(formData)
     for (let [name, value] of formData.entries()) {
       console.log(`${name}: ${value}`);
     }
-    const articleImgInput = formRef.current.querySelector('input[name="article_img"]');
-    const articleStampInput = formRef.current.querySelector('input[name="article_stamp"]');
-    const articleContentInput = formRef.current.querySelector('textarea[name="article_content"]');
-
-    const sendData = {
-      "img": articleImgInput ? articleImgInput.value : null,
-      "stamp": articleStampInput ? articleStampInput.value : null,
-      "content": articleContentInput ? articleContentInput.value : null,
-    };
-
-    const jsonData = JSON.stringify(sendData);
-
-    axios.post(`${MAIN_URL}${SUB_URL}`, jsonData, {
+    axios.post(`${baseURL}${subURL}`, formData, {
       headers : {
-        "Content-Type": "application/json",
-        "userId": 1001,
+        "userId": 1004,
       }
     })
       .then(res => {
         console.log("게시글 등록 성공", res)
+        window.location.href ='/mypage'
       })
       .catch(err => {
-        console.log(SUB_URL)
+        console.log(baseURL,subURL)
         console.log("게시글 등록 실패", err)
-        console.log(jsonData)
       })
 
   }
@@ -151,7 +138,7 @@ const ArticleCreateForm = () => {
                 이미지 업로드:
                 <br/>
                 <input
-                  name="article_img"
+                  name="files"
                   type="file"
                   accept="image/*"
                   multiple
@@ -194,14 +181,14 @@ const ArticleCreateForm = () => {
                 </Modal>
                 {/* 서버에 도장 정보 보낼 인풋 */}
                 <input
-                  name="article_stamp"
+                  name="stamp"
                   style={{display:"none"}}
                   type="number"
                   value={feelingStamp[0]}
                 />
               </div>
               <textarea
-                name="article_content"
+                name="content"
                 value={text}
                 onChange={handleTextChange}
                 maxLength={150}

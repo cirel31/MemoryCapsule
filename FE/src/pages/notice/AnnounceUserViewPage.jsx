@@ -4,9 +4,9 @@ import "../../styles/AnnounceStyle.scss"
 import PostModal from "../../components/post/PostModal";
 import axios from "axios";
 import go_back from "../../assets/images/frield/go_back.svg";
-import AnnounceList from "./AnnounceList";
+import AnnounceList from "../../components/announce/AnnounceList";
 
-const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
+const AnnounceUserViewPage = () => {
     // 뒤로가기
     const handleBack = () => {
         window.history.back()
@@ -26,7 +26,7 @@ const AnnounceUserViewPage = ({page, size, setCurrentPage}) => {
                       </div>
                   </div>
               </div>
-              <AnnounceList page={page} size={size} setCurrentPage={setCurrentPage}/>
+              <AnnounceList page={0} size={10}/>
           </div>
       </>
   )

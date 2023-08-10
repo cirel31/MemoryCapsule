@@ -1,9 +1,14 @@
 import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import axios from "axios";
+import "../../styles/AnnounceStyle.scss"
+import {StyledSearchBar} from "../../styles/searchBarStyle";
 
 const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
+    const baseURL = 'https://i9a608.p.ssafy.io:8000';
     const API = '/notice';
+
+    Modal.setAppElement("#root");
 
     const [state, setState] = useState(false);
     const [disabledTitle, setDisabledTitle] = useState(false);
@@ -11,7 +16,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
     useEffect(() => {
         console.log("[PostModal]");
-        setState(selectedPost &&(selectedPost.id === 0 || state));
+        setState(selectedPost &&(selectedPost.noticeIdx === 0 || state));
     });
 
     // 공지사항 데이터 접근자가 관리자인지 확인
@@ -44,20 +49,30 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     });
 
     const postNoticesDataCreateServer = (e) => {
+        const accessToken = sessionStorage.getItem("accessToken")
+        const user_id = sessionStorage.getItem("userIdx")*1;
+
         console.log("[postNoticesDataCreateServer]");
         e.preventDefault();
 
-        // if (checkUserRole()) {
-        //     // 실제 배포는 8000
-        //     // 테스트 및 개발 서버는 7000
-        //     axios.post(`${API}/`, formData)
-        //         .then((response) => {
-        //             console.log('게시글 작성 POST successful : ', response.data);
-        //         })
-        //         .catch((error) => {
-        //             console.error('게시글 작성 POST fail : ', error);
-        //         });++++
-        // }
+        if (checkUserRole()) {
+            // 실제 배포는 8000
+            // 테스트 및 개발 서버는 7000
+            axios.post(`${API}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                    params: {}
+
+                })
+                .then((response) => {
+                    console.log('게시글 작성 POST successful : ', response.data);
+                })
+                .catch((error) => {
+                    console.error('게시글 작성 POST fail : ', error);
+                });
+        }
     }
 
     /**
@@ -65,24 +80,25 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      *http://localhost:8080/notice/2
      */
     const deletePost = (e) => {
+        const accessToken = sessionStorage.getItem("accessToken")
         console.log("[deletePost]");
         e.preventDefault();
 
         if (checkUserRole()) {
             console.log("게시글 삭제 (제작중)");
-            // axios.delete(`${API}/list`,{
-            //       params:{
-            //         id: 12345
-            //       }
-            //     });
-            //     .then((response) => {
-            //         console.log('게시글 삭제 (Delete) successful : ', response.data);
-            //         setNoticeDetail("");
-            //         getAllNoticesDataServer(currentPage, itemsPerPage);
-            //     })
-            //     .catch((error) => {
-            //         console.error('게시글 삭제 (Delete) fail : ', error);
-            //     });
+            axios.delete(`${API}//${selectedPost.noticeIdx}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    },
+                })
+                .then((response) => {
+                    console.log('게시글 삭제 (Delete) successful : ', response.data);
+                    setSelectedPost([]);
+                })
+                .catch((error) => {
+                    console.error('게시글 삭제 (Delete) fail : ', error);
+                });
         }
     }
 
@@ -97,6 +113,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      * }
      */
     const putNoticesDataEditServer = (e) => {
+        const accessToken = sessionStorage.getItem("accessToken")
         // console.log("[putNoticesDataEditServer]");
         // e.preventDefault();
         //
@@ -123,44 +140,94 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
     return (
         <>
-                <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="notice_modal_part">
-                    {
-                        selectedPost &&(
-                        <div className="modal_contents_box">
-                            <h2 className="modal_inner_title">
-                                {
-                                    state
-                                    ? <input disabled={disabledTitle} value={selectedPost.noticeTitle}/>
-                                    : selectedPost.noticeTitle
-                                }
-                                <hr/>
-                            </h2>
-                            <p className="modal_inner_contents">
-                                {
-                                    state
-                                    ? <input disabled={disabledContent} value={selectedPost.noticeContent}/>
-                                    : selectedPost.noticeContent
-                                }
-                            </p>
+            {/*<Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="notice_modal_part">*/}
+            {/*    {*/}
+            {/*        selectedPost &&(*/}
+            {/*        <div className="modal_contents_box">*/}
+            {/*            {*/}
+            {/*                state*/}
+            {/*                ? <input disabled={disabledTitle} value={selectedPost.noticeTitle} className="modal_inner_title_input"/>*/}
+            {/*                : <h2 className="modal_inner_title">*/}
+            {/*                    selectedPost.noticeTitle <hr/>*/}
+            {/*                </h2>*/}
+            {/*            }*/}
+            {/*            <p className="modal_inner_contents">*/}
+            {/*                {*/}
+            {/*                    state*/}
+            {/*                    ? <input disabled={disabledContent} value={selectedPost.noticeContent}/>*/}
+            {/*                    : selectedPost.noticeContent*/}
+            {/*                }*/}
+            {/*            </p>*/}
+            {/*            {*/}
+            {/*                state*/}
+            {/*                ?*/}
+            {/*                <div>*/}
+            {/*                    <button onClick={closeModal}>닫기</button>*/}
+            {/*                    <button onClick={closeModal}>등록</button>*/}
+            {/*                </div>*/}
+            {/*                :*/}
+            {/*                <div>*/}
+            {/*                    <button onClick={closeModal}>닫기</button>*/}
+            {/*                    <button onClick={editPost}>수정</button>*/}
+            {/*                    <button onClick={deletePost}>삭제</button>*/}
+            {/*                </div>*/}
+            {/*            }*/}
+            {/*        </div>*/}
+            {/*        )*/}
+            {/*    }*/}
+            {/*    </Modal>*/}
+
+
+
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="notice_modal">
+                {
+                    selectedPost &&(
+                        <form className="modal_contents_box">
+                            {
+                                state
+                                    ? <input
+                                        disabled={disabledTitle}
+                                         value={selectedPost.noticeTitle}
+                                         // onChange={postChange}
+                                         className="modal_inner_title_input"
+                                    />
+                                    : <h2 className="modal_inner_title">
+                                        selectedPost.noticeTitle <hr/>
+                                    </h2>
+                            }
                             {
                                 state
                                 ?
-                                <div>
-                                    <button onClick={closeModal}>닫기</button>
-                                    <button onClick={closeModal}>등록</button>
-                                </div>
+                                <input
+                                    disabled={disabledContent}
+                                    value={selectedPost.noticeContent}
+                                    // onChange={postChange}
+                                    className="modal_inner_contents_input"
+                                />
                                 :
-                                <div>
-                                    <button onClick={closeModal}>닫기</button>
-                                    <button onClick={editPost}>수정</button>
-                                    <button onClick={deletePost}>삭제</button>
-                                </div>
+                                <p className="modal_inner_contents">
+                                    selectedPost.noticeContent
+                                </p>
                             }
-                        </div>
-                        )
-                    }
-                    </Modal>
 
+                            {
+                                state
+                                    ?
+                                    <div className="buttonList">
+                                        <button onClick={closeModal}>닫기</button>
+                                        <button onClick={closeModal}>등록</button>
+                                    </div>
+                                    :
+                                    <div className="buttonList">
+                                        <button onClick={closeModal}>닫기</button>
+                                        <button onClick={editPost}>수정</button>
+                                        <button onClick={deletePost}>삭제</button>
+                                    </div>
+                            }
+                        </form>
+                    )
+                }
+            </Modal>
         </>
     )
 }

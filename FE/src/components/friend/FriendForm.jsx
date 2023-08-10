@@ -1,17 +1,23 @@
 import { AuthFormBlock, FormBody, WhiteBox } from "../../styles/friendStyle";
 import {StyledSearchBar} from "../../styles/searchBarStyle";
 
-const FriendForm = ({form, setForm, isValidSearch, setIsValidSearch}) => {
+const FriendForm = ({form, setForm, setIsValidSearch}) => {
 
-    const handleChange = (e) => {
-        const { value } = e.target;
-            const nextForm = {
-            ...form,
-            "search" : value,
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
         };
-        setForm(nextForm);
-        console.log("handleChange : ", form);
-    };
+    }, true);
+
+    // const handleChange = (e) => {
+    //     const { value } = e.target;
+    //         const nextForm = {
+    //         ...form,
+    //         "search" : value,
+    //     };
+    //     setForm(nextForm);
+    //     console.log("handleChange : ", form);
+    // };
 
     const valueChange = (e) => {
         const { value } = e.target;
@@ -27,13 +33,7 @@ const FriendForm = ({form, setForm, isValidSearch, setIsValidSearch}) => {
     return (
         <>
             <form className="friend_form_info">
-                {/*<select id="search" name="search" onChange={handleChange}>*/}
-                {/*    <option value={"id"}>e-mail</option>*/}
-                {/*    <option value={"name"}>name</option>*/}
-                {/*    <option value={"nickname"}>nickname</option>*/}
-                {/*</select>*/}
-
-                <StyledSearchBar
+                <input
                     className="styled_search_bar"
                     id="id"
                     placeholder="여기에 입력하세요"
@@ -41,7 +41,6 @@ const FriendForm = ({form, setForm, isValidSearch, setIsValidSearch}) => {
                     onChange={valueChange}
                     required
                 />
-                {!isValidSearch && <div style={{ color: 'red' }}>한 글자 이상 입력해주세요</div>}
             </form>
         </>
     );

@@ -9,427 +9,324 @@
   justify-items: center;
   background-color: var(--backGround_1);
 
-
-  .announce_top{
-    width: 100%;
-    height: 100px;
-    background-color: var(--brand1_2);
-  }
-
-  .announce_body {
-    width: 840px;
-    display: grid;
-    height: 100%;
-
-    .announce_top_content{
-      display: flex;
+  .content_body {
+    filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+    .announce_top{
       width: 100%;
       height: 100px;
-      margin-top: -45px;
+      background-color: var(--brand1_2);
+    }
 
-      .announce_title{
-        display: grid;
-        justify-items: center;
-        align-items: center;
-        width: 500px;
-        height: 90px;
-        font-weight: bold;
-        font-size: 24px;
-        background-color: var(--backGround_1);
-        border: none;
-        border-radius: 45px;
-      }
+    .announce_body {
+      width: 840px;
+      display: grid;
 
-      .announce_back{
+      .announce_top_content{
+        display: flex;
         width: 100%;
         height: 100px;
-        display: flex;
-        flex-direction: row;
-        justify-content: right;
+        margin-top: -45px;
 
-        .announce_back_button{
+        .announce_title{
           display: grid;
           justify-items: center;
           align-items: center;
-
-          width: 40px;
-          height: 40px;
-          border-radius: 100%;
-          background-color: var(--brand3_main);
-
-          .announce_back_button_img {
-            width: 20px;
-            height: 20px;
-          }
-        }
-      }
-    }
-
-    .announce_list {
-      width: 100%;
-
-      .announce_nothing {
-        display: grid;
-        align-content: center;
-        align-items: center;
-        grid-template-columns: 80% 10% 10%;
-
-        height: 520px;
-        width: 100%;
-        margin: 20px 0;
-        background: var(--transpar);
-        color: var(--font_gray_main);
-        -webkit-background-clip: text;
-        font-size: clamp(0.5vw, 1vw, 2vw);
-        font-weight: 700;
-
-        .mypage_notice_part {
-          height: 100%;
-          display: grid;
-          justify-items: center;
-          align-items: center;
-
-          .textBlock{
-            font-size: 24px;
-            color: var(--brand3_main);
-            .brand_logo{
-              width: 30px;
-              height: 30px;
-            }
-          }
-        }
-
-        div > .friendListItem {
-          display: grid;
-          align-items: center;
-          grid-template-columns: 20% 65% 15%;
-          width: auto;
-          height: 60px;
-          border-radius: 10px;
-          color: var(--font_gray_main);
-          background-color: var(--backGround_0);
-          margin: 10px;
-
-          .user_img_setting{
-            display: grid;
-            justify-items: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-            border: solid var(--brand3_main) 3pt;
-            .userImg {
-              border-radius: 100%;
-            }
-          }
-
-          .user_info{
-            .user_info_username{
-              font-size: 12pt;
-            }
-
-            .user_info_email{
-              font-size: 8pt;
-            }
-          }
-
-          .user_detail_button{
-            display: grid;
-            justify-items: center;
-            align-items: center;
-
-            background-color: var(--brand3_main);
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-            &:hover {
-              cursor: pointer;
-              background-color: var(--brand2_3);
-            }
-
-            .userDetailButtonImg{
-              width: 25px;
-            }
-          }
-        }
-      }
-
-      .announce_item {
-        display: grid;
-        justify-items: center;
-        align-items: center;
-
-        width: 100%;
-
-        .announce_list_items{
-          display: grid;
-          justify-items: center;
-          align-items: center;
-          width: 100%;
-          grid-template-columns: 80% 1% 19%;
-          height: 70px;
-
-          .announce_list_item{
-            width: 100%;
-            height: 50px;
-            background-color: var(--brand3_main);
-            border-radius: 10px;
-            margin: 5px;
-            padding: 0px 0px 0px 10px;
-
-
-            color: var(--white);
-            font-size: 14px;
-            font-weight: bold;
-          }
-
-          .announce_list_alarm{
-            width: 21px;
-            height: 21px;
-            border-radius: 100%;
-            margin: 0px 1% 0px 0px;
-            background-color: var(--point1_main);
-          }
-        }
-      }
-    }
-
-    .search_friend_list {
-      width: 100%;
-      display: grid;
-      align-items: center;
-
-      .friendListItems {
-        height: 520px;
-        width: 100%;
-        margin: 20px 0;
-        background: var(--transpar);
-        color: var(--font_gray_main);
-        -webkit-background-clip: text;
-        font-size: clamp(0.5vw, 1vw, 2vw);
-        font-weight: 700;
-
-        //============== 스크롤바 관련 (시작) ==============
-        overflow-y: scroll;
-
-        scroll-behavior: smooth;
-        scrollbar-gutter: stable;
-        text-overflow: ellipsis;
-        word-break: break-all;
-        table-layout:fixed;
-
-        &::-webkit-scrollbar {
-          width: 9px;  /* 스크롤바의 너비 */
-        }
-
-        &::-webkit-scrollbar-thumb {
-          height: auto; /* 스크롤바의 길이 */
-          width: 7px;
-          background: var(--brand3_main); /* 스크롤바의 색상 */
-
-          border-radius: 10px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
-          border-radius: 10px;
-        }
-        //============== 스크롤바 관련 (끝) ==============
-        .no_friend_list {
-          height: 100%;
-          display: grid;
-          justify-items: center;
-          align-items: center;
-
-          .textBlock{
-            font-size: 24px;
-            color: var(--brand3_main);
-            .brand_logo{
-              width: 30px;
-              height: 30px;
-            }
-          }
-        }
-
-        div > .friendListItem {
-          display: grid;
-          align-items: center;
-          grid-template-columns: 20% 65% 15%;
-          width: auto;
-          height: 60px;
-          border-radius: 10px;
-          color: var(--font_gray_main);
-          background-color: var(--backGround_0);
-          margin: 10px;
-
-          .user_img_setting{
-            display: grid;
-            justify-items: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-            border: solid var(--brand3_main) 3pt;
-            .userImg {
-              border-radius: 100%;
-            }
-          }
-
-          .user_info{
-            .user_info_username{
-              font-size: 12pt;
-            }
-
-            .user_info_email{
-              font-size: 8pt;
-            }
-          }
-
-          .user_detail_button{
-            display: grid;
-            justify-items: center;
-            align-items: center;
-
-            background-color: var(--brand3_main);
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-            &:hover {
-              cursor: pointer;
-              background-color: var(--brand2_3);
-            }
-
-            .userDetailButtonImg{
-              width: 25px;
-              width: 25px;
-            }
-          }
-        }
-      }
-
-      .friendDetailItems {
-        display: grid;
-        justify-items: center;
-        align-items: center;
-
-        height: 520px;
-        width: 100%;
-
-        .no_friend_list{
-          //height: 100px;
-          //width: 100px;
-        }
-        .friend_detail_guide{
-
-          width: 100%;
-          height: 100%;
-
+          width: 500px;
+          height: 90px;
           font-weight: bold;
+          font-size: 24px;
+          background-color: var(--backGround_0);
+          border: none;
+          border-radius: 45px;
+        }
 
-          .friend_detail_item{
-            border-radius: 16px;
+        .announce_back{
+          filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+          width: 100%;
+          height: 100px;
+          display: flex;
+          flex-direction: row;
+          justify-content: right;
 
+          .announce_back_button{
             display: grid;
             justify-items: center;
             align-items: center;
-            width: auto;
-            height: 100%;
+            margin-right: 10px;
+
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
             background-color: var(--backGround_0);
-            margin-left: 20px;
-            text-align: center;
 
-            .close_user_detail{
-              width: 100%;
-              display: flex;
-              justify-content: right;
-              margin-right: 30px;
-              .close_user_detail_btn{
-                display: grid;
-                justify-items: center;
-                align-items: center;
-                width: 40px;
-                height: 40px;
-                background-color: var(--brand3_main);
-                font-size: 24px;
-                font-weight: bold;
-                color: var(--white);
-                border-radius: 24px;
-
-                &:hover {
-                  cursor: pointer;
-                  background-color: var(--brand2_3);
-                }
-              }
-            }
-
-            .user_img_setting{
-              display: grid;
-              justify-items: center;
-              align-items: center;
-              width: 80px;
-              height: 80px;
-              border-radius: 100%;
-              border: solid var(--brand3_main) 3pt;
-
-              .userImg {
-                display: grid;
-                justify-items: center;
-                align-items: center;
-
-                border-radius: 100%;
-              }
-            }
-
-            .user_info{
-              .user_info_username{
-                font-size: 12pt;
-              }
-
-              .user_info_email{
-                font-size: 8pt;
-              }
-            }
-
-            .user_project_info{
-              .user_project_text{
-                font-size: 12px;
-                .user_project_text_hl{
-                  font-size: 24px;
-                  color: var(--brand2_main);
-                }
-              }
-            }
-          }
-
-          .friend_add_delete_button{
-            margin: 10px;
-            .add_discard_button{
-              font-size: 12px;
-              font-weight: bold;
-              color: var(--white);
-              height: 30px;
-              width: 150px;
-              border-radius: 24px;
-              border: none;
-            }
-
-            .add_friend{
-              background-color: var(--brand3_main);
-              &:hover {
-                cursor: pointer;
-                background-color: var(--brand3_4);
-              }
-            }
-
-            .discard_friend{
-              background-color: var(--point1_main);
-              &:hover {
-                cursor: pointer;
-                background-color: var(--point1_4);
-              }
+            .announce_back_button_img {
+              width: 20px;
+              height: 20px;
             }
           }
         }
+      }
+
+      .announce_list {
+        width: 740px;
+        min-height: 150px;
+        filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+        justify-items: center;
+        margin : 0px auto;
+
+        .announce_nothing {
+          display: grid;
+          align-content: center;
+          align-items: center;
+          text-align: center;
+
+          height: 520px;
+          width: 100%;
+          margin: 20px 0;
+          background: var(--transpar);
+          color: var(--brand3_main);
+          -webkit-background-clip: text;
+          font-size: clamp(0.5vw, 1vw, 2vw);
+          font-weight: 700;
+        }
+
+        .announce_pagenation {
+          display: grid;
+          justify-items: center;
+          align-items: center;
+
+          width: 100%;
+
+          .announce_list_items{
+            display: grid;
+            justify-items: center;
+            align-items: center;
+            width: 100%;
+            grid-template-columns: 80% 1% 19%;
+            height: 70px;
+
+            .announce_list_item{
+              width: 100%;
+              height: 50px;
+              background-color: var(--brand3_main);
+              border-radius: 10px;
+              margin: 5px;
+              padding: 0px 0px 0px 10px;
+
+              color: var(--white);
+              font-size: 14px;
+              font-weight: bold;
+            }
+
+            .announce_list_alarm{
+              width: 21px;
+              height: 21px;
+              border-radius: 100%;
+              margin: 0px 1% 0px 0px;
+              background-color: var(--point1_main);
+            }
+          }
+
+          .announce_pagenation_buttons{
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            margin: 10px;
+
+            .announce_pagenation_button{
+              width: 25px;
+              height: 25px;
+              border : none;
+              color: var(--white);
+              border-radius: 100%;
+              background-color: var(--brand3_3);
+              margin: 10px;
+            }
+
+            .selected_announce_pagenation_button{
+              width: 30px;
+              height: 30px;
+              border : none;
+              color: var(--white);
+              border-radius: 100%;
+              background-color: var(--brand3_main);
+              margin: 10px;
+            }
+          }
+        }
+      }
+    }
+    .create_post{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      .create_post_button{
+        filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+        width : 150px;
+        background-color: var(--point1_main);
+        color: var(--white);
+        font-weight: bold;
+        font-size: 16px;
+        margin: 10px auto;
+        padding: 5px;
+        border: none;
+        border-radius: 16px;
+
+        &:hover{
+          background-color: var(--point1_4);
+        }
+      }
+    }
+  }
+}
+
+.notice_modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 800px;
+  height: 700px;
+  background-color: var(--backGround_main);
+  display: grid;
+
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+
+  border-radius: 1rem;
+  border: solid 3px var(--brand3_3);
+
+  backdrop-filter: blur(10px);
+  //margin-left: 15%;
+  .modal_contents_box{
+    width: 700px;
+    height: 650px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 150px 400px 50px;
+    align-items: center;
+    .modal_inner_title {
+      text-align: center;
+      font-family: "IBM Plex Sans KR", sans-serif;
+      font-weight: 700;
+      font-size: 22pt;
+      color: var(--font_gray_main);
+
+      & > hr {
+        stroke: var(--brand3_main);
+        color: var(--brand3_main);
+        background-color: var(--brand3_main);
+      }
+    }
+
+    .modal_inner_title_input{
+      width: 100%;
+      color: var(--font_gray_main);
+      font-size: 22pt;
+      background-color: var(--transpar);
+      outline: none;
+
+      border: 3px solid var(--brand3_main);
+      border-radius: 5px;
+    }
+
+
+    .modal_inner_contents {
+      height: 380px;
+      text-align: left;
+      font-family: "IBM Plex Sans KR", sans-serif;
+      font-weight: 500;
+      font-size: 15pt;
+      color: var(--font_gray_main);
+      overflow-y: scroll;
+
+      scroll-behavior: smooth;
+      scrollbar-gutter: stable;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      table-layout:fixed;
+
+      &::-webkit-scrollbar {
+        width: 9px;  /* 스크롤바의 너비 */
+      }
+
+      &::-webkit-scrollbar-thumb {
+        height: auto; /* 스크롤바의 길이 */
+        width: 7px;
+        background: var(--brand3_3); /* 스크롤바의 색상 */
+
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+        border-radius: 10px;
+      }
+    }
+
+    .modal_inner_contents_input{
+      width: 100%;
+      height: 380px;
+      background-color: var(--transpar);
+      outline: none;
+
+      border: 2px solid var(--brand3_main);
+      border-radius: 5px;
+
+      text-align: left;
+      font-family: "IBM Plex Sans KR", sans-serif;
+      font-weight: 500;
+      font-size: 15pt;
+      color: var(--font_gray_main);
+      overflow-y: scroll;
+
+      scroll-behavior: smooth;
+      scrollbar-gutter: stable;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      table-layout:fixed;
+
+      &::-webkit-scrollbar {
+        width: 9px;  /* 스크롤바의 너비 */
+      }
+
+      &::-webkit-scrollbar-thumb {
+        height: auto; /* 스크롤바의 길이 */
+        width: 7px;
+        background: var(--brand3_3); /* 스크롤바의 색상 */
+
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+        border-radius: 10px;
+      }
+
+    }
+
+    .buttonList{
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      align-items: center;
+      button{
+        width: 20%;
+        height: 40px;
+        text-align: center;
+        color: var(--white);
+        background-color: var(--brand3_main);
+        font-family: "IBM Plex Sans KR", sans-serif;
+        font-weight: 700;
+        font-size: 15pt;
+        cursor: pointer;
+        border: none;
+        border-radius: 3rem;
       }
     }
   }

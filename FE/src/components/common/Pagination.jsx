@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import PostModal from "../post/PostModal";
+import Modal from "react-modal";
 
-const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => {
-
-    const totalPages = Math.ceil(postList.length / itemsPerPage);
-
-    // pagenation 처리를 위한 값들
-    const indexOfLastItem = (currentPage+1) * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = postList.slice(indexOfFirstItem, indexOfLastItem);
+const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
+    //페이지네이션 처리해야 함
+    const totalPages = postList.totalPages;
+    Modal.setAppElement("#root");
 
     // 모달창 컨트롤을 위한 값
     const [selectedPost, setSelectedPost] = useState(null)
@@ -16,15 +13,15 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
 
     const openModal = (id) => {
         // const index = postList.findIndex((post => post.id === id))
-        const index = postList.findIndex((post => post.noticeIdx === id))
-        setSelectedPost(postList[index])
+        const index = postList.content.findIndex((post => post.noticeIdx === id))
+        setSelectedPost(postList.content[index]);
         console.log("index : ", index);
-        setIsModal(true)
+        setIsModal(true);
     }
 
-    // Handle page changes
     const handlePageChange = (pageNumber) => {
-        console.log(currentItems);
+        console.log("currentPage:", currentPage);
+        console.log("pageNumber:", pageNumber);
         setCurrentPage(pageNumber);
     };
 
@@ -52,15 +49,38 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
             showIndexList.push(i);
         }
 
-        console.log("showIndexList : ", showIndexList);
+        console.log("showIndexList : ", totalPages);
         return showIndexList;
     }
 
+    // 날짜 처리
+    function addLeadingZero(number) {
+        return number < 10 ? `0${number}` : number;
+    }
+
+    function getTime(getTime) {
+        const getTimeChange = new Date(getTime);
+        const Year = getTimeChange.getFullYear();
+        const Month = getTimeChange.getMonth() + 1;
+        const Day = getTimeChange.getDate();
+
+        return(`${Year}-${addLeadingZero(Month)}-${addLeadingZero(Day)}`);
+    }
+
+    // 새 알람인지 구분 (일주일 기준)
+    function isNewAlame(getTime) {
+        const getTimeDate = new Date(getTime);
+        const curTimeDate = new Date() - (7 * 24 * 60 * 60 * 1000);
+        if (curTimeDate < getTimeDate) {
+            return true;
+        }
+        return false;
+    }
+
     return (
-        <div className="announce_item">
-            {/* 자체 페이지네이션 */}
+        <div className="announce_pagenation">
             {
-            currentItems.map((post) => (
+            postList.content.map((post) => (
                 <div className="announce_list_items">
                     <div
                         className="announce_list_item"
@@ -69,23 +89,34 @@ const Pagination = ({ itemsPerPage, postList, currentPage, setCurrentPage }) => 
                     >
                         <p>{post.noticeTitle}</p>
                     </div>
-                    <div className="announce_list_alarm"/>
+                    {
+                        isNewAlame(post.noticeCreated)
+                        ?
+                        <div className="announce_list_alarm"/>
+                        :
+                        <div> </div>
+                    }
+
                     <div>
                         <p>
                             {/*function으로 return 값을 date.getDate() 같은거 써서 return*/}
-                            {
-                            Date(post.noticeCreated * 1000)
-                        }</p>
+                            {getTime(post.noticeCreated)}
+                        </p>
                     </div>
                 </div>
                 ))
             }
 
-            {/* 페이지네이션 */}
-            <div>
+            <div className="announce_pagenation_buttons">
                 {
                     Array.from(pageIndex()).map((index) => (
-                        <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
+                        currentPage===index
+                        ?
+                        <button key={index + 1} className="selected_announce_pagenation_button">
+                            {index + 1}
+                        </button>
+                        :
+                        <button key={index + 1} onClick={() => handlePageChange(index)} className="announce_pagenation_button">
                             {index + 1}
                         </button>
                     ))

@@ -1,43 +1,52 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import "../../styles/testPage.css"
+import {useSelector} from "react-redux";
+import "../../styles/MainPage.scss"
+import main_bg from "../../assets/images/mainpage/Mainback.svg"
 
 
 const ProjectListPage = () => {
-  const navigate = useNavigate()
   const [isHovered, setIsHovered] = useState(null)
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
-  // const API = 'http://i9a608.p.ssafy.io:8000/project/all'
-  const API = '/project/all'
+  const baseURL = 'https://i9a608.p.ssafy.io:8000'
+  const subURL = '/project/myproject'
+  const user = useSelector((state) => state.userState.user) || null
   const [projects, setProjects] = useState([
 
   ]);
-
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filteredProjects, setFilteredProjects] = useState([])
+  
+  
   useEffect(() => {
-    // 서버로부터 프로젝트 가져오기
-    // 전체 프로젝트를 가져오고 선별 예정
-    axios.get(`${API}`
-    //   , {
-    //   headers: {
-    //     userId: 1001,
-    //   }
-    // }
-    ) // 추후 주소 갱신 예정
+    const userId = user?.userId || ''
+    console.log(userId)
+    axios.get(`${baseURL}${subURL}`, {
+      headers: {
+        "userId": userId,
+      }
+    })
         .then((response) => {
-          console.log('성공')
-          console.log(API)
-          console.log(response.data)
+          console.log('프로젝트 리스트 가져오기 : ', response.data)
           setProjects(response.data);
         })
         .catch((error) => {
-          console.error("서버로부터 프로젝트 가져오기 실패", error);
+          console.error("프로젝트 리스트 가져오기 실패", error);
           console.error(error.code)
         });
   }, []);
-
+  
+  useEffect(() => {
+    const results = projects.filter(project =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProjects(results);
+  }, [searchTerm, projects])
+  
   const handleMouseEnter = (id) => {
     setIsHovered(id)
   };
@@ -54,10 +63,9 @@ const ProjectListPage = () => {
     setIsModal(false)
   }
 
-
   const [currentSection, setCurrentSection] = useState(0);
 
-  const currentPosts = projects.slice(
+  const currentPosts = filteredProjects.slice(
     currentSection,
     (currentSection + 3),
   );
@@ -74,38 +82,64 @@ const ProjectListPage = () => {
   const endBTN = (e) => {
     setCurrentSection((prev) => projects.length  - 1);
   };
-
+  
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  
   Modal.setAppElement("#root");
 
   return (
       <div>
+        <div>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="프로젝트 검색..."
+          />
+          <button onClick={handleSearchChange}>검색</button>
+        </div>
         <h1>현재 진행 중인 프로젝트</h1>
-        {projects.length === 0 ? (
-            <p>프로젝트가 아직 없습니다.</p>
+        {filteredProjects.length === 0 ? (
+          <div
+            style={{ width: '200px', height: "400px", border:'solid black 1px' }}
+          >
+            <Link to='/project/create'>
+              <button>
+                새로운 추억 생성
+              </button>
+            </Link>
+          </div>
         ) : (
-            <div>
-              {currentPosts.map((project) => (
-                  <div
-                    key={project.idx}
-                    className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
-                    onMouseEnter={() => handleMouseEnter(project.idx)}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={() => openModal(project.idx)}
-                  >
-                    프로젝트 제목 : {project.title}
-                  </div>
-              ))}
-            </div>
+          <div>
+            {currentPosts.map((project) => (
+              <div
+                key={project.id}
+                className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
+                onMouseEnter={() => handleMouseEnter(project.idx)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => openModal(project.idx)}
+                style={{ width: '200px' }}
+              >
+                프로젝트 제목 : {project.title}
+                <img src={project.imgUrl} alt="" style={{ width: '200px' }} />
+              </div>
+            ))}
+          </div>
         )}
         <Modal isOpen={isModal} onRequestClose={closeModal}>
           {selectedPost && (
             <div>
+              {console.log(selectedPost)}
               <h2>
                 {selectedPost.idx}
                 <hr/>
                 {selectedPost.title}
               </h2>
               <h3>
+                이미지 : {selectedPost.image}
+                <hr/>
                 내용 : {selectedPost.content}
                 <hr/>
                 시작 : {selectedPost.started}

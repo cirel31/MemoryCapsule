@@ -10,7 +10,11 @@ import goodstamp from "../../assets/images/stamp/stamp_best.svg"
 const CalendarForm = () => {
   // const navigate = useNavigate()
   const isLoggedIn = useSelector((state) => state.userState.isLoggedIn)
+  const attend = useSelector((state) => state.userState.user?.accessList)
+  const userId = useSelector((state) => state.userState.user?.userId)
+  const [finishedProject, setFinishedProject] = useState('')
   console.log('로그인 상태 : ', isLoggedIn)
+  console.log(attend)
 
   // 로그인 되지 않은 상태에서는 접근할 수 없는 페이지
   // 추후 로그인 기능 활성화 시 주석 해제할 것
@@ -34,14 +38,40 @@ const CalendarForm = () => {
   ])
 
   useEffect(() => {
-    const myAttendance = JSON.parse(sessionStorage.getItem("userInfo"))?.accessList.map(date => date.slice(0, 10)) || attendanceDates
+    const myAttendance = attend?.map(date => date.slice(0, 10)) || attendanceDates
     setAttendanceDates(myAttendance)
+  },[]);
+  
+  useEffect(() => {
+    const countCapsuleURL = 'https://i9a608.p.ssafy.io:8000/project/myproject/done'
+    try {
+      axios.get(`${countCapsuleURL}`, {
+        headers: {
+          'userId': userId,
+        }
+      })
+        .then((response) => {
+          console.log(response)
+          // console.log('결과', response.data)
+          const finishedCapsules = response.data.length || 0
+          console.log('완료된 캡슐', finishedCapsules)
+          setFinishedProject(finishedCapsules)
+        })
+        .catch(() => {
+          const finishedCapsules = 0
+          setFinishedProject(finishedCapsules)
+        })
+    }
+    catch (error) {
+      console.log('에러에러 : ', error)
+    }
   },[]);
 
   const [value, onChange] = useState(new Date())
-  const username = '김싸피'
+  const user = useSelector((state) => state.userState.user)
+  const username = user?.nickname || '김싸피'
   const countMemory = 0
-  const countProject = 0
+  const countProject = finishedProject
   return (
     <div>
       <div className="mypage_calenders">

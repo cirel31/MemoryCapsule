@@ -1,42 +1,39 @@
 import { FriendItem } from "../../styles/friendStyle";
 import FriendAddDeleteButton from "./FriendAddDeleteButton";
 import React, {useState} from "react";
-import person from "../../assets/images/frield/person.svg"
+import add_friend from "../../assets/images/frield/add_friend.svg"
+import axios from "axios";
+import FriendDetailButton from "./FriendDetailButton";
 
-const FriendInfo = ({select, setSelect, friend}) => {
-    // 친구인지 여부
-    const isFriend = true;
-
-    const selectFriend = () => {
-        const selected = {
-            "id" : friend.email,
-        };
-        setSelect(selected);
-        console.log("[selectFriend] ", friend.userId);
-    }
+const FriendInfo = ({from, select, setSelect, friend, imageUrl}) => {
 
     return (
-        <FriendItem className="friendListItem">
+        <div className="friend_list_item">
             <div className="user_img_setting">
-                <img src="../userImg" alt="유저 이미지" className="userImg"/>
+                <img src={imageUrl} alt="유저 이미지" className="userImg"/>
             </div>
             <div className="user_info">
                 <div className="user_info_username">
                     {friend.nickname}
                 </div>
-                <div className="user_info_email">
-                    ({friend.email})
-                </div>
             </div>
             {
-                // 처음 로딩 시 친구여야 자세히보기 제공
-                isFriend
-                    ?<div onClick={selectFriend} className="user_detail_button">
-                        <img src={person} alt="유저 자세히보기 이미지" className="userDetailButtonImg"/>
-                    </div>
-                    :<FriendAddDeleteButton select={select}/>
+                !(from==="FriendList")
+                ?
+                <FriendAddDeleteButton
+                    friend={friend}
+                    status={friend.status}
+                    from="FriendList"
+                />
+                :
+                // 클릭 시 자세히보기
+                <FriendDetailButton
+                    friend={friend}
+                    select={select}
+                    setSelect={setSelect}
+                />
             }
-        </FriendItem>
+        </div>
     )
 }
 

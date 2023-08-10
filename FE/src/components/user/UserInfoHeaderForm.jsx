@@ -1,19 +1,28 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import sample_img from "../../assets/images/kokona.png"
 import friend_picto from "../../assets/images/mypage/friend_picto.svg"
 import edit_picto from "../../assets/images/mypage/edit_picto.svg"
 import "../../styles/MyPage.scss"
+import {useSelector} from "react-redux";
 const UserInfoHeaderForm = () => {
-  const userNickname = '김싸피'
-  const userEmail = 'jdragon@ssafy.com'
-  const friendsCount = 0
+  const navigate = useNavigate()
+  const user = useSelector((state) => state.userState.user)
+  console.log('유저정보확인 : ', user)
+  const userNickname = user?.nickname || '김싸피'
+  const userEmail = user?.email || 'jdragon@ssafy.com'
+  const friendsCount = user?.totalFriend || 0
+  const userProfileImg = user?.imgUrl || sample_img
+  const handleEditProfile = () => {
+    navigate('/profile/edit')
+  }
+  
   return (
     <div>
       <div className="mypage_header">
 
         <div className="header_sets">
           <div className="header_image">
-            <img src={sample_img} alt="프로필 이미지" className="header_profile_img"/>
+            <img src={userProfileImg} alt="프로필 이미지" className="header_profile_img"/>
 
           </div>
           <div className="header_user_info1">
@@ -30,13 +39,12 @@ const UserInfoHeaderForm = () => {
 
             <p className="header_user_friend_txt2">{friendsCount} 명</p>
           </div>
-          <div className="header_edit_profile_btn">
+          <div className="header_edit_profile_btn" onClick={handleEditProfile}>
             <p className="profile_edit_txt">프로필 수정</p>
             <img src={edit_picto}/>
           </div>
         </div>
-
-
+        
       </div>
     </div>
   )

@@ -1,23 +1,20 @@
 import CalendarForm from "../../components/user/CalendarForm";
 import UserInfoHeaderForm from "../../components/user/UserInfoHeaderForm";
-
 import {useDispatch} from "react-redux";
-import {logout} from "../../store/userSlice";
+import {logoutUserThunk} from "../../store/userSlice";
 import "../../styles/MyPage.scss";
-import {useNavigate} from "react-router-dom";
 import CurrentProjectsPage from "./CurrentProjectsPage";
-import AnnounceList from "../notice/AnnounceList";
+import InviteProject from "../project/InviteProject";
+import locker_img from "../../assets/images/present_box.jpg";
+import {Link} from "react-router-dom"
+import AnnounceList from "../../components/announce/AnnounceList";
 
 
 const MyPage = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch();
   const LogoutUser = () => {
     console.log('로그아웃 버튼 작동 테스트', sessionStorage)
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("redirectToken");
-    dispatch(logout());
-    navigate('/login')
+    dispatch(logoutUserThunk());
   }
 
   return (
@@ -33,10 +30,13 @@ const MyPage = () => {
               <CalendarForm />
             </div>
             <br/>
+            <div>
+              <InviteProject />
+            </div>
+            <br/>
             <h1 className="mypage_notice_h1">공지사항</h1>
             <div className="parting_line"></div>
             <div>
-                <AnnounceList page={0} size={3} setCurrentPage={0}/>
             </div>
             <br/>
             <h1 className="mypage_notice_h1">제작중인 캡슐 현황</h1>
@@ -49,8 +49,12 @@ const MyPage = () => {
             <br/>
             <br/>
             <h1 className="mypage_notice_h1">보관함</h1>
+            <div>
+              <Link to='/project/locker'>
+                <img src={locker_img} alt="보관함"/>
+              </Link>
+            </div>
             <div className="parting_line"></div>
-
         </div>
     </div>
   )

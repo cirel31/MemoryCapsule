@@ -7,11 +7,11 @@ const ProjectAddFriends = () => {
   const dispatch = useDispatch()
   const searchUsers = ''
   const [searchQuery, setSearchQuery] = useState("");
-
+  const baseURL = 'http://i9a608.p.ssafy.io:8000'
   const handleSearchFriends = async () => {
     try {
       const accessToken = sessionStorage.getItem("accessToken")
-      const response = await axios.get(`${searchUsers}?query=${searchQuery}`, {
+      const response = await axios.get(`${baseURL}${searchUsers}?query=${searchQuery}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         },

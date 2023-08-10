@@ -9,381 +9,307 @@
   justify-items: center;
   background-color: var(--backGround_1);
 
-
-  .friend_top{
-    width: 100%;
-    height: 100px;
-    background-color: var(--brand1_2);
-  }
-
-  .friend_body {
+  .content_body{
+    background-color: var(--backGround_0);
     width: 840px;
-    display: grid;
-    height: 100%;
+    filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
 
-    .friend_top_content{
-      display: flex;
+    .friend_top{
       width: 100%;
       height: 100px;
-      margin-top: -45px;
-
-      .friend_title{
-        display: grid;
-        justify-items: center;
-        align-items: center;
-        width: 500px;
-        height: 90px;
-        font-weight: bold;
-        font-size: 24px;
-        background-color: var(--backGround_1);
-        border: none;
-        border-radius: 45px;
-      }
-
-      .friend_back{
+      background-color: var(--brand1_2);
+    }
+    .friend_body {
+      display: grid;
+      .friend_top_content{
+        display: flex;
         width: 100%;
         height: 100px;
-        display: flex;
-        flex-direction: row;
-        justify-content: right;
+        margin-top: -45px;
 
-        .friend_back_button{
+        .friend_title{
           display: grid;
           justify-items: center;
           align-items: center;
+          width: 500px;
+          height: 90px;
+          font-weight: bold;
+          font-size: 24px;
+          background-color: var(--backGround_0);
+          border: none;
+          border-radius: 45px;
+        }
 
-          width: 40px;
-          height: 40px;
-          border-radius: 100%;
-          background-color: var(--brand3_main);
-          .friend_back_button_img {
-            width: 20px;
-            height: 20px;
+        .friend_back{
+          filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+          width: 100%;
+          height: 100px;
+          display: flex;
+          flex-direction: row;
+          justify-content: right;
+
+          .friend_back_button{
+            display: grid;
+            justify-items: center;
+            align-items: center;
+
+            margin-right: 10px;
+
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            background-color: var(--backGround_0);
+            .friend_back_button_img {
+              width: 20px;
+              height: 20px;
+            }
           }
         }
       }
-    }
 
-    .search_info{
-      display: grid;
-      grid-template-columns: 35% 30% 35%;
-
-      .friend_counter{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        margin: 10px;
-        font-size: 18px;
-        font-weight: bold;
-        color: var(--white);
-        height: 50px;
+      .main_content_body{
         width: 90%;
-        border-radius: 24px;
-        border: none;
-        background-color: var(--brand3_main);
+        margin: 0px auto;
+        filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
 
-        .friend_counter_text{
-          margin: 10px;
-        }
-      }
-
-      .friend_form{
-        display: flex;
-        align-content: center;
-        align-items: center;
-        .friend_form_info {
-          width: 90%;
-          color: var(--brand2_main);
-          .styled_search_bar{
-            width: 100%;
-            padding: 0px 0px 0px 10px;
-            height: 40px;
-            border-radius: 40px;
-            border: solid var(--brand3_main) 3pt;
-          }
-        }
-      }
-
-      .search_buttons{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-
-        .search_friends_button{
-          display: grid;
-          justify-items: center;
-          align-items: center;
-          height: 40px;
-          font-size: 14px;
-          border-radius: 20px;
-          font-weight: bold;
-          color: var(--white);
-          background-color: var(--brand3_main);
-          border: none;
-
-          &:hover {
-            cursor: pointer;
-            background-color: var(--brand2_3);
-          }
-
-          .search_friends_button_img{
-            width: 25px;
-            height: 25px;
-          }
-        }
-
-        .search_friends_button .button_front{
-          width: 40px;
-        }
-        .search_friends_link {
-          text-decoration: none;
-          .button_server{
-            width: 120px;
-          }
-        }
-      }
-    }
-
-
-    .search_server_info{
-      display: flex;
-      width: 100%;
-      justify-content: center;
-
-      .friend_form{
-        display: flex;
-        align-content: center;
-        align-items: center;
-        width: 70%;
-
-        .friend_form_info {
-          width: 90%;
-          color: var(--brand2_main);
-          .styled_search_bar{
-            width: 100%;
-            padding: 0px 0px 0px 10px;
-            height: 40px;
-            border-radius: 40px;
-            border: solid var(--brand3_main) 3pt;
-          }
-        }
-      }
-
-      .search_buttons{
-        justify-content: space-between;
-        align-items: center;
-
-        .search_friends_button{
-          display: grid;
-          justify-items: center;
-          align-items: center;
-          font-size: 14px;
-          height: 40px;
-          width: 40px;
-          border-radius: 20px;
-          font-weight: bold;
-          color: var(--white);
-          background-color: var(--brand3_main);
-          border: none;
-
-          &:hover {
-            cursor: pointer;
-            background-color: var(--brand2_3);
-          }
-
-          .search_friends_button_img{
-            width: 25px;
-            height: 25px;
-          }
-        }
-      }
-    }
-
-    .friendList {
-      width: 100%;
-      display: grid;
-      align-items: center;
-      grid-template-columns: 50% 50%;
-
-      .friendListItems {
-        height: 520px;
-        width: 100%;
-        margin: 20px 0;
-        background: var(--transpar);
-        color: var(--font_gray_main);
-        -webkit-background-clip: text;
-        font-size: clamp(0.5vw, 1vw, 2vw);
-        font-weight: 700;
-
-        //============== 스크롤바 관련 (시작) ==============
-        overflow-y: scroll;
-
-        scroll-behavior: smooth;
-        scrollbar-gutter: stable;
-        text-overflow: ellipsis;
-        word-break: break-all;
-        table-layout:fixed;
-
-        &::-webkit-scrollbar {
-          width: 9px;  /* 스크롤바의 너비 */
-        }
-
-        &::-webkit-scrollbar-thumb {
-          height: auto; /* 스크롤바의 길이 */
-          width: 7px;
-          background: var(--brand3_main); /* 스크롤바의 색상 */
-
+        .search_main{
+          background-color: var(--backGround_1);
           border-radius: 10px;
+          padding-top: 20px;
         }
 
-        &::-webkit-scrollbar-track {
-          background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
-          border-radius: 10px;
-        }
-        //============== 스크롤바 관련 (끝) ==============
-        .no_friend_list {
-          height: 100%;
+        .search_info{
           display: grid;
-          justify-items: center;
-          align-items: center;
+          grid-template-columns: 35% 30% 35%;
 
-          .textBlock{
-            font-size: 24px;
-            color: var(--brand3_main);
-            .brand_logo{
-              width: 30px;
-              height: 30px;
-            }
-          }
-        }
-
-        div > .friendListItem {
-          display: grid;
-          align-items: center;
-          grid-template-columns: 20% 65% 15%;
-          width: auto;
-          height: 60px;
-          border-radius: 10px;
-          color: var(--font_gray_main);
-          background-color: var(--backGround_0);
-          margin: 10px;
-
-          .user_img_setting{
-            display: grid;
-            justify-items: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-            border: solid var(--brand3_main) 3pt;
-            .userImg {
-              border-radius: 100%;
-            }
-          }
-
-          .user_info{
-            .user_info_username{
-              font-size: 12pt;
-            }
-
-            .user_info_email{
-              font-size: 8pt;
-            }
-          }
-
-          .user_detail_button{
-            display: grid;
-            justify-items: center;
+          .friend_counter{
+            display: flex;
+            justify-content: space-between;
             align-items: center;
 
+            margin: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--white);
+            height: 50px;
+            width: 90%;
+            border-radius: 24px;
+            border: none;
             background-color: var(--brand3_main);
-            width: 40px;
+
+            .friend_counter_text{
+              margin: 10px;
+            }
+          }
+
+          .friend_form{
+            display: flex;
+            align-content: center;
+            align-items: center;
+            .friend_form_info {
+              width: 90%;
+              color: var(--brand2_main);
+              .styled_search_bar{
+                width: 100%;
+                padding: 0px 0px 0px 10px;
+                height: 40px;
+                border-radius: 40px;
+                border: solid var(--brand3_main) 3pt;
+              }
+            }
+          }
+
+          .search_buttons{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+
+            .search_friends_button{
+              display: grid;
+              justify-items: center;
+              align-items: center;
+              height: 40px;
+              font-size: 14px;
+              border-radius: 20px;
+              font-weight: bold;
+              color: var(--white);
+              background-color: var(--brand3_main);
+              border: none;
+
+              &:hover {
+                cursor: pointer;
+                background-color: var(--brand2_3);
+              }
+              .search_friends_button_cover{
+                display: grid;
+                justify-items: center;
+                align-items: center;
+                width: 30px;
+                .search_friends_button_img{
+                  width: 20px;
+                  height: 20px;
+                }
+              }
+            }
+
+            .search_friends_button .button_front{
+              width: 40px;
+            }
+            .search_friends_link {
+              text-decoration: none;
+              .button_server{
+                width: 120px;
+              }
+            }
+          }
+        }
+      }
+
+
+      .search_server_info{
+        display: flex;
+        align-content: center;
+        align-items: center;
+        width: 100%;
+        justify-content: center;
+
+        .friend_form{
+          display: flex;
+          align-content: center;
+          align-items: center;
+          width: 70%;
+
+          .friend_form_info {
+            width: 90%;
+            color: var(--brand2_main);
+            .styled_search_bar{
+              width: 100%;
+              background-color: var(--backGround_1);
+              color: var(--font_gray_main);
+              padding: 0px 0px 0px 10px;
+              height: 40px;
+              border-radius: 40px;
+              border: solid var(--brand3_main) 3pt;
+            }
+          }
+        }
+
+        .search_buttons{
+          .search_friends_button{
+            display: grid;
+            justify-items: center;
+            align-items: center;
+            font-size: 14px;
             height: 40px;
-            border-radius: 100%;
+            width: 40px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: var(--white);
+            background-color: var(--brand3_main);
+            border: none;
+
             &:hover {
               cursor: pointer;
               background-color: var(--brand2_3);
             }
 
-            .userDetailButtonImg{
-              width: 25px;
+            .search_friends_button_cover{
+              display: grid;
+              justify-items: center;
+              align-items: center;
+              width: 30px;
+              .search_friends_button_img{
+                width: 20px;
+                height: 20px;
+              }
             }
           }
         }
       }
 
-      .friendDetailItems {
-        display: grid;
-        justify-items: center;
-        align-items: center;
-
-        height: 520px;
+      .friendList {
         width: 100%;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 50% 50%;
 
-        .no_friend_list{
-          //height: 100px;
-          //width: 100px;
-        }
-        .friend_detail_guide{
-
+        .friendListItems {
+          height: 520px;
           width: 100%;
-          height: 100%;
+          margin: 20px 0;
+          background: var(--transpar);
+          color: var(--font_gray_main);
+          -webkit-background-clip: text;
+          font-size: clamp(0.5vw, 1vw, 2vw);
+          font-weight: 700;
 
-          font-weight: bold;
+          //============== 스크롤바 관련 (시작) ==============
+          overflow-y: scroll;
 
-          .friend_detail_item{
-            border-radius: 16px;
+          scroll-behavior: smooth;
+          scrollbar-gutter: stable;
+          text-overflow: ellipsis;
+          word-break: break-all;
+          table-layout:fixed;
 
+          &::-webkit-scrollbar {
+            width: 9px;  /* 스크롤바의 너비 */
+          }
+
+          &::-webkit-scrollbar-thumb {
+            height: auto; /* 스크롤바의 길이 */
+            width: 7px;
+            background: var(--brand3_main); /* 스크롤바의 색상 */
+
+            border-radius: 10px;
+          }
+
+          &::-webkit-scrollbar-track {
+            background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+            border-radius: 10px;
+          }
+          //============== 스크롤바 관련 (끝) ==============
+
+          .no_friend_list {
+            height: 100%;
             display: grid;
             justify-items: center;
             align-items: center;
-            width: auto;
-            height: 100%;
-            background-color: var(--backGround_0);
-            margin-left: 20px;
-            text-align: center;
 
-            .close_user_detail{
-              width: 100%;
-              display: flex;
-              justify-content: right;
-              margin-right: 30px;
-              .close_user_detail_btn{
-                display: grid;
-                justify-items: center;
-                align-items: center;
-                width: 40px;
-                height: 40px;
-                background-color: var(--brand3_main);
-                font-size: 24px;
-                font-weight: bold;
-                color: var(--white);
-                border-radius: 24px;
-
-                &:hover {
-                  cursor: pointer;
-                  background-color: var(--brand2_3);
-                }
+            .textBlock{
+              font-size: 24px;
+              color: var(--brand3_main);
+              .brand_logo{
+                width: 30px;
+                height: 30px;
               }
             }
+          }
+
+          .friend_list_item {
+            display: grid;
+            align-items: center;
+            grid-template-columns: 20% 65% 15%;
+            width: auto;
+            height: 60px;
+            border-radius: 10px;
+            color: var(--font_gray_main);
+            background-color: var(--backGround_1);
+            margin: 10px;
 
             .user_img_setting{
               display: grid;
               justify-items: center;
               align-items: center;
-              width: 80px;
-              height: 80px;
+              width: 40px;
+              height: 40px;
               border-radius: 100%;
               border: solid var(--brand3_main) 3pt;
-
               .userImg {
-                display: grid;
-                justify-items: center;
-                align-items: center;
-
+                width: 40px;
+                height: 40px;
                 border-radius: 100%;
               }
             }
@@ -398,231 +324,204 @@
               }
             }
 
-            .user_project_info{
-              .user_project_text{
-                font-size: 12px;
-                .user_project_text_hl{
-                  font-size: 24px;
-                  color: var(--brand2_main);
-                }
-              }
-            }
-          }
+            .user_detail_button{
+              display: grid;
+              justify-items: center;
+              align-items: center;
 
-          .friend_add_delete_button{
-            margin: 10px;
-            .add_discard_button{
-              font-size: 12px;
-              font-weight: bold;
-              color: var(--white);
-              height: 30px;
-              width: 150px;
-              border-radius: 24px;
-              border: none;
-            }
-
-            .add_friend{
               background-color: var(--brand3_main);
+              width: 40px;
+              height: 40px;
+              border-radius: 100%;
               &:hover {
                 cursor: pointer;
-                background-color: var(--brand3_4);
+                background-color: var(--brand2_3);
               }
-            }
 
-            .discard_friend{
-              background-color: var(--point1_main);
-              &:hover {
-                cursor: pointer;
-                background-color: var(--point1_4);
+              .userDetailButtonImg{
+                width: 25px;
               }
             }
           }
         }
-      }
-    }
 
-    .search_friend_list {
-      width: 100%;
-      display: grid;
-      align-items: center;
-
-      .friendListItems {
-        height: 520px;
-        width: 100%;
-        margin: 20px 0;
-        background: var(--transpar);
-        color: var(--font_gray_main);
-        -webkit-background-clip: text;
-        font-size: clamp(0.5vw, 1vw, 2vw);
-        font-weight: 700;
-
-        //============== 스크롤바 관련 (시작) ==============
-        overflow-y: scroll;
-
-        scroll-behavior: smooth;
-        scrollbar-gutter: stable;
-        text-overflow: ellipsis;
-        word-break: break-all;
-        table-layout:fixed;
-
-        &::-webkit-scrollbar {
-          width: 9px;  /* 스크롤바의 너비 */
-        }
-
-        &::-webkit-scrollbar-thumb {
-          height: auto; /* 스크롤바의 길이 */
-          width: 7px;
-          background: var(--brand3_main); /* 스크롤바의 색상 */
-
-          border-radius: 10px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
-          border-radius: 10px;
-        }
-        //============== 스크롤바 관련 (끝) ==============
-        .no_friend_list {
-          height: 100%;
+        .friendDetailItems {
           display: grid;
           justify-items: center;
           align-items: center;
 
-          .textBlock{
-            font-size: 24px;
-            color: var(--brand3_main);
-            .brand_logo{
-              width: 30px;
-              height: 30px;
-            }
-          }
-        }
+          height: 520px;
+          width: 100%;
 
-        div > .friendListItem {
-          display: grid;
-          align-items: center;
-          grid-template-columns: 20% 65% 15%;
-          width: auto;
-          height: 60px;
-          border-radius: 10px;
-          color: var(--font_gray_main);
-          background-color: var(--backGround_0);
-          margin: 10px;
+          .friend_detail_guide{
+            width: 100%;
+            height: 100%;
 
-          .user_img_setting{
-            display: grid;
-            justify-items: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-            border: solid var(--brand3_main) 3pt;
-            .userImg {
-              border-radius: 100%;
-            }
-          }
+            font-weight: bold;
 
-          .user_info{
-            .user_info_username{
-              font-size: 12pt;
-            }
+            .friend_detail_item{
+              border-radius: 16px;
 
-            .user_info_email{
-              font-size: 8pt;
-            }
-          }
+              display: grid;
+              justify-items: center;
+              align-items: center;
+              width: auto;
+              height: 100%;
+              background-color: var(--backGround_1);
+              margin-left: 20px;
+              text-align: center;
 
-          .user_detail_button{
-            display: grid;
-            justify-items: center;
-            align-items: center;
+              .close_user_detail{
+                width: 100%;
+                display: flex;
+                justify-content: right;
+                margin-right: 30px;
+                .close_user_detail_btn{
+                  display: grid;
+                  justify-items: center;
+                  align-items: center;
+                  width: 40px;
+                  height: 40px;
+                  background-color: var(--brand3_main);
+                  font-size: 24px;
+                  font-weight: bold;
+                  color: var(--white);
+                  border-radius: 24px;
 
-            background-color: var(--brand3_main);
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-            &:hover {
-              cursor: pointer;
-              background-color: var(--brand2_3);
-            }
+                  &:hover {
+                    cursor: pointer;
+                    background-color: var(--brand2_3);
+                  }
+                  .close_user_detail_btn_img{
+                    width: 24px;
+                    height: 24px;
+                  }
+                }
+              }
 
-            .userDetailButtonImg{
-              width: 25px;
-              width: 25px;
+              .user_img_setting{
+                display: grid;
+                justify-items: center;
+                align-items: center;
+                width: 80px;
+                height: 80px;
+                border-radius: 100%;
+                border: solid var(--brand3_main) 3pt;
+
+                .userImg {
+                  display: grid;
+                  justify-items: center;
+                  align-items: center;
+                  width: 80px;
+                  height: 80px;
+                  border-radius: 100%;
+                  overflow: scroll;
+                }
+              }
+
+              .user_info{
+                .user_info_username{
+                  font-size: 16pt;
+                }
+              }
+
+              .user_project_info{
+                .user_project_text{
+                  font-size: 12px;
+                  .user_project_text_hl{
+                    font-size: 24px;
+                    color: var(--brand2_main);
+                  }
+                }
+              }
             }
           }
         }
       }
 
-      .friendDetailItems {
+      .search_friend_list {
+        width: 80%;
         display: grid;
-        justify-items: center;
         align-items: center;
 
-        height: 520px;
-        width: 100%;
+        margin-left: 10%;
 
-        .no_friend_list{
-          //height: 100px;
-          //width: 100px;
-        }
-        .friend_detail_guide{
+        .search_friend_list_items {
+          display: grid;
 
+          height: 520px;
           width: 100%;
-          height: 100%;
+          margin: 20px 0;
+          background: var(--transpar);
+          color: var(--font_gray_main);
+          -webkit-background-clip: text;
+          font-size: clamp(0.5vw, 1vw, 2vw);
+          font-weight: 700;
 
-          font-weight: bold;
+          //============== 스크롤바 관련 (시작) ==============
+          overflow-y: scroll;
 
-          .friend_detail_item{
-            border-radius: 16px;
+          scroll-behavior: smooth;
+          scrollbar-gutter: stable;
+          text-overflow: ellipsis;
+          word-break: break-all;
+          table-layout:fixed;
 
+          &::-webkit-scrollbar {
+            width: 9px;  /* 스크롤바의 너비 */
+          }
+
+          &::-webkit-scrollbar-thumb {
+            height: auto; /* 스크롤바의 길이 */
+            width: 7px;
+            background: var(--brand3_main); /* 스크롤바의 색상 */
+
+            border-radius: 10px;
+          }
+
+          &::-webkit-scrollbar-track {
+            background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+            border-radius: 10px;
+          }
+          //============== 스크롤바 관련 (끝) ==============
+          .no_friend_list {
+            height: 100%;
             display: grid;
             justify-items: center;
             align-items: center;
-            width: auto;
-            height: 100%;
-            background-color: var(--backGround_0);
-            margin-left: 20px;
-            text-align: center;
 
-            .close_user_detail{
-              width: 100%;
-              display: flex;
-              justify-content: right;
-              margin-right: 30px;
-              .close_user_detail_btn{
-                display: grid;
-                justify-items: center;
-                align-items: center;
-                width: 40px;
-                height: 40px;
-                background-color: var(--brand3_main);
-                font-size: 24px;
-                font-weight: bold;
-                color: var(--white);
-                border-radius: 24px;
-
-                &:hover {
-                  cursor: pointer;
-                  background-color: var(--brand2_3);
-                }
+            .textBlock{
+              font-size: 24px;
+              color: var(--brand3_main);
+              .brand_logo{
+                width: 25px;
+                height: 25px;
               }
             }
+          }
+          .search_friend_list_item{
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            grid-template-columns: 20% 65% 10%;
+            width: 95%;
+            height: 60px;
+            border-radius: 10px;
+            color: var(--font_gray_main);
+            background-color: var(--backGround_0);
+            margin: 10px;
 
             .user_img_setting{
               display: grid;
               justify-items: center;
               align-items: center;
-              width: 80px;
-              height: 80px;
+              width: 40px;
+              height: 40px;
               border-radius: 100%;
               border: solid var(--brand3_main) 3pt;
-
               .userImg {
-                display: grid;
-                justify-items: center;
-                align-items: center;
-
+                width: 40px;
+                height: 40px;
                 border-radius: 100%;
               }
             }
@@ -637,47 +536,143 @@
               }
             }
 
-            .user_project_info{
-              .user_project_text{
-                font-size: 12px;
-                .user_project_text_hl{
-                  font-size: 24px;
-                  color: var(--brand2_main);
-                }
-              }
-            }
-          }
+            .user_detail_button{
+              display: grid;
+              justify-items: center;
+              align-items: center;
 
-          .friend_add_delete_button{
-            margin: 10px;
-            .add_discard_button{
-              font-size: 12px;
-              font-weight: bold;
-              color: var(--white);
-              height: 30px;
-              width: 150px;
-              border-radius: 24px;
-              border: none;
-            }
-
-            .add_friend{
               background-color: var(--brand3_main);
+              width: 40px;
+              height: 40px;
+              border-radius: 100%;
               &:hover {
                 cursor: pointer;
-                background-color: var(--brand3_4);
+                background-color: var(--brand2_3);
               }
-            }
 
-            .discard_friend{
-              background-color: var(--point1_main);
-              &:hover {
-                cursor: pointer;
-                background-color: var(--point1_4);
+              .userDetailButtonImg{
+                width: 25px;
+                height: 25px;
               }
             }
           }
         }
       }
+    }
+  }
+}
+
+.friend_add_delete_button{
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  margin: 10px;
+
+  .status_button{
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--white);
+    height: 40px;
+    width: 40px;
+    border-radius: 24px;
+    border: none;
+  }
+
+  .add_friend{
+    background-color: var(--brand3_main);
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand3_4);
+    }
+
+    .add_friend_img{
+      width: 30px;
+    }
+  }
+
+  .discard_friend{
+    background-color: var(--point1_main);
+    &:hover {
+      cursor: pointer;
+      background-color: var(--point1_4);
+    }
+
+    .discard_friend_img{
+      width: 30px;
+
+    }
+  }
+
+  .following_friend{
+    background-color: var(--brand3_4);
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand3_2);
+    }
+
+    .following_friend_img{
+      width: 30px;
+      margin-left: -2px;
+    }
+  }
+
+  .follower_friend{
+    background-color: var(--brand4_4);
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand4_2);
+    }
+
+    .follower_friend_img{
+      width: 30px;
+      margin-left: -2px;
+    }
+  }
+
+
+  .add_discard_button{
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--white);
+    height: 40px;
+    width: 200px;
+    border-radius: 24px;
+    border: none;
+  }
+
+  .discard_detail_friend{
+    background-color: var(--brand3_main);
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand3_3);
+    }
+  }
+
+  .discard_detail_friend{
+    background-color: var(--brand3_4);
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand3_2);
+    }
+  }
+
+  .discard_detail_friend{
+    background-color: var(--brand4_4);
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand4_2);
+    }
+  }
+
+  .add_detail_friend{
+    background-color: var(--point1_main);
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--point1_3);
     }
   }
 }
