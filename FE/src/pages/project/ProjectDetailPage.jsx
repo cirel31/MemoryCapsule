@@ -9,10 +9,12 @@ import stamp_sick from "../../assets/images/stamp/stamp_sick.svg";
 import stamp_soso from "../../assets/images/stamp/stamp_soso.svg";
 import stamp_wow from "../../assets/images/stamp/stamp_wow.svg";
 import kokona from "../../assets/images/kokona.png"
+import {useSelector} from "react-redux";
 
-const MAIN_API = 'http://i9a608.p.ssafy.io:8000/project/'
-const SUB_API = '/article'
+const baseURL = 'https://i9a608.p.ssafy.io:8000'
+const subURL = '/project'
 const ProjectDetailPage = () => {
+  const user = useSelector((state) => state.userState.user) || null
   const stamps = [
     {
       "id": 1,
@@ -57,41 +59,41 @@ const ProjectDetailPage = () => {
     }
   ])
 
-  useEffect(() => {
-    axios.get(`${projectId}`
-      , {
-      headers: {
-        userId: 1001,
-      },
-    }
-    )
-      .then((response) => {
-        console.log('성공')
-        console.log(response.data)
-        setProject(response.data);
-      })
-      .catch((error) => {
-        console.error("서버로부터 프로젝트 세부사항 실패", error);
-        console.error(error.code)
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`${baseURL}${subURL}/${projectId}`
+  //     , {
+  //     headers: {
+  //       userId: user.userId,
+  //     },
+  //   }
+  //   )
+  //     .then((response) => {
+  //       console.log('성공')
+  //       console.log(response.data)
+  //       setProject(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("서버로부터 프로젝트 세부사항 실패", error);
+  //       console.error(error.code)
+  //     });
+  // }, []);
 
   useEffect(() => {
-    axios.get(`${projectId}${SUB_API}`
+    axios.get(`${baseURL}${subURL}/${projectId}/article`
       , {
         headers: {
-          userId: 1001,
+          userId: user.userId,
         },
       }
     )
       .then((response) => {
-        console.log('성공')
+        console.log('성공', user.userId)
         console.log(response.data)
         setMyArticles(response.data);
       })
       .catch((error) => {
-        console.error("서버로부터 게시물 가져오기 실패", error);
-        console.error(error.code)
+        console.error("서버로부터 게시물 가져오기 실패", user.userId);
+        console.error(error)
       });
   }, []);
 
@@ -118,11 +120,11 @@ const ProjectDetailPage = () => {
           {myArticles.map((article) => (
             <div key={article.idx} >
               {console.log(article)}
-              <h3>{article.created}</h3>
+              <h3>{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
               <div>
                 <div>
-                  {article.img ? (
-                      <img src={`${article.img}`} alt="서버 이미지를 불러올 수 없습니다"/>
+                  {article.images ? (
+                      <img src={`${article.images}`} alt="서버 이미지를 불러올 수 없습니다"/>
                   ) : <img src={kokona} alt="클라이언트 이미지를 불러올 수 없습니다" style={{width:"300px" }} />
                   }
                 </div>

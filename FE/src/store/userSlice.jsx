@@ -52,9 +52,9 @@ export const logoutUserThunk = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
       const accessToken = sessionStorage.getItem("accessToken")
       try {
-        // await axios.post(`https://i9a608.p.ssafy.io:8000/user/logout`, _, {
-        //   headers: { Authorization: `Bearer ${accessToken}` }
-        // });
+        await axios.post(`https://i9a608.p.ssafy.io:8000/user/logout`, _, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
         sessionStorage.clear();
         console.log('이메일 로그아웃 성공');
         return
