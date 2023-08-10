@@ -46,37 +46,27 @@ const ProjectDetailPage = () => {
     },
   ]
   const { projectId } = useParams()
-  const [project, setProject] = useState([]);
-  const [myArticles, setMyArticles] = useState([
-    {
-      'article_created': '2023-07-01',
-      'article_updated': '2023-07-02',
-      'article_img': null,
-      'article_stamp': '6',
-      'article_title': '테스트 파일 001',
-      'article_content': '더미 데이터 001',
-      'article_idx': '1',
-    }
-  ])
+  const [project, setProject] = useState([])
+  const [myArticles, setMyArticles] = useState([])
 
-  // useEffect(() => {
-  //   axios.get(`${baseURL}${subURL}/${projectId}`
-  //     , {
-  //     headers: {
-  //       userId: user.userId,
-  //     },
-  //   }
-  //   )
-  //     .then((response) => {
-  //       console.log('성공')
-  //       console.log(response.data)
-  //       setProject(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("서버로부터 프로젝트 세부사항 실패", error);
-  //       console.error(error.code)
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios.get(`${baseURL}${subURL}/${projectId}`
+      , {
+      headers: {
+        userId: user.userId,
+      },
+    }
+    )
+      .then((response) => {
+        console.log('성공')
+        console.log(response.data)
+        setProject(response.data);
+      })
+      .catch((error) => {
+        console.error("서버로부터 프로젝트 세부사항 실패", error);
+        console.error(error.code)
+      });
+  }, []);
 
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${projectId}/article`
@@ -108,7 +98,13 @@ const ProjectDetailPage = () => {
           <div>
             <p>현재까지 작성된 기록 : {myArticles.length} 개</p>
             <p>진행도 : {myArticles.length} / {project.length} %</p>
-            <p>캡슐 제작 기간 : {project.started} ~ {project.ended}</p>
+            {project.started && project.ended && (
+              <p>
+                캡슐 제작 기간 :
+                {project.started.slice(2,4)}년 {project.started.slice(5, 7)}월 {project.started.slice(8, 10)}일
+                ~ {project.ended.slice(2,4)}년 {project.ended.slice(5, 7)}월 {project.ended.slice(8, 10)}일
+              </p>
+            )}
           </div>
           <button>삭제</button>
         </div>
@@ -117,10 +113,11 @@ const ProjectDetailPage = () => {
         <br/>
         <div>
           <h2>History</h2>
-          {myArticles.map((article) => (
-            <div key={article.idx} >
-              {console.log(article)}
-              <h3>{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
+          {myArticles.map((article, idx) => (
+            <div key={idx}>
+              {article.created && (
+                <h3>{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
+              )}
               <div>
                 <div>
                   {article.images ? (

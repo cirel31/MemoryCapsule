@@ -24,7 +24,9 @@ export const loginUserThunk = createAsyncThunk(
         window.location.href ='/profile'
       } catch (error) {
         console.error("서버와 통신 실패로 로그인 에러 발생", error)
-        
+        if (error.response?.status === 409) {
+          Swal.fire(error.response.data)
+        }
         console.log(loginURL)
         return rejectWithValue(error)
       }
@@ -43,9 +45,7 @@ export const fetchUserInfoThunk = createAsyncThunk(
         console.log(response.data)
         return response.data;
       } catch (error) {
-        if (error.response?.status === 409) {
-          Swal.fire(error.response.data)
-        }
+        console.log(error)
       }
     }
 )
