@@ -86,10 +86,11 @@
   justify-items: center;
   .profile_img{
     width: 80px;
+    height: 80px;
     clip-path: circle(40px);
 
     background-color: white;
-    overflow: hidden;
+    object-fit: cover;
   }
   .profile_img_setting{
     display: grid;

@@ -42,6 +42,7 @@ const ProjectForm = () => {
     for (const [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
+    console.log(user)
     // const accessToken = sessionStorage.getItem("accessToken")
     try {
       axios.post(`${SubmitURL}`, formData, {

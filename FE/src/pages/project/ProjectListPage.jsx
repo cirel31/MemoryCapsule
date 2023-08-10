@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import "../../styles/testPage.css"
 import {useSelector} from "react-redux";
+import "../../styles/MainPage.scss"
+import main_bg from "../../assets/images/mainpage/Mainback.svg"
 
 
 const ProjectListPage = () => {
@@ -16,8 +18,8 @@ const ProjectListPage = () => {
   const [projects, setProjects] = useState([
 
   ]);
-  const [searchTerm, setSearchTerm] = useState(''); // 입력한 검색어
-  const [filteredProjects, setFilteredProjects] = useState([]); // 필터된 프로젝트 목록
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filteredProjects, setFilteredProjects] = useState([])
   
   
   useEffect(() => {
@@ -25,7 +27,6 @@ const ProjectListPage = () => {
     console.log(userId)
     axios.get(`${baseURL}${subURL}`, {
       headers: {
-        // "userId": `${userId}`,
         "userId": userId,
       }
     })
