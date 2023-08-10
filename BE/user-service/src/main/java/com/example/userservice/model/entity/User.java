@@ -1,6 +1,7 @@
 package com.example.userservice.model.entity;
 
 import com.example.userservice.model.Enum.UserRole;
+import com.example.userservice.model.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.WhereJoinTable;
@@ -119,5 +120,20 @@ public class User {
 
     public void modifyPassword(String code) {
         this.passWord = code;
+    }
+
+    public User signUpDtoToUser(UserDto.SignUp signUpDto, String imgUrl, String password) {
+        return User.builder()
+                .email(signUpDto.getEmail())
+                .name(signUpDto.getName())
+                .nickName(signUpDto.getNickName())
+                .phone(signUpDto.getPhone())
+                .point(0L)
+                .role(UserRole.USER)
+                .createdAt(ZonedDateTime.now())
+                .updatedAt(ZonedDateTime.now())
+                .imgUrl(imgUrl)
+                .passWord(password)
+                .build();
     }
 }

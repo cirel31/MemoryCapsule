@@ -28,6 +28,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +51,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception {
         User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디 입니다."));
+
+        if (user.isDeleted())
+            throw new Exception("탈퇴한 회원입니다.");
         if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
             throw new Exception("비밀번호가 맞지 않습니다. 다시 로그인 해주세요!");
 
@@ -96,26 +100,21 @@ public class UserServiceImpl implements UserService {
     public UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile multipartFile) throws Exception {
         //TODO: User 회원가입
         // - 이메일 중복체크
-        userRepository.findByEmail(signUpDto.getEmail()).ifPresent(m -> {
-            if(m.isOAuthUser()) throw new IllegalStateException("Kakao로 로그인한 회원입니다.");
-            else throw new IllegalStateException("이미 회원가입한 회원입니다.");
-        });
-
-        // 회원가입 처리
-        User saved = userRepository.save(
-                User.builder()
-                        .email(signUpDto.getEmail())
-                        .name(signUpDto.getName())
-                        .nickName(signUpDto.getNickName())
-                        .phone(signUpDto.getPhone())
-                        .point(0L)
-                        .role(UserRole.USER)
-                        .createdAt(ZonedDateTime.now())
-                        .updatedAt(ZonedDateTime.now())
-                        .imgUrl(getImgUrl(multipartFile))
-                        .passWord(passwordEncoder.encode(signUpDto.getPassword()))
-                        .build()
-        );
+        Optional<User> userOptional = userRepository.findByEmail(signUpDto.getEmail());
+        User saved;
+        if (userOptional.isPresent()) {
+            saved = userOptional.get();
+            if (!saved.isDeleted()) {
+                if(saved.isOAuthUser()) throw new IllegalStateException("Kakao로 로그인한 회원입니다.");
+                else throw new IllegalStateException("이미 회원가입한 회원입니다.");
+            }
+            saved = saved.signUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()));
+        } else {
+            // 회원가입 처리
+            saved = userRepository.save(
+                    new User().signUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()))
+            );
+        }
 
         return UserDto.Basic.builder()
                 .idx(saved.getIdx())
