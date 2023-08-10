@@ -102,20 +102,18 @@ const ArticleCreateForm = () => {
     e.preventDefault();
     console.log("제출버튼 누름")
     const formData = new FormData(e.target)
-    // 재현님 타이틀 없애준다면서요......
-    formData.append("title", "끼야아아아앗호우")
     console.log(formData)
     for (let [name, value] of formData.entries()) {
       console.log(`${name}: ${value}`);
     }
     axios.post(`${baseURL}${subURL}`, formData, {
       headers : {
-        "userId": 1004,
+        "userId": user.userId,
       }
     })
       .then(res => {
         console.log("게시글 등록 성공", res)
-        window.location.href ='/mypage'
+        window.location.href ='/project'
       })
       .catch(err => {
         console.log(baseURL,subURL)

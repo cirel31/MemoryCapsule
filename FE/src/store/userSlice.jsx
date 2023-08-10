@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {useNavigate} from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const loginUserThunk = createAsyncThunk(
     'user/loginUser',
@@ -21,9 +22,11 @@ export const loginUserThunk = createAsyncThunk(
         console.log(userIdx)
         dispatch(fetchUserInfoThunk(userIdx))
         window.location.href ='/profile'
-        // await navigate('/profile');
       } catch (error) {
         console.error("서버와 통신 실패로 로그인 에러 발생", error)
+        if (error.response?.status === 409) {
+          Swal.fire(error.response.data)
+        }
         console.log(loginURL)
         return rejectWithValue(error)
       }
@@ -42,7 +45,7 @@ export const fetchUserInfoThunk = createAsyncThunk(
         console.log(response.data)
         return response.data;
       } catch (error) {
-        console.error('유저 정보를 가져오지 못함:', error)
+        console.log(error)
       }
     }
 )
@@ -52,9 +55,9 @@ export const logoutUserThunk = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
       const accessToken = sessionStorage.getItem("accessToken")
       try {
-        // await axios.post(`https://i9a608.p.ssafy.io:8000/user/logout`, _, {
-        //   headers: { Authorization: `Bearer ${accessToken}` }
-        // });
+        await axios.post(`https://i9a608.p.ssafy.io:8000/user/logout`, _, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
         sessionStorage.clear();
         console.log('이메일 로그아웃 성공');
         return
@@ -124,7 +127,7 @@ const userSlice = createSlice({
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
           state.isLoggedIn = false
-          // window.location.href ='/login'
+          window.location.href ='/login'
         })
   }
 })
