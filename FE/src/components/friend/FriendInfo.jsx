@@ -20,7 +20,7 @@ const FriendInfo = ({from, select, setSelect, curStatus, setCurStatus, friend, i
                 ?
                 <FriendAddDeleteButton
                     friend={friend}
-                    status={curStatus}
+                    status={friend.status}
                     curStatus={curStatus}
                     setCurStatus ={setCurStatus}
                     from="FriendList"

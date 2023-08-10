@@ -15,19 +15,19 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
         search : 'id',
     });
 
+    const [curStatus, setCurStatus] = useState(0)
     const [isValidSearch, setIsValidSearch] = useState(true);
 
     // 처음 한 번 실행 시, 내 친구리스트 초기화
     useEffect(() => {
         setFriends([]);
         setSelect("");
-        setCurStatus(friends[0])
     }, []);
 
 
-    const [curStatus, setCurStatus] = useState(0)
     useEffect(() => {
         console.log("[useEffect] friends" , friends);
+        console.log(friends)
     }, [curStatus]);
 
     /**

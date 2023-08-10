@@ -199,25 +199,28 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
         }
 
         if (from === "FriendList"){
-            switch (status) {
+            console.log("status :", status)
+            switch (curStatus) {
                 case 1 :    // 친구 삭제
                     return <button className="status_button discard_friend" value={friend.userId} onClick={discardFriend}> <img src={person} alt="now friend img" className="discard_friend_img"/> </button>
                 case 2 :    // 친구추가요청 철회
                     return <button className="status_button following_friend" value={friend.userId} onClick={addRequestDiscardFriend}> <img src={following} alt="following img" className="following_friend_img"/> </button>
                 case 3 :    //  친구 추가
-                    return <button className="status_button follower_friend" value={friend.userId} onClick={addFriend}> <img src={follower} alt="follower img"  className="follower_friend_img"/></button>
+                    return <button className="status_button follower_friend" value={friend.userId} onClick={addFriend}>
+                        <img src={follower} alt="follower img"  className="follower_friend_img"/>
+                    </button>
                 default:    // 친구추가요청
                     return <button className="status_button add_friend" value={friend.userId} onClick={addRequestFriend}> <img src={add_friend} alt="add_friend img"  className="add_friend_img"/> </button>
             }
         } else if (from === "FriendDetail") {
-            switch (status) {
-                case 1 :
+            switch (curStatus) {
+                case 1 :    // 친구 삭제
                     return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={discardFriend}> 친구 삭제 </button>
-                case 2 :
+                case 2 :    // 친구추가요청 철회
                     return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addRequestDiscardFriend}> 내가 팔로우 중 </button>
-                case 3 :
+                case 3 :    //  친구 추가
                     return <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addFriend}> 맞 팔로우 하기 </button>
-                default:
+                default:    // 친구추가요청
                     return <button className="add_discard_button add_detail_friend" value={friend.userId} onClick={addRequestFriend}> 팔로우하기 </button>
             }
         } else {

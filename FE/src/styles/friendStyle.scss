@@ -524,28 +524,29 @@
     border: none;
   }
 
-  .add_friend{
+  .discard_friend{
     background-color: var(--brand3_main);
+    height: 40px;
+    width: 40px;
     &:hover {
       cursor: pointer;
       background-color: var(--brand3_4);
     }
 
-    .add_friend_img{
+    .discard_friend_img{
       width: 30px;
     }
   }
 
-  .discard_friend{
+  .add_friend{
     background-color: var(--point1_main);
     &:hover {
       cursor: pointer;
       background-color: var(--point1_4);
     }
 
-    .discard_friend_img{
+    .add_friend_img{
       width: 30px;
-
     }
   }
 
@@ -555,23 +556,23 @@
       cursor: pointer;
       background-color: var(--brand3_2);
     }
-
     .following_friend_img{
-      width: 30px;
       margin-left: -2px;
+      width: 30px;
     }
   }
 
-  .follower_friend{
+
+  .status_button .follower_friend{
     background-color: var(--brand4_4);
+
     &:hover {
-      cursor: pointer;
       background-color: var(--brand4_2);
     }
 
-    .follower_friend_img{
-      width: 30px;
+    .follower_friend_img {
       margin-left: -2px;
+      width: 30px;
     }
   }
 
@@ -590,7 +591,6 @@
     background-color: var(--brand3_main);
 
     &:hover {
-      cursor: pointer;
       background-color: var(--brand3_3);
     }
   }
@@ -599,7 +599,6 @@
     background-color: var(--brand3_4);
 
     &:hover {
-      cursor: pointer;
       background-color: var(--brand3_2);
     }
   }
@@ -608,7 +607,6 @@
     background-color: var(--brand4_4);
 
     &:hover {
-      cursor: pointer;
       background-color: var(--brand4_2);
     }
   }
@@ -661,12 +659,49 @@
     }
   }
 
-  .user_detail_button{
+  .user_detail_button_friend{
     display: grid;
     justify-items: center;
     align-items: center;
 
     background-color: var(--brand3_main);
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand2_3);
+    }
+
+    .userDetailButtonImg{
+      width: 25px;
+    }
+  }
+
+  .user_detail_button_following {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    background-color: var(--brand3_4);
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand3_2);
+    }
+
+    .userDetailButtonImg{
+      width: 25px;
+    }
+  }
+  .user_detail_button_follower {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    background-color: var(--brand3_4);
     width: 40px;
     height: 40px;
     border-radius: 100%;

@@ -13,6 +13,7 @@ const FriendPage = () => {
             email:"email",
             imgUrl:"imgUrl",
             nickname:"nickname",
+            state:0,
             userId:0
         }
     ]);
