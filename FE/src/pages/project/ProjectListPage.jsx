@@ -16,8 +16,8 @@ const ProjectListPage = () => {
   const [projects, setProjects] = useState([
 
   ]);
-  const [searchTerm, setSearchTerm] = useState(''); // 입력한 검색어
-  const [filteredProjects, setFilteredProjects] = useState([]); // 필터된 프로젝트 목록
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filteredProjects, setFilteredProjects] = useState([])
   
   
   useEffect(() => {
@@ -25,7 +25,6 @@ const ProjectListPage = () => {
     console.log(userId)
     axios.get(`${baseURL}${subURL}`, {
       headers: {
-        // "userId": `${userId}`,
         "userId": userId,
       }
     })

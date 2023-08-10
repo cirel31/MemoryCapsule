@@ -6,7 +6,7 @@ export const loginUserThunk = createAsyncThunk(
     'user/loginUser',
     async (loginData, { dispatch, rejectWithValue }) => {
       const loginURL = 'https://i9a608.p.ssafy.io:8000/user/login'
-      const navigate = useNavigate()
+      console.log("로그인 slice 까지는 접근함")
       try {
         const response = await axios.post(`${loginURL}`, loginData, {
           headers: { "Content-Type": "application/json" }
@@ -20,7 +20,8 @@ export const loginUserThunk = createAsyncThunk(
         const userIdx = sessionStorage.getItem("userIdx");
         console.log(userIdx)
         dispatch(fetchUserInfoThunk(userIdx))
-        await navigate('/profile');
+        window.location.href ='/profile'
+        // await navigate('/profile');
       } catch (error) {
         console.error("서버와 통신 실패로 로그인 에러 발생", error)
         console.log(loginURL)
@@ -51,9 +52,9 @@ export const logoutUserThunk = createAsyncThunk(
     async (_, { dispatch, rejectWithValue }) => {
       const accessToken = sessionStorage.getItem("accessToken")
       try {
-        await axios.post(`https://i9a608.p.ssafy.io:8000/user/logout`, _, {
-          headers: { Authorization: `Bearer ${accessToken}` }
-        });
+        // await axios.post(`https://i9a608.p.ssafy.io:8000/user/logout`, _, {
+        //   headers: { Authorization: `Bearer ${accessToken}` }
+        // });
         sessionStorage.clear();
         console.log('이메일 로그아웃 성공');
         return
@@ -123,7 +124,7 @@ const userSlice = createSlice({
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
           state.isLoggedIn = false
-          window.location.href ='/login'
+          // window.location.href ='/login'
         })
   }
 })
