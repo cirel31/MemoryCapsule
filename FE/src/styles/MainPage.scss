@@ -1,2 +1,31 @@
 @import "theme.css";
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
+
+.main_project_body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  .main_project_back {
+    width: 100%;
+  }
+}
+.main_project_list_body {
+  font-family: "Inconsolata", sans-serif;
+  position: absolute;
+  width: 90vw;
+  height: 60%;
+  top: 20%;
+  left: 0;
+  //background: var(--white);
+  filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+  display: grid;
+  grid-template-rows: 1fr;
+  justify-items: center;
+  & > div {
+    display: flex;
+  }
+
+}

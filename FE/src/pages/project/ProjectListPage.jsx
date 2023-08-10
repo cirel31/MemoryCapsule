@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import "../../styles/testPage.css"
 import {useSelector} from "react-redux";
+import "../../styles/MainPage.scss"
+import main_bg from "../../assets/images/mainpage/Mainback.svg"
 
 
 const ProjectListPage = () => {
@@ -76,27 +78,32 @@ const ProjectListPage = () => {
   Modal.setAppElement("#root");
 
   return (
-      <div>
+      <div className="main_project_body">
+        <img src={main_bg} className="main_project_back"/>
         <h1>현재 진행 중인 프로젝트</h1>
-        {projects.length === 0 ? (
+
+        <div className="main_project_list_body">
+          {projects.length === 0 ? (
             <p>프로젝트가 아직 없습니다.</p>
-        ) : (
-            <div>
+          ) : (
+            <div >
               {currentPosts.map((project) => (
-                  <div
-                    key={project.id}
-                    className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
-                    onMouseEnter={() => handleMouseEnter(project.idx)}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={() => openModal(project.idx)}
-                    style={{width:'200px'}}
-                  >
-                    프로젝트 제목 : {project.title}
-                    <img src={project.imgUrl} alt="" style={{width:'200px'}}/>
-                  </div>
+                <div
+                  key={project.id}
+                  className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
+                  onMouseEnter={() => handleMouseEnter(project.idx)}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={() => openModal(project.idx)}
+                  style={{width:'200px'}}
+                >
+                  프로젝트 제목 : {project.title}
+                  <img src={project.imgUrl} alt="" style={{width:'200px'}}/>
+                </div>
               ))}
             </div>
-        )}
+          )}
+        </div>
+
         <Modal isOpen={isModal} onRequestClose={closeModal}>
           {selectedPost && (
             <div>

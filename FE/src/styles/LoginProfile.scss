@@ -44,6 +44,8 @@
       & > img {
         margin: 25% 0 0 0;
         width: 9vw;
+        height: 9vw;
+        object-fit: cover;
         border: solid 5px var(--point1_2);
         border-radius: 100%;
         align-items: center;

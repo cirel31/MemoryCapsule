@@ -8,7 +8,7 @@ const MainPage = () => {
 
         <ProjectListPage />
 
-        <Link to='/project'>
+        <Link to='/main'>
           프로젝트 페이지로 이동
         </Link>
       </div>
