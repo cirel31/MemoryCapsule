@@ -97,6 +97,7 @@ const ProjectListPage = () => {
   return (
       <div className="main_project_body">
         <img src={main_bg} className="main_project_back"/>
+        <div className="bg_blur"></div>
         <div className="search_bar">
           <input
             type="text"
