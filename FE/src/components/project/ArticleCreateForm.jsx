@@ -116,7 +116,7 @@ const ArticleCreateForm = () => {
         window.location.href ='/project'
       })
       .catch(err => {
-        console.log(baseURL,subURL)
+        console.log(baseURL,subURL, user.userId)
         console.log("게시글 등록 실패", err)
       })
 

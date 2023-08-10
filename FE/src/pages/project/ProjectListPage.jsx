@@ -161,7 +161,7 @@ const ProjectListPage = () => {
           {selectedPost && (
             <div>
               {console.log(selectedPost)}
-              <img src="https://ssafysanta.s3.ap-northeast-2.amazonaws.com/34f4345d4f324844896e975f27abfb98.svg" alt=""/>
+              <img src={selectedPost.imgUrl} alt="이미지" style={{width:'200px'}}/>
               <h2>
                 <hr/>
                 {selectedPost.title}
