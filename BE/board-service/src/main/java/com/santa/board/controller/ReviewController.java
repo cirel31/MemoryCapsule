@@ -97,7 +97,7 @@ public class ReviewController {
 
     @ApiOperation(value = "좋아요 취소하기", notes = "좋아요를 취소한다. 성공 유무 반환", response = String.class)
     @DeleteMapping("/liked/{review_idx}")
-    public ResponseEntity<String> unlikedReview
+    public ResponseEntity unlikedReview
             (@PathVariable("review_idx") @ApiParam(value = "리뷰 번호", required = true) Long reviewIdx, HttpServletRequest request) {
         Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
         if (reviewService.unlikedReviewByReviewId(reviewIdx, user_idx)) {
