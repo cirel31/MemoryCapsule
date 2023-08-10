@@ -49,9 +49,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception {
-        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new IllegalArgumentException("Not found"));
+        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디 입니다."));
         if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
-            throw new Exception("Password Not Matched!");
+            throw new Exception("비밀번호가 맞지 않습니다. 다시 로그인 해주세요!");
 
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
         // refresh Token && access Token 생성
