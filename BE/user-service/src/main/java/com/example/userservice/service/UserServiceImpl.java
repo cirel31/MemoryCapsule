@@ -10,6 +10,7 @@ import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final AccessRepository accessRepository;
     private final FileService fileService;
     private final ConnectedRepository connectedRepository;
+    private final Environment env;
 
     @Value("${S3Url}")
     private String defaultUrl;
@@ -107,6 +109,7 @@ public class UserServiceImpl implements UserService {
         // - 이메일 중복체크
         Optional<User> userOptional = userRepository.findByEmail(signUpDto.getEmail());
         User saved;
+        Long initPoint = Long.valueOf(env.getProperty("point.init"));
         if (userOptional.isPresent()) {
             saved = userOptional.get();
             if (!saved.isDeleted()) {
@@ -116,12 +119,14 @@ public class UserServiceImpl implements UserService {
             saved.deletedSignUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()));
             log.info("탈퇴한 회원 재가입 입니다.");
         } else {
-            saved = userRepository.save(
-                    new User().newSignUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()))
-            );
+            User newed = new User().newSignUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()));
+            newed.setPoint(initPoint);
+            saved = userRepository.save(newed);
             log.info("새로운 유저 회원가입 입니다.");
         }
         log.info(saved.toString());
+
+
 
         return UserDto.Basic.builder()
                 .idx(saved.getIdx())
