@@ -10,7 +10,14 @@
   justify-items: center;
   .main_project_back {
     width: 100%;
+    filter: blur(3px);
   }
+}
+.bg_blur{
+  width: 100%;
+  height: 100%;
+  background-color: var(--white);
+  opacity: 25%;
 }
 .search_bar {
   width: 48vw;
@@ -70,6 +77,11 @@
   opacity: 70%;
 
 }
+.pjt_lst_body{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 .main_project_list_body {
   font-family: "Inconsolata", sans-serif;
   position: absolute;
@@ -82,6 +94,7 @@
   display: grid;
   grid-template-rows: 1fr;
   justify-items: center;
+  justify-content: center;
   & > div {
     display: flex;
     .project_is_none{
@@ -134,6 +147,7 @@
       }
     }
     .project_shortcut{
+      margin: 0 5% 0 5%;
       width: 20vw;
       height: 30vw;
       background-color: var(--white);
@@ -161,6 +175,7 @@
         font-weight: 600;
         font-size: 1.6vw;
         color: var(--font_gray_main);
+        margin: 10% 0 10% 0;
       }
     }
     .project_shortcut_hovered{
@@ -192,6 +207,7 @@
         font-weight: 600;
         font-size: 2vw;
         color: var(--font_gray_main);
+        margin: 10% 0 10% 0;
       }
     }
   }
@@ -199,7 +215,7 @@
 .project_create_btn {
   position: absolute;
   display: grid;
-  left: 41vw;
+  left: 41%;
   top: 78%;
 
 
@@ -240,16 +256,18 @@
   }
 }
 .move_btn_group_1 {
-  left: 38%;
-  width: 24%;
+  left: 37%;
+  width: 26%;
   height: 3.5vw;
   display: flex;
   position: absolute;
-  top: 70%;
+  top: 92%;
   justify-content: space-between;
+  z-index: 7;
   & > button {
-    border: none;
-    background-color: var(--brand3_main);
+    border: solid 2px var(--brand3_main);
+    background-color: var(--backGround_0);
+    cursor: pointer;
     border-radius: 5rem;
     width: 3.5vw;
     height: 3.5vw;
@@ -264,16 +282,18 @@
 
 }
 .move_btn_group_2 {
-  left: 28%;
-  width: 44%;
+  left: 33%;
+  width: 34%;
   height: 3.5vw;
   display: flex;
   position: absolute;
-  top: 70%;
+  top: 92%;
   justify-content: space-between;
+  z-index: 6;
   & > button {
-    border: none;
-    background-color: var(--brand3_main);
+    cursor: pointer;
+    border: solid 2px var(--brand3_main);
+    background-color: var(--backGround_0);
     border-radius: 5rem;
     width: 3.5vw;
     height: 3.5vw;

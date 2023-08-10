@@ -59,7 +59,7 @@ const ProjectListPage = () => {
     setIsHovered(null)
   }
   const openModal = (id) => {
-    const postIndex = projects.findIndex((post => post.idx === id))
+    const postIndex = projects.findIndex((post => post.id === id))
     setSelectedPost(projects[postIndex])
     setIsModal(true)
   }
@@ -97,6 +97,7 @@ const ProjectListPage = () => {
   return (
       <div className="main_project_body">
         <img src={main_bg} className="main_project_back"/>
+        <div className="bg_blur"></div>
         <div className="search_bar">
           <input
             type="text"
@@ -123,7 +124,7 @@ const ProjectListPage = () => {
               </div>
             </div>
           ) : (
-            <div>
+            <div className="pjt_lst_body">
               <div>
                 <div className="move_btn_group_1">
                   <button onClick={leftBTN}><img src={left_btn}/></button>
@@ -140,10 +141,10 @@ const ProjectListPage = () => {
               {currentPosts.map((project) => (
                 <div
                   key={project.id}
-                  className={`project_shortcut ${(isHovered === project.idx) ? "project_shortcut_hovered" : ""}`}
-                  onMouseEnter={() => handleMouseEnter(project.idx)}
+                  className={`project_shortcut ${(isHovered === project.id) ? "project_shortcut_hovered" : ""}`}
+                  onMouseEnter={() => handleMouseEnter(project.id)}
                   onMouseLeave={handleMouseLeave}
-                  onClick={() => openModal(project.idx)}
+                  onClick={() => openModal(project.id)}
 
                 >
                   <img src={clamp} className="deco_clamp"/>
