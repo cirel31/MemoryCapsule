@@ -134,13 +134,16 @@ public class ProjectController {
             @RequestParam MultipartFile image,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
-            @RequestParam("userList") String users,
+            @RequestParam(value = "userList", required = false) String users,
             @RequestParam("started") String start,
             @RequestParam("type") Integer type,
             @RequestParam("ended") String end) throws RegisterMakeException, IOException {
-        List<Long> userList = Arrays.stream(users.replaceAll("[\\[\\] ]", "").split(","))
-                .map(Long::valueOf)
-                .collect(Collectors.toList());
+        List<Long> userList = null;
+        if(users != null) {
+            userList = Arrays.stream(users.replaceAll("[\\[\\] ]", "").split(","))
+                    .map(Long::valueOf)
+                    .collect(Collectors.toList());
+        }
         LocalDateTime starts = LocalDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME);
         LocalDateTime ends = LocalDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME);
         Date started = Date.from(starts.atZone(ZoneId.systemDefault()).toInstant());

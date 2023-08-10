@@ -28,7 +28,7 @@ const CurrentProjectsPage = () => {
     const degY = -(x / div.width) * 90;
     
     setProjects(prevProjects => prevProjects.map(project => {
-      if (project.idx === projectId) {
+      if (project.id === projectId) {
         return { ...project, rotationX: degX, rotationY: degY };
       }
       return project;

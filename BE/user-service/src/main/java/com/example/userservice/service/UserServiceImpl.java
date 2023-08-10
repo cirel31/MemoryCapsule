@@ -1,6 +1,5 @@
 package com.example.userservice.service;
 
-import com.example.userservice.model.Enum.UserRole;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.Access;
 import com.example.userservice.model.entity.User;
@@ -11,6 +10,7 @@ import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,10 +24,9 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final AccessRepository accessRepository;
     private final FileService fileService;
     private final ConnectedRepository connectedRepository;
+    private final Environment env;
 
     @Value("${S3Url}")
     private String defaultUrl;
@@ -49,9 +49,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto.ResponseLogin login(UserDto.RequestLogin requestLogin) throws Exception {
-        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new IllegalArgumentException("Not found"));
+        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디 입니다."));
+
+        if (user.isDeleted())
+            throw new Exception("탈퇴한 회원입니다.");
         if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
-            throw new Exception("Password Not Matched!");
+            throw new Exception("비밀번호가 맞지 않습니다. 다시 로그인 해주세요!");
 
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
         // refresh Token && access Token 생성
@@ -88,34 +91,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean emailCheck(String userEmail) {
-        return userRepository.findByEmail(userEmail).isPresent();
+    public int emailCheck(String userEmail) {
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
+        if (userOptional.isPresent()) {
+            if (userOptional.get().isDeleted()) {
+                return 0;
+            }
+            return -1;
+        }
+        return 1;
     }
 
+    @Transactional
     @Override
     public UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile multipartFile) throws Exception {
         //TODO: User 회원가입
         // - 이메일 중복체크
-        userRepository.findByEmail(signUpDto.getEmail()).ifPresent(m -> {
-            if(m.isOAuthUser()) throw new IllegalStateException("Kakao로 로그인한 회원입니다.");
-            else throw new IllegalStateException("이미 회원가입한 회원입니다.");
-        });
+        Optional<User> userOptional = userRepository.findByEmail(signUpDto.getEmail());
+        User saved;
+        Long initPoint = Long.valueOf(env.getProperty("point.init"));
+        if (userOptional.isPresent()) {
+            saved = userOptional.get();
+            if (!saved.isDeleted()) {
+                if(saved.isOAuthUser()) throw new IllegalStateException("Kakao로 로그인한 회원입니다.");
+                else throw new IllegalStateException("이미 회원가입한 회원입니다.");
+            }
+            saved.deletedSignUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()));
+            log.info("탈퇴한 회원 재가입 입니다.");
+        } else {
+            User newed = new User().newSignUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()));
+            newed.setPoint(initPoint);
+            saved = userRepository.save(newed);
+            log.info("새로운 유저 회원가입 입니다.");
+        }
+        log.info(saved.toString());
 
-        // 회원가입 처리
-        User saved = userRepository.save(
-                User.builder()
-                        .email(signUpDto.getEmail())
-                        .name(signUpDto.getName())
-                        .nickName(signUpDto.getNickName())
-                        .phone(signUpDto.getPhone())
-                        .point(0L)
-                        .role(UserRole.USER)
-                        .createdAt(ZonedDateTime.now())
-                        .updatedAt(ZonedDateTime.now())
-                        .imgUrl(getImgUrl(multipartFile))
-                        .passWord(passwordEncoder.encode(signUpDto.getPassword()))
-                        .build()
-        );
+
 
         return UserDto.Basic.builder()
                 .idx(saved.getIdx())
@@ -156,6 +167,7 @@ public class UserServiceImpl implements UserService {
         return UserDto.Detail.builder()
                 .userId(user.getIdx())
                 .email(user.getEmail())
+                .point(user.getPoint())
                 .nickname(user.getNickName())
                 .totalFriend(user.getFriendList().size())
                 .imgUrl(user.getImgUrl())
@@ -219,7 +231,7 @@ public class UserServiceImpl implements UserService {
     private String getImgUrl(MultipartFile multipartFile) throws IOException {
         String imgUrl = "https://ssafysanta.s3.ap-northeast-2.amazonaws.com/stamp_best.svg"; // Default Img
         // User ImgURl 처리
-        if(multipartFile != null){
+        if(!multipartFile.isEmpty()){
             String fileName = fileService.upload(multipartFile);
             imgUrl = defaultUrl + fileName;
         }

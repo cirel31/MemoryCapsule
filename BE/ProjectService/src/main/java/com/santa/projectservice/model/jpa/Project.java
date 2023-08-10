@@ -105,7 +105,7 @@ public class Project {
                 .ended(this.ended)
                 .created(this.created)
                 .imgUrl(this.imgUrl)
-                .shareurl(this.shareUrl)
+                .shareUrl(this.shareUrl)
                 .type(this.type)
                 .state(this.state)
                 .giftUrl(this.giftUrl)

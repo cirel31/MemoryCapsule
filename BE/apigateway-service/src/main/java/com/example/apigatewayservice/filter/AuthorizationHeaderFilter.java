@@ -50,10 +50,10 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                 return onError(exchange, "Token validation failed", HttpStatus.CONFLICT);
             }
 
-            log.info("{} - RequestPath : {} , userIdx : {}", request.getId(), request.getURI().toString(), subject);
+            log.info("{} - RequestPath : {} , userId : {}", request.getId(), request.getURI().toString(), subject);
             ServerWebExchange modified = exchange.mutate()
                     .request(exchange.getRequest().mutate()
-                            .headers(httpHeaders -> httpHeaders.add("userIdx", String.valueOf(subject)))
+                            .headers(httpHeaders -> httpHeaders.add("userId", String.valueOf(subject)))
                             .build()
                     ).build();
             return chain.filter(modified);

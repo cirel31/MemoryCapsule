@@ -23,7 +23,7 @@ public class ArticleImg {
     @ManyToOne(fetch = FetchType.LAZY)
     private Article article;
     @Column(name = "articleimg_imgurl", length = 2048)
-    private String imgurl;
+    private String imgUrl;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "articleimg_created")
     @CreationTimestamp
@@ -33,10 +33,10 @@ public class ArticleImg {
     private Integer order;
 
     @Builder
-    public ArticleImg(Long id, Article article, String imgurl, Date created, Integer order) {
+    public ArticleImg(Long id, Article article, String imgUrl, Date created, Integer order) {
         this.id = id;
         this.article = article;
-        this.imgurl = imgurl;
+        this.imgUrl = imgUrl;
         this.created = created;
         this.order = order;
     }
@@ -45,7 +45,7 @@ public class ArticleImg {
         return ArticleImgDto.builder()
                 .id(this.id)
                 .articleId(this.article.getId())
-                .imgurl(this.imgurl)
+                .imgUrl(this.imgUrl)
                 .order(this.order)
                 .build();
     }

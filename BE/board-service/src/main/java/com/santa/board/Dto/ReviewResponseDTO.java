@@ -40,7 +40,7 @@ public class ReviewResponseDTO {
     }
 
     public List<ReviewResponseDTO> toDtoList(Page<Review> reviewPage) {
-        List<ReviewResponseDTO> responseDTOList = reviewPage.map(review -> ReviewResponseDTO.builder()
+        return reviewPage.map(review -> ReviewResponseDTO.builder()
                 .reviewIdx(review.getReviewIdx())
                 .reviewTitle(review.getReviewTitle())
                 .reviewContent(review.getReviewContent())
@@ -50,11 +50,10 @@ public class ReviewResponseDTO {
                 .reviewCreated(review.getReviewCreated())
                 .writerNickname(review.getUser().getUserName())
                 .build()).stream().collect(Collectors.toList());
-        return responseDTOList;
     }
 
     public ReviewResponseDTO toDto(Review review, boolean isLiked) {
-        ReviewResponseDTO responseDTOPage = ReviewResponseDTO.builder()
+        return ReviewResponseDTO.builder()
                 .reviewIdx(review.getReviewIdx())
                 .reviewTitle(review.getReviewTitle())
                 .reviewContent(review.getReviewContent())
@@ -65,6 +64,5 @@ public class ReviewResponseDTO {
                 .writerNickname(review.getUser().getUserName())
                 .isLiked(isLiked)
                 .build();
-        return responseDTOPage;
     }
 }

@@ -23,7 +23,7 @@ public class NoticeResponseDto {
     private Integer noticeHit;
 
     public List<NoticeResponseDto> toDtoList(Page<Notice> noticePage) {
-        List<NoticeResponseDto> responseDTOList = noticePage.map(notice -> NoticeResponseDto.builder()
+        return noticePage.map(notice -> NoticeResponseDto.builder()
                 .noticeIdx(notice.getNoticeIdx())
                 .noticeTitle(notice.getNoticeTitle())
                 .noticeContent(notice.getNoticeContent())
@@ -31,10 +31,9 @@ public class NoticeResponseDto {
                 .noticeCreated(notice.getNoticeCreated())
                 .noticeHit(notice.getNoticeHit())
                 .build()).stream().collect(Collectors.toList());
-        return responseDTOList;
     }
     public NoticeResponseDto toDto(Notice notice) {
-        NoticeResponseDto responseDTO = NoticeResponseDto.builder()
+        return NoticeResponseDto.builder()
                 .noticeIdx(notice.getNoticeIdx())
                 .noticeTitle(notice.getNoticeTitle())
                 .noticeContent(notice.getNoticeContent())
@@ -42,6 +41,5 @@ public class NoticeResponseDto {
                 .noticeCreated(notice.getNoticeCreated())
                 .noticeHit(notice.getNoticeHit())
                 .build();
-        return responseDTO;
     }
 }

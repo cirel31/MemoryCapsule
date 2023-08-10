@@ -13,13 +13,13 @@ public class ArticleImgDto {
     private Long id;
     @JsonIgnore
     private long articleId;
-    private String imgurl;
+    private String imgUrl;
     private int order;
     @Builder
-    public ArticleImgDto(Long id, long articleId, String imgurl, int order) {
+    public ArticleImgDto(Long id, long articleId, String imgUrl, int order) {
         this.id = id;
         this.articleId = articleId;
-        this.imgurl = imgurl;
+        this.imgUrl = imgUrl;
         this.order = order;
     }
 }

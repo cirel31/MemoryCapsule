@@ -8,14 +8,14 @@ import java.util.Date;
 
 @Data
 public class ProjectInfo {
-    private Long idx;
+    private Long id;
     private String title;
     private String content;
     private Date started;
     private Date ended;
     private Date created;
     private String imgUrl;
-    private String shareurl;
+    private String shareUrl;
     private  String giftUrl;
     private int type;
     private Boolean state;
@@ -25,15 +25,15 @@ public class ProjectInfo {
     private long artielcNum;
 
     @Builder
-    public ProjectInfo(Long idx, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareurl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum) {
-        this.idx = idx;
+    public ProjectInfo(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.started = started;
         this.ended = ended;
         this.created = created;
         this.imgUrl = imgUrl;
-        this.shareurl = shareurl;
+        this.shareUrl = shareUrl;
         this.type = type;
         this.state = state;
         this.limit = limit;
@@ -42,14 +42,14 @@ public class ProjectInfo {
         this.artielcNum = artielcNum;
     }
     public ProjectInfo(ProjectDto projectDto, Long num){
-        this.idx = projectDto.getId();
+        this.id = projectDto.getId();
         this.title = projectDto.getTitle();
         this.content = projectDto.getContent();
         this.started = projectDto.getStarted();
         this.ended = projectDto.getEnded();
         this.created = projectDto.getCreated();
         this.imgUrl = projectDto.getImgUrl();
-        this.shareurl = projectDto.getShareurl();
+        this.shareUrl = projectDto.getShareUrl();
         this.type = projectDto.getType();
         this.state = projectDto.getState();
         this.limit = projectDto.getLimit();

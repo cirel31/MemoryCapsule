@@ -64,7 +64,7 @@ public class Register {
         return RegisterDto.builder()
                 .id(this.id)
                 .userId(this.user.getId())
-                .pjtId(this.project.getId())
+                .projectId(this.project.getId())
                 .type(this.type)
                 .confirm(this.confirm)
                 .alarm(this.alarm)
