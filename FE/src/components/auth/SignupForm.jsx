@@ -75,10 +75,12 @@ const SignupForm = ({ form, setForm,  }) => {
           Swal.fire(error.response.data)
         }
       })
+    console.log(emailData)
   }
   const emailAuthentication = (e) => {
     e.preventDefault()
     const authenticationCode = validationCodeRef
+    console.log(authenticationCode)
     axios.post(`${baseURL}${authorizationURL}`, authenticationCode)
       .then((response) => {
         console.log("코드 인증 성공 : ", response)
@@ -140,7 +142,6 @@ const SignupForm = ({ form, setForm,  }) => {
 
         <div className="form_set">
           <form onSubmit={sendSignupData} ref={formRef} id="loginForm">
-            {/* 프로필 디폴트 이미지 변경 시 imgFile : 뒤의 값 변경  */}
             <div className="imgupload">
               <img
                 src={imgFile ? imgFile:defaultimg}

@@ -85,7 +85,7 @@ const LoginForm = ({ form, setForm }) => {
                 value={form.password}
                 onChange={handleChange}
                 required
-              />              
+              />
               <div>
                 <Link to="/find-password" className="find_pw">
                   비밀번호 찾기
@@ -111,13 +111,12 @@ const LoginForm = ({ form, setForm }) => {
                 <p>카카오톡으로 로그인</p>
                 <img src={kakao_login_img}/>
               </div>
-
+            
             </a>
 
           </div>
           {!isValidEmail && <div className="login_alert">올바른 이메일 형식이 아닙니다.</div>}
-
-
+          
         </div>
       </div>
       {/* 모달 창 */}

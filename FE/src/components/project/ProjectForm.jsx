@@ -26,7 +26,7 @@ const ProjectForm = () => {
   const [multiplayModal, setMultiplayModal] = useState(false);
   const dispatch = useDispatch()
   const selectedUsers = useSelector((state) => state.friend.selectedPeople)
-
+  const user = useSelector((state) => state.userState.user) || null
   const SubmitURL = "https://i9a608.p.ssafy.io:8000/project/create"
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -42,13 +42,14 @@ const ProjectForm = () => {
     for (const [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
+    console.log(user)
     // const accessToken = sessionStorage.getItem("accessToken")
     try {
       axios.post(`${SubmitURL}`, formData, {
         headers: {
           // Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data",
-          "userId": 1004,
+          "userId": user.userId,
         },
       })
         .then((res) => {

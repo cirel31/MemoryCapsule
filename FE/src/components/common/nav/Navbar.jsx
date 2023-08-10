@@ -1,5 +1,5 @@
 import {Link, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import icon01 from "../../../assets/images/nav_icon_test_01.png";
 import logo_white from "../../../assets/images/resource/Logo&text_white.svg";
@@ -30,6 +30,7 @@ export default function Navbar() {
   const [accessToken, setAccessToken] = useState(sessionStorage.getItem("accessToken"))
   const [sidebar, setSidebar] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const sidebarRef = useRef()
   const LogoutUser = () => {
     console.log('로그아웃 버튼 작동 테스트', sessionStorage)
     dispatch(logoutUserThunk());
@@ -50,7 +51,19 @@ export default function Navbar() {
       dispatch(fetchUserInfoThunk(idx))
     }
   }, [isLoggedIn])
-  
+  // const handleClickOutside = (event) => {
+  //   if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+  //     showSidebar();
+  //   }
+  // }
+  // useEffect(() => {
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, [])
+
   const user_nickname = user?.nickname || 'james'
   const user_email = user?.email || 'jimmy@raynersraiders.com'
   const user_point = user?.point || 0
@@ -63,7 +76,7 @@ export default function Navbar() {
             <button onClick={showSidebar} className="nav_bar_active_btn"><img src={navbar_activate} className="navbar_pictogram"/></button>
           </div>
         )}
-        <SidebarNav sidebar={sidebar}>
+        <SidebarNav sidebar={sidebar} ref={sidebarRef}>
           <nav className="nav_bar">
 
             <div className="nav_bar2">

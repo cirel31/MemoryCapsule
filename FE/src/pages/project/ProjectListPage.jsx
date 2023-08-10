@@ -18,15 +18,16 @@ const ProjectListPage = () => {
   const [projects, setProjects] = useState([
 
   ]);
-
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filteredProjects, setFilteredProjects] = useState([])
+  
+  
   useEffect(() => {
     const userId = user?.userId || ''
     console.log(userId)
-    // const accessToken = sessionStorage.getItem("accessToken")
     axios.get(`${baseURL}${subURL}`, {
       headers: {
-        // "userId": `${userId}`,
-        "userId": 1004,
+        "userId": userId,
       }
     })
         .then((response) => {
@@ -38,7 +39,14 @@ const ProjectListPage = () => {
           console.error(error.code)
         });
   }, []);
-
+  
+  useEffect(() => {
+    const results = projects.filter(project =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProjects(results);
+  }, [searchTerm, projects])
+  
   const handleMouseEnter = (id) => {
     setIsHovered(id)
   };
@@ -57,7 +65,7 @@ const ProjectListPage = () => {
 
   const [currentSection, setCurrentSection] = useState(0);
 
-  const currentPosts = projects.slice(
+  const currentPosts = filteredProjects.slice(
     currentSection,
     (currentSection + 3),
   );
@@ -74,36 +82,52 @@ const ProjectListPage = () => {
   const endBTN = (e) => {
     setCurrentSection((prev) => projects.length  - 1);
   };
-
+  
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  
   Modal.setAppElement("#root");
 
   return (
-      <div className="main_project_body">
-        <img src={main_bg} className="main_project_back"/>
-        <h1>현재 진행 중인 프로젝트</h1>
-
-        <div className="main_project_list_body">
-          {projects.length === 0 ? (
-            <p>프로젝트가 아직 없습니다.</p>
-          ) : (
-            <div >
-              {currentPosts.map((project) => (
-                <div
-                  key={project.id}
-                  className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
-                  onMouseEnter={() => handleMouseEnter(project.idx)}
-                  onMouseLeave={handleMouseLeave}
-                  onClick={() => openModal(project.idx)}
-                  style={{width:'200px'}}
-                >
-                  프로젝트 제목 : {project.title}
-                  <img src={project.imgUrl} alt="" style={{width:'200px'}}/>
-                </div>
-              ))}
-            </div>
-          )}
+      <div>
+        <div>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="프로젝트 검색..."
+          />
+          <button onClick={handleSearchChange}>검색</button>
         </div>
-
+        <h1>현재 진행 중인 프로젝트</h1>
+        {filteredProjects.length === 0 ? (
+          <div
+            style={{ width: '200px', height: "400px", border:'solid black 1px' }}
+          >
+            <Link to='/project/create'>
+              <button>
+                새로운 추억 생성
+              </button>
+            </Link>
+          </div>
+        ) : (
+          <div>
+            {currentPosts.map((project) => (
+              <div
+                key={project.id}
+                className={`normal ${(isHovered === project.idx) ? "chosen" : ""}`}
+                onMouseEnter={() => handleMouseEnter(project.idx)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => openModal(project.idx)}
+                style={{ width: '200px' }}
+              >
+                프로젝트 제목 : {project.title}
+                <img src={project.imgUrl} alt="" style={{ width: '200px' }} />
+              </div>
+            ))}
+          </div>
+        )}
         <Modal isOpen={isModal} onRequestClose={closeModal}>
           {selectedPost && (
             <div>
@@ -124,7 +148,7 @@ const ProjectListPage = () => {
               </h3>
               <hr/>
               <br/>
-              <Link to={`/project/${selectedPost.id}`}>상세 페이지로 이동</Link>
+              <Link to={`/project/${selectedPost.idx}`}>상세 페이지로 이동</Link>
               <br/><br/>
               <button onClick={closeModal}>닫기</button>
             </div>
