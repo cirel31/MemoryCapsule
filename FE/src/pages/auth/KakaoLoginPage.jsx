@@ -29,7 +29,7 @@ const KakaoLoginPage = () => {
         })
         .catch((error) => {
           console.log("서버로부터 받지 못함", error);
-          if (error.response.code === 500 && error.response.data === "자체 회원가입으로 등록된 유저입니다.") {
+          if (error.response.status === 500 && error.response.data === "자체 회원가입으로 등록된 유저입니다.") {
             Swal.fire(error.response.data)
             window.location.href ='/login'
           }
