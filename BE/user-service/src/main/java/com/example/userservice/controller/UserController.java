@@ -54,7 +54,7 @@ public class UserController {
             UserDto.ResponseLogin result = userService.login(requestLogin);
             return ResponseEntity.status(HttpStatus.CREATED).body(result);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
