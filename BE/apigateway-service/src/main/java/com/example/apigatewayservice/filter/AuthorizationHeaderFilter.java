@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
     Environment env;
     TokenProvider tokenProvider;
+
     public AuthorizationHeaderFilter(Environment env, TokenProvider tokenProvider) {
         super(Config.class);
         this.env = env;
@@ -52,13 +53,12 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             String subject = tokenProvider.parse(jwt).getSubject();
 
             // Token Validating
-            try{
-                tokenProvider.validateToken(jwt);
-            } catch (Exception e){
-                return onError(exchange, e.getMessage() , HttpStatus.UNAUTHORIZED);
+            if (!tokenProvider.validateToken(jwt)){
+                log.info("{} - RequestPath : {} / Token Validation failed", request.getId(), request.getURI().toString());
+                return onError(exchange, "Token validation failed", HttpStatus.CONFLICT);
             }
 
-            log.info("{} - RequestPath : {} , userIdx : {}",request.getId(), request.getURI().toString(), subject);
+            log.info("{} - RequestPath : {} , userIdx : {}", request.getId(), request.getURI().toString(), subject);
             ServerWebExchange modified = exchange.mutate()
                     .request(exchange.getRequest().mutate()
                             .headers(httpHeaders -> httpHeaders.add("userIdx", String.valueOf(subject)))
