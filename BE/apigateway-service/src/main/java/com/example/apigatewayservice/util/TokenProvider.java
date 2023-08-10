@@ -3,18 +3,15 @@ package com.example.apigatewayservice.util;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 import java.security.Key;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -78,18 +75,13 @@ public class TokenProvider implements InitializingBean {
         }
     }
 
-    public boolean validateToken(String token) throws Exception {
+    public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException  e) {
-            throw new MalformedJwtException("잘못된 JWT 서명입니다.");
-        } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(getHeaders(token), parse(token), "만료된 JWT 토큰입니다.");
-        } catch (UnsupportedJwtException e) {
-            throw new UnsupportedJwtException("지원하지 않는 JWT 토큰입니다.");
-        } catch (IllegalArgumentException e ) {
-            throw new IllegalArgumentException("JWT 토큰이 잘못되었습니다.");
+        } catch(Exception e){
+            log.warn("Token validation failed! {}" , e.getMessage().toString());
+            return false;
         }
     }
 

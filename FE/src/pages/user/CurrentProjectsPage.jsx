@@ -39,8 +39,7 @@ const CurrentProjectsPage = () => {
     const userId = user?.userId || ''
     axios.get(`${baseURL}${subURL}`, {
       headers : {
-        // "userId": `${userId}`,
-        "userId": 1004,
+        "userId": userId,
       }
     })
       .then((response) => {
@@ -68,7 +67,6 @@ const CurrentProjectsPage = () => {
     (currentSection + 3),
   );
 
-  // 버튼 함수
   const startBTN = (e) => {
     setCurrentSection((prev) => 0);
   };
@@ -100,14 +98,14 @@ const CurrentProjectsPage = () => {
               {currentPosts.map((project) => (
                 
                 <Link
-                  to={`/project/${project.idx}`}
-                  key={project.idx}
+                  to={`/project/${project.id}`}
+                  key={project.id}
                 >
                   
                   <div
-                    onMouseEnter={() => handleMouseEnter(project.idx)}
+                    onMouseEnter={() => handleMouseEnter(project.id)}
                     onMouseLeave={() => handleMouseLeave(project)}
-                    onMouseMove={(event) => handleMouseMove(project.idx, event)}
+                    onMouseMove={(event) => handleMouseMove(project.id, event)}
                     style={{
                         width: '200px',
                         height: '250px',
@@ -125,7 +123,7 @@ const CurrentProjectsPage = () => {
                     <div style={{width:'200px', height:"300px"}}>
                       <p>{project.title}</p>
                       <img src={arona} alt="아로나" style={{width:'200px'}}/>
-                      <p>기록한 추억 : {project.articleNum || 0}</p>
+                      <p>기록한 추억 : {project.artielcNum || 0}</p>
                     </div>
                     
                   </div>

@@ -48,11 +48,7 @@ public class ArticleServiceImpl implements ArticleService {
         this.utilQuerys = utilQuerys;
     }
 
-    /**
-     * @param articleDto - 아티클 정보
-     * @param images     - 업로드 이미지들
-     * @return
-     */
+
     @Override
     @Transactional
     public Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) throws ProjectNotAuthorizedException {
@@ -63,7 +59,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .project(projectRepository.getReferenceById(articleDto.getProjectId()))
                 .user(userRepository.getReferenceById(articleDto.getUserId()))
                 .content(articleDto.getContent())
-                .title(articleDto.getTitle())
                 .stamp(articleDto.getStamp())
                 .build()
         );

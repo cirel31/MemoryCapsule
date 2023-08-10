@@ -132,23 +132,23 @@ const ProjectListPage = () => {
           {selectedPost && (
             <div>
               {console.log(selectedPost)}
+              <img src="https://ssafysanta.s3.ap-northeast-2.amazonaws.com/34f4345d4f324844896e975f27abfb98.svg" alt=""/>
               <h2>
-                {selectedPost.idx}
                 <hr/>
                 {selectedPost.title}
               </h2>
+              <p>현재까지 등록된 추억 : {selectedPost.artielcNum}</p>
               <h3>
-                이미지 : {selectedPost.image}
                 <hr/>
                 내용 : {selectedPost.content}
                 <hr/>
-                시작 : {selectedPost.started}
+                시작 : {selectedPost.started.slice(0, 10)}
                 <hr/>
-                종료 : {selectedPost.ended}
+                종료 : {selectedPost.ended.slice(0, 10)}
               </h3>
               <hr/>
               <br/>
-              <Link to={`/project/${selectedPost.idx}`}>상세 페이지로 이동</Link>
+              <Link to={`/project/${selectedPost.id}`}>상세 페이지로 이동</Link>
               <br/><br/>
               <button onClick={closeModal}>닫기</button>
             </div>
