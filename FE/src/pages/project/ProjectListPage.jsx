@@ -59,7 +59,7 @@ const ProjectListPage = () => {
     setIsHovered(null)
   }
   const openModal = (id) => {
-    const postIndex = projects.findIndex((post => post.idx === id))
+    const postIndex = projects.findIndex((post => post.id === id))
     setSelectedPost(projects[postIndex])
     setIsModal(true)
   }
@@ -123,7 +123,7 @@ const ProjectListPage = () => {
               </div>
             </div>
           ) : (
-            <div>
+            <div className="pjt_lst_body">
               <div>
                 <div className="move_btn_group_1">
                   <button onClick={leftBTN}><img src={left_btn}/></button>
@@ -140,10 +140,10 @@ const ProjectListPage = () => {
               {currentPosts.map((project) => (
                 <div
                   key={project.id}
-                  className={`project_shortcut ${(isHovered === project.idx) ? "project_shortcut_hovered" : ""}`}
-                  onMouseEnter={() => handleMouseEnter(project.idx)}
+                  className={`project_shortcut ${(isHovered === project.id) ? "project_shortcut_hovered" : ""}`}
+                  onMouseEnter={() => handleMouseEnter(project.id)}
                   onMouseLeave={handleMouseLeave}
-                  onClick={() => openModal(project.idx)}
+                  onClick={() => openModal(project.id)}
 
                 >
                   <img src={clamp} className="deco_clamp"/>
@@ -160,7 +160,7 @@ const ProjectListPage = () => {
           {selectedPost && (
             <div>
               {console.log(selectedPost)}
-              <img src="https://ssafysanta.s3.ap-northeast-2.amazonaws.com/34f4345d4f324844896e975f27abfb98.svg" alt=""/>
+              <img src={selectedPost.imgUrl} alt="이미지" style={{width:'200px'}}/>
               <h2>
                 <hr/>
                 {selectedPost.title}

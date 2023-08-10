@@ -10,7 +10,7 @@ const LoginPage = () => {
     const loginCheck = !!sessionStorage.getItem("accessToken")
     setIsLoggedIn(loginCheck)
     if (isLoggedIn) {
-      navigate('/mypage')
+      navigate('/main')
     }
   })
   const [form, setForm] = useState({
