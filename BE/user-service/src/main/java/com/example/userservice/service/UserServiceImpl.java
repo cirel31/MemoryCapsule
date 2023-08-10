@@ -156,6 +156,7 @@ public class UserServiceImpl implements UserService {
         return UserDto.Detail.builder()
                 .userId(user.getIdx())
                 .email(user.getEmail())
+                .point(user.getPoint())
                 .nickname(user.getNickName())
                 .totalFriend(user.getFriendList().size())
                 .imgUrl(user.getImgUrl())
