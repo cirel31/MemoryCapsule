@@ -30,7 +30,7 @@ const UserProfilePage = () => {
     <>
 
       <div className="login_profile_body">
-        <img src={profile_bg} className="login_profile_page"/>
+        <img src={profile_bg} alt="이미지 안뜨네요" className="login_profile_page"/>
         <div className="login_profile_box">
           <div className="login_profile_form">
             <img src={user_img ? user_img:defaultImg} alt="프로필 이미지를 불러올 수 없습니다."/>
