@@ -65,9 +65,10 @@ const SignupForm = ({ form, setForm,  }) => {
     const emailData = form.id
     axios.post(`${baseURL}${authorizationURL}${emailData}`)
       .then((response) => {
-        console.log("이메일 사용 가능:", response)
+        console.log(response.data.slice(12))
         Swal.fire("사용 가능한 이메일입니다.")
         setEmailChecking(true)
+        setValidationCode(response.data.slice(12))
       })
       .catch((error) => {
         console.log(error)
@@ -79,18 +80,15 @@ const SignupForm = ({ form, setForm,  }) => {
   }
   const emailAuthentication = (e) => {
     e.preventDefault()
-    const authenticationCode = validationCodeRef
-    console.log(authenticationCode)
-    axios.post(`${baseURL}${authorizationURL}`, authenticationCode)
-      .then((response) => {
-        console.log("코드 인증 성공 : ", response)
-        Swal.fire("이메일 인증에 성공하였습니다.")
-        setIsAuthentication(true)
-      })
-      .catch((error) => {
-        console.log("이메일 존재 : ", error)
-        Swal.fire("입력하신 코드가 올바르지 않습니다.")
-      })
+    const authenticationCode = validationCodeRef.current.value
+    console.log(validationCode, authenticationCode)
+    if (validationCode === authenticationCode) {
+      Swal.fire("이메일 인증에 성공하였습니다.")
+      setIsAuthentication(true)
+      setEmailModalIsOpen(false)
+    } else {
+      Swal.fire("입력하신 코드가 올바르지 않습니다.")
+    }
   }
 
   const sendSignupData = (e) => {
@@ -104,7 +102,8 @@ const SignupForm = ({ form, setForm,  }) => {
       (form.id.length > 0 && isValidEmail) &&
       (form.nickname.length > 1) &&
       (form.password === form.passwordCheck) &&
-      isChecked
+      isChecked &&
+      isAuthentication
     ) {
       axios.post(`${baseURL}${signupURL}`, formData, {
         headers : {

@@ -22,7 +22,6 @@ export const loginUserThunk = createAsyncThunk(
         console.log(userIdx)
         dispatch(fetchUserInfoThunk(userIdx))
         window.location.href ='/profile'
-        // await navigate('/profile');
       } catch (error) {
         console.error("서버와 통신 실패로 로그인 에러 발생", error)
         
