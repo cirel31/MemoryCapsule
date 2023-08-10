@@ -68,7 +68,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Long insertNotice(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
         log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, insertDto, userIdx));
-        Notice notice = new Notice(userIdx, insertDto.getTitle(), insertDto.getContent(), fileService.getFileName(file));
+        Notice notice = new Notice();
+
+        notice.newNotice(userIdx, insertDto.getTitle(), insertDto.getContent(), fileService.getFileName(file));
         return noticeRepository.save(notice).getNoticeIdx();
     }
 
