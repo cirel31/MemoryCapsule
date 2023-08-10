@@ -2,19 +2,11 @@ package com.example.apigatewayservice.filter;
 
 import com.example.apigatewayservice.util.TokenProvider;
 import com.google.common.net.HttpHeaders;
-import io.jsonwebtoken.Jwts;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -27,6 +19,7 @@ import reactor.core.publisher.Mono;
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
     Environment env;
     TokenProvider tokenProvider;
+
     public AuthorizationHeaderFilter(Environment env, TokenProvider tokenProvider) {
         super(Config.class);
         this.env = env;
@@ -52,13 +45,12 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             String subject = tokenProvider.parse(jwt).getSubject();
 
             // Token Validating
-            try{
-                tokenProvider.validateToken(jwt);
-            } catch (Exception e){
-                return onError(exchange, e.getMessage() , HttpStatus.UNAUTHORIZED);
+            if (!tokenProvider.validateToken(jwt)){
+                log.info("{} - RequestPath : {} / Token Validation failed", request.getId(), request.getURI().toString());
+                return onError(exchange, "Token validation failed", HttpStatus.CONFLICT);
             }
 
-            log.info("{} - RequestPath : {} , userIdx : {}",request.getId(), request.getURI().toString(), subject);
+            log.info("{} - RequestPath : {} , userIdx : {}", request.getId(), request.getURI().toString(), subject);
             ServerWebExchange modified = exchange.mutate()
                     .request(exchange.getRequest().mutate()
                             .headers(httpHeaders -> httpHeaders.add("userIdx", String.valueOf(subject)))
