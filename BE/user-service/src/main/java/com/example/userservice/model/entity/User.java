@@ -122,7 +122,7 @@ public class User {
         this.passWord = code;
     }
 
-    public User signUpDtoToUser(UserDto.SignUp signUpDto, String imgUrl, String password) {
+    public User newSignUpDtoToUser(UserDto.SignUp signUpDto, String imgUrl, String password) {
         return User.builder()
                 .email(signUpDto.getEmail())
                 .name(signUpDto.getName())
@@ -135,5 +135,17 @@ public class User {
                 .imgUrl(imgUrl)
                 .passWord(password)
                 .build();
+    }
+
+    public void deletedSignUpDtoToUser(UserDto.SignUp signUpDto, String imgUrl, String password) {
+        this.name = signUpDto.getName();
+        this.nickName = signUpDto.getNickName();
+        this.phone = signUpDto.getPhone();
+        this.point = 0L;
+        this.createdAt = ZonedDateTime.now();
+        this.updatedAt = ZonedDateTime.now();
+        this.imgUrl = imgUrl;
+        this.passWord = password;
+        this.deleted = false;
     }
 }

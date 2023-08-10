@@ -108,13 +108,15 @@ public class UserServiceImpl implements UserService {
                 if(saved.isOAuthUser()) throw new IllegalStateException("Kakao로 로그인한 회원입니다.");
                 else throw new IllegalStateException("이미 회원가입한 회원입니다.");
             }
-            saved = saved.signUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()));
+            saved.deletedSignUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()));
+            log.info("탈퇴한 회원 재가입 입니다.");
         } else {
-            // 회원가입 처리
             saved = userRepository.save(
-                    new User().signUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()))
+                    new User().newSignUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()))
             );
+            log.info("새로운 유저 회원가입 입니다.");
         }
+        log.info(saved.toString());
 
         return UserDto.Basic.builder()
                 .idx(saved.getIdx())
