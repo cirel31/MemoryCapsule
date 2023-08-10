@@ -11,7 +11,7 @@ const useLoginEmail = () => {
   const loginUser = async (loginData) => {
     try {
       await dispatch(loginUserThunk(loginData));
-      console.log(loginData)
+      console.log('로그인 데이터 : ', loginData)
     } catch (err) {
       console.error("로그인 에러 발생", err);
     }
