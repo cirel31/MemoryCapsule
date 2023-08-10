@@ -19,7 +19,7 @@ public class ProjectDto {
     private Date ended;
     private Date created;
     private String imgUrl;
-    private String shareurl;
+    private String shareUrl;
     private int type;
     private Boolean state;
     private String giftUrl;
@@ -28,7 +28,7 @@ public class ProjectDto {
     private int alarmType;
     private int alarm;
     @Builder
-    public ProjectDto(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareurl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm) {
+    public ProjectDto(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -36,7 +36,7 @@ public class ProjectDto {
         this.ended = ended;
         this.created = created;
         this.imgUrl = imgUrl;
-        this.shareurl = shareurl;
+        this.shareUrl = shareUrl;
         this.type = type;
         this.state = state;
         this.giftUrl = giftUrl;
