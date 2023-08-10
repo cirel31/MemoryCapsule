@@ -168,8 +168,9 @@ const SignupForm = ({ form, setForm,  }) => {
       console.log('데이터 오류')
     }
   }
-
-
+  
+  Modal.setAppElement("#root");
+  
   return (
     <div className="signup_forms_body">
       <div className="forms_body_color">
@@ -228,6 +229,7 @@ const SignupForm = ({ form, setForm,  }) => {
                   placeholder="example@example.com"
                   value={form.id}
                   onClick={emailCheckPaper}
+                  disabled={isAuthentication}
                   required
                 />
               </div>
