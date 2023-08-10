@@ -26,20 +26,15 @@ public class FriendServiceImpl implements FriendService {
     private final UserRepository userRepository;
 
     @Override
-    public List<User> findByAllFriends(final Long userId) throws Exception {
-        //TODO: userId의 친구정보를 주는 서비스
-        log.info("친구 리스트 불러오기 userId: " + userId);
-        return userRepository.findById(Long.valueOf(userId)).orElseThrow(() -> new Exception("user not found - " + userId))
-                .getFriendList();
-    }
-
-    @Override
     public FriendDto.showFriend findUserEmail(Long hostId, String guestEmail) throws Exception {
         //TODO: Email로 user 검색 서비스
         log.info(String.format("email로 유저 검색 기능 hostId: %d, searchEmail: %s", hostId, guestEmail));
         User user = userRepository.findByEmail(guestEmail).orElseThrow(() -> new Exception("User not found"));
         if (hostId.equals(user.getIdx())) {
             throw new Exception("본인입니다.");
+        }
+        if (user.isDeleted()) {
+            throw new Exception("탈퇴한 회원입니다.");
         }
         Optional<Connected> connected = getConnected(hostId, user.getIdx());
         /**
@@ -148,21 +143,21 @@ public class FriendServiceImpl implements FriendService {
 
 
         List<FriendDto.basicFriendInfo> friendInfoList = friendList.stream()
-                .map(e -> {
-                    return makeFriendInfo(e, FriendType.FRIEND);
-                }).collect(Collectors.toList());
+                .filter(e -> !e.isDeleted())
+                .map(e -> makeFriendInfo(e, FriendType.FRIEND))
+                .collect(Collectors.toList());
 
         //요청이 옴
         friendInfoList.addAll(user.getComeRequestFriendList().stream()
-                .map(e -> {
-                    return makeFriendInfo(e, FriendType.COME_REQUEST);
-                }).collect(Collectors.toList()));
+                .filter(e -> !e.isDeleted())
+                .map(e -> makeFriendInfo(e, FriendType.COME_REQUEST))
+                .collect(Collectors.toList()));
 
         //내가 요청 보냄
         friendInfoList.addAll(user.getSendRequestFriendList().stream()
-                .map(e -> {
-                    return makeFriendInfo(e, FriendType.SEND_REQUEST);
-                }).collect(Collectors.toList()));
+                .filter(e -> !e.isDeleted())
+                .map(e -> makeFriendInfo(e, FriendType.SEND_REQUEST))
+                .collect(Collectors.toList()));
         return friendInfoList;
     }
 

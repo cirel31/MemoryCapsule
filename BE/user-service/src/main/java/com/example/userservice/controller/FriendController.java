@@ -22,16 +22,6 @@ public class FriendController {
         return ResponseEntity.status(HttpStatus.OK).body("Hello friend-service");
     }
 
-    @GetMapping("/search/{user_id}")
-    public ResponseEntity findFriendByUserId(@PathVariable("user_id") Long user_id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(friendService.findByAllFriends(user_id));
-        } catch (Exception e) {
-            log.error("Error - userDetail : {}", e.getMessage());
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-
     @GetMapping("/find/{user_email}")
     public ResponseEntity findByUserEmail(@RequestParam(value = "host_id") Long host_id,
                                           @PathVariable("user_email") String user_email) {
