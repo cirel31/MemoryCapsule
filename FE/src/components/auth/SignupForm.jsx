@@ -81,10 +81,9 @@ const SignupForm = ({ form, setForm,  }) => {
                 console.log('확인 버튼 클릭!');
                 axios.post(`${baseURL}${deletedCheck}${emailData}`)
                   .then((response) => {
-                    console.log(response.data.slice(12))
                     Swal.fire("사용 가능한 이메일입니다.")
                     setEmailChecking(true)
-                    setValidationCode(response.data.slice(12))
+                    setValidationCode(response.data)
                   })
                   .catch((error) => {
                     console.log(error)
@@ -99,11 +98,9 @@ const SignupForm = ({ form, setForm,  }) => {
             })
         }
         else {
-          console.log(response)
-          console.log(response.data.slice(12))
           Swal.fire("사용 가능한 이메일입니다.")
           setEmailChecking(true)
-          setValidationCode(response.data.slice(12))
+          setValidationCode(response.data)
         }
       })
       .catch((error) => {
