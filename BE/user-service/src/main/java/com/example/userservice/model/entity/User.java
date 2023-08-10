@@ -80,14 +80,14 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)})
     @WhereJoinTable (clause = "connected_confirm = '0'")
     @JsonIgnore
-    private List<User> comeRequestFriendList = new ArrayList<>();
+    private List<User> sendRequestFriendList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)})
     @WhereJoinTable (clause = "connected_confirm = '0'")
     @JsonIgnore
-    private List<User> sendRequestFriendList = new ArrayList<>();
+    private List<User> comeRequestFriendList = new ArrayList<>();
 
     // 프로젝트 목록
     @OneToMany(fetch = FetchType.LAZY)
