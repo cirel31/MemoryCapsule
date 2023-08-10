@@ -3,6 +3,12 @@ import {StyledSearchBar} from "../../styles/searchBarStyle";
 
 const FriendForm = ({form, setForm, setIsValidSearch}) => {
 
+    document.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+        };
+    }, true);
+
     // const handleChange = (e) => {
     //     const { value } = e.target;
     //         const nextForm = {
@@ -12,12 +18,6 @@ const FriendForm = ({form, setForm, setIsValidSearch}) => {
     //     setForm(nextForm);
     //     console.log("handleChange : ", form);
     // };
-
-    document.addEventListener('keydown', function(event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-        };
-    }, true);
 
     const valueChange = (e) => {
         const { value } = e.target;
@@ -33,7 +33,7 @@ const FriendForm = ({form, setForm, setIsValidSearch}) => {
     return (
         <>
             <form className="friend_form_info">
-                <StyledSearchBar
+                <input
                     className="styled_search_bar"
                     id="id"
                     placeholder="여기에 입력하세요"

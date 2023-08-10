@@ -35,7 +35,7 @@ const NoticeListPage = () => {
                 <AnnounceUserViewPage/>
                 <div className="create_post">
                     <button
-                        className="create_post"
+                        className="create_post_button"
                         key={post.id}
                     // onClick={() => openModal(post.id)}
                         onClick={() => openModal(post.title)}

@@ -72,7 +72,6 @@ const AnnounceUserViewPage = ({page, size}) => {
      * http://localhost:8080/notice/2
      * */
     const getNoticesDataDetail = (e) => {
-        const accessToken = sessionStorage("accessToken");
         console.log("[getNoticesDataDetail]");
 
         const index = e;
@@ -81,13 +80,7 @@ const AnnounceUserViewPage = ({page, size}) => {
         // 테스트 및 개발 서버는 7000
 
         console.log(index);
-        axios.get(`${baseURL}${API}/${index}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                },
-            }
-        )
+        axios.get(`${baseURL}${API}/${index}`)
             .then((response) => {
                 console.log('게시글 자세하게 (Detail) successful : ', response.data);
                 setSelectedPost(response.data);

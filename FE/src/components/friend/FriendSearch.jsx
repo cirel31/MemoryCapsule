@@ -92,7 +92,7 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
     };
 
     return (
-        <>
+        <div className="search_main">
             <div className="search_server_info">
                 <div className="friend_form">
                     <FriendForm
@@ -140,7 +140,7 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
                     }
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
