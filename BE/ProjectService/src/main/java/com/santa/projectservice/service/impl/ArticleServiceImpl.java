@@ -69,7 +69,7 @@ public class ArticleServiceImpl implements ArticleService {
                 articleImgRepository.save(ArticleImg.builder()
                         .article(writeArticle)
                         .order(order++)
-                        .imgurl(url)
+                        .imgUrl(url)
                         .build()
                 );
             }

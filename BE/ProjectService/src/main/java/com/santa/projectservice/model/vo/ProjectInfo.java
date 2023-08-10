@@ -15,7 +15,7 @@ public class ProjectInfo {
     private Date ended;
     private Date created;
     private String imgUrl;
-    private String shareurl;
+    private String shareUrl;
     private  String giftUrl;
     private int type;
     private Boolean state;
@@ -25,7 +25,7 @@ public class ProjectInfo {
     private long artielcNum;
 
     @Builder
-    public ProjectInfo(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareurl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum) {
+    public ProjectInfo(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -33,7 +33,7 @@ public class ProjectInfo {
         this.ended = ended;
         this.created = created;
         this.imgUrl = imgUrl;
-        this.shareurl = shareurl;
+        this.shareUrl = shareUrl;
         this.type = type;
         this.state = state;
         this.limit = limit;
@@ -49,7 +49,7 @@ public class ProjectInfo {
         this.ended = projectDto.getEnded();
         this.created = projectDto.getCreated();
         this.imgUrl = projectDto.getImgUrl();
-        this.shareurl = projectDto.getShareurl();
+        this.shareUrl = projectDto.getShareUrl();
         this.type = projectDto.getType();
         this.state = projectDto.getState();
         this.limit = projectDto.getLimit();

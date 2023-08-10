@@ -39,7 +39,7 @@ public class UserDto {
 
     public UserVo toVo(){
         return UserVo.builder()
-                .imgurl(this.imgurl)
+                .imgUrl(this.imgurl)
                 .name(this.name)
                 .nickname(this.nickname)
                 .build();

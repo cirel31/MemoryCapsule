@@ -68,7 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
         PropertyMap<Register, RegisterDto> replyMapping = new PropertyMap<Register, RegisterDto>() {
             @Override
             protected void configure() {
-                map().setPjtId(source.getProject().getId());
+                map().setProjectId(source.getProject().getId());
                 map().setUserId(source.getUser().getId());
             }
         };
