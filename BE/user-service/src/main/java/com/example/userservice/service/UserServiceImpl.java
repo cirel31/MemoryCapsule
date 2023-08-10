@@ -1,6 +1,5 @@
 package com.example.userservice.service;
 
-import com.example.userservice.model.Enum.UserRole;
 import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.Access;
 import com.example.userservice.model.entity.User;
@@ -24,8 +23,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -92,8 +89,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean emailCheck(String userEmail) {
-        return userRepository.findByEmail(userEmail).isPresent();
+    public int emailCheck(String userEmail) {
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
+        if (userOptional.isPresent()) {
+            if (userOptional.get().isDeleted()) {
+                return 0;
+            }
+            return 1;
+        }
+        return -1;
     }
 
     @Transactional

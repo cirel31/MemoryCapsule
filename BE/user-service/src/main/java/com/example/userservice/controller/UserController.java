@@ -4,6 +4,7 @@ import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,9 +62,23 @@ public class UserController {
     @PostMapping("/emailCheck")
     public ResponseEntity emailCheck(@RequestParam(value = "user_email") String user_email) {
         log.info("email-check");
-        if (userService.emailCheck(user_email)) {
+        int status = userService.emailCheck(user_email);
+        if (status == -1) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("이미 존재하는 이메일입니다.");
         }
+        if (status == 0) {
+            return ResponseEntity.status(209).body("탈퇴한 회원입니다. 복구하시겠습니까?");
+        }
+        return getResponseEntity(user_email);
+    }
+
+    @PostMapping("/deletedEmailCheck")
+    public ResponseEntity deletedEmailCheck(@RequestParam(value = "user_email") String user_email) {
+        return getResponseEntity(user_email);
+    }
+
+    @NotNull
+    private ResponseEntity getResponseEntity(String user_email) {
         String code = userService.generateRandomCode();
         ResponseEntity<String> response = new RestTemplate().postForEntity(
                 "http://notification-service:8081/email/register_verify/" + user_email + "/" + code,
