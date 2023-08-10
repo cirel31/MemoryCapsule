@@ -74,7 +74,7 @@ public class Article {
                 .content(this.content)
                 .created(this.created)
                 .stamp(this.stamp)
-                .images(this.articleImgList.stream().map(ArticleImg::getImgurl).collect(Collectors.toList()))
+                .images(this.articleImgList.stream().map(ArticleImg::getImgUrl).collect(Collectors.toList()))
                 .build();
     }
     public ArticleVo toVo(){
@@ -84,7 +84,7 @@ public class Article {
                 .content(this.content)
                 .created(this.created)
                 .stamp(this.stamp)
-                .images(this.articleImgList.stream().map(ArticleImg::getImgurl).collect(Collectors.toList()))
+                .images(this.articleImgList.stream().map(ArticleImg::getImgUrl).collect(Collectors.toList()))
                 .build();
     }
 }

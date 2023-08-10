@@ -13,7 +13,7 @@ public class ProjectGiftVo {
     private Date started;
     private Date ended;
     private String imgUrl;
-    private String shareurl;
+    private String shareUrl;
     private int type;
     private long artielcNum;
     private List<ArticleVo> articleVos;
@@ -23,13 +23,13 @@ public class ProjectGiftVo {
 
     @Builder
 
-    public ProjectGiftVo(String title, String content, Date started, Date ended, String imgUrl, String shareurl, int type, long artielcNum, List<ArticleVo> articleVos, List<UserVo> userVos) {
+    public ProjectGiftVo(String title, String content, Date started, Date ended, String imgUrl, String shareUrl, int type, long artielcNum, List<ArticleVo> articleVos, List<UserVo> userVos) {
         this.title = title;
         this.content = content;
         this.started = started;
         this.ended = ended;
         this.imgUrl = imgUrl;
-        this.shareurl = shareurl;
+        this.shareUrl = shareUrl;
         this.type = type;
         this.artielcNum = artielcNum;
         this.articleVos = articleVos;
