@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {useNavigate} from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const loginUserThunk = createAsyncThunk(
     'user/loginUser',
@@ -24,6 +25,7 @@ export const loginUserThunk = createAsyncThunk(
         // await navigate('/profile');
       } catch (error) {
         console.error("서버와 통신 실패로 로그인 에러 발생", error)
+        
         console.log(loginURL)
         return rejectWithValue(error)
       }
@@ -42,7 +44,9 @@ export const fetchUserInfoThunk = createAsyncThunk(
         console.log(response.data)
         return response.data;
       } catch (error) {
-        console.error('유저 정보를 가져오지 못함:', error)
+        if (error.response?.status === 409) {
+          Swal.fire(error.response.data)
+        }
       }
     }
 )
@@ -124,7 +128,7 @@ const userSlice = createSlice({
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
           state.isLoggedIn = false
-          // window.location.href ='/login'
+          window.location.href ='/login'
         })
   }
 })
