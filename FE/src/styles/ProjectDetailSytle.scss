@@ -1,0 +1,243 @@
+@import "theme.css";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
+
+.big_body {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  background-color: var(--backGround_1);
+}
+
+.parting_line_horizontal {
+  height: 90%;
+  width: 0.5px;
+  background-color: var(--brand3_main);
+  stroke: var(--brand3_main);
+  stroke-width: 2px;
+  margin-bottom: 20px;
+}
+
+.detail_project_layout {
+  width: 840px;
+  display: grid;
+
+  grid-template-columns: 1fr;
+  justify-items: center;
+  background-color: var(--backGround_0);
+  filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.25));
+
+  .detail_project_top {
+    width: 100%;
+    height: 100px;
+    background-color: var(--brand1_2);
+  }
+
+  .detail_project_top_content{
+    display: flex;
+    width: 100%;
+    height: 100px;
+    margin-top: -45px;
+
+    .detail_project_title{
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      width: 500px;
+      height: 90px;
+      font-weight: bold;
+      font-size: 0.75em;
+      background-color: var(--backGround_0);
+      border: none;
+      border-radius: 45px;
+    }
+  }
+}
+
+.detail_project_back{
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+  width: 100%;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+
+  .detail_project_back_button{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    margin-right: 10px;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-color: var(--backGround_0);
+
+    .detail_project_back_button_img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+.detail_project_project_delete {
+  display: grid;
+  position: relative;
+  top: 30%;
+  right:150%;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: var(--backGround_0);
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25));
+
+  &:hover {
+    background-color: var(--backGround_2);
+  }
+
+}
+
+.detail_project_project_delete_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--transpar);
+  border: none;
+  width: 30px;
+  height: 30px;
+  .detail_project_project_delete_btn_img {
+    margin-left: 2px;
+    width: 25px;
+    height: 25px;
+  }
+}
+
+
+.detail_project_order{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 95% 5%;
+  justify-items: center;
+}
+
+.detail_project_info_logs {
+  font-family: "IBM Plex Sans KR", sans-serif;
+  font-weight: 700;
+  width:80%;
+  background-color: var(--backGround_0);
+  border-radius: 1rem;
+  filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.15));
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 40% 20% 40%;
+
+  .detail_project_content{
+  }
+
+  .detail_project_shorts_info_percentage{
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    border: solid var(--backGround_2);
+    border-width: 0 0.5px;
+  }
+}
+
+.detail_project_users_layout {
+  font-family: "IBM Plex Sans KR", sans-serif;
+  font-weight: 700;
+  width:80%;
+  height: 60px;
+  background-color: var(--backGround_0);
+  border-radius: 2rem;
+  filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.15));
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: space-around;
+  display: grid;
+
+  grid-template-columns: 50% 50%;
+
+  margin: 20px;
+
+  .detail_project_content{
+  }
+
+  .detail_project_content_usercnt{
+    width: 90%;
+    text-align: right;
+    color: var(--brand3_main);
+  }
+
+  .detail_project_shorts_info_percentage{
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    border: solid var(--backGround_2);
+    border-width: 0 0.5px;
+  }
+}
+
+.detail_project_history{
+  width: 90%;
+  height: 140px;
+  overflow-y: scroll;
+
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  table-layout:fixed;
+
+  &::-webkit-scrollbar {
+    width: 9px;  /* 스크롤바의 너비 */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: auto; /* 스크롤바의 길이 */
+    width: 7px;
+    background: var(--brand3_3); /* 스크롤바의 색상 */
+
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+    border-radius: 10px;
+  }
+}
+
+.detail_project_write{
+  position: sticky;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: var(--brand3_main);
+  left: 100%;
+  top: 100%;
+  margin: 20px;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+
+  &:hover{
+    background-color: var(--brand3_4);
+  }
+
+  .detail_project_write_btn{
+    cursor: pointer;
+    color: var(--white);
+    background-color: var(--transpar);
+    border: none;
+    .detail_project_write_btn_img{
+      width: 35px;
+    }
+  }
+}
+

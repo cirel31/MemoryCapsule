@@ -95,6 +95,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
         if (checkUserRole()) {
             console.log("게시글 삭제 (제작중)", selectedPost.noticeIdx);
+            console.log("게시글 삭제 (제작중)", selectedPost.noticeIdx);
             axios.delete(`${baseURL}${API}/${selectedPost.noticeIdx}`
                 ,{
                     headers: {

@@ -103,6 +103,51 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
     }
 
     /**
+     * 2. 친구 추가 요청 거절
+     *
+     * Method : delete
+     * URL : /friend/request
+     * param : * 토큰 필요 *
+     - 추가하는 사람(host_id) : Number
+     - 추가받는 사람(guest_id) : Number
+     * */
+    const addRequestRejectFriend = () => {
+        console.log("[addRequestFriend]");
+        const accessToken = sessionStorage.getItem("accessToken")
+        const host_id = parseInt(sessionStorage.getItem("userIdx"), 10);
+
+        let guest_id = null;
+        if (from === "FriendList"){
+            guest_id = parseInt(friend.userId, 10);
+        } else {
+            guest_id = parseInt(friend.idx, 10);
+        }
+
+        console.log(host_id, guest_id)
+        //
+        axios.delete(`${baseURL}${API}/request`,
+            {
+                params: {
+                    guest_id:guest_id,
+                    host_id:host_id
+                },
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            .then((response) => {
+                console.log('서버로부터 친구 추가 요청 거절 성공');
+                console.log("friend.status : ", friend.status);
+                setCurStatus(0);
+                setFriendModalIsOpen(1);
+            })
+            .catch((error) => {
+                console.error("서버로부터 친구 추가 요청 거절 실패", error);
+                console.error(error.code);
+            });
+    }
+
+    /**
      * 3. 친구 추가
      *
      * Method : put
@@ -222,7 +267,7 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
                     </>
                 case 3 :    //  친구 추가
                     return <>
-                        <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addRequestDiscardFriend}> 팔로우 거절 </button>
+                        <button className="add_discard_button discard_detail_friend" value={friend.userId} onClick={addRequestRejectFriend}> 팔로우 거절 </button>
                         <button className="add_discard_button follower_detail_friend" value={friend.userId} onClick={addFriend}> 맞 팔로우 하기 </button>
                     </>
                 default:    // 친구추가요청

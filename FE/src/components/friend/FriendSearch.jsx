@@ -58,6 +58,7 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
                 console.log(API);
                 console.log(response.data);
                 setFriends([response.data]);
+                setCurStatus(response.data.status);
             })
             .catch((error) => {
                 console.error("서버로부터 친구목록 가져오기 실패", error);

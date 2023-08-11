@@ -10,6 +10,10 @@ import stamp_soso from "../../assets/images/stamp/stamp_soso.svg";
 import stamp_wow from "../../assets/images/stamp/stamp_wow.svg";
 import kokona from "../../assets/images/kokona.png"
 import {useSelector} from "react-redux";
+import "../../styles/ProjectDetailSytle.scss";
+import go_back from "../../assets/images/frield/go_back.svg";
+import write from "../../assets/images/projectdetail/write.svg";
+import discard from "../../assets/images/projectdetail/discard.svg";
 
 const baseURL = 'https://i9a608.p.ssafy.io:8000'
 const subURL = '/project'
@@ -87,31 +91,64 @@ const ProjectDetailPage = () => {
       });
   }, []);
 
+  // 뒤로가기
+  const handleBack = () => {
+    window.history.back()
+  }
 
   return (
-    <>
-      <div>
-        <div>
-          <h1>프로젝트 제목 : {project.title}</h1>
-        </div>
-        <div>
-          <div>
-            <p>현재까지 작성된 기록 : {myArticles.length} 개</p>
-            <p>진행도 : {myArticles.length} / {project.length} %</p>
-            {project.started && project.ended && (
-              <p>
-                캡슐 제작 기간 :
-                {project.started.slice(2,4)}년 {project.started.slice(5, 7)}월 {project.started.slice(8, 10)}일
-                ~ {project.ended.slice(2,4)}년 {project.ended.slice(5, 7)}월 {project.ended.slice(8, 10)}일
-              </p>
-            )}
+    <div className="big_body">
+      <div className="detail_project_layout">
+        <div className="detail_project_top"></div>
+        <div className="detail_project_top_content">
+          <div className="detail_project_title">
+            <h1>프로젝트 제목 : {project.title}</h1>
           </div>
-          <button>삭제</button>
+          <div className="detail_project_back">
+            <div onClick={handleBack} className="detail_project_back_button">
+              <img src={go_back} alt="뒤로가기이미지" className="detail_project_back_button_img"/>
+            </div>
+          </div>
         </div>
-        <br/>
+        <div className="detail_project_order">
+          <div className="detail_project_info_logs">
+
+            <div className="detail_project_shorts_info_logs">
+              <p>현재까지 작성된 기록 : {myArticles.length} 개</p>
+              <p>오늘 작성된 기록 : {myArticles.length} 개</p>
+            </div>
+            <div className="detail_project_shorts_info_percentage">
+              <p>진행도 : {myArticles.length} / {project.length} %</p>
+            </div>
+            <div>
+              <p>캡슐 제작 기간</p>
+              {project.started && project.ended && (
+                  <p>
+                    {project.started.slice(2,4)}년 {project.started.slice(5, 7)}월 {project.started.slice(8, 10)}일
+                    ~ {project.ended.slice(2,4)}년 {project.ended.slice(5, 7)}월 {project.ended.slice(8, 10)}일
+                  </p>
+              )}
+            </div>
+          </div>
+          <div className="detail_project_project_delete">
+            <button className="detail_project_project_delete_btn">
+              <img src={discard} alt="삭제" className="detail_project_project_delete_btn_img"/>
+            </button>
+          </div>
+        </div>
+        <div className="detail_project_order">
+          <div className="detail_project_users_layout">
+            <div className="detail_project_content_imgs">
+              프로젝트에 들어와있는 유저 목록 img
+            </div>
+            <div className="detail_project_content_usercnt">
+              {0}명의 유저와 함께하고 있어요!
+            </div>
+          </div>
+        </div>
         <hr/>
         <br/>
-        <div>
+        <div className="detail_project_history">
           <h2>History</h2>
           {myArticles.map((article, idx) => (
             <div key={idx}>
@@ -134,19 +171,16 @@ const ProjectDetailPage = () => {
               </div>
             </div>
           ))}
-
         </div>
-        <br/><br/>
-        <Link to={`/project/${projectId}/article`}>
-          <button>
-            오늘의 게시글 생성
-          </button>
-        </Link>
-        <br/><br/>
-        <hr/>
-        <br/>
+        <div className="detail_project_write">
+          <Link to={`/project/${projectId}/article`}>
+            <button className="detail_project_write_btn">
+              <img src={write} alt="write" className="detail_project_write_btn_img"/>
+            </button>
+          </Link>
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 
