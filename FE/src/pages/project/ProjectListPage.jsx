@@ -152,7 +152,7 @@ const ProjectListPage = () => {
           {selectedPost && (
             <div>
               <div>
-                <img src="https://ssafysanta.s3.ap-northeast-2.amazonaws.com/34f4345d4f324844896e975f27abfb98.svg" alt=""/>
+                <img src={selectedPost.imgUrl} alt="ㅠㅠㅠㅠㅠ"/>
                 <div className="black"></div>
               </div>
               <img src={tag_label} className="tag_lab"/>
