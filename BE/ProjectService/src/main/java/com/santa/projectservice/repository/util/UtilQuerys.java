@@ -39,6 +39,9 @@ public class UtilQuerys {
         return new UserInfo(articleRepository.countAllByUserId(userId), registerRepository.countAllByUser_Id(userId));
     }
 
+    public Long getProjectArticleCount(Long projectId){
+        return queryFactory.select(qArticle.count()).from(qArticle).where(qArticle.project.id.eq(projectId)).fetchOne();
+    }
     public List<UserVo> projectUserVos(Long projectId){
         return queryFactory
                 .select(qRegister.user.name, qRegister.user.nickname, qRegister.user.imgurl)

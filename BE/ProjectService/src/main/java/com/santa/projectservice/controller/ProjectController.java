@@ -8,8 +8,9 @@ import com.santa.projectservice.model.dto.ProjectState;
 import com.santa.projectservice.exception.User.UserNotFoundException;
 import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
-import com.santa.projectservice.exception.project.ProjectNotFullfillException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
+import com.santa.projectservice.model.vo.UserVo;
+import com.santa.projectservice.repository.util.UtilQuerys;
 import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.ProjectService;
 import com.santa.projectservice.service.UserService;
@@ -45,12 +46,14 @@ public class ProjectController {
     private final ProjectService projectService;
     private final ArticleService articleService;
     private final InviteServiceImpl inviteService;
+    private final UtilQuerys utilQuerys;
 
-    public ProjectController(UserService userService, ProjectService projectService, ArticleService articleService, InviteServiceImpl inviteService) {
+    public ProjectController(UserService userService, ProjectService projectService, ArticleService articleService, InviteServiceImpl inviteService, UtilQuerys utilQuerys) {
         this.userService = userService;
         this.projectService = projectService;
         this.articleService = articleService;
         this.inviteService = inviteService;
+        this.utilQuerys = utilQuerys;
     }
 
     private <T> void articleValidate(T value, String message) throws ArticleException {
@@ -112,14 +115,17 @@ public class ProjectController {
 
     @GetMapping("/{projectid}")
     @Operation(summary = "특정 프로젝트를 조회합니다", description = "내가 참여하고 있는 프로젝트라면 정보를 가져옵니다. ")
-    public ResponseEntity<ProjectDto> getProjectById(@PathVariable Integer projectid,
+    public ResponseEntity<ProjectInfo> getProjectById(@PathVariable Integer projectid,
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
             @RequestHeader("userId") Long userId) throws UserNotFoundException, ProjectNotFoundException
     {
         try {
             Long projectId = Long.valueOf(projectid.toString());
             ProjectDto projectDto = projectService.findProjectByProjectIdAndUserId(userId, projectId);
-            return ResponseEntity.status(HttpStatus.OK).body(projectDto);
+            List<UserVo> userVos = utilQuerys.projectUserVos(projectId);
+            Long articleNum = utilQuerys.getProjectArticleCount(projectId);
+            ProjectInfo projectInfo = projectDto.toInfo(userVos, articleNum);
+            return ResponseEntity.status(HttpStatus.OK).body(projectInfo);
         } catch (NullPointerException e) {
             throw new UserNotFoundException("인증정보를 가져올 수 없습니다 내가 참여하고 있는게 아닌듯요");
         }
