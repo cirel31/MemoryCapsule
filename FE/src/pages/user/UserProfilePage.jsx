@@ -1,4 +1,3 @@
-// 기본 이미지 변경 시 뒤에 경로 변경하면 됩니다
 import defaultImg from "../../assets/images/stamp/stamp_best.svg"
 import {useEffect, useState} from "react";
 import {fetchUserInfoThunk} from "../../store/userSlice";
@@ -12,7 +11,6 @@ const UserProfilePage = () => {
 
   useEffect(() => {
     const loginCheck = !!sessionStorage.getItem("accessToken")
-    console.log(isLoggedIn)
     setIsLoggedIn(loginCheck)
     if (isLoggedIn) {
       const idx = sessionStorage.getItem("userIdx")
@@ -30,7 +28,7 @@ const UserProfilePage = () => {
     <>
 
       <div className="login_profile_body">
-        <img src={profile_bg} className="login_profile_page"/>
+        <img src={profile_bg} alt="이미지 안뜨네요" className="login_profile_page"/>
         <div className="login_profile_box">
           <div className="login_profile_form">
             <img src={user_img ? user_img:defaultImg} alt="프로필 이미지를 불러올 수 없습니다."/>

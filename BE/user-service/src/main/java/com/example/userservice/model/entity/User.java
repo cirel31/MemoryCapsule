@@ -1,6 +1,7 @@
 package com.example.userservice.model.entity;
 
 import com.example.userservice.model.Enum.UserRole;
+import com.example.userservice.model.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.WhereJoinTable;
@@ -60,33 +61,34 @@ public class User {
 
     // 내가 친구신청을 한 목록
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)},
-    inverseJoinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)})
-    @WhereJoinTable (clause = "connected_confirm = '0'")
+    @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)},
+    inverseJoinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)})
+    @WhereJoinTable(clause = "connected_confirm = '1'")
     @JsonIgnore
-    private List<User> reqFriendList = new ArrayList<>();
+    private List<User> realReceivedFriendList = new ArrayList<>();
 
-    // 친구목록
+    // 요청을 해서 성립된 친구목록
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)})
     @WhereJoinTable (clause = "connected_confirm = '1'")
     @JsonIgnore
-    private List<User> friendList = new ArrayList<>();
+    private List<User> realRequestedFriendList = new ArrayList<>();
+
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)})
     @WhereJoinTable (clause = "connected_confirm = '0'")
     @JsonIgnore
-    private List<User> comeRequestFriendList = new ArrayList<>();
+    private List<User> sendRequestFriendList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)})
     @WhereJoinTable (clause = "connected_confirm = '0'")
     @JsonIgnore
-    private List<User> sendRequestFriendList = new ArrayList<>();
+    private List<User> comeRequestFriendList = new ArrayList<>();
 
     // 프로젝트 목록
     @OneToMany(fetch = FetchType.LAZY)
@@ -119,5 +121,32 @@ public class User {
 
     public void modifyPassword(String code) {
         this.passWord = code;
+    }
+
+    public User newSignUpDtoToUser(UserDto.SignUp signUpDto, String imgUrl, String password) {
+        return User.builder()
+                .email(signUpDto.getEmail())
+                .name(signUpDto.getName())
+                .nickName(signUpDto.getNickName())
+                .phone(signUpDto.getPhone())
+                .point(0L)
+                .role(UserRole.USER)
+                .createdAt(ZonedDateTime.now())
+                .updatedAt(ZonedDateTime.now())
+                .imgUrl(imgUrl)
+                .passWord(password)
+                .build();
+    }
+
+    public void deletedSignUpDtoToUser(UserDto.SignUp signUpDto, String imgUrl, String password) {
+        this.name = signUpDto.getName();
+        this.nickName = signUpDto.getNickName();
+        this.phone = signUpDto.getPhone();
+        this.point = 0L;
+        this.createdAt = ZonedDateTime.now();
+        this.updatedAt = ZonedDateTime.now();
+        this.imgUrl = imgUrl;
+        this.passWord = password;
+        this.deleted = false;
     }
 }

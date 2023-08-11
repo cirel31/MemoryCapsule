@@ -6,7 +6,6 @@ import com.example.userservice.model.entity.User;
 import java.util.List;
 
 public interface FriendService {
-    List<User> findByAllFriends(Long userId) throws Exception;
     // 친구삭제
     boolean deleteFirend(Long hostId, Long guestId);
     // 친구 요청

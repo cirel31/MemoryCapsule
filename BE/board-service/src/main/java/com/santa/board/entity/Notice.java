@@ -37,8 +37,8 @@ public class Notice {
         this.noticeContent = noticeContent;
     }
 
-    public Notice(Long userIdx, String title, String content, String fileUrl) {
-        Notice.builder()
+    public Notice newNotice(Long userIdx, String title, String content, String fileUrl) {
+        return Notice.builder()
                 .noticeCreatorIdx(userIdx)
                 .noticeTitle(title)
                 .noticeContent(content)

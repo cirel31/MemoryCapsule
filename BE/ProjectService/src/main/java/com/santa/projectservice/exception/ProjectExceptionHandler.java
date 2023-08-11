@@ -52,6 +52,7 @@ public class ProjectExceptionHandler {
     @ExceptionHandler(ProjectException.class)
     public ResponseEntity<String> projectException(ProjectException e){
         log.error(e.getMessage());
+        log.error(e.getCause().toString());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 

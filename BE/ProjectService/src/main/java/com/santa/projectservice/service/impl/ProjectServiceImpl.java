@@ -17,7 +17,7 @@ import com.santa.projectservice.model.vo.ArticleVo;
 import com.santa.projectservice.model.vo.ProjectGiftVo;
 import com.santa.projectservice.model.vo.ProjectInfo;
 import com.santa.projectservice.model.vo.UserVo;
-import com.santa.projectservice.service.util.UtilQuerys;
+import com.santa.projectservice.repository.util.UtilQuerys;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.PropertyValueException;
 import org.modelmapper.ModelMapper;
@@ -68,7 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
         PropertyMap<Register, RegisterDto> replyMapping = new PropertyMap<Register, RegisterDto>() {
             @Override
             protected void configure() {
-                map().setPjtId(source.getProject().getId());
+                map().setProjectId(source.getProject().getId());
                 map().setUserId(source.getUser().getId());
             }
         };
@@ -106,15 +106,17 @@ public class ProjectServiceImpl implements ProjectService {
             final Project regiProject = project;
             // 사용자에 대해서 프로젝트 초대를 만듭니다
             Optional<User> user = userRepository.findById(Owner);
-            userList.forEach(id -> {
-                inviteService.createInvite(Invite.builder()
-                        .userId(id)
-                        .projectId(regiProject.getId())
-                        .inviter(user.get().getNickname())
-                        .projectTitle(regiProject.getTitle())
-                        .build()
-                );
-            });
+            if(userList != null) {
+                userList.forEach(id -> {
+                    inviteService.createInvite(Invite.builder()
+                            .userId(id)
+                            .projectId(regiProject.getId())
+                            .inviter(user.get().getNickname())
+                            .projectTitle(regiProject.getTitle())
+                            .build()
+                    );
+                });
+            }
         } catch (DataAccessException e){
             throw new RegisterMakeException("프로젝트 유저들을 초기화하는데 문제가 발생했습니다", e);
         }
@@ -222,6 +224,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public List<ProjectInfo> projectDtosToInfos(List<ProjectDto> projectDtos) {
         List<Long> numList = new ArrayList<>();
         List<ProjectInfo> projectInfos = new ArrayList<>();
@@ -230,7 +233,8 @@ public class ProjectServiceImpl implements ProjectService {
             numList.add(articleRepository.countByProjectId(pjt.getId()));
         });
         for (int i = 0; i < numList.size(); i++) {
-            projectInfos.add(projectDtos.get(i).toInfo(numList.get(i)));
+            List<UserVo> userVos = utilQuerys.projectUserVos(projectDtos.get(i).getId());
+            projectInfos.add(projectDtos.get(i).toInfo(userVos, numList.get(i)));
         }
         return projectInfos;
     }
