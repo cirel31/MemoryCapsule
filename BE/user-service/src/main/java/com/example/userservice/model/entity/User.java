@@ -61,19 +61,20 @@ public class User {
 
     // 내가 친구신청을 한 목록
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)},
-    inverseJoinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)})
-    @WhereJoinTable (clause = "connected_confirm = '0'")
+    @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)},
+    inverseJoinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)})
+    @WhereJoinTable(clause = "connected_confirm = '1'")
     @JsonIgnore
-    private List<User> reqFriendList = new ArrayList<>();
+    private List<User> realReceivedFriendList = new ArrayList<>();
 
-    // 친구목록
+    // 요청을 해서 성립된 친구목록
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "connected_ee", referencedColumnName = "user_idx", nullable = false)})
     @WhereJoinTable (clause = "connected_confirm = '1'")
     @JsonIgnore
-    private List<User> friendList = new ArrayList<>();
+    private List<User> realRequestedFriendList = new ArrayList<>();
+
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "connected", joinColumns = {@JoinColumn(name = "connected_er", referencedColumnName = "user_idx", nullable = false)},

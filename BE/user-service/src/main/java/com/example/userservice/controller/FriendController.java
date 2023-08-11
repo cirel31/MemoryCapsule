@@ -1,5 +1,6 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.model.ErrorResponse;
 import com.example.userservice.model.dto.FriendDto;
 import com.example.userservice.service.FriendService;
 import lombok.RequiredArgsConstructor;
@@ -84,8 +85,11 @@ public class FriendController {
             if (friendService.userConfirmFriend(host_id, guest_id))
                 return ResponseEntity.status(HttpStatus.OK).build();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("친구 요청을 이미 수락했거나 잘못된 요청입니다.");
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (IllegalStateException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("FRE_01", e.getMessage()));
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("FRE_02", e.getMessage()));
         }
     }
 

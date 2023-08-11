@@ -112,7 +112,6 @@ public class UserServiceImpl implements UserService {
         // - 이메일 중복체크
         Optional<User> userOptional = userRepository.findByEmail(signUpDto.getEmail());
         User saved;
-        Long initPoint = Long.valueOf(env.getProperty("point.init"));
         if (userOptional.isPresent()) {
             saved = userOptional.get();
             if (!saved.isDeleted()) {
@@ -123,6 +122,7 @@ public class UserServiceImpl implements UserService {
             log.info("탈퇴한 회원 재가입 입니다.");
         } else {
             User newed = new User().newSignUpDtoToUser(signUpDto, getImgUrl(multipartFile), passwordEncoder.encode(signUpDto.getPassword()));
+            Long initPoint = Long.valueOf(env.getProperty("point.init"));
             newed.setPoint(initPoint);
             saved = userRepository.save(newed);
             log.info("새로운 유저 회원가입 입니다.");
@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .point(user.getPoint())
                 .nickname(user.getNickName())
-                .totalFriend(user.getFriendList().size())
+                .totalFriend(user.getRealRequestedFriendList().size())
                 .imgUrl(user.getImgUrl())
                 .build();
     }

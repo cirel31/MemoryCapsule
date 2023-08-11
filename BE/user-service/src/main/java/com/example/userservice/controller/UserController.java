@@ -75,6 +75,7 @@ public class UserController {
         // - 1. 이메일 형식인지 check, 409
         // - 2. 이메일 존재하는데 탈퇴되지 않은회원 경우, NOT_ACCEPTABLE
         // -    이메일 존재하는데 탈퇴된 회원, 209
+
         // -    이메일 존재하지않는 경우 201
         if(!regexUtil.isEmail(user_email)) return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(HttpStatus.CONFLICT.name(), "Email 형식이 아닙니다."));
 

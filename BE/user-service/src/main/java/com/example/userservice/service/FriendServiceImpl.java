@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -113,14 +114,17 @@ public class FriendServiceImpl implements FriendService {
         //TODO: 친구 수락 서비스
         log.info(String.format("친구 요청 수락 서비스, hostId: %d, guestId: %d", hostId, guestId));
         Connected connected = connectedRepository.findByConnectIdRequesterIdAndConnectIdRequesteeId(guestId, hostId).orElseThrow(() -> new Exception("수락할 친구 요청이 없습니다"));
+
+        if(connected.getConfirm()) throw new IllegalStateException("이미 수락한 요청입니다.");
         connected.setConfirm(true);
-        connectedRepository.save(Connected.builder()
-                .connectId(ConnectId.builder()
-                        .requesterId(guestId)
-                        .requesteeId(hostId)
-                        .build())
-                        .confirm(true)
-                .build());
+        connectedRepository.save(connected);
+//        connectedRepository.save(Connected.builder()
+//                .connectId(ConnectId.builder()
+//                        .requesterId(guestId)
+//                        .requesteeId(hostId)
+//                        .build())
+//                        .confirm(true)
+//                .build());
         return true;
     }
 
@@ -137,28 +141,37 @@ public class FriendServiceImpl implements FriendService {
     @Transactional
     public List<FriendDto.basicFriendInfo> getFriendsInfo(Long userId) throws Exception {
         //TODO: 친구  정보 조회
+        // 친구인 관계인 경우
+        // 요청을 보낸 경우
+        // 요청을 받은 경우
         log.info(String.format("%d의 친구 정보 조회 기능", userId));
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(String.format("%ld 의 유저는 존재하지 않습니다.", userId)));
-        List<User> friendList = user.getFriendList();
 
-
-        List<FriendDto.basicFriendInfo> friendInfoList = friendList.stream()
-                .filter(e -> !e.isDeleted())
+        // 친구관계 조회 및 추가
+        ArrayList<FriendDto.basicFriendInfo> userArrayList = new ArrayList<>();
+        userArrayList.addAll(user.getRealReceivedFriendList()
+                .stream()
+                        .filter(e -> !e.isDeleted())
                 .map(e -> makeFriendInfo(e, FriendType.FRIEND))
-                .collect(Collectors.toList());
-
+                .collect(Collectors.toList())
+        );
+        userArrayList.addAll(user.getRealRequestedFriendList().stream()
+                        .filter(e -> !e.isDeleted())
+                .map(e -> makeFriendInfo(e, FriendType.FRIEND))
+                .collect(Collectors.toList())
+        );
         //요청이 옴
-        friendInfoList.addAll(user.getComeRequestFriendList().stream()
+        userArrayList.addAll(user.getComeRequestFriendList().stream()
                 .filter(e -> !e.isDeleted())
                 .map(e -> makeFriendInfo(e, FriendType.COME_REQUEST))
                 .collect(Collectors.toList()));
 
         //내가 요청 보냄
-        friendInfoList.addAll(user.getSendRequestFriendList().stream()
+        userArrayList.addAll(user.getSendRequestFriendList().stream()
                 .filter(e -> !e.isDeleted())
                 .map(e -> makeFriendInfo(e, FriendType.SEND_REQUEST))
                 .collect(Collectors.toList()));
-        return friendInfoList;
+        return userArrayList;
     }
 
     private FriendDto.basicFriendInfo makeFriendInfo(User e, FriendType type) {
