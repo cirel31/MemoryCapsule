@@ -17,7 +17,7 @@ import com.santa.projectservice.model.vo.ArticleVo;
 import com.santa.projectservice.model.vo.ProjectGiftVo;
 import com.santa.projectservice.model.vo.ProjectInfo;
 import com.santa.projectservice.model.vo.UserVo;
-import com.santa.projectservice.service.util.UtilQuerys;
+import com.santa.projectservice.repository.util.UtilQuerys;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.PropertyValueException;
 import org.modelmapper.ModelMapper;
@@ -224,6 +224,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional
     public List<ProjectInfo> projectDtosToInfos(List<ProjectDto> projectDtos) {
         List<Long> numList = new ArrayList<>();
         List<ProjectInfo> projectInfos = new ArrayList<>();
@@ -232,7 +233,8 @@ public class ProjectServiceImpl implements ProjectService {
             numList.add(articleRepository.countByProjectId(pjt.getId()));
         });
         for (int i = 0; i < numList.size(); i++) {
-            projectInfos.add(projectDtos.get(i).toInfo(numList.get(i)));
+            List<UserVo> userVos = utilQuerys.projectUserVos(projectDtos.get(i).getId());
+            projectInfos.add(projectDtos.get(i).toInfo(userVos, numList.get(i)));
         }
         return projectInfos;
     }
