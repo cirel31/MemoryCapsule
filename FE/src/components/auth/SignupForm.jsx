@@ -80,7 +80,6 @@ const SignupForm = ({ form, setForm,  }) => {
                 console.log('확인 버튼 클릭!');
                 axios.post(`${baseURL}${deletedCheck}${emailData}`)
                   .then((response) => {
-                    console.log(response.data)
                     Swal.fire("사용 가능한 이메일입니다.")
                     setEmailChecking(true)
                     setValidationCode(response.data)

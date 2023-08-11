@@ -7,9 +7,10 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:33060/santa?autoReconnect=true&useSSL=false
-    username: root
-    password: root
+    url: jdbc:mariadb://i9a608.p.ssafy.io:3306/santa?autoReconnect=true&useSSL=false
+    username: dev
+    password: asdf1234
+
   jpa:
     show-sql: true
     properties:
@@ -82,3 +83,5 @@ cloud:
       static: ap-northeast-2
 S3Url: https://ssafysanta.s3.ap-northeast-2.amazonaws.com/
 
+point:
+  init: 500

@@ -9,7 +9,7 @@ public interface UserService {
     // User 로그아웃
     void logout(final Long userId);
     //이메일 중복 체크
-    boolean emailCheck(String userEmail);
+    int emailCheck(String userEmail);
     // User 회원가입
     UserDto.Basic signup(UserDto.SignUp signUpDto, MultipartFile file) throws Exception;
 
@@ -34,4 +34,7 @@ public interface UserService {
     Boolean updatePoint(Long userId, Long point) throws Exception;
 
     Long getPoint(Long userId) throws Exception;
+
+    String checkingUserOrSendEmail(String userEmail) throws Exception;
+
 }

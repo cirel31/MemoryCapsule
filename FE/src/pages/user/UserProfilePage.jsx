@@ -1,4 +1,3 @@
-// 기본 이미지 변경 시 뒤에 경로 변경하면 됩니다
 import defaultImg from "../../assets/images/stamp/stamp_best.svg"
 import {useEffect, useState} from "react";
 import {fetchUserInfoThunk} from "../../store/userSlice";
@@ -12,7 +11,6 @@ const UserProfilePage = () => {
 
   useEffect(() => {
     const loginCheck = !!sessionStorage.getItem("accessToken")
-    console.log(isLoggedIn)
     setIsLoggedIn(loginCheck)
     if (isLoggedIn) {
       const idx = sessionStorage.getItem("userIdx")

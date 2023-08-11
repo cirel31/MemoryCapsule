@@ -1,17 +1,22 @@
-package com.santa.projectservice.service.util;
+package com.santa.projectservice.repository.util;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.santa.projectservice.model.dto.ProjectDto;
 import com.santa.projectservice.model.jpa.*;
 import com.santa.projectservice.model.vo.UserInfo;
+import com.santa.projectservice.model.vo.UserVo;
 import com.santa.projectservice.repository.ArticleRepository;
 import com.santa.projectservice.repository.RegisterRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UtilQuerys {
     private final JPAQueryFactory queryFactory;
     private QProject qProject = QProject.project;
@@ -32,6 +37,30 @@ public class UtilQuerys {
 
     public UserInfo userInfo(Long userId){
         return new UserInfo(articleRepository.countAllByUserId(userId), registerRepository.countAllByUser_Id(userId));
+    }
+
+    public Long getProjectArticleCount(Long projectId){
+        return queryFactory.select(qArticle.count()).from(qArticle).where(qArticle.project.id.eq(projectId)).fetchOne();
+    }
+    public List<UserVo> projectUserVos(Long projectId){
+        return queryFactory
+                .select(qRegister.user.name, qRegister.user.nickname, qRegister.user.imgurl)
+                .from(qRegister)
+                .where(qRegister.project.id.eq(projectId)).fetch()
+                .stream()
+                .map(tuple -> {
+                    log.info("Entity"  + tuple.toString());
+                    log.info("name : " + tuple.get(qRegister.user.name).toString());
+                    log.info("nickname : " + tuple.get(qRegister.user.name).toString());
+                    log.info("imgUrl : " + tuple.get(qRegister.user.imgurl).toString());
+                     return UserVo.builder()
+                        .name(tuple.get(qRegister.user.name))
+                        .nickname(tuple.get(qRegister.user.nickname))
+                        .imgUrl(tuple.get(qRegister.user.imgurl))
+                        .build();
+
+                })
+                .collect(Collectors.toList());
     }
 
     /*

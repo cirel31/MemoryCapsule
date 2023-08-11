@@ -3,6 +3,7 @@ import axios from "axios";
 import {useEffect} from "react";
 import {fetchUserInfoThunk} from "../../store/userSlice";
 import {useDispatch} from "react-redux";
+import Swal from "sweetalert2";
 
 const KakaoLoginPage = () => {
   const { search } = useLocation();
@@ -28,6 +29,19 @@ const KakaoLoginPage = () => {
         })
         .catch((error) => {
           console.log("서버로부터 받지 못함", error);
+          if (error.response.status === 500 && error.response.data === "자체 회원가입으로 등록된 유저입니다.") {
+            Swal.fire({
+              text: error.response.data,
+              focusConfirm: false,
+              confirmButtonText: '확인',
+            })
+                .then((result) => {
+                  if (result.isConfirmed) {
+                    console.log('확인 버튼 클릭!');
+                    window.location.href ='/login'
+                  }
+                })
+          }
         });
     }
   }, [code]);

@@ -95,7 +95,7 @@ public class UserDto {
 		private String imgUrl;
         private int totalFriend;
         private boolean admin;
-        private int point;
+        private long point;
         private List<Date> accessList;
     }
 

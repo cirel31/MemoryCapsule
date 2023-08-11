@@ -2,11 +2,13 @@ package com.santa.projectservice.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.santa.projectservice.model.vo.ProjectInfo;
+import com.santa.projectservice.model.vo.UserVo;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +21,7 @@ public class ProjectDto {
     private Date ended;
     private Date created;
     private String imgUrl;
-    private String shareurl;
+    private String shareUrl;
     private int type;
     private Boolean state;
     private String giftUrl;
@@ -28,7 +30,7 @@ public class ProjectDto {
     private int alarmType;
     private int alarm;
     @Builder
-    public ProjectDto(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareurl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm) {
+    public ProjectDto(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -36,7 +38,7 @@ public class ProjectDto {
         this.ended = ended;
         this.created = created;
         this.imgUrl = imgUrl;
-        this.shareurl = shareurl;
+        this.shareUrl = shareUrl;
         this.type = type;
         this.state = state;
         this.giftUrl = giftUrl;
@@ -47,7 +49,7 @@ public class ProjectDto {
     }
 
 
-    public ProjectInfo toInfo(Long num){
-        return new ProjectInfo(this, num);
+    public ProjectInfo toInfo(List<UserVo> userList, Long num){
+        return new ProjectInfo(this,userList, num);
     }
 }
