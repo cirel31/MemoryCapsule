@@ -10,6 +10,7 @@ import stamp_soso from "../../assets/images/stamp/stamp_soso.svg";
 import stamp_wow from "../../assets/images/stamp/stamp_wow.svg";
 import kokona from "../../assets/images/kokona.png"
 import {useSelector} from "react-redux";
+import "../../styles/ProjectDetail.scss"
 
 const baseURL = 'https://i9a608.p.ssafy.io:8000'
 const subURL = '/project'
@@ -90,7 +91,7 @@ const ProjectDetailPage = () => {
 
   return (
     <>
-      <div>
+      <div className="project_detail_body">
         <div>
           <h1>프로젝트 제목 : {project.title}</h1>
         </div>

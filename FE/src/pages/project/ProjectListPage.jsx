@@ -12,6 +12,7 @@ import right_btn from "../../assets/images/mainpage/right.svg"
 import left_btn from "../../assets/images/mainpage/left.svg"
 import start_btn from "../../assets/images/mainpage/start.svg"
 import end_btn from "../../assets/images/mainpage/end.svg"
+import tag_label from "../../assets/images/mainpage/Tag.svg"
 
 const ProjectListPage = () => {
   const [isHovered, setIsHovered] = useState(null)
@@ -96,8 +97,11 @@ const ProjectListPage = () => {
 
   return (
       <div className="main_project_body">
+
         <img src={main_bg} className="main_project_back"/>
         <div className="bg_blur"></div>
+        <div className="footerbar">
+        </div>
         <div className="search_bar">
           <input
             type="text"
@@ -125,19 +129,7 @@ const ProjectListPage = () => {
             </div>
           ) : (
             <div className="pjt_lst_body">
-              <div>
-                <div className="move_btn_group_1">
-                  <button onClick={leftBTN}><img src={left_btn}/></button>
-                  <button onClick={rightBTN}><img src={right_btn}/></button>
-                </div>
 
-                <div className="move_btn_group_2">
-                  <button onClick={startBTN}><img src={start_btn}/></button>
-
-                  <button onClick={endBTN}><img src={end_btn}/></button>
-
-                </div>
-              </div>
               {currentPosts.map((project) => (
                 <div
                   key={project.id}
@@ -157,32 +149,45 @@ const ProjectListPage = () => {
 
         </div>
 
-        <Modal isOpen={isModal} onRequestClose={closeModal}>
+        <Modal isOpen={isModal} onRequestClose={closeModal} className="main_modal_body">
           {selectedPost && (
             <div>
-              {console.log(selectedPost)}
-              <img src={selectedPost.imgUrl} alt="이미지" style={{width:'200px'}}/>
-              <h2>
-                <hr/>
-                {selectedPost.title}
-              </h2>
-              <p>현재까지 등록된 추억 : {selectedPost.artielcNum}</p>
-              <h3>
-                <hr/>
-                내용 : {selectedPost.content}
-                <hr/>
-                시작 :  {selectedPost.started.slice(2,4)}년 {selectedPost.started.slice(5, 7)}월 {selectedPost.started.slice(8, 10)}일
-                <hr/>
-                종료 :  {selectedPost.ended.slice(2,4)}년 {selectedPost.ended.slice(5, 7)}월 {selectedPost.ended.slice(8, 10)}일
-              </h3>
-              <hr/>
-              <br/>
-              <Link to={`/project/${selectedPost.id}`}>상세 페이지로 이동</Link>
-              <br/><br/>
-              <button onClick={closeModal}>닫기</button>
+              <div>
+                <img src="https://ssafysanta.s3.ap-northeast-2.amazonaws.com/34f4345d4f324844896e975f27abfb98.svg" alt=""/>
+                <div className="black"></div>
+              </div>
+              <img src={tag_label} className="tag_lab"/>
+              <div className="detail_shortcut_contents">
+                <h2>
+                  {selectedPost.title}
+                </h2>
+                <p>현재까지 등록된 추억 : {selectedPost.artielcNum}</p>
+                <h3>
+                  <hr/>
+                  내용 : {selectedPost.content}
+                  <hr/>
+                  시작 :  {selectedPost.started.slice(2,4)}년 {selectedPost.started.slice(5, 7)}월 {selectedPost.started.slice(8, 10)}일
+                  <hr/>
+                  종료 :  {selectedPost.ended.slice(2,4)}년 {selectedPost.ended.slice(5, 7)}월 {selectedPost.ended.slice(8, 10)}일
+                </h3>
+              </div>
+              <Link to={`/project/${selectedPost.id}`} className="go_detail">이 캡슐에 추억쌓기</Link>
             </div>
           )}
         </Modal>
+        <div className="move_btn">
+          <div className="move_btn_group_1">
+            <button onClick={leftBTN}><img src={left_btn}/></button>
+            <button onClick={rightBTN}><img src={right_btn}/></button>
+          </div>
+
+          <div className="move_btn_group_2">
+            <button onClick={startBTN}><img src={start_btn}/></button>
+
+            <button onClick={endBTN}><img src={end_btn}/></button>
+
+          </div>
+        </div>
 
         <div className="project_create_btn">
           <Link to='/project/create'>
@@ -192,6 +197,7 @@ const ProjectListPage = () => {
             </button>
           </Link>
         </div>
+
       </div>
   );
 }
