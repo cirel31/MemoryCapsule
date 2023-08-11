@@ -111,13 +111,16 @@ const ArticleCreateForm = () => {
         "userId": user.userId,
       }
     })
-      .then(res => {
-        console.log("게시글 등록 성공", res)
+      .then(response => {
+        console.log("게시글 등록 성공", response)
         window.location.href ='/project'
       })
-      .catch(err => {
+      .catch(error => {
         console.log(baseURL,subURL, user.userId)
-        console.log("게시글 등록 실패", err)
+        console.log("게시글 등록 실패", error)
+        if (error.response.status === 401 && error.response.data === 'false') {
+          Swal.fire("오늘의 추억은 이미 등록되었습니다.")
+        }
       })
 
   }

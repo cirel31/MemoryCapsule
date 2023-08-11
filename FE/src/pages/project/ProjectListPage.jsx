@@ -134,7 +134,6 @@ const ProjectListPage = () => {
                   <button onClick={startBTN}><img src={start_btn}/></button>
 
                   <button onClick={endBTN}><img src={end_btn}/></button>
-
                 </div>
               </div>
               {currentPosts.map((project) => (
@@ -144,7 +143,6 @@ const ProjectListPage = () => {
                   onMouseEnter={() => handleMouseEnter(project.id)}
                   onMouseLeave={handleMouseLeave}
                   onClick={() => openModal(project.id)}
-
                 >
                   <img src={clamp} className="deco_clamp"/>
                   <img src={project.imgUrl} alt="" className="photos"/>
@@ -179,6 +177,7 @@ const ProjectListPage = () => {
               <Link to={`/project/${selectedPost.id}`}>상세 페이지로 이동</Link>
               <br/><br/>
               <button onClick={closeModal}>닫기</button>
+              
             </div>
           )}
         </Modal>

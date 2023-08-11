@@ -66,7 +66,6 @@ const SignupForm = ({ form, setForm,  }) => {
     const emailData = form.id
     axios.post(`${baseURL}${authorizationURL}${emailData}`)
       .then((response) => {
-        console.log(response.status)
         if (response?.status === 209) {
           Swal.fire({
             text: response.data,
@@ -81,15 +80,16 @@ const SignupForm = ({ form, setForm,  }) => {
                 console.log('확인 버튼 클릭!');
                 axios.post(`${baseURL}${deletedCheck}${emailData}`)
                   .then((response) => {
-                    console.log(response.data.slice(12))
+                    console.log(response.data)
                     Swal.fire("사용 가능한 이메일입니다.")
                     setEmailChecking(true)
-                    setValidationCode(response.data.slice(12))
+                    setValidationCode(response.data)
                   })
                   .catch((error) => {
                     console.log(error)
+                    console.log(error.response.status)
                     if (error.response?.status === 406) {
-                      Swal.fire(error.response.data)
+                      Swal.fire(error.response.data.message)
                     }
                   })
               } else if (result.isDismissed) {
@@ -99,17 +99,14 @@ const SignupForm = ({ form, setForm,  }) => {
             })
         }
         else {
-          console.log(response)
-          console.log(response.data.slice(12))
           Swal.fire("사용 가능한 이메일입니다.")
           setEmailChecking(true)
-          setValidationCode(response.data.slice(12))
+          setValidationCode(response.data)
         }
       })
       .catch((error) => {
-        console.log(error)
         if (error.response?.status === 406) {
-          Swal.fire(error.response.data)
+          Swal.fire(error.response.data.message)
         }
       })
     console.log(emailData)
@@ -229,7 +226,7 @@ const SignupForm = ({ form, setForm,  }) => {
                   placeholder="example@example.com"
                   value={form.id}
                   onClick={emailCheckPaper}
-                  disabled={isAuthentication}
+                  readOnly={isAuthentication}
                   required
                 />
               </div>
