@@ -8,7 +8,7 @@ import com.santa.projectservice.model.jpa.*;
 import com.santa.projectservice.repository.*;
 import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.FileUploadService;
-import com.santa.projectservice.service.util.UtilQuerys;
+import com.santa.projectservice.repository.util.UtilQuerys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,7 +1,7 @@
 package com.santa.projectservice.controller;
 
 import com.santa.projectservice.model.vo.UserInfo;
-import com.santa.projectservice.service.util.UtilQuerys;
+import com.santa.projectservice.repository.util.UtilQuerys;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;

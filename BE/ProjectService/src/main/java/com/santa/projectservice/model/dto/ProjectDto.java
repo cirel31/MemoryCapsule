@@ -2,11 +2,13 @@ package com.santa.projectservice.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.santa.projectservice.model.vo.ProjectInfo;
+import com.santa.projectservice.model.vo.UserVo;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -47,7 +49,7 @@ public class ProjectDto {
     }
 
 
-    public ProjectInfo toInfo(Long num){
-        return new ProjectInfo(this, num);
+    public ProjectInfo toInfo(List<UserVo> userList, Long num){
+        return new ProjectInfo(this,userList, num);
     }
 }

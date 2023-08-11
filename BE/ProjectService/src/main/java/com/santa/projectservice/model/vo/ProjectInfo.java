@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ProjectInfo {
@@ -23,9 +24,10 @@ public class ProjectInfo {
     private int alarmType;
     private int alarm;
     private long artielcNum;
+    private List<UserVo> userList;
 
     @Builder
-    public ProjectInfo(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum) {
+    public ProjectInfo(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, String giftUrl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum, List<UserVo> userList) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -34,14 +36,17 @@ public class ProjectInfo {
         this.created = created;
         this.imgUrl = imgUrl;
         this.shareUrl = shareUrl;
+        this.giftUrl = giftUrl;
         this.type = type;
         this.state = state;
         this.limit = limit;
         this.alarmType = alarmType;
         this.alarm = alarm;
         this.artielcNum = artielcNum;
+        this.userList = userList;
     }
-    public ProjectInfo(ProjectDto projectDto, Long num){
+
+    public ProjectInfo(ProjectDto projectDto,List<UserVo> userList, Long num){
         this.id = projectDto.getId();
         this.title = projectDto.getTitle();
         this.content = projectDto.getContent();
@@ -56,6 +61,7 @@ public class ProjectInfo {
         this.alarmType = projectDto.getAlarmType();
         this.alarm = projectDto.getAlarm();
         this.giftUrl = projectDto.getGiftUrl();
+        this.userList = userList;
         this.artielcNum = num;
     }
 }
