@@ -8,6 +8,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     const API = '/notice';
 
     Modal.setAppElement("#root");
+
     const [post, setPost] = useState(selectedPost);
     const [state, setState] = useState(false);
     const [disabledTitle, setDisabledTitle] = useState(false);
@@ -49,7 +50,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      *  "noticeImgurl" : null
      *}  
      */
-
+    console.log(sessionStorage);
     const createPost = () => {
         console.log("[createPost]")
 
@@ -93,7 +94,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         console.log("[deletePost]");
 
         if (checkUserRole()) {
-            console.log("게시글 삭제 (제작중)");
+            console.log("게시글 삭제 (제작중)", selectedPost.noticeIdx);
             axios.delete(`${baseURL}${API}/${selectedPost.noticeIdx}`
                 ,{
                     headers: {
@@ -237,20 +238,24 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                                 </p>
                             }
                             {/*몇 개의 글자를 사용했는지 표시*/}
-                            <div className="buttonList">{post.noticeContent.length}/5000</div>
+                            {
+                                post.noticeContent.length <= 5000
+                                ?<div className="buttonList">{post.noticeContent.length}/5000</div>
+                                :<div className="buttonList text_styled_red">{post.noticeContent.length}/5000</div>
+                            }
                             {
                                 state
-                                    ?
-                                    <div className="buttonList">
-                                        <button onClick={closeModal}>닫기</button>
-                                        <button onClick={addPost}>등록</button>
-                                    </div>
-                                    :
-                                    <div className="buttonList">
-                                        <button onClick={closeModal}>닫기</button>
-                                        <button onClick={editPost}>수정</button>
-                                        <button onClick={deletePost}>삭제</button>
-                                    </div>
+                                ?
+                                <div className="buttonList">
+                                    <button onClick={closeModal}>닫기</button>
+                                    {checkUserRole()&&<button onClick={addPost}>등록</button>}
+                                </div>
+                                :
+                                <div className="buttonList">
+                                    <button onClick={closeModal}>닫기</button>
+                                    {checkUserRole()&&<button onClick={editPost}>수정</button>}
+                                    {checkUserRole()&&<button onClick={deletePost}>삭제</button>}
+                                </div>
                             }
                         </form>
                     )
