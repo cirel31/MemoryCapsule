@@ -1,5 +1,4 @@
 import {useEffect, useRef, useState} from "react";
-// import {useSelector} from "react-redux";
 import stamp_best from "../../assets/images/stamp/stamp_best.svg"
 import stamp_angry from "../../assets/images/stamp/stamp_angry.svg"
 import stamp_hansum from "../../assets/images/stamp/stamp_hansum.svg"
@@ -10,6 +9,7 @@ import stamp_wow from "../../assets/images/stamp/stamp_wow.svg"
 import Modal from "react-modal";
 import axios from "axios"
 import {useSelector} from "react-redux";
+import Swal from "sweetalert2";
 
 const ArticleCreateForm = () => {
   const formRef = useRef(null)
