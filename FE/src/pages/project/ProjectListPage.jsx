@@ -137,7 +137,6 @@ const ProjectListPage = () => {
                   onMouseEnter={() => handleMouseEnter(project.id)}
                   onMouseLeave={handleMouseLeave}
                   onClick={() => openModal(project.id)}
-
                 >
                   <img src={clamp} className="deco_clamp"/>
                   <img src={project.imgUrl} alt="" className="photos"/>

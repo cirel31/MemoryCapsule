@@ -1,5 +1,4 @@
 import {useEffect, useRef, useState} from "react";
-// import {useSelector} from "react-redux";
 import stamp_best from "../../assets/images/stamp/stamp_best.svg"
 import stamp_angry from "../../assets/images/stamp/stamp_angry.svg"
 import stamp_hansum from "../../assets/images/stamp/stamp_hansum.svg"
@@ -10,6 +9,7 @@ import stamp_wow from "../../assets/images/stamp/stamp_wow.svg"
 import Modal from "react-modal";
 import axios from "axios"
 import {useSelector} from "react-redux";
+import Swal from "sweetalert2";
 
 const ArticleCreateForm = () => {
   const formRef = useRef(null)
@@ -111,13 +111,16 @@ const ArticleCreateForm = () => {
         "userId": user.userId,
       }
     })
-      .then(res => {
-        console.log("게시글 등록 성공", res)
+      .then(response => {
+        console.log("게시글 등록 성공", response)
         window.location.href ='/project'
       })
-      .catch(err => {
+      .catch(error => {
         console.log(baseURL,subURL, user.userId)
-        console.log("게시글 등록 실패", err)
+        console.log("게시글 등록 실패", error)
+        if (error.response.status === 401 && error.response.data === 'false') {
+          Swal.fire("오늘의 추억은 이미 등록되었습니다.")
+        }
       })
 
   }
