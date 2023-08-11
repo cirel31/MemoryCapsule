@@ -91,6 +91,17 @@ const ProjectDetailPage = () => {
       });
   }, []);
 
+  // 프로젝트 인원 수 따라서 싱글 프로젝트인지 구분하기 위한 함수
+  function isSoloProject() {
+    if (1 <= 1) {
+      // 혼자서 하는 프로젝트인 경우
+      return true;
+    } else {
+      // 여러명이서 하는 프로젝트인 경우
+      return false;
+    }
+  }
+
   // 뒤로가기
   const handleBack = () => {
     window.history.back()
@@ -136,22 +147,28 @@ const ProjectDetailPage = () => {
             </button>
           </div>
         </div>
-        <div className="detail_project_order">
-          <div className="detail_project_users_layout">
-            <div className="detail_project_content_imgs">
-              프로젝트에 들어와있는 유저 목록 img
+        {
+          isSoloProject() &&
+            <div className="detail_project_order">
+              <div className="detail_project_users_layout">
+                <div className="detail_project_content_imgs">
+                  프로젝트에 들어와있는 유저 목록 img
+                </div>
+                <div className="detail_project_content_usercnt">
+                  {0}명의 유저와 함께하고 있어요!
+                </div>
+              </div>
             </div>
-            <div className="detail_project_content_usercnt">
-              {0}명의 유저와 함께하고 있어요!
-            </div>
-          </div>
-        </div>
+        }
         <hr/>
         <br/>
-        <div className="detail_project_history">
-          <h2>History</h2>
+        <div  className="detail_project_history">
+          <div className="detail_project_history_title">
+            <h2 className="">HISTORY</h2>
+            <span className="detail_project_history_subtitle">내가 쓴 글만 보여요!</span>
+          </div>
           {myArticles.map((article, idx) => (
-            <div key={idx}>
+            <div key={idx} className="detail_project_history_format">
               {article.created && (
                 <h3>{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
               )}
@@ -171,13 +188,13 @@ const ProjectDetailPage = () => {
               </div>
             </div>
           ))}
-        </div>
-        <div className="detail_project_write">
-          <Link to={`/project/${projectId}/article`}>
-            <button className="detail_project_write_btn">
-              <img src={write} alt="write" className="detail_project_write_btn_img"/>
-            </button>
-          </Link>
+          <div className="detail_project_write">
+            <Link to={`/project/${projectId}/article`}>
+              <button className="detail_project_write_btn">
+                <img src={write} alt="write" className="detail_project_write_btn_img"/>
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

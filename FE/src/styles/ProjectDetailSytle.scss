@@ -10,15 +10,6 @@
   background-color: var(--backGround_1);
 }
 
-.parting_line_horizontal {
-  height: 90%;
-  width: 0.5px;
-  background-color: var(--brand3_main);
-  stroke: var(--brand3_main);
-  stroke-width: 2px;
-  margin-bottom: 20px;
-}
-
 .detail_project_layout {
   width: 840px;
   display: grid;
@@ -136,7 +127,8 @@
   display: grid;
   grid-template-columns: 40% 20% 40%;
 
-  .detail_project_content{
+  .detail_project_content_imgs{
+
   }
 
   .detail_project_shorts_info_percentage{
@@ -186,7 +178,25 @@
 
 .detail_project_history{
   width: 90%;
-  height: 140px;
+}
+
+.detail_project_history_title{
+  font-family: "IBM Plex Sans KR", sans-serif;
+  display: flex;
+  align-items: center;
+
+  .detail_project_history_subtitle{
+    margin-left: 10px;
+    color: var(--brand3_main);
+  }
+
+}
+
+.detail_project_history_format{
+  width: 100%;
+  height: 540px;
+  margin-bottom: 20px;
+
   overflow-y: scroll;
 
   scroll-behavior: smooth;
@@ -214,29 +224,32 @@
 }
 
 .detail_project_write{
-  position: sticky;
-  width: 60px;
-  height: 60px;
+  position: absolute;
+  width: 50px;
+  height: 50px;
   border-radius: 30px;
   background-color: var(--brand3_main);
-  left: 100%;
-  top: 100%;
+  left: 83%;
+  top: 90%;
   margin: 20px;
-  display: grid;
-  justify-items: center;
-  align-items: center;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25));
 
   &:hover{
     background-color: var(--brand3_4);
   }
 
   .detail_project_write_btn{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
     cursor: pointer;
     color: var(--white);
     background-color: var(--transpar);
     border: none;
     .detail_project_write_btn_img{
-      width: 35px;
+      width: 30px;
     }
   }
 }
