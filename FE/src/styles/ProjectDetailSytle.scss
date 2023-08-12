@@ -121,10 +121,9 @@
   border-radius: 1rem;
   filter: drop-shadow(0px 2px 2px rgb(0, 0, 0, 0.15));
   align-items: center;
-  align-content: center;
   justify-items: center;
-  justify-content: center;
   display: grid;
+  font-size: 14px;
   grid-template-columns: 40% 20% 40%;
 
   .detail_project_shorts_info_percentage{
@@ -133,6 +132,27 @@
     text-align: center;
     border: solid var(--backGround_2);
     border-width: 0 0.5px;
+  }
+}
+
+.detail_project_info_log{
+  width: 80%;
+  display: grid;
+  grid-template-columns: 70% 20% 10%;
+  justify-items: end;
+  align-items: center;
+  margin: 20px;
+  .detail_project_info_log_start{
+    width: 100%;
+    text-align: center;
+  }
+  .detail_project_info_log_highlight{
+    font-size: 24px;
+    text-align: right;
+    color: var(--brand2_main);
+  }
+  .detail_project_info_log_end{
+
   }
 }
 
@@ -258,11 +278,21 @@
   background-color: var(--backGround_1);
   filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25));
   border-radius: 10px;
+  margin-bottom: 50px;
 
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 5% 50% 5% 40%;
 
   align-items: center;
+  .detail_project_history_article_beforeafter_btn{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .detail_project_history_article_beforeafter_img{
+      width: 25px;
+    }
+  }
 }
 
 .detail_project_history_article_imgbox{
@@ -271,20 +301,59 @@
   justify-content: center;
   .detail_project_history_article_img{
     max-height: 250px;
-    max-width: 350px;
+    max-width: 335px;
   }
 }
 
 .detail_project_history_article_body{
-  height: 80%;
+  height: 100%;
   display: flex;
+  background-color: var(--backGround_0);
   flex-direction: column;
   align-items: center;
   text-align: center;
+  border-radius: 0px 10px 10px 0px;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25));
   .detail_project_history_article_stamp{
     width: 60px;
+    padding-top: 20px;
+  }
+}
+
+.detail_project_history_article_text_form{
+  position: relative;
+  width: 70%;
+
+  .detail_project_history_article_text{
+    font-family: "IBM Plex Sans KR", sans-serif;
+    font-size: 14px;
+    position: absolute;
+    width: 100%;
+    top: 5px;
   }
 
+  .detail_project_history_article_text_underline{
+    position: absolute;
+    width: 100%;
+    top: 40px;
+    border-bottom: solid 2px var(--brand1_main);
+  }
+
+  .detail_project_history_article_text_underline:nth-child(2) {
+    top: 60px;
+  }
+  .detail_project_history_article_text_underline:nth-child(3) {
+    top: 80px;
+  }
+  .detail_project_history_article_text_underline:nth-child(4) {
+    top: 100px;
+  }
+  .detail_project_history_article_text_underline:nth-child(5) {
+    top: 120px;
+  }
+  .detail_project_history_article_text_underline:nth-child(6) {
+    top: 140px;
+  }
 }
 
 .detail_project_write{
