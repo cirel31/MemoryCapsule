@@ -74,21 +74,21 @@ const ProjectDetailPage = () => {
 
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${projectId}/article`
-      , {
-        headers: {
-          userId: user.userId,
-        },
-      }
+        , {
+          headers: {
+            userId: user.userId,
+          },
+        }
     )
-      .then((response) => {
-        console.log('성공', user.userId)
-        console.log(response.data)
-        setMyArticles(response.data);
-      })
-      .catch((error) => {
-        console.error("서버로부터 게시물 가져오기 실패", user.userId);
-        console.error(error)
-      });
+        .then((response) => {
+          console.log('성공', user.userId)
+          console.log(response.data)
+          setMyArticles(response.data);
+        })
+        .catch((error) => {
+          console.error("서버로부터 게시물 가져오기 실패", user.userId);
+          console.error(error)
+        });
   }, []);
 
   // 프로젝트 인원 수 따라서 싱글 프로젝트인지 구분하기 위한 함수
@@ -113,7 +113,7 @@ const ProjectDetailPage = () => {
         <div className="detail_project_top"></div>
         <div className="detail_project_top_content">
           <div className="detail_project_title">
-            <h1>프로젝트 제목 : {project.title}</h1>
+            <h1>제목 : {project.title}</h1>
           </div>
           <div className="detail_project_back">
             <div onClick={handleBack} className="detail_project_back_button">
@@ -123,7 +123,6 @@ const ProjectDetailPage = () => {
         </div>
         <div className="detail_project_order">
           <div className="detail_project_info_logs">
-
             <div className="detail_project_shorts_info_logs">
               <p>현재까지 작성된 기록 : {myArticles.length} 개</p>
               <p>오늘 작성된 기록 : {myArticles.length} 개</p>
@@ -151,43 +150,47 @@ const ProjectDetailPage = () => {
           isSoloProject() &&
             <div className="detail_project_order">
               <div className="detail_project_users_layout">
-                <div className="detail_project_content_imgs">
-                  프로젝트에 들어와있는 유저 목록 img
+                <div className="detail_project_content_userImgs">
+                  {
+                    project.userList && project.userList.map((user) => (
+                        <img src={user.imgUrl} alt={user.nickname} className="detail_project_content_userImg"/>
+                    ))
+                  }
                 </div>
                 <div className="detail_project_content_usercnt">
-                  {0}명의 유저와 함께하고 있어요!
+                  {project.userList && project.userList.length}명의 유저와 함께하고 있어요!
                 </div>
               </div>
             </div>
         }
-        <hr/>
-        <br/>
         <div  className="detail_project_history">
           <div className="detail_project_history_title">
             <h2 className="">HISTORY</h2>
             <span className="detail_project_history_subtitle">내가 쓴 글만 보여요!</span>
           </div>
-          {myArticles.map((article, idx) => (
-            <div key={idx} className="detail_project_history_format">
-              {article.created && (
-                <h3>{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
-              )}
-              <div>
-                <div>
-                  {article.images ? (
-                      <img src={`${article.images}`} alt="서버 이미지를 불러올 수 없습니다"/>
-                  ) : <img src={kokona} alt="클라이언트 이미지를 불러올 수 없습니다" style={{width:"300px" }} />
-                  }
-                </div>
-                <div>
-                  {article.stamp && (
-                    <img src={stamps[article.stamp - 1].stamp} alt="이미지를 불러올 수 없습니다" style={{width:"100px"}}/>
+          <div className="detail_project_history_format">
+            {myArticles.map((article, idx) => (
+                <div key={idx}>
+                  {article.created && (
+                      <h3 className="detail_project_history_title">{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
                   )}
-                  <p>{article.content}</p>
+                  <div className="detail_project_history_article">
+                    <div className="detail_project_history_article_imgbox">
+                      {article.images ? (
+                          <img src={`${article.images}`} alt="서버 이미지를 불러올 수 없습니다" className="detail_project_history_article_img"/>
+                      ) : <img src={kokona} alt="클라이언트 이미지를 불러올 수 없습니다"  className="detail_project_history_article_img"/>
+                      }
+                    </div>
+                    <div className="detail_project_history_article_body">
+                      {article.stamp && (
+                          <img src={stamps[article.stamp - 1].stamp} alt="이미지를 불러올 수 없습니다" className="detail_project_history_article_stamp"/>
+                      )}
+                      <p>{article.content}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
           <div className="detail_project_write">
             <Link to={`/project/${projectId}/article`}>
               <button className="detail_project_write_btn">
