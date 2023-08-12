@@ -154,6 +154,7 @@ const ProjectListPage = () => {
               <div>
                 <img src={selectedPost.imgUrl} alt="ㅠㅠㅠㅠㅠ"/>
                 <div className="black"></div>
+                {/*{(selectedPost.userList.length === 1) ? (<p>나만의 기록</p>) : (<p>친구와의 기록</p>)}*/}
               </div>
               <img src={tag_label} className="tag_lab"/>
               <div className="detail_shortcut_contents">

@@ -98,7 +98,7 @@ const ProjectDetailPage = () => {
         <div>
           <div>
             <p>현재까지 작성된 기록 : {myArticles.length} 개</p>
-            <p>진행도 : {myArticles.length} / {project.length} %</p>
+            <p>진행도 : {(myArticles.length / 360 * 100).toFixed(2)} %</p>
             {project.started && project.ended && (
               <p>
                 캡슐 제작 기간 :

@@ -20,7 +20,9 @@ const ArticleCreateForm = () => {
   const [feelingStamp, setFellingStamp] = useState([])
   const baseURL = "https://i9a608.p.ssafy.io:8000"
   const subURL = articleId
+  const pointURL = "/user/point"
   const user = useSelector((state) => state.userState.user) || null
+  const point = user.point || 0
   const stamps = [
     {
       "id": 1,
@@ -77,14 +79,14 @@ const ArticleCreateForm = () => {
       }
     });
     setPhotos(newImageUrlLists);
-    console.log(photos)
   };
 
   const deletePhoto = (idx) => {
     URL.revokeObjectURL(photos[idx])
     const newPhotos = photos.filter((photo, index) => index !== idx)
     setPhotos(newPhotos)
-    console.log(photos)
+    const imageInput = document.getElementById('image');
+    if (imageInput) imageInput.value = '';
   }
 
   const handleTextChange = (e) => {
@@ -100,28 +102,32 @@ const ArticleCreateForm = () => {
   }
   const createArticle = (e) => {
     e.preventDefault();
+    const needPoint = (photos.length - 1) * 50
     console.log("제출버튼 누름")
-    const formData = new FormData(e.target)
-    console.log(formData)
-    for (let [name, value] of formData.entries()) {
-      console.log(`${name}: ${value}`);
-    }
-    axios.post(`${baseURL}${subURL}`, formData, {
-      headers : {
-        "userId": user.userId,
+    if (needPoint < point) {
+      const formData = new FormData(e.target)
+      console.log(formData)
+      for (let [name, value] of formData.entries()) {
+        console.log(`${name}: ${value}`);
       }
-    })
-      .then(response => {
-        console.log("게시글 등록 성공", response)
-        window.location.href ='/project'
-      })
-      .catch(error => {
-        console.log(baseURL,subURL, user.userId)
-        console.log("게시글 등록 실패", error)
-        if (error.response.status === 401 && error.response.data === 'false') {
-          Swal.fire("오늘의 추억은 이미 등록되었습니다.")
+      axios.post(`${baseURL}${subURL}`, formData, {
+        headers : {
+          "userId": user.userId,
         }
       })
+          .then(response => {
+            // axios.put(`${baseURL}${pointURL}${user.userId}?point=${point-needPoint}`)
+            window.location.href ='/project'
+          })
+          .catch(error => {
+            console.log(baseURL,subURL, user.userId)
+            console.log("게시글 등록 실패", error)
+            if (error.response.status === 401 && error.response.data === 'false') {
+              Swal.fire("오늘의 추억은 이미 등록되었습니다.")
+            }
+          })
+    }
+
 
   }
 
@@ -180,7 +186,6 @@ const ArticleCreateForm = () => {
                     닫기
                   </button>
                 </Modal>
-                {/* 서버에 도장 정보 보낼 인풋 */}
                 <input
                   name="stamp"
                   style={{display:"none"}}
