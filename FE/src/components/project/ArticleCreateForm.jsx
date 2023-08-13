@@ -142,6 +142,13 @@ const ArticleCreateForm = () => {
             }
           })
     }
+    else {
+      Swal.fire({
+        title: '경고',
+        text: '포인트가 부족합니다. 이미지 수를 줄여주세요.',
+        icon: 'error',
+      });
+    }
 
 
   }
