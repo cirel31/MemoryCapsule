@@ -13,6 +13,7 @@ const CalendarForm = () => {
   const attend = useSelector((state) => state.userState.user?.accessList)
   const userId = useSelector((state) => state.userState.user?.userId)
   const [finishedProject, setFinishedProject] = useState('')
+  const [countMemory, setCountMemory] = useState(0)
   console.log('로그인 상태 : ', isLoggedIn)
   console.log(attend)
 
@@ -43,7 +44,8 @@ const CalendarForm = () => {
   },[]);
   
   useEffect(() => {
-    const countCapsuleURL = 'https://i9a608.p.ssafy.io:8000/project/myproject/done'
+    const countCapsuleURL = 'https://i9a608.p.ssafy.io:8000/project/myproject'
+    let counts = 0
     try {
       axios.get(`${countCapsuleURL}`, {
         headers: {
@@ -51,11 +53,13 @@ const CalendarForm = () => {
         }
       })
         .then((response) => {
-          console.log(response)
-          // console.log('결과', response.data)
+          console.log('결과', response.data)
           const finishedCapsules = response.data.length || 0
-          console.log('완료된 캡슐', finishedCapsules)
+          response.data.map(project => {
+            counts += project.artielcNum
+          })
           setFinishedProject(finishedCapsules)
+          setCountMemory(counts)
         })
         .catch(() => {
           const finishedCapsules = 0
@@ -70,7 +74,7 @@ const CalendarForm = () => {
   const [value, onChange] = useState(new Date())
   const user = useSelector((state) => state.userState.user)
   const username = user?.nickname || '김싸피'
-  const countMemory = 0
+  const memorys = countMemory
   const countProject = finishedProject
   return (
     <div>
@@ -92,7 +96,7 @@ const CalendarForm = () => {
             <p className="mypage_shorts_txt">  님은 지금까지</p>
           </div>
           <div className="mypage_txt_group2">
-            <p className="mypage_shorts_highlight">{countMemory}  </p>
+            <p className="mypage_shorts_highlight">{memorys}  </p>
             <p className="mypage_shorts_txt">  개의 추억을 기록하고 </p>
           </div>
           <div className="mypage_txt_group3">
