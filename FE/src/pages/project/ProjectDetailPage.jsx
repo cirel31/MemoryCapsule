@@ -222,7 +222,7 @@ const ProjectDetailPage = () => {
                     }
                     <div className="detail_project_history_article_imgbox">
                       {article.images ? (
-                          <img src={`${article.images}`} alt="서버 이미지를 불러올 수 없습니다" className="detail_project_history_article_img"/>
+                          <img src={`${article.images[0]}`} alt="서버 이미지를 불러올 수 없습니다" className="detail_project_history_article_img"/>
                       ) : <img src={kokona} alt="클라이언트 이미지를 불러올 수 없습니다"  className="detail_project_history_article_img"/>
                       }
                     </div>
