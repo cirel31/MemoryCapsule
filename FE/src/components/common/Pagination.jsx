@@ -80,18 +80,22 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
 
     return (
         <div className="announce_pagenation">
-            postList && {
+            {
+                console.log("totalPages", totalPages)
+            }
+            {
+            postList.content &&
             postList.content.map((post) => (
                 <div className="announce_list_items">
                     <div
                         className="announce_list_item"
                         key={post.noticeIdx}
-                        onClick={() => openModal(post.noticeIdx)}
+                        onClick={() => post && openModal(post.noticeIdx)}
                     >
                         <p>{post.noticeTitle}</p>
                     </div>
                     {
-                        isNewAlame(post.noticeCreated)
+                        post && isNewAlame(post.noticeCreated)
                         ?
                         <div className="announce_list_alarm"/>
                         :
@@ -101,7 +105,7 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
                     <div>
                         <p>
                             {/*function으로 return 값을 date.getDate() 같은거 써서 return*/}
-                            {getTime(post.noticeCreated)}
+                            {post && getTime(post.noticeCreated)}
                         </p>
                     </div>
                 </div>
@@ -109,8 +113,9 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
             }
 
             <div className="announce_pagenation_buttons">
-                pageIndex && {
+                {
                     Array.from(pageIndex()).map((index) => (
+                        currentPage &&
                         currentPage===index
                         ?
                         <button key={index + 1} className="selected_announce_pagenation_button">

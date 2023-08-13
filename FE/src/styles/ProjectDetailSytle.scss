@@ -65,6 +65,10 @@
     border-radius: 100%;
     background-color: var(--backGround_0);
 
+    &:hover {
+      background-color: var(--backGround_1);
+    }
+
     .detail_project_back_button_img {
       width: 20px;
       height: 20px;
@@ -128,11 +132,34 @@
 
   .detail_project_shorts_info_percentage{
     width: 100%;
+    height: 100%;
     justify-content: center;
     text-align: center;
     border: solid var(--backGround_2);
     border-width: 0 0.5px;
+    position: relative;
+
+    .detail_project_shorts_info_percentage_text{
+      height: 100%;
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      font-size: 14px;
+      color: var(--brand2_main);
+    }
+
+    .detail_project_shorts_info_percentage_graph{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
   }
+}
+
+.detail_project_shorts_info_period{
+  text-align: center;
 }
 
 .detail_project_info_log{
@@ -214,14 +241,6 @@
   width: 90%;
   text-align: right;
   color: var(--brand3_main);
-}
-
-.detail_project_shorts_info_percentage{
-  width: 100%;
-  justify-content: center;
-  text-align: center;
-  border: solid var(--backGround_2);
-  border-width: 0 0.5px;
 }
 
 .detail_project_history{
@@ -362,7 +381,7 @@
   height: 50px;
   border-radius: 30px;
   background-color: var(--brand3_main);
-  left: 83%;
+  left: 85%;
   top: 90%;
   margin: 20px;
   filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.25));

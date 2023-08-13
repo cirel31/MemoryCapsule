@@ -62,6 +62,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         const accessToken = sessionStorage.getItem("accessToken")
 
         const formData = new FormData();
+        //formData.append("insertDto", JSON.stringify(insertDto));
         formData.append("insertDto", new Blob([JSON.stringify(insertDto)], { type: "application/json" }));
         formData.append("file", null);
 

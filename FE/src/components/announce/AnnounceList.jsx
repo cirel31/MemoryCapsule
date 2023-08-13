@@ -76,7 +76,7 @@ const AnnounceUserViewPage = ({page, size}) => {
 
     function isPostGetSuccess() {
         try {
-            if (postList.totalElements === 0) {
+            if(postList.length === 0) {
                 return true;
             }
             return false;
@@ -102,6 +102,7 @@ const AnnounceUserViewPage = ({page, size}) => {
                     </div>
                     :
                     (
+                        postList.content &&
                         size <= 3
                         ?
                         postList.content.map((post) => (

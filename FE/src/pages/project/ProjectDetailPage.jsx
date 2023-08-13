@@ -139,9 +139,31 @@ const ProjectDetailPage = () => {
               }
             </div>
             <div className="detail_project_shorts_info_percentage">
-              <p>{(myArticles.length / project.artielcNum) * 100} %</p>
+              <div className="detail_project_shorts_info_percentage_text">
+                <p>{((project.artielcNum / 365) * 100).toFixed()}%</p>
+              </div>
+              <svg className="detail_project_shorts_info_percentage_graph">
+                <circle
+                    cx="50%"
+                    cy="50%"
+                    r="30"
+                    fill="none"
+                    stroke="#E7E1DBFF"
+                    strokeWidth="8"
+                />
+                <circle
+                    cx="50%"
+                    cy="50%"
+                    r="30"
+                    fill="none"
+                    stroke="#FF8CA1FF"
+                    strokeWidth="8"
+                    strokeDasharray={`${2 * Math.PI * 30 * (project.artielcNum / 365)} ${2 * Math.PI * 30 * (1-(project.artielcNum / 365))}`}
+                    strokeDashoffset={2 * Math.PI * 30 * 0.25}
+                />
+              </svg>
             </div>
-            <div>
+            <div className="detail_project_shorts_info_period">
               <p>캡슐 제작 기간</p>
               {project.started && project.ended && (
                   <p>
