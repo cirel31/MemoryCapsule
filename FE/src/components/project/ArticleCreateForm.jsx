@@ -23,6 +23,7 @@ const ArticleCreateForm = () => {
   const pointURL = "/user/point"
   const user = useSelector((state) => state.userState.user) || null
   const point = user.point || 0
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const stamps = [
     {
       "id": 1,
@@ -60,16 +61,17 @@ const ArticleCreateForm = () => {
   const closeStampModal = () => {
     setStampModalOpen(false)
   }
-  useEffect(() => {
-    console.log(articleId)
-  })
 
   const handleImage = (e) => {
     const imageLists = [...e.target.files];
     const newImageUrlLists = [...photos];
 
     if (newImageUrlLists.length + imageLists.length > 4) {
-      alert("이미지는 최대 4개까지만 업로드할 수 있습니다.");
+      Swal.fire({
+        title: '경고',
+        text: '이미지 파일은 4개를 넘을 수 없습니다.',
+        icon: 'error',
+      });
       return;
     }
 
@@ -87,11 +89,17 @@ const ArticleCreateForm = () => {
     setPhotos(newPhotos)
     const imageInput = document.getElementById('image');
     if (imageInput) imageInput.value = '';
+    setCurrentImageIndex(0)
   }
 
   const handleTextChange = (e) => {
     if (e.target.value.length > 150) {
       setText(e.target.value.slice(0, 150));
+      Swal.fire({
+        title: '경고',
+        text: '게시글 내용은 150자를 넘을 수 없습니다.',
+        icon: 'error',
+      });
     } else {
       setText(e.target.value);
     }
@@ -106,7 +114,14 @@ const ArticleCreateForm = () => {
     console.log("제출버튼 누름")
     if (needPoint < point) {
       const formData = new FormData(e.target)
-      console.log(formData)
+      // photos.forEach((photo, index) => {
+      //   formData.append(`files`, photo)
+      // });
+      //
+      // formData.append('content', text)
+      // if (feelingStamp[0]) {
+      //   formData.append('stamp', feelingStamp[0])
+      // }
       for (let [name, value] of formData.entries()) {
         console.log(`${name}: ${value}`);
       }
@@ -152,17 +167,31 @@ const ArticleCreateForm = () => {
                   onChange={handleImage}
                 />
               </label>
+              {/*<div>*/}
+              {/*  {photos.map((photo, index) => (*/}
+              {/*    <div key={index}>*/}
+              {/*      <img*/}
+              {/*        src={photo}*/}
+              {/*        alt={`미리보기 이미지 ${index+1}`}*/}
+              {/*        style={{ width: '300px', height: '300px', objectFit: 'cover' }}*/}
+              {/*      />*/}
+              {/*      <button type="button" onClick={() => deletePhoto(index)}>삭제</button>*/}
+              {/*    </div>*/}
+              {/*  ))}*/}
+              {/*</div>*/}
               <div>
-                {photos.map((photo, index) => (
-                  <div key={index}>
-                    <img
-                      src={photo}
-                      alt={`미리보기 이미지 ${index+1}`}
-                      style={{ width: '300px', height: '300px', objectFit: 'cover' }}
-                    />
-                    <button type="button" onClick={() => deletePhoto(index)}>삭제</button>
-                  </div>
-                ))}
+                {photos.length > 0 && (
+                    <div>
+                      <img
+                          src={photos[currentImageIndex]}
+                          alt={`미리보기 이미지 ${currentImageIndex + 1}`}
+                          style={{ width: '300px', height: '300px', objectFit: 'cover' }}
+                      />
+                      <button type="button" onClick={() => deletePhoto(currentImageIndex)}>삭제</button>
+                      <button type="button" disabled={currentImageIndex === 0} onClick={() => setCurrentImageIndex(prev => prev - 1)}>이전</button>
+                      <button type="button" disabled={currentImageIndex === photos.length - 1} onClick={() => setCurrentImageIndex(prev => prev + 1)}>다음</button>
+                    </div>
+                )}
               </div>
             </div>
             <div>
