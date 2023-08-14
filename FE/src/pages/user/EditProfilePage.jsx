@@ -104,7 +104,7 @@ const EditProfilePage = () => {
             <button>비밀번호 변경하기</button>
           </div>
         </form>
-        <button onClick={handleMyPage}><img src={goback_btn}/></button>
+        <button onClick={handleMyPage} className="go_back"><img src={goback_btn}/></button>
       </div>
     </>
   )
