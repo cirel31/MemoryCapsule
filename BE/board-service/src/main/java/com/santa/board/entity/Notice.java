@@ -37,19 +37,6 @@ public class Notice {
         this.noticeContent = noticeContent;
     }
 
-    public Notice newNotice(Long userIdx, String title, String content, String fileUrl) {
-        return Notice.builder()
-                .noticeCreatorIdx(userIdx)
-                .noticeTitle(title)
-                .noticeContent(content)
-                .noticeImgurl(fileUrl)
-                .noticeDeleted(false)
-                .noticeCreated(new Date())
-                .noticeUpdated(new Date())
-                .noticeHit(0)
-                .build();
-    }
-
     public void deleteNoticeDeleted() {
         this.noticeDeleted = true;
     }
