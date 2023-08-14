@@ -1,5 +1,4 @@
 import {useEffect, useRef, useState} from "react";
-// import {useSelector} from "react-redux";
 import stamp_best from "../../assets/images/stamp/stamp_best.svg"
 import stamp_angry from "../../assets/images/stamp/stamp_angry.svg"
 import stamp_hansum from "../../assets/images/stamp/stamp_hansum.svg"
@@ -10,8 +9,12 @@ import stamp_wow from "../../assets/images/stamp/stamp_wow.svg"
 import Modal from "react-modal";
 import axios from "axios"
 import {useSelector} from "react-redux";
+
 import article_bg from "../../assets/images/projectcreate/Projectcreate.svg"
 import "../../styles/ArticleCreate.scss"
+
+import Swal from "sweetalert2";
+
 
 const ArticleCreateForm = () => {
   const formRef = useRef(null)
@@ -22,7 +25,10 @@ const ArticleCreateForm = () => {
   const [feelingStamp, setFellingStamp] = useState([])
   const baseURL = "https://i9a608.p.ssafy.io:8000"
   const subURL = articleId
+  const pointURL = "/user/point"
   const user = useSelector((state) => state.userState.user) || null
+  const point = user.point || 0
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const stamps = [
     {
       "id": 1,
@@ -60,16 +66,17 @@ const ArticleCreateForm = () => {
   const closeStampModal = () => {
     setStampModalOpen(false)
   }
-  useEffect(() => {
-    console.log(articleId)
-  })
 
   const handleImage = (e) => {
     const imageLists = [...e.target.files];
     const newImageUrlLists = [...photos];
 
     if (newImageUrlLists.length + imageLists.length > 4) {
-      alert("이미지는 최대 4개까지만 업로드할 수 있습니다.");
+      Swal.fire({
+        title: '경고',
+        text: '이미지 파일은 4개를 넘을 수 없습니다.',
+        icon: 'error',
+      });
       return;
     }
 
@@ -79,19 +86,25 @@ const ArticleCreateForm = () => {
       }
     });
     setPhotos(newImageUrlLists);
-    console.log(photos)
   };
 
   const deletePhoto = (idx) => {
     URL.revokeObjectURL(photos[idx])
     const newPhotos = photos.filter((photo, index) => index !== idx)
     setPhotos(newPhotos)
-    console.log(photos)
+    const imageInput = document.getElementById('image');
+    if (imageInput) imageInput.value = '';
+    setCurrentImageIndex(0)
   }
 
   const handleTextChange = (e) => {
     if (e.target.value.length > 150) {
       setText(e.target.value.slice(0, 150));
+      Swal.fire({
+        title: '경고',
+        text: '게시글 내용은 150자를 넘을 수 없습니다.',
+        icon: 'error',
+      });
     } else {
       setText(e.target.value);
     }
@@ -102,25 +115,46 @@ const ArticleCreateForm = () => {
   }
   const createArticle = (e) => {
     e.preventDefault();
+    const needPoint = (photos.length - 1) * 50
     console.log("제출버튼 누름")
-    const formData = new FormData(e.target)
-    console.log(formData)
-    for (let [name, value] of formData.entries()) {
-      console.log(`${name}: ${value}`);
-    }
-    axios.post(`${baseURL}${subURL}`, formData, {
-      headers : {
-        "userId": user.userId,
+    if (needPoint < point) {
+      const formData = new FormData(e.target)
+      // photos.forEach((photo, index) => {
+      //   formData.append(`files`, photo)
+      // });
+      //
+      // formData.append('content', text)
+      // if (feelingStamp[0]) {
+      //   formData.append('stamp', feelingStamp[0])
+      // }
+      for (let [name, value] of formData.entries()) {
+        console.log(`${name}: ${value}`);
       }
-    })
-      .then(res => {
-        console.log("게시글 등록 성공", res)
-        window.location.href ='/project'
+      axios.post(`${baseURL}${subURL}`, formData, {
+        headers : {
+          "userId": user.userId,
+        }
       })
-      .catch(err => {
-        console.log(baseURL,subURL, user.userId)
-        console.log("게시글 등록 실패", err)
-      })
+          .then(response => {
+            // axios.put(`${baseURL}${pointURL}${user.userId}?point=${point-needPoint}`)
+            window.location.href ='/project'
+          })
+          .catch(error => {
+            console.log(baseURL,subURL, user.userId)
+            console.log("게시글 등록 실패", error)
+            if (error.response.status === 401 && error.response.data === 'false') {
+              Swal.fire("오늘의 추억은 이미 등록되었습니다.")
+            }
+          })
+    }
+    else {
+      Swal.fire({
+        title: '경고',
+        text: '포인트가 부족합니다. 이미지 수를 줄여주세요.',
+        icon: 'error',
+      });
+    }
+
 
   }
 
@@ -136,21 +170,28 @@ const ArticleCreateForm = () => {
             <div >
               <div className="img_article_createupload">
                 {/* 시간되면 지금 몇번째 사진인지 확인할 수 있어야 함.*/}
-                <p>현재 업로드 된 사진 수 : {photos.length} </p>
+
+
                 <div>
-                  {photos.map((photo, index) => (
-                    <div key={index}>
+                  {photos.length > 0 && (
+                    <div>
+                      <div className="number_cnt">
+                        <p>{photos.length}/4</p>
+                      </div>
                       <img
-                        src={photo}
-                        alt={`미리보기 이미지 ${index+1}`}
-                        style={{ width: '300px', height: '300px', objectFit: 'cover' }}
+                        src={photos[currentImageIndex]}
+                        alt={`미리보기 이미지 ${currentImageIndex + 1}`}
                       />
-                      <button type="button" onClick={() => deletePhoto(index)}>삭제</button>
+                      <div className="photoUI_btn">
+                        <button type="button" disabled={currentImageIndex === 0} onClick={() => setCurrentImageIndex(prev => prev - 1)}>이전</button>
+                        <button type="button" disabled={currentImageIndex === photos.length - 1} onClick={() => setCurrentImageIndex(prev => prev + 1)}>다음</button>
+                        <button type="button" onClick={() => deletePhoto(currentImageIndex)} className="delete_btn">삭제</button>
+                      </div>
                     </div>
-                  ))}
+                  )}
                 </div>
                 <label>
-                  사진 넣기
+                  사진 추가하기
                   <br/>
                   <input
                     name="files"
@@ -162,28 +203,39 @@ const ArticleCreateForm = () => {
                 </label>
 
               </div>
-              <div>
+              <div className="article_contents_createupload">
                 <div>
-                  {feelingStamp && (
-                    <div>
-                      <img src={feelingStamp[1]} alt="" style={{width:"50px"}}/>
-                    </div>
-                  )}
-                  <button type="button" onClick={openStampModal}>
-                    백점만점
-                  </button>
                   <h4>오늘의 기분 도장 찍기</h4>
-                  <Modal isOpen={stampModalOpen}>
-                    {stamps.map((stamp) => (
-                      <div key={stamp.id} onClick={() => appendStamp(stamp)}>
-                        <img src={stamp.stamp} alt={stamp.id} style={{width:"50px"}} />
+                  <div className="stamp_groups">
+                    {feelingStamp && (
+                      <div className="stamp_preview">
+                        <img src={feelingStamp[1]} alt=""/>
                       </div>
-                    ))}
-                    <button type="button" onClick={closeStampModal}>
-                      닫기
-                    </button>
+                    )}
+                    <div>
+                      <button type="button" onClick={openStampModal}>
+                        도장찍기
+                      </button>
+                    </div>
+
+                  </div>
+
+
+                  <Modal isOpen={stampModalOpen} className="article_stamp_modal">
+                    <h2>오늘의 기분스탬프를 골라주세요!</h2>
+                    <div>
+                      {stamps.map((stamp) => (
+                        <div key={stamp.id} onClick={() => appendStamp(stamp)}>
+                          <img src={stamp.stamp} alt={stamp.id}/>
+                        </div>
+                      ))}
+                      <button type="button" onClick={closeStampModal}>
+                        닫기
+                      </button>
+                    </div>
+
+
                   </Modal>
-                  {/* 서버에 도장 정보 보낼 인풋 */}
                   <input
                     name="stamp"
                     style={{display:"none"}}
@@ -193,15 +245,15 @@ const ArticleCreateForm = () => {
                 </div>
                 <textarea
                   name="content"
+                  className="article_text"
                   value={text}
                   onChange={handleTextChange}
-                  maxLength={150}
-                  style={{ width:'300px', height:'200px' }}
+                  maxLength={100}
                 />
-                <div>글자 수 : {text.length} / 150</div>
+                <div className="cnt_word">{text.length} / 100</div>
               </div>
             </div>
-            <button type="submit">게시물 등록</button>
+            <button type="submit" className="article_submit">게시물 등록</button>
           </form>
         </div>
       </div>

@@ -66,7 +66,6 @@ const SignupForm = ({ form, setForm,  }) => {
     const emailData = form.id
     axios.post(`${baseURL}${authorizationURL}${emailData}`)
       .then((response) => {
-        console.log(response.status)
         if (response?.status === 209) {
           Swal.fire({
             text: response.data,
@@ -87,8 +86,9 @@ const SignupForm = ({ form, setForm,  }) => {
                   })
                   .catch((error) => {
                     console.log(error)
+                    console.log(error.response.status)
                     if (error.response?.status === 406) {
-                      Swal.fire(error.response.data)
+                      Swal.fire(error.response.data.message)
                     }
                   })
               } else if (result.isDismissed) {
@@ -104,9 +104,8 @@ const SignupForm = ({ form, setForm,  }) => {
         }
       })
       .catch((error) => {
-        console.log(error)
         if (error.response?.status === 406) {
-          Swal.fire(error.response.data)
+          Swal.fire(error.response.data.message)
         }
       })
     console.log(emailData)
@@ -226,7 +225,7 @@ const SignupForm = ({ form, setForm,  }) => {
                   placeholder="example@example.com"
                   value={form.id}
                   onClick={emailCheckPaper}
-                  disabled={isAuthentication}
+                  readOnly={isAuthentication}
                   required
                 />
               </div>

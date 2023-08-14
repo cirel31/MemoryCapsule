@@ -86,7 +86,7 @@
           background: var(--transpar);
           color: var(--brand3_main);
           -webkit-background-clip: text;
-          font-size: clamp(0.5vw, 1vw, 2vw);
+          font-size: clamp(1.5rem, 2.5vw, 2rem);
           font-weight: 700;
         }
 
@@ -227,12 +227,12 @@
     .modal_inner_title_input{
       width: 100%;
       color: var(--font_gray_main);
-      font-size: 22pt;
+      font-size: 20pt;
       background-color: var(--transpar);
       outline: none;
 
       border: 3px solid var(--brand3_main);
-      border-radius: 5px;
+      border-radius: 12px;
     }
 
 
@@ -283,6 +283,7 @@
       font-weight: 500;
       font-size: 15pt;
       color: var(--font_gray_main);
+
       overflow-y: scroll;
 
       scroll-behavior: smooth;
@@ -327,6 +328,9 @@
         cursor: pointer;
         border: none;
         border-radius: 3rem;
+      }
+      .text_styled_red{
+        color: var(--brand3_main);
       }
     }
   }
