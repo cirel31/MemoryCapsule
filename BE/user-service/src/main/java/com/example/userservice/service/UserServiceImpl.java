@@ -215,6 +215,7 @@ public class UserServiceImpl implements UserService {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
     }
 
+    @Transactional
     @Override
     public void modifyPassword(String userEmail, String code) throws Exception {
         log.info("비밀번호 변경 " + userEmail + "code : " + code);
@@ -222,6 +223,7 @@ public class UserServiceImpl implements UserService {
         user.modifyPassword(passwordEncoder.encode(code));
     }
 
+    @Transactional
     @Override
     public void checkPassword(UserDto.modifyPwd modifyPwd) throws Exception {
         log.info("비밀번호 확인 및 변경" + modifyPwd);
