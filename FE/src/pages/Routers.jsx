@@ -12,7 +12,7 @@ import UserProfilePage from "./user/UserProfilePage";
 import CalendarForm from "../components/user/CalendarForm";
 import FriendPage from "./friend/FriendPage";
 import NoticeListPage from "./notice/NoticeListPage";
-import ReviewPage from  "./review/ReviewPage";
+import ReviewPage from "./review/ReviewPage";
 import ArticleCreatePage from "./project/ArticleCreatePage";
 import ProjectDetailPage from "./project/ProjectDetailPage";
 import ProjectListPage from "./project/ProjectListPage";

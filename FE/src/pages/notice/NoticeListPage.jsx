@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AnnounceUserViewPage from "./AnnounceUserViewPage";
 import PostModal from "../../components/post/PostModal";
 import {useSelector} from "react-redux";
