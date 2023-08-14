@@ -187,19 +187,23 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception {
+        log.info("유저 정보 수정 " + info + ", 파일: " + multipartFile);
         User user = getUserById(info.getUserId());
         if (info.getNickName() != null)  user.setNickName(info.getNickName());
-        if (info.getPassword() != null)  user.setPassWord(info.getPassword());
+//        if (info.getPassword() != null)  user.setPassWord(info.getPassword());
         if (multipartFile != null)   user.setImgUrl(getImgUrl(multipartFile));
     }
 
     @Override
-    public boolean checkEmailDuplicated(UserDto.RequestFindPass userInfo) {
-        User user = userRepository.findByEmail(userInfo.getEmail()).orElse(null);
-        if (user != null && user.getPhone().equals(userInfo.getPhone())) {
-            return true;
+    public void checkEmailDuplicated(UserDto.RequestFindPass userInfo) throws Exception {
+        log.info("이메일 확인" + userInfo);
+        User user = getUserByEmail(userInfo.getEmail());
+        if (user.isOAuthUser()) {
+            throw new IllegalStateException("카카오로 가입한 유저입니다.");
         }
-        return false;
+        if (!user.getPhone().equals(userInfo.getPhone())) {
+            throw new IllegalStateException("핸드폰 번호가 알맞지 않습니다.");
+        }
     }
 
     @Override
@@ -211,15 +215,32 @@ public class UserServiceImpl implements UserService {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
     }
 
+    @Transactional
     @Override
-    public void modifyPassword(String userEmail, String code) {
+    public void modifyPassword(String userEmail, String code) throws Exception {
+        log.info("비밀번호 변경 " + userEmail + "code : " + code);
         User user = getUserByEmail(userEmail);
         user.modifyPassword(passwordEncoder.encode(code));
     }
 
     @Transactional
     @Override
+    public void checkPassword(UserDto.modifyPwd modifyPwd) throws Exception {
+        log.info("비밀번호 확인 및 변경" + modifyPwd);
+        User user = getUserById(modifyPwd.getUserId());
+        if (!passwordEncoder.matches(modifyPwd.getPassword(), user.getPassWord())) {
+            throw new Exception("비밀번호가 일치하지 않습니다.");
+        }
+        if (user.isOAuthUser()) {
+            throw new Exception("카카오로 가입한 유저는 비밀번호를 변경할 수 없습니다.");
+        }
+        user.modifyPassword(passwordEncoder.encode(modifyPwd.getNewPassword()));
+    }
+
+    @Transactional
+    @Override
     public Boolean updatePoint(Long userId, Long point) throws Exception {
+        log.info("포인트 업데이트 : " + userId + "point : " + point);
         User user = getUserById(userId);
         if (user.getPoint() + point < 0) return false;
         user.setPoint(user.getPoint() + point);
@@ -246,12 +267,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
     }
 
-    public User getUserByEmail(String userEmail) throws IllegalStateException {
-        return userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalStateException("user Not found"));
+    private User getUserByEmail(String userEmail) throws Exception {
+        return userRepository.findByEmail(userEmail).orElseThrow(() -> new Exception("user Not found"));
     }
 
     @Override
     public String checkingUserOrSendEmail(String userEmail) throws Exception {
+        log.info("이메일 보내기" + userEmail);
         userRepository.findByEmail(userEmail).ifPresent((e) -> {
             if(e.isDeleted()) throw new NotFoundException("이미 삭제된 회원입니다.");
             else throw new IllegalArgumentException("이미 회원가입한 이메일입니다.");
