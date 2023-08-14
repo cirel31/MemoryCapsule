@@ -53,6 +53,9 @@ const ProjectDetailPage = () => {
       "stamp": stamp_wow,
     },
   ]
+  const date = new Date;
+  const [curPeriod, setCurPeriod] = useState(null);
+  const [fullPeriod, setFullPeriod] = useState(null);
   const { projectId } = useParams()
   const [project, setProject] = useState([])
   const [myArticles, setMyArticles] = useState([])
@@ -60,7 +63,7 @@ const ProjectDetailPage = () => {
   const [selectedPost, setSelectedPost] = useState(null)
   const [isHovered, setIsHovered] = useState(null)
   const [endCondition, setEndCondition] = useState(false)
-  
+
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${projectId}`
       , {
@@ -93,13 +96,20 @@ const ProjectDetailPage = () => {
     )
         .then((response) => {
           console.log(response.data)
-          setMyArticles(response.data);
+          setMyArticles(response.data.reverse());
         })
         .catch((error) => {
           console.error("서버로부터 게시물 가져오기 실패", user.userId);
           console.error(error)
         });
   }, []);
+
+  useEffect(() => {
+    if (project.started && project.ended) {
+      setFullPeriod(new Date(project.ended).getTime() - new Date(project.started).getTime());
+      setCurPeriod(new Date(project.ended).getTime() - date);
+    }
+  }, [project])
 
   // 프로젝트 인원 수 따라서 싱글 프로젝트인지 구분하기 위한 함수
   function isSoloProject() {
@@ -180,7 +190,11 @@ const ProjectDetailPage = () => {
             </div>
             <div className="detail_project_shorts_info_percentage">
               <div className="detail_project_shorts_info_percentage_text">
-                <p>{((project.artielcNum / 350) * 100).toFixed()}%</p>
+                {
+                  curPeriod / fullPeriod < 0
+                  ?<p>100%</p>
+                  :<p>{curPeriod && fullPeriod && ((1 - curPeriod / fullPeriod) * 100).toFixed(1)}%</p>
+                }
               </div>
               <svg className="detail_project_shorts_info_percentage_graph">
                 <circle
@@ -198,7 +212,7 @@ const ProjectDetailPage = () => {
                     fill="none"
                     stroke="#FF8CA1FF"
                     strokeWidth="8"
-                    strokeDasharray={`${2 * Math.PI * 30 * (project.artielcNum / 365)} ${2 * Math.PI * 30 * (1-(project.artielcNum / 365))}`}
+                    strokeDasharray={`${2 * Math.PI * 30 * (1 - curPeriod / fullPeriod)} ${2 * Math.PI * 30 * (curPeriod / fullPeriod)}`}
                     strokeDashoffset={2 * Math.PI * 30 * 0.25}
                 />
               </svg>

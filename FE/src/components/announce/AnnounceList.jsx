@@ -50,13 +50,10 @@ const AnnounceUserViewPage = ({page, size}) => {
      * 2. 공지사항 자세하게 보기 [get]
      * http://localhost:8080/notice/2
      * */
-    const getNoticesDataDetail = (e) => {
-        console.log("[getNoticesDataDetail]");
+    const getNoticesDataDetail = () => {
+        console.log("[getNoticesDataDetail]", selectedPost);
 
-        const index = e;
-
-        // 실제 배포는 8000
-        // 테스트 및 개발 서버는 7000
+        const index = selectedPost.id;
 
         console.log(index);
         axios.get(`${baseURL}${API}/${index}`)

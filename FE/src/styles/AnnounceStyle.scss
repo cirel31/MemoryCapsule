@@ -59,9 +59,15 @@
             border-radius: 100%;
             background-color: var(--backGround_0);
 
+            &:hover {
+              background-color: var(--backGround_1);
+            }
+
             .announce_back_button_img {
               width: 20px;
               height: 20px;
+
+
             }
           }
         }
@@ -225,6 +231,8 @@
     }
 
     .modal_inner_title_input{
+      font-family: "IBM Plex Sans KR", sans-serif;
+      font-weight: 600;
       width: 100%;
       color: var(--font_gray_main);
       font-size: 20pt;
@@ -237,9 +245,9 @@
 
 
     .modal_inner_contents {
+      font-family: "IBM Plex Sans KR", sans-serif;
       height: 380px;
       text-align: left;
-      font-family: "IBM Plex Sans KR", sans-serif;
       font-weight: 500;
       font-size: 15pt;
       color: var(--font_gray_main);

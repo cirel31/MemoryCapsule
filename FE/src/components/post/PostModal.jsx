@@ -28,7 +28,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         console.log("selectedPost :", selectedPost);
         setPost(selectedPost);
         setState(selectedPost &&(selectedPost.noticeIdx === 0 || state));
-    }, [selectedPost]);
+    }, [modalIsOpen]);
 
     // 공지사항 데이터 접근자가 관리자인지 확인
     function checkUserRole() {
@@ -70,7 +70,9 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
             formData.append('file', image);
         });
 
-        if (checkUserRole()) {
+        console.log("post.noticeTitle && post.noticeContent : ", post.noticeTitle && post.noticeContent)
+
+        if (checkUserRole() && post.noticeTitle && post.noticeContent) {
             axios.post(`${baseURL}${API}`, formData,
                 {
                     headers: {
@@ -81,11 +83,15 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
             })
             .then((response) => {
                 console.log('게시글 작성 POST successful : ', response.data);
+                setSelectedPost([]);
+                showAlert("게시글이 등록되었습니다.");
                 closeModal()
             })
             .catch((error) => {
                 console.error('게시글 작성 POST fail : ', error);
             });
+        } else {
+            showAlert("제목과 내용을 적어주세요.");
         }
     }
 
@@ -109,7 +115,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                 )
                 .then((response) => {
                     console.log('게시글 삭제 (Delete) successful : ', response.data);
-                    setSelectedPost([]);
+                    showAlert("게시글이 삭제되었습니다.");
                     closeModal()
                 })
                 .catch((error) => {
