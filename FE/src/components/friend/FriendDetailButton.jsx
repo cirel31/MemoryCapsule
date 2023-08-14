@@ -13,7 +13,6 @@ const FriendDetailButton = ({ friend, select, setSelect}) => {
 
     return (
         <>
-            {console.log("friend :", friend.status)}
             {
                 friend.status === 1
                 ?

@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 const ProjectLockerPage = () => {
   const [isHovered, setIsHovered] = useState(null)
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
+  // const subURL = '/project/myproject/done'
   const subURL = '/project/myproject/done'
   const [projects, setProjects] = useState([]);
   const user = useSelector((state) => state.userState.user) || null
@@ -87,7 +88,7 @@ const ProjectLockerPage = () => {
                 <div style={{display:'flex', alignItems:'center'}}>
                   {currentPosts.map((project) => (
                       <Link
-                          to={`/project/${project.id}`}
+                          to={`/project/present/${project.giftUrl}`}
                           key={project.id}
                       >
                         <div

@@ -49,7 +49,7 @@ public class ProjectDto {
     }
 
 
-    public ProjectInfo toInfo(List<UserVo> userList, Long num){
-        return new ProjectInfo(this,userList, num);
+    public ProjectInfo toInfo(List<UserVo> userList,Long owner, Long num){
+        return new ProjectInfo(this,owner, userList, num);
     }
 }

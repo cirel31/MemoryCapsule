@@ -4,7 +4,7 @@ import "../../styles/AnnounceStyle.scss"
 import go_back from "../../assets/images/frield/go_back.svg";
 import AnnounceList from "../../components/announce/AnnounceList";
 
-const AnnounceUserViewPage = () => {
+const ReviewPage = () => {
     // 뒤로가기
     const handleBack = () => {
         window.history.back()
@@ -27,4 +27,4 @@ const AnnounceUserViewPage = () => {
       </>
   )
 }
-export default AnnounceUserViewPage;
+export default ReviewPage;

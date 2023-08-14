@@ -24,10 +24,10 @@ public class ProjectInfo {
     private int alarmType;
     private int alarm;
     private long artielcNum;
+    private long owner;
     private List<UserVo> userList;
 
-    @Builder
-    public ProjectInfo(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, String giftUrl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum, List<UserVo> userList) {
+    public ProjectInfo(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, String giftUrl, int type, Boolean state, int limit, int alarmType, int alarm, long artielcNum, long owner, List<UserVo> userList) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -43,10 +43,11 @@ public class ProjectInfo {
         this.alarmType = alarmType;
         this.alarm = alarm;
         this.artielcNum = artielcNum;
+        this.owner = owner;
         this.userList = userList;
     }
 
-    public ProjectInfo(ProjectDto projectDto,List<UserVo> userList, Long num){
+    public ProjectInfo(ProjectDto projectDto,Long owner, List<UserVo> userList, Long num){
         this.id = projectDto.getId();
         this.title = projectDto.getTitle();
         this.content = projectDto.getContent();
@@ -63,5 +64,6 @@ public class ProjectInfo {
         this.giftUrl = projectDto.getGiftUrl();
         this.userList = userList;
         this.artielcNum = num;
+        this.owner = owner;
     }
 }

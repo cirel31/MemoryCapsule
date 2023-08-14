@@ -8,6 +8,7 @@ import InviteProject from "../project/InviteProject";
 import locker_img from "../../assets/images/present_box.jpg";
 import {Link} from "react-router-dom"
 import AnnounceList from "../../components/announce/AnnounceList";
+import ProjectLockerPage from "../project/ProjectLockerPage";
 
 
 const MyPage = () => {
@@ -45,16 +46,12 @@ const MyPage = () => {
             <div className="parting_line"></div>
             <div>
               <CurrentProjectsPage />
-              <p>알약들 나오는 페이지 만들어줘 만들어 줘 만들어 "줘"</p>
-              <button onClick={LogoutUser}>로그아웃 버튼</button>
             </div>
             <br/>
             <br/>
             <h1 className="mypage_notice_h1">보관함</h1>
             <div>
-              <Link to='/project/locker'>
-                <img src={locker_img} alt="보관함"/>
-              </Link>
+              <ProjectLockerPage />
             </div>
             <div className="parting_line"></div>
         </div>

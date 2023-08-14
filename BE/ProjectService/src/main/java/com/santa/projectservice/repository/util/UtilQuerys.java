@@ -12,6 +12,11 @@ import com.santa.projectservice.repository.RegisterRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +38,37 @@ public class UtilQuerys {
         this.queryFactory = queryFactory;
         this.articleRepository = articleRepository;
         this.registerRepository = registerRepository;
+    }
+    public boolean existsArticleCreatedToday(Long userId, Long projectId) {
+        // Asia/Seoul 시간대로 현재 날짜를 가져옵니다.
+        ZonedDateTime nowInSeoul = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        ZonedDateTime startOfDayInSeoul = nowInSeoul.toLocalDate().atStartOfDay(nowInSeoul.getZone());
+        ZonedDateTime endOfDayInSeoul = startOfDayInSeoul.plusDays(1).minusNanos(1);
+        log.info("오늘 날짜 : " + ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toString());
+        log.info("start : " + startOfDayInSeoul.toString());
+        log.info("end : "+endOfDayInSeoul.toString());
+
+        // ZonedDateTime을 Date로 변환합니다.
+        Date startDate = Date.from(startOfDayInSeoul.toInstant());
+        Date endDate = Date.from(endOfDayInSeoul.toInstant());
+        log.info("start : " + startDate.toString());
+        log.info("end : " + endDate.toString());
+        // 해당 시간 범위 내에 작성된 Article이 있는지 확인합니다.
+        return queryFactory.selectFrom(qArticle)
+                .where(
+                        qArticle.user.id.eq(userId),
+                        qArticle.project.id.eq(projectId),
+                        qArticle.created.between(startDate, endDate))
+                .fetchFirst() != null;
+    }
+
+
+    public Long findOwner(Long projectId){
+        return queryFactory
+                .select(qRegister.user.id)
+                .from(qRegister)
+                .where(qRegister.project.id.eq(projectId), qRegister.type.eq(true))
+                .fetchOne();
     }
 
     public UserInfo userInfo(Long userId){

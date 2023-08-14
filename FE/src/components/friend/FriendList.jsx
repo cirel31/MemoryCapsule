@@ -34,6 +34,11 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
         console.log("login : ", login);
     }, []);
 
+    useEffect(() => {
+        console.log("[useEffect : select]");
+        getDetailedFriendList();
+    }, [select]);
+
     /**
      5. 친구 상세목록 불러오기
      /friend/getDetailedFriendList/{userId}	친구들의 글목록/작성글수/프로젝트수 조회

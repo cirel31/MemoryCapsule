@@ -40,10 +40,10 @@ export default function Routers() {
       <Route path='/project/:projectId/article' element={<ArticleCreatePage />} />
       <Route path='/project/invite' element={<InviteProject />}/>
       <Route path='/project/locker' element={<ProjectLockerPage />} />
-      <Route path='/project/locker/:presentId/' element={<SendPresentPage />} />
+      <Route path='/project/present/:giftUrl' element={<SendPresentPage />} />
       <Route path='/friend' element={<FriendPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
-      <Route path='/notice/postcreate' element={<PostCreatePage />} />
+      {/*<Route path='/review' element={<ReviewPage />} />*/}
       
 
       <Route path='/mypage' element={<MyPage />} />

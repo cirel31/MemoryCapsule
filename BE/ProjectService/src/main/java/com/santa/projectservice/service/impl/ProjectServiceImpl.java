@@ -234,7 +234,8 @@ public class ProjectServiceImpl implements ProjectService {
         });
         for (int i = 0; i < numList.size(); i++) {
             List<UserVo> userVos = utilQuerys.projectUserVos(projectDtos.get(i).getId());
-            projectInfos.add(projectDtos.get(i).toInfo(userVos, numList.get(i)));
+            Long owner = utilQuerys.findOwner(projectDtos.get(i).getId());
+            projectInfos.add(projectDtos.get(i).toInfo(userVos,owner, numList.get(i)));
         }
         return projectInfos;
     }
