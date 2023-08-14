@@ -6,7 +6,6 @@ import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.service.UserService;
 import com.example.userservice.util.RegexUtil;
-import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -51,8 +50,6 @@ public class UserController {
         return "Hello user-service with locked";
     }
 
-
-    @Timed(description = "user.status", longTask = true)
     @GetMapping("/health-check")
     public String getHealth() {
         return "Hello user-service";

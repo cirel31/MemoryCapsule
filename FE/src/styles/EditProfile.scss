@@ -149,4 +149,25 @@
   }
 
 }
+.go_back {
+  top: 38%;
+  right: 24%;
+  z-index: 6;
+  position: absolute;
+  background-color: var(--brand3_main);
+  border-radius: 4rem;
+  width: 6.5vw;
+  height: 3.5vw;
+  border: none;
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+  cursor: pointer;
+  rotate: 6deg;
 
+  &:hover{
+    background-color: var(--brand2_main);
+  }
+
+  & > img {
+    width: 1.75vw;
+  }
+}
