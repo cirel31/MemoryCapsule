@@ -13,6 +13,7 @@ import left_btn from "../../assets/images/mainpage/left.svg"
 import start_btn from "../../assets/images/mainpage/start.svg"
 import end_btn from "../../assets/images/mainpage/end.svg"
 import tag_label from "../../assets/images/mainpage/Tag.svg"
+import kokona from "../../assets/images/kokona.png";
 
 const ProjectListPage = () => {
   const [isHovered, setIsHovered] = useState(null)
@@ -139,7 +140,11 @@ const ProjectListPage = () => {
                   onClick={() => openModal(project.id)}
                 >
                   <img src={clamp} className="deco_clamp"/>
-                  <img src={project.imgUrl} alt="" className="photos"/>
+                  <img 
+                    src={project.imgUrl} 
+                    alt="이미지 없음"
+                    onError={(e) => {e.target.src = kokona}}
+                    className="photos"/>
                   <p>{project.title}</p>
                 </div>
               ))}
@@ -152,7 +157,11 @@ const ProjectListPage = () => {
           {selectedPost && (
             <div>
               <div>
-                <img src={selectedPost.imgUrl} alt="ㅠㅠㅠㅠㅠ"/>
+                <img
+                  src={selectedPost.imgUrl}
+                  alt="이미지 없음"
+                  onError={(e) => {e.target.src = kokona}}
+                />
                 <div className="black"></div>
                 {/*{(selectedPost.userList.length === 1) ? (<p>나만의 기록</p>) : (<p>친구와의 기록</p>)}*/}
               </div>

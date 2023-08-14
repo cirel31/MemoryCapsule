@@ -32,11 +32,24 @@ public class UserDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @ToString
     public static class modify{
         @NotNull
         private Long userId;
         private String nickName;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    public static class modifyPwd{
+        @NotNull
+        private Long userId;
         private String password;
+        private String newPassword;
     }
 
     @Getter
