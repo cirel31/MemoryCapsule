@@ -14,6 +14,9 @@ import create_w from "../../assets/images/projectcreate/write.svg";
 import group_w from "../../assets/images/projectcreate/Group_white.svg";
 import group_r from "../../assets/images/projectcreate/Group_red.svg";
 import def_img from "../../assets/images/stamp/stamp_best.svg"
+import FriendList from "../friend/FriendList";
+import FriendSearch from "../friend/FriendSearch";
+import FriendPage from "../../pages/friend/FriendPage";
 
 const ProjectForm = () => {
   const formRef = useRef(null)
@@ -74,10 +77,7 @@ const ProjectForm = () => {
   };
   
   const handleImage = (e) => {
-    // 현재 선택된 파일의 목록을 가져옵니다.
     const imageLists = Array.from(e.target.files);
-    
-    // 이미 선택된 이미지 URL 목록을 가져옵니다.
     const newImageUrlLists = [...photos];
     
     imageLists.forEach((file) => {

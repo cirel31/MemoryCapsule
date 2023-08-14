@@ -22,9 +22,7 @@ const ProjectListPage = () => {
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const subURL = '/project/myproject/current'
   const user = useSelector((state) => state.userState.user) || null
-  const [projects, setProjects] = useState([
-
-  ]);
+  const [projects, setProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProjects, setFilteredProjects] = useState([])
   
@@ -38,11 +36,9 @@ const ProjectListPage = () => {
       }
     })
         .then((response) => {
-          console.log('프로젝트 리스트 가져오기 : ', response.data)
           setProjects(response.data);
         })
         .catch((error) => {
-          console.error("프로젝트 리스트 가져오기 실패", error);
           console.error(error.code)
         });
   }, []);
@@ -108,7 +104,7 @@ const ProjectListPage = () => {
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="프로젝트 검색..."
+            placeholder="진행 중인 프로젝트 검색..."
           />
           <button onClick={handleSearchChange}><img src={search_picto}/></button>
         </div>
@@ -130,7 +126,6 @@ const ProjectListPage = () => {
             </div>
           ) : (
             <div className="pjt_lst_body">
-
               {currentPosts.map((project) => (
                 <div
                   key={project.id}
