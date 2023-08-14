@@ -227,10 +227,10 @@ public class UserServiceImpl implements UserService {
         log.info("비밀번호 확인 및 변경" + modifyPwd);
         User user = getUserById(modifyPwd.getUserId());
         if (!passwordEncoder.matches(modifyPwd.getPassword(), user.getPassWord())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new Exception("비밀번호가 일치하지 않습니다.");
         }
         if (user.isOAuthUser()) {
-            throw new IllegalStateException("카카오로 가입한 유저는 비밀번호를 변경할 수 없습니다.");
+            throw new Exception("카카오로 가입한 유저는 비밀번호를 변경할 수 없습니다.");
         }
         user.modifyPassword(passwordEncoder.encode(modifyPwd.getNewPassword()));
     }

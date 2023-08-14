@@ -32,6 +32,7 @@ public class UserDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @ToString
     public static class modify{
         @NotNull
         private Long userId;
@@ -43,6 +44,7 @@ public class UserDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @ToString
     public static class modifyPwd{
         @NotNull
         private Long userId;
