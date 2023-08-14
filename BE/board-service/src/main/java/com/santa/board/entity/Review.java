@@ -47,19 +47,6 @@ public class Review {
     @Column(name = "review_updated", nullable = false)
     private Date reviewUpdated;
 
-    public Review(Long userIdx, String title, String content, String fileUrl) {
-        Review.builder()
-                .reviewIdx(userIdx)
-                .reviewTitle(title)
-                .reviewContent(content)
-                .reviewImgUrl(fileUrl)
-                .reviewDeleted(false)
-                .reviewCreated(new Date())
-                .reviewUpdated(new Date())
-                .reviewHit(0)
-                .build();
-    }
-
     public void incrementReviewHit() {
         this.reviewHit += 1;
     }
