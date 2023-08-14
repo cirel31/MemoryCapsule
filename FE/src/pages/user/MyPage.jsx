@@ -30,6 +30,8 @@ const MyPage = () => {
               <CalendarForm />
             </div>
             <br/>
+            <h1 className="mypage_notice_h1">초대받은 캡슐</h1>
+            <div className="parting_line"></div>
             <div>
               <InviteProject />
             </div>
