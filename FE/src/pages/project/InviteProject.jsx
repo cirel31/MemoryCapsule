@@ -1,11 +1,14 @@
 import axios from "axios";
 import {useEffect, useState} from "react";
 import Swal from "sweetalert2";
+import {useSelector} from "react-redux";
 
 const InviteProject = () => {
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const inviteURL = '/project/invite'
   const [inviteLists, setInviteLists] = useState([])
+  const user = useSelector((state) => state.userState.user) || null
+
   useEffect(() => {
     const searchInvite = async () => {
       // const accessToken = sessionStorage.getItem("accessToken")
@@ -13,7 +16,7 @@ const InviteProject = () => {
         await axios.get(`${baseURL}${inviteURL}`, {
           headers: {
             // Authorization: `Bearer ${accessToken}`
-            "userId": "9"
+            "userId": user.userId
           }
         })
           .then((res) => {
