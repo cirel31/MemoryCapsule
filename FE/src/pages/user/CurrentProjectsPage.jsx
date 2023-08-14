@@ -1,9 +1,8 @@
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import {useSelector} from "react-redux";
-import arona from "../../assets/images/kokona.png"
 
 const CurrentProjectsPage = () => {
   const [isHovered, setIsHovered] = useState(null)
@@ -11,15 +10,9 @@ const CurrentProjectsPage = () => {
   // const [isModal, setIsModal] = useState(false)
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const subURL = '/project/myproject/current'
-  const [projects, setProjects] = useState([
-    {'id': 1, rotationX: 0, rotationY: 0},
-    {'id': 2, rotationX: 0, rotationY: 0},
-    {'id': 3, rotationX: 0, rotationY: 0},
-  ]);
+  const [projects, setProjects] = useState([])
   const user = useSelector((state) => state.userState.user) || null
-  const [rotationX, setRotationX] = useState(0);
-  const [rotationY, setRotationY] = useState(0);
-  
+
   const handleMouseMove = (projectId, event) => {
     const div = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - (div.left + div.width / 2);

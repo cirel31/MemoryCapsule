@@ -8,20 +8,28 @@ import photo_picto from "../../assets/images/signup/upload.svg"
 import {fetchUserInfoThunk} from "../../store/userSlice";
 import goback_btn from "../../assets/images/signup/go_back.svg";
 import {useNavigate} from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 const EditProfilePage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const baseURL = 'https://i9a608.p.ssafy.io:8000'
+  const subURL = '/user/change'
+
+  const accessToken = sessionStorage.getItem("accessToken")
   const user = useSelector((state) => state.userState.user) || null
-  console.log(user)
   const user_nickname = user?.nickname || 'james'
   const user_img = user?.imgUrl || defaultImg
+
   const [imgFile, setImgFile] = useState(user_img);
   const [originNickname, setOriginNickname] = useState(user_nickname);
+
   const imgRef = useRef();
   const nickRef = useRef()
   const formRef = useRef()
+
   const saveImgFile = () => {
     const file = imgRef.current.files[0];
     setImgFile(URL.createObjectURL(file));
@@ -32,16 +40,20 @@ const EditProfilePage = () => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    const baseURL = 'https://i9a608.p.ssafy.io:8000'
-    const subURL = '/user/change'
-    const accessToken = sessionStorage.getItem("accessToken")
-    console.log(accessToken)
     const userId = user.userId
-    const formData = new FormData(formRef.current)
-    formData.append('userId', userId)
-
+    let changeData = null
+    if (user_img === imgFile) {
+      const formData = new FormData()
+      formData.append('nickName', originNickname)
+      changeData = formData
+    }
+    else {
+      const formData = new FormData(formRef.current)
+      changeData = formData
+    }
+    changeData.append('userId', userId)
     try {
-      axios.put(`${baseURL}${subURL}`, formData, {
+      axios.put(`${baseURL}${subURL}`, changeData, {
         headers: {
           // "userId": {userId},
           "Authorization": `Bearer ${accessToken}`,
@@ -64,7 +76,64 @@ const EditProfilePage = () => {
   const handleMyPage = () => {
     navigate('/mypage')
   }
-  
+  const handelPassWord = (e) => {
+    e.preventDefault()
+    Swal.fire({
+      title: '비밀번호 변경',
+      icon: 'info',
+      html: `
+    <input type="password" id="currentPassword" class="swal2-input" placeholder="현재 비밀번호">
+    <input type="password" id="newPassword" class="swal2-input" placeholder="새 비밀번호">
+  `,
+      focusConfirm: false,
+      preConfirm: () => {
+        let currentPassword = document.getElementById('currentPassword').value;
+        let newPassword = document.getElementById('newPassword').value;
+        return {
+          currentPassword: currentPassword,
+          newPassword: newPassword
+        };
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const currentPassword = result.value.currentPassword
+        const newPassword = result.value.newPassword
+        if (currentPassword &&  newPassword) {
+          const passwordData = new FormData()
+          passwordData.append('currentPassword', result.value.currentPassword)
+          passwordData.append('newPassword', result.value.newPassword)
+          axios.put(`${baseURL}${subURL}`, passwordData, {
+            "Authorization": `Bearer ${accessToken}`,
+          })
+            .then(() => {
+              Swal.fire({
+                text: "비밀번호가 변경되었습니다.",
+                focusConfirm: false,
+                confirmButtonText: '확인',
+              })
+                .then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href ='/profile'
+                  }
+                })
+            })
+            .catch((error) => {
+              if (error.response.status === 506) {
+                Swal.fire({
+                  icon: 'warning',
+                  text: "현재 비밀번호가 일치하지 않습니다.",
+                  focusConfirm: false,
+                  confirmButtonText: '확인',
+                })
+              }
+            })
+        }
+      }
+    })
+      .catch((error) => {
+        console.log('서버에 제출하기 전에 에러 발생', error)
+      });
+  }
   return (
     <>
       <div className="profile_edit_body">
@@ -81,7 +150,6 @@ const EditProfilePage = () => {
               type="file"
               accept="image/*"
               onChange={saveImgFile}
-              // value={imgFile}
               ref={imgRef}
               id="edit_image"
             />
@@ -101,7 +169,7 @@ const EditProfilePage = () => {
               />
             </div>
             <button onClick={handleSubmit}>프로필 변경하기</button>
-            <button>비밀번호 변경하기</button>
+            <button onClick={handelPassWord}>비밀번호 변경하기</button>
           </div>
         </form>
         <button onClick={handleMyPage}><img src={goback_btn}/></button>

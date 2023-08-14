@@ -21,11 +21,10 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
         return ((exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
-
+            if(request.getPath().toString().contains("/actuator")) return chain.filter(exchange); // /actuator 에 대해서는 filter 해제
             StringBuilder sb = new StringBuilder();
-            sb.append("\n+-----Global Filter baseMessage: ").append(config.getBaseMessage()).append("\n");
-
             if(config.isRequestLogger()) {
+                sb.append("\n+-----Global Filter baseMessage: ").append(config.getBaseMessage()).append("\n");
                 sb.append("|Method: ").append(request.getMethod()).append("\n");
                 sb.append("|URI: ").append(request.getURI()).append("\n");
                 sb.append("|Headers:\n\t").append(request.getHeaders()).append("\n");
@@ -36,8 +35,8 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
                 sb.append("|Local Address: ").append(request.getLocalAddress()).append("\n");
                 sb.append("|SslInfo: ").append(request.getSslInfo()).append("\n");
                 sb.append("|Id: ").append(request.getId()).append("\n");
+                sb.append("+---------------------------> response : ").append(response.getStatusCode()).append("\n");
             }
-            sb.append("+---------------------------> response : ").append(response.getStatusCode()).append("\n");
             return chain.filter(exchange).then(Mono.fromRunnable(()->{
                 log.info("{}", sb.toString());
             }));
