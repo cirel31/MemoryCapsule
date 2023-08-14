@@ -233,6 +233,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                                     value={post.noticeContent}
                                     className="modal_inner_contents_input"
                                     onChange={contentChange}
+                                    maxLength={5000}
                                 />
                                 :
                                 <p className="modal_inner_contents">

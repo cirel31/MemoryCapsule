@@ -95,12 +95,12 @@ const ProjectDetailPage = () => {
 
   // 프로젝트 인원 수 따라서 싱글 프로젝트인지 구분하기 위한 함수
   function isSoloProject() {
-    if (1 <= 1) {
+    if (project.userList && (project.userList.length <= 1)) {
       // 혼자서 하는 프로젝트인 경우
-      return true;
+      return false;
     } else {
       // 여러명이서 하는 프로젝트인 경우
-      return false;
+      return true;
     }
   }
 
@@ -222,7 +222,12 @@ const ProjectDetailPage = () => {
                     }
                     <div className="detail_project_history_article_imgbox">
                       {article.images ? (
-                          <img src={`${article.images[0]}`} alt="서버 이미지를 불러올 수 없습니다" className="detail_project_history_article_img"/>
+                          <img
+                              src={`${article.images[0]}`}
+                              alt="서버 이미지를 불러올 수 없습니다"
+                              className="detail_project_history_article_img"
+                              onError={(e) => {e.target.src = kokona}}
+                          />
                       ) : <img src={kokona} alt="클라이언트 이미지를 불러올 수 없습니다"  className="detail_project_history_article_img"/>
                       }
                     </div>
