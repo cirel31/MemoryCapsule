@@ -88,13 +88,13 @@ const ProjectForm = () => {
     });
     
     setPhotos(newImageUrlLists);
-    console.log(photos);
   };
   
   const deletePhoto = (idx) => {
     const newPhotos = photos.filter((photo, index) => index !== idx);
     setPhotos(newPhotos);
-    console.log(photos);
+    const imageInput = document.getElementById('image');
+    if (imageInput) imageInput.value = '';
   };
   
   return (
@@ -200,10 +200,7 @@ const ProjectForm = () => {
 
           <br/>
 
-
-
           <br/>
-
 
           <br/>
 

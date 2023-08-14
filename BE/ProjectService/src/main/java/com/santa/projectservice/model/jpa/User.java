@@ -84,7 +84,7 @@ public class User {
         return  UserVo.builder()
                 .nickname(this.nickname)
                 .name(this.name)
-                .imgurl(this.imgurl)
+                .imgUrl(this.imgurl)
                 .build();
     }
 

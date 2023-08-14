@@ -3,6 +3,7 @@ import { useState} from "react";
 import Modal from "react-modal";
 import useLoginEmail from "../../hooks/useLoginEmail";
 import kakao_login_img from "../../assets/images/home/kakaotalk_logo.svg"
+import Swal from "sweetalert2";
 
 
 const LoginForm = ({ form, setForm }) => {
@@ -28,18 +29,28 @@ const LoginForm = ({ form, setForm }) => {
   const handleSignupPage = () => {
     navigate('/signup');
   };
-
+  
+  const showAlert = (title, text, icon) => {
+    Swal.fire({
+      title,
+      text,
+      icon,
+    });
+  };
+  
   const sendLoginDataServer = async (e) => {
     e.preventDefault();
     const sendId = form.id;
     const sendPass = form.password;
 
     if (sendId.length === 0 || !isValidEmail) {
+      showAlert("Error", "아이디 형식이 잘못 되었습니다.", "error");
       setIdModalIsOpen(true);
       return;
     }
 
     if (sendPass.length < 4) {
+      showAlert("Error", "비밀번호 길이는 4자 이상입니다.", "error");
       setPassModalIsOpen(true);
       return;
     }
@@ -121,14 +132,14 @@ const LoginForm = ({ form, setForm }) => {
       </div>
       {/* 모달 창 */}
       <div onClick={() => setIdModalIsOpen(false)}>
-        <Modal isOpen={idModalIsOpen}>
-          <div >아이디 형식이 잘못 되었습니다.</div>
-        </Modal>
+        {/*<Modal isOpen={idModalIsOpen}>*/}
+        {/*  <div >아이디 형식이 잘못 되었습니다.</div>*/}
+        {/*</Modal>*/}
       </div>
       <div onClick={() => setPassModalIsOpen(false)}>
-        <Modal isOpen={passModalIsOpen}>
-          <div >비밀번호 길이는 4자 이상입니다.</div>
-        </Modal>
+        {/*<Modal isOpen={passModalIsOpen}>*/}
+        {/*  <div >비밀번호 길이는 4자 이상입니다.</div>*/}
+        {/*</Modal>*/}
       </div>
       
 

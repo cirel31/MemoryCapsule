@@ -7,12 +7,12 @@ import lombok.Data;
 public class UserVo {
     private String name;
     private String nickname;
-    private String imgurl;
+    private String imgUrl;
 
     @Builder
-    public UserVo(String name, String nickname, String imgurl) {
+    public UserVo(String name, String nickname, String imgUrl) {
         this.name = name;
         this.nickname = nickname;
-        this.imgurl = imgurl;
+        this.imgUrl = imgUrl;
     }
 }

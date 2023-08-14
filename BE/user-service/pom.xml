@@ -114,8 +114,6 @@
         </dependency>
 
 
-
-
         <!--        maria db-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -156,6 +154,13 @@
             <artifactId>spring-cloud-aws-autoconfigure</artifactId>
             <version>1.2.1.RELEASE</version>
         </dependency>
+
+        <!--        Monitoring-->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
 
         <!--    RabbitMQ Test   -->
         <dependency>

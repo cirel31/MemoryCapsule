@@ -69,8 +69,17 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Long insertNotice(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
         log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, insertDto, userIdx));
-
-        Notice notice = new Notice(userIdx, insertDto.getTitle(), insertDto.getContent(), fileService.getFileName(file));
+        Notice notice = Notice.builder()
+                .noticeCreatorIdx(userIdx)
+                .noticeTitle(insertDto.getTitle())
+                .noticeContent(insertDto.getContent())
+                .noticeImgurl(fileService.getFileName(file))
+                .noticeDeleted(false)
+                .noticeCreated(new Date())
+                .noticeUpdated(new Date())
+                .noticeHit(0)
+                .build();
+        log.info("notice 정보" + notice);
         return noticeRepository.save(notice).getNoticeIdx();
     }
 
@@ -97,6 +106,4 @@ public class NoticeServiceImpl implements NoticeService {
         notice.modifyNotice(modifyDto.getTitle(), modifyDto.getContent(), fileService.getFileName(file));
         log.info(LogMessageEnum.MODIFY_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, modifyDto));
     }
-
-
 }

@@ -1,9 +1,8 @@
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import {useSelector} from "react-redux";
-import arona from "../../assets/images/kokona.png"
 
 const CurrentProjectsPage = () => {
   const [isHovered, setIsHovered] = useState(null)
@@ -11,15 +10,9 @@ const CurrentProjectsPage = () => {
   // const [isModal, setIsModal] = useState(false)
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const subURL = '/project/myproject/current'
-  const [projects, setProjects] = useState([
-    {'id': 1, rotationX: 0, rotationY: 0},
-    {'id': 2, rotationX: 0, rotationY: 0},
-    {'id': 3, rotationX: 0, rotationY: 0},
-  ]);
+  const [projects, setProjects] = useState([])
   const user = useSelector((state) => state.userState.user) || null
-  const [rotationX, setRotationX] = useState(0);
-  const [rotationY, setRotationY] = useState(0);
-  
+
   const handleMouseMove = (projectId, event) => {
     const div = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - (div.left + div.width / 2);
@@ -28,7 +21,7 @@ const CurrentProjectsPage = () => {
     const degY = -(x / div.width) * 90;
     
     setProjects(prevProjects => prevProjects.map(project => {
-      if (project.idx === projectId) {
+      if (project.id === projectId) {
         return { ...project, rotationX: degX, rotationY: degY };
       }
       return project;
@@ -101,7 +94,6 @@ const CurrentProjectsPage = () => {
                   to={`/project/${project.id}`}
                   key={project.id}
                 >
-                  
                   <div
                     onMouseEnter={() => handleMouseEnter(project.id)}
                     onMouseLeave={() => handleMouseLeave(project)}
@@ -119,10 +111,9 @@ const CurrentProjectsPage = () => {
                         transition: 'transform 0.1s'
                       }}
                   >
-                    
                     <div style={{width:'200px', height:"300px"}}>
                       <p>{project.title}</p>
-                      <img src={arona} alt="아로나" style={{width:'200px'}}/>
+                      <img src={project.imgUrl} alt="아로나" style={{width:'200px'}}/>
                       <p>기록한 추억 : {project.artielcNum || 0}</p>
                     </div>
                     

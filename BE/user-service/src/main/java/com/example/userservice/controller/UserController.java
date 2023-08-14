@@ -1,9 +1,15 @@
 package com.example.userservice.controller;
 
+import com.amazonaws.services.kms.model.NotFoundException;
+import com.example.userservice.model.ErrorResponse;
 import com.example.userservice.model.dto.UserDto;
+import com.example.userservice.model.entity.User;
 import com.example.userservice.service.UserService;
+import com.example.userservice.util.RegexUtil;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/user")
@@ -19,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final RegexUtil regexUtil;
+
 
     @PostMapping(value = "/signup")
     public ResponseEntity userSignup(
@@ -42,6 +51,8 @@ public class UserController {
         return "Hello user-service with locked";
     }
 
+
+    @Timed(description = "user.status", longTask = true)
     @GetMapping("/health-check")
     public String getHealth() {
         return "Hello user-service";
@@ -54,16 +65,46 @@ public class UserController {
             UserDto.ResponseLogin result = userService.login(requestLogin);
             return ResponseEntity.status(HttpStatus.CREATED).body(result);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
     @PostMapping("/emailCheck")
     public ResponseEntity emailCheck(@RequestParam(value = "user_email") String user_email) {
         log.info("email-check");
-        if (userService.emailCheck(user_email)) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("이미 존재하는 이메일입니다.");
+        int status = userService.emailCheck(user_email);
+
+        //TODO
+        // - 1. 이메일 형식인지 check, 409
+        // - 2. 이메일 존재하는데 탈퇴되지 않은회원 경우, NOT_ACCEPTABLE
+        // -    이메일 존재하는데 탈퇴된 회원, 209
+
+        // -    이메일 존재하지않는 경우 201
+        if(!regexUtil.isEmail(user_email)) return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(HttpStatus.CONFLICT.name(), "Email 형식이 아닙니다."));
+
+
+        try {
+            String emailCode = userService.checkingUserOrSendEmail(user_email);
+            return ResponseEntity.status(HttpStatus.CREATED).body(emailCode);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이메일 전송 실패 입니다.");
+        } catch (IllegalArgumentException e) {
+            // 이미 회원이 가입한 경우 - 탈퇴되지 않은 회원인 경우
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.name(), "'이미 회원이 가입된 이메일입니다."));
+        } catch( NotFoundException e){
+            return ResponseEntity.status(209).body(new ErrorResponse("Content Returned", "이미 탈퇴된 회원입니다."));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.name(), "내부 서버오류입니다. 관리자에게 문의하세요"));
         }
+    }
+
+    @PostMapping("/deletedEmailCheck")
+    public ResponseEntity deletedEmailCheck(@RequestParam(value = "user_email") String user_email) {
+        return getResponseEntity(user_email);
+    }
+
+    @NotNull
+    private ResponseEntity getResponseEntity(String user_email) {
         String code = userService.generateRandomCode();
         ResponseEntity<String> response = new RestTemplate().postForEntity(
                 "http://notification-service:8081/email/register_verify/" + user_email + "/" + code,

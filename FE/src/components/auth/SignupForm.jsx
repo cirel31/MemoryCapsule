@@ -34,6 +34,7 @@ const SignupForm = ({ form, setForm,  }) => {
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const signupURL = '/user/signup'
   const authorizationURL = '/user/emailCheck?user_email='
+  const deletedCheck = '/user/deletedEmailCheck?user_email='
   
   const saveImgFile = () => {
     const file = imgRef.current.files[0];
@@ -65,15 +66,46 @@ const SignupForm = ({ form, setForm,  }) => {
     const emailData = form.id
     axios.post(`${baseURL}${authorizationURL}${emailData}`)
       .then((response) => {
-        console.log(response.data.slice(12))
-        Swal.fire("사용 가능한 이메일입니다.")
-        setEmailChecking(true)
-        setValidationCode(response.data.slice(12))
+        if (response?.status === 209) {
+          Swal.fire({
+            text: response.data,
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+          })
+            .then((result) => {
+              if (result.isConfirmed) {
+                console.log('확인 버튼 클릭!');
+                axios.post(`${baseURL}${deletedCheck}${emailData}`)
+                  .then((response) => {
+                    Swal.fire("사용 가능한 이메일입니다.")
+                    setEmailChecking(true)
+                    setValidationCode(response.data)
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    console.log(error.response.status)
+                    if (error.response?.status === 406) {
+                      Swal.fire(error.response.data.message)
+                    }
+                  })
+              } else if (result.isDismissed) {
+                console.log('취소 버튼 클릭!');
+              }
+
+            })
+        }
+        else {
+          Swal.fire("사용 가능한 이메일입니다.")
+          setEmailChecking(true)
+          setValidationCode(response.data)
+        }
       })
       .catch((error) => {
-        console.log(error)
         if (error.response?.status === 406) {
-          Swal.fire(error.response.data)
+          Swal.fire(error.response.data.message)
         }
       })
     console.log(emailData)
@@ -132,8 +164,9 @@ const SignupForm = ({ form, setForm,  }) => {
       console.log('데이터 오류')
     }
   }
-
-
+  
+  Modal.setAppElement("#root");
+  
   return (
     <div className="signup_forms_body">
       <div className="forms_body_color">
@@ -192,6 +225,7 @@ const SignupForm = ({ form, setForm,  }) => {
                   placeholder="example@example.com"
                   value={form.id}
                   onClick={emailCheckPaper}
+                  readOnly={isAuthentication}
                   required
                 />
               </div>
