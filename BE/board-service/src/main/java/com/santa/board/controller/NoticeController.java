@@ -49,7 +49,6 @@ public class NoticeController {
             (@RequestPart(value = "insertDto") InsertDto insertDto, HttpServletRequest request,
              @RequestPart(value = "file", required = false) MultipartFile file) {
         Long user_idx = Long.valueOf(String.valueOf(request.getHeader("userId")));
-        log.info("file: " + file);
         try {
             return new ResponseEntity<>("new noticeIdx : " + noticeService.insertNotice(insertDto, user_idx, file), HttpStatus.OK);
         } catch(Exception e) {
