@@ -20,7 +20,7 @@ const ProjectListPage = () => {
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
-  const subURL = '/project/myproject'
+  const subURL = '/project/myproject/current'
   const user = useSelector((state) => state.userState.user) || null
   const [projects, setProjects] = useState([
 

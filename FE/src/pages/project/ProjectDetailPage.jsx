@@ -57,6 +57,7 @@ const ProjectDetailPage = () => {
   const [imgNum, setImgNum] = useState([])
   const [selectedPost, setSelectedPost] = useState(null)
   const [isHovered, setIsHovered] = useState(null)
+  const [endCondition, setEndCondition] = useState(false)
   
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${projectId}`
@@ -68,6 +69,12 @@ const ProjectDetailPage = () => {
     )
       .then((response) => {
         setProject(response.data);
+        const today = new Date()
+        const endedDate = new Date(response.data.ended)
+        if (today.getTime() > endedDate.getTime()) {
+          console.log("종료조건 만족")
+          setEndCondition(true)
+        }
       })
       .catch((error) => {
         console.error("서버로부터 프로젝트 세부사항 실패", error);
@@ -121,6 +128,23 @@ const ProjectDetailPage = () => {
       return { ...prevNums, [id]: Math.max(prevValue - 1, 0) };
     });
   }
+  const finishProject = (e) => {
+    e.preventDefault()
+    console.log("종료조건 만족함!!!")
+    axios.get(`${baseURL}${subURL}/finish/${projectId}`, {
+      headers: {
+        "userId": user.userId
+      }
+    })
+      .then((response) => {
+        console.log(response)
+        window.location.href ='/project'
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+  
   return (
     <div className="big_body">
       <div className="detail_project_layout">
@@ -185,11 +209,13 @@ const ProjectDetailPage = () => {
               )}
             </div>
           </div>
-          <div className="detail_project_project_delete">
-            <button className="detail_project_project_delete_btn">
-              <img src={discard} alt="삭제" className="detail_project_project_delete_btn_img"/>
-            </button>
-          </div>
+          {(endCondition && user.userId === project.owner) &&
+            <div className="detail_project_project_delete">
+              <button className="detail_project_project_delete_btn" onClick={finishProject}>
+                <img src={discard} alt="삭제" className="detail_project_project_delete_btn_img"/>
+              </button>
+            </div>
+          }
         </div>
         {
           isSoloProject() &&
