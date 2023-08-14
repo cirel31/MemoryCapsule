@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
         if (user.isDeleted())
             throw new Exception("탈퇴한 회원입니다.");
-        if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
+        if (!user.isOAuthUser() && !passwordEncoder.matches(requestLogin.getPassword(), user.getPassWord()))
             throw new Exception("비밀번호가 맞지 않습니다. 다시 로그인 해주세요!");
 
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
                             .accessedAt(LocalDateTime.now())
                     .build());
             user.setPoint(user.getPoint() + Long.parseLong(env.getProperty("point.check")));
+            userRepository.save(user);
         }
 
         return UserDto.ResponseLogin.builder()
