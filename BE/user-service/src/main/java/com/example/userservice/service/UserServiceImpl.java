@@ -189,17 +189,19 @@ public class UserServiceImpl implements UserService {
     public void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception {
         User user = getUserById(info.getUserId());
         if (info.getNickName() != null)  user.setNickName(info.getNickName());
-        if (info.getPassword() != null)  user.setPassWord(info.getPassword());
+//        if (info.getPassword() != null)  user.setPassWord(info.getPassword());
         if (multipartFile != null)   user.setImgUrl(getImgUrl(multipartFile));
     }
 
     @Override
-    public boolean checkEmailDuplicated(UserDto.RequestFindPass userInfo) {
-        User user = userRepository.findByEmail(userInfo.getEmail()).orElse(null);
-        if (user != null && user.getPhone().equals(userInfo.getPhone())) {
-            return true;
+    public void checkEmailDuplicated(UserDto.RequestFindPass userInfo) throws Exception {
+        User user = getUserByEmail(userInfo.getEmail());
+        if (user.isOAuthUser()) {
+            throw new IllegalStateException("카카오로 가입한 유저입니다.");
         }
-        return false;
+        if (!user.getPhone().equals(userInfo.getPhone())) {
+            throw new IllegalStateException("핸드폰 번호가 알맞지 않습니다.");
+        }
     }
 
     @Override
@@ -212,9 +214,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void modifyPassword(String userEmail, String code) {
+    public void modifyPassword(String userEmail, String code) throws Exception {
         User user = getUserByEmail(userEmail);
         user.modifyPassword(passwordEncoder.encode(code));
+    }
+
+    @Override
+    public void checkPassword(UserDto.modifyPwd modifyPwd) throws Exception {
+        User user = getUserById(modifyPwd.getUserId());
+        if (!passwordEncoder.matches(modifyPwd.getPassword(), user.getPassWord())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        user.modifyPassword(passwordEncoder.encode(modifyPwd.getNewPassword()));
     }
 
     @Transactional
@@ -246,8 +257,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).orElseThrow(() -> new Exception("User not found"));
     }
 
-    public User getUserByEmail(String userEmail) throws IllegalStateException {
-        return userRepository.findByEmail(userEmail).orElseThrow(() -> new IllegalStateException("user Not found"));
+    public User getUserByEmail(String userEmail) throws Exception {
+        return userRepository.findByEmail(userEmail).orElseThrow(() -> new Exception("user Not found"));
     }
 
     @Override
