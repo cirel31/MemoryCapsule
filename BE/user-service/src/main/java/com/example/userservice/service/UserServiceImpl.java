@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
                             .user(user)
                             .accessedAt(LocalDateTime.now())
                     .build());
+            user.setPoint(user.getPoint() + Long.parseLong(env.getProperty("point.check")));
         }
 
         return UserDto.ResponseLogin.builder()
