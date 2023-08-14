@@ -70,7 +70,6 @@
       .main_content_body{
         width: 90%;
         margin: 0px auto;
-        filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
 
         .search_main{
           background-color: var(--backGround_1);
@@ -79,6 +78,7 @@
         }
 
         .search_info{
+          filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
           display: grid;
           grid-template-columns: 35% 30% 35%;
 
@@ -167,8 +167,8 @@
         }
       }
 
-
       .search_server_info{
+        filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
         display: flex;
         align-content: center;
         align-items: center;
@@ -228,334 +228,285 @@
           }
         }
       }
+    }
+  }
+}
 
-      .friendList {
-        width: 100%;
-        display: grid;
-        align-items: center;
-        grid-template-columns: 50% 50%;
 
-        .friendListItems {
-          height: 520px;
-          width: 100%;
-          margin: 20px 0;
-          background: var(--transpar);
-          color: var(--font_gray_main);
-          -webkit-background-clip: text;
-          font-size: clamp(0.5vw, 1vw, 2vw);
-          font-weight: 700;
 
-          //============== 스크롤바 관련 (시작) ==============
-          overflow-y: scroll;
+.friendList {
+  width: 100%;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 50% 50%;
 
-          scroll-behavior: smooth;
-          scrollbar-gutter: stable;
-          text-overflow: ellipsis;
-          word-break: break-all;
-          table-layout:fixed;
+  .friendDetailItems {
+    display: grid;
+    justify-items: center;
+    align-items: center;
 
-          &::-webkit-scrollbar {
-            width: 9px;  /* 스크롤바의 너비 */
-          }
+    height: 520px;
+    width: 100%;
 
-          &::-webkit-scrollbar-thumb {
-            height: auto; /* 스크롤바의 길이 */
-            width: 7px;
-            background: var(--brand3_main); /* 스크롤바의 색상 */
+    .friend_detail_guide{
+      width: 100%;
+      height: 100%;
 
-            border-radius: 10px;
-          }
+      font-weight: bold;
+    }
+  }
+}
 
-          &::-webkit-scrollbar-track {
-            background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
-            border-radius: 10px;
-          }
-          //============== 스크롤바 관련 (끝) ==============
+.friend_detail_item{
+  border-radius: 16px;
 
-          .no_friend_list {
-            height: 100%;
-            display: grid;
-            justify-items: center;
-            align-items: center;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  width: auto;
+  height: 100%;
+  background-color: var(--backGround_1);
+  margin-left: 20px;
+  text-align: center;
 
-            .textBlock{
-              font-size: 24px;
-              color: var(--brand3_main);
-              .brand_logo{
-                width: 30px;
-                height: 30px;
-              }
-            }
-          }
+  .close_user_detail{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    margin-right: 30px;
 
-          .friend_list_item {
-            display: grid;
-            align-items: center;
-            grid-template-columns: 20% 65% 15%;
-            width: auto;
-            height: 60px;
-            border-radius: 10px;
-            color: var(--font_gray_main);
-            background-color: var(--backGround_1);
-            margin: 10px;
+    .close_user_detail_btn{
+      filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      background-color: var(--brand3_main);
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--white);
+      border-radius: 24px;
 
-            .user_img_setting{
-              display: grid;
-              justify-items: center;
-              align-items: center;
-              width: 40px;
-              height: 40px;
-              border-radius: 100%;
-              border: solid var(--brand3_main) 3pt;
-              .userImg {
-                width: 40px;
-                height: 40px;
-                border-radius: 100%;
-              }
-            }
+      &:hover {
+        cursor: pointer;
+        background-color: var(--brand2_3);
+      }
+      .close_user_detail_btn_img{
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
 
-            .user_info{
-              .user_info_username{
-                font-size: 12pt;
-              }
+  .user_img_setting{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    border: solid var(--brand3_main) 3pt;
 
-              .user_info_email{
-                font-size: 8pt;
-              }
-            }
+    .userImg {
+      display: grid;
+      justify-items: center;
+      align-items: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 100%;
+      overflow: scroll;
+    }
+  }
 
-            .user_detail_button{
-              display: grid;
-              justify-items: center;
-              align-items: center;
+  .user_info{
+    .user_info_username{
+      font-size: 16pt;
+    }
+  }
 
-              background-color: var(--brand3_main);
-              width: 40px;
-              height: 40px;
-              border-radius: 100%;
-              &:hover {
-                cursor: pointer;
-                background-color: var(--brand2_3);
-              }
+  .user_project_info{
+    .user_project_text{
+      font-size: 12px;
+      .user_project_text_hl{
+        font-size: 24px;
+        color: var(--brand2_main);
+      }
+    }
+  }
+}
 
-              .userDetailButtonImg{
-                width: 25px;
-              }
-            }
-          }
+.friendListItems {
+  height: 520px;
+  width: 100%;
+  margin: 20px 0;
+  background: var(--transpar);
+  color: var(--font_gray_main);
+  -webkit-background-clip: text;
+  font-size: clamp(0.5vw, 1vw, 2vw);
+  font-weight: 700;
+
+  //============== 스크롤바 관련 (시작) ==============
+  overflow-y: scroll;
+
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  table-layout:fixed;
+
+  &::-webkit-scrollbar {
+    width: 9px;  /* 스크롤바의 너비 */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: auto; /* 스크롤바의 길이 */
+    width: 7px;
+    background: var(--brand3_main); /* 스크롤바의 색상 */
+
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+    border-radius: 10px;
+  }
+  //============== 스크롤바 관련 (끝) ==============
+
+  .no_friend_list {
+    height: 100%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    .textBlock{
+      font-size: 24px;
+      color: var(--brand3_main);
+      .brand_logo{
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+}
+
+.search_friend_list {
+  width: 80%;
+  display: grid;
+  align-items: center;
+
+  margin-left: 10%;
+
+
+  .search_friend_list_items {
+    display: grid;
+
+    height: 520px;
+    width: 100%;
+    margin: 20px 0;
+    background: var(--transpar);
+    color: var(--font_gray_main);
+    -webkit-background-clip: text;
+    font-size: clamp(0.5vw, 1vw, 2vw);
+    font-weight: 700;
+
+    //============== 스크롤바 관련 (시작) ==============
+    overflow-y: scroll;
+
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    table-layout:fixed;
+
+    &::-webkit-scrollbar {
+      width: 9px;  /* 스크롤바의 너비 */
+    }
+
+    &::-webkit-scrollbar-thumb {
+      height: auto; /* 스크롤바의 길이 */
+      width: 7px;
+      background: var(--brand3_main); /* 스크롤바의 색상 */
+
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+      border-radius: 10px;
+    }
+    //============== 스크롤바 관련 (끝) ==============
+    .no_friend_list {
+      height: 100%;
+      display: grid;
+      justify-items: center;
+      align-items: center;
+
+      .textBlock{
+        font-size: 24px;
+        color: var(--brand3_main);
+        .brand_logo{
+          width: 25px;
+          height: 25px;
         }
+      }
+    }
 
-        .friendDetailItems {
-          display: grid;
-          justify-items: center;
-          align-items: center;
 
-          height: 520px;
-          width: 100%;
 
-          .friend_detail_guide{
-            width: 100%;
-            height: 100%;
+    .friend_list_item {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 20% 65% 15%;
+      width: auto;
+      height: 60px;
+      border-radius: 10px;
+      color: var(--font_gray_main);
+      background-color: var(--backGround_1);
+      margin: 10px;
 
-            font-weight: bold;
 
-            .friend_detail_item{
-              border-radius: 16px;
-
-              display: grid;
-              justify-items: center;
-              align-items: center;
-              width: auto;
-              height: 100%;
-              background-color: var(--backGround_1);
-              margin-left: 20px;
-              text-align: center;
-
-              .close_user_detail{
-                width: 100%;
-                display: flex;
-                justify-content: right;
-                margin-right: 30px;
-                .close_user_detail_btn{
-                  display: grid;
-                  justify-items: center;
-                  align-items: center;
-                  width: 40px;
-                  height: 40px;
-                  background-color: var(--brand3_main);
-                  font-size: 24px;
-                  font-weight: bold;
-                  color: var(--white);
-                  border-radius: 24px;
-
-                  &:hover {
-                    cursor: pointer;
-                    background-color: var(--brand2_3);
-                  }
-                  .close_user_detail_btn_img{
-                    width: 24px;
-                    height: 24px;
-                  }
-                }
-              }
-
-              .user_img_setting{
-                display: grid;
-                justify-items: center;
-                align-items: center;
-                width: 80px;
-                height: 80px;
-                border-radius: 100%;
-                border: solid var(--brand3_main) 3pt;
-
-                .userImg {
-                  display: grid;
-                  justify-items: center;
-                  align-items: center;
-                  width: 80px;
-                  height: 80px;
-                  border-radius: 100%;
-                  overflow: scroll;
-                }
-              }
-
-              .user_info{
-                .user_info_username{
-                  font-size: 16pt;
-                }
-              }
-
-              .user_project_info{
-                .user_project_text{
-                  font-size: 12px;
-                  .user_project_text_hl{
-                    font-size: 24px;
-                    color: var(--brand2_main);
-                  }
-                }
-              }
-            }
-          }
+      .user_img_setting{
+        display: grid;
+        justify-items: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        border: solid var(--brand3_main) 3pt;
+        .userImg {
+          width: 40px;
+          height: 40px;
+          border-radius: 100%;
         }
       }
 
-      .search_friend_list {
-        width: 80%;
+      .user_info{
+        .user_info_username{
+          font-size: 12pt;
+        }
+
+        .user_info_email{
+          font-size: 8pt;
+        }
+      }
+
+      .user_detail_button{
         display: grid;
+        justify-items: center;
         align-items: center;
 
-        margin-left: 10%;
+        background-color: var(--brand3_main);
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        &:hover {
+          cursor: pointer;
+          background-color: var(--brand2_3);
+        }
 
-        .search_friend_list_items {
-          display: grid;
-
-          height: 520px;
-          width: 100%;
-          margin: 20px 0;
-          background: var(--transpar);
-          color: var(--font_gray_main);
-          -webkit-background-clip: text;
-          font-size: clamp(0.5vw, 1vw, 2vw);
-          font-weight: 700;
-
-          //============== 스크롤바 관련 (시작) ==============
-          overflow-y: scroll;
-
-          scroll-behavior: smooth;
-          scrollbar-gutter: stable;
-          text-overflow: ellipsis;
-          word-break: break-all;
-          table-layout:fixed;
-
-          &::-webkit-scrollbar {
-            width: 9px;  /* 스크롤바의 너비 */
-          }
-
-          &::-webkit-scrollbar-thumb {
-            height: auto; /* 스크롤바의 길이 */
-            width: 7px;
-            background: var(--brand3_main); /* 스크롤바의 색상 */
-
-            border-radius: 10px;
-          }
-
-          &::-webkit-scrollbar-track {
-            background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
-            border-radius: 10px;
-          }
-          //============== 스크롤바 관련 (끝) ==============
-          .no_friend_list {
-            height: 100%;
-            display: grid;
-            justify-items: center;
-            align-items: center;
-
-            .textBlock{
-              font-size: 24px;
-              color: var(--brand3_main);
-              .brand_logo{
-                width: 25px;
-                height: 25px;
-              }
-            }
-          }
-          .search_friend_list_item{
-            display: grid;
-            justify-content: center;
-            align-items: center;
-            grid-template-columns: 20% 65% 10%;
-            width: 95%;
-            height: 60px;
-            border-radius: 10px;
-            color: var(--font_gray_main);
-            background-color: var(--backGround_0);
-            margin: 10px;
-
-            .user_img_setting{
-              display: grid;
-              justify-items: center;
-              align-items: center;
-              width: 40px;
-              height: 40px;
-              border-radius: 100%;
-              border: solid var(--brand3_main) 3pt;
-              .userImg {
-                width: 40px;
-                height: 40px;
-                border-radius: 100%;
-              }
-            }
-
-            .user_info{
-              .user_info_username{
-                font-size: 12pt;
-              }
-
-              .user_info_email{
-                font-size: 8pt;
-              }
-            }
-
-            .user_detail_button{
-              display: grid;
-              justify-items: center;
-              align-items: center;
-
-              background-color: var(--brand3_main);
-              width: 40px;
-              height: 40px;
-              border-radius: 100%;
-              &:hover {
-                cursor: pointer;
-                background-color: var(--brand2_3);
-              }
-
-              .userDetailButtonImg{
-                width: 25px;
-                height: 25px;
-              }
-            }
-          }
+        .userDetailButtonImg{
+          width: 25px;
         }
       }
     }
@@ -578,28 +529,29 @@
     border: none;
   }
 
-  .add_friend{
+  .discard_friend{
     background-color: var(--brand3_main);
+    height: 40px;
+    width: 40px;
     &:hover {
       cursor: pointer;
       background-color: var(--brand3_4);
     }
 
-    .add_friend_img{
+    .discard_friend_img{
       width: 30px;
     }
   }
 
-  .discard_friend{
+  .add_friend{
     background-color: var(--point1_main);
     &:hover {
       cursor: pointer;
       background-color: var(--point1_4);
     }
 
-    .discard_friend_img{
+    .add_friend_img{
       width: 30px;
-
     }
   }
 
@@ -609,23 +561,23 @@
       cursor: pointer;
       background-color: var(--brand3_2);
     }
-
     .following_friend_img{
-      width: 30px;
       margin-left: -2px;
+      width: 30px;
     }
   }
 
-  .follower_friend{
+
+  .status_button .follower_friend{
     background-color: var(--brand4_4);
+
     &:hover {
-      cursor: pointer;
       background-color: var(--brand4_2);
     }
 
-    .follower_friend_img{
-      width: 30px;
+    .follower_friend_img {
       margin-left: -2px;
+      width: 30px;
     }
   }
 
@@ -638,18 +590,26 @@
     width: 200px;
     border-radius: 24px;
     border: none;
+    margin: 10px;
   }
 
   .discard_detail_friend{
-    background-color: var(--brand3_main);
+    background-color: var(--point1_main);
 
     &:hover {
-      cursor: pointer;
-      background-color: var(--brand3_3);
+      background-color: var(--point1_3);
     }
   }
 
-  .discard_detail_friend{
+  .follower_detail_friend{
+    background-color: var(--brand3_4);
+
+    &:hover {
+      background-color: var(--brand3_2);
+    }
+  }
+
+  .add_detail_friend{
     background-color: var(--brand3_4);
 
     &:hover {
@@ -657,22 +617,98 @@
       background-color: var(--brand3_2);
     }
   }
+}
 
-  .discard_detail_friend{
-    background-color: var(--brand4_4);
+.friend_list_item {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 20% 65% 15%;
+  width: auto;
+  height: 60px;
+  border-radius: 10px;
+  color: var(--font_gray_main);
+  background-color: var(--backGround_1);
+  margin: 10px;
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
 
-    &:hover {
-      cursor: pointer;
-      background-color: var(--brand4_2);
+  .user_img_setting{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: solid var(--brand3_main) 3pt;
+    .userImg {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
     }
   }
 
-  .add_detail_friend{
-    background-color: var(--point1_main);
+  .user_info{
+    .user_info_username{
+      font-size: 12pt;
+    }
 
+    .user_info_email{
+      font-size: 8pt;
+    }
+  }
+
+  .user_detail_button_friend{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    background-color: var(--brand3_main);
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
     &:hover {
       cursor: pointer;
-      background-color: var(--point1_3);
+      background-color: var(--brand2_3);
+    }
+
+    .userDetailButtonImg{
+      width: 25px;
+    }
+  }
+
+  .user_detail_button_following {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    background-color: var(--brand3_4);
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand3_2);
+    }
+
+    .userDetailButtonImg{
+      width: 25px;
+    }
+  }
+  .user_detail_button_follower {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    background-color: var(--brand3_4);
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    &:hover {
+      cursor: pointer;
+      background-color: var(--brand2_3);
+    }
+
+    .userDetailButtonImg{
+      width: 25px;
     }
   }
 }

@@ -19,7 +19,7 @@ public interface UserService {
     void deleteUser(Long userId) throws Exception;
 
     // 이메일로 유저 찾기
-    boolean checkEmailDuplicated(UserDto.RequestFindPass userInfo);
+    void checkEmailDuplicated(UserDto.RequestFindPass userInfo) throws Exception;
 
     //회원정보 수정
     void modifyUser(UserDto.modify info, MultipartFile multipartFile) throws Exception;
@@ -28,7 +28,9 @@ public interface UserService {
     String generateRandomCode();
     
     //비밀번호 변경
-    void modifyPassword(String userEmail, String code);
+    void modifyPassword(String userEmail, String code) throws Exception;
+
+    void checkPassword(UserDto.modifyPwd modifyPwd) throws Exception;
 
     //point 변환
     Boolean updatePoint(Long userId, Long point) throws Exception;

@@ -4,7 +4,6 @@ import "../../styles/AnnounceStyle.scss"
 import PostModal from "../post/PostModal";
 import Pagination from "../common/Pagination";
 import axios from "axios";
-import sessionStorage from "redux-persist/es/storage/session";
 
 const AnnounceUserViewPage = ({page, size}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
@@ -23,24 +22,21 @@ const AnnounceUserViewPage = ({page, size}) => {
 
     useEffect(() => {
         console.log('[AnnounceUserViewPage] 페이지 로딩 시 한 번만 실행되는 함수');
-        console.log(page, size)
         getNoticesData(page, size);
     }, []);
 
     useEffect(() => {
-        console.log('[AnnounceUserViewPage] 페이지 로딩 시 한 번만 실행되는 함수');
-        console.log(page, size);
+        console.log('[AnnounceUserViewPage]');
         getNoticesData(page, size);
     }, [currentPage]); // currentPage 변경시에만 실행
 
     /**
-     * 1-1. 전체 공지사항 [get]
+     * 1. 전체 공지사항 [get]
      * http://localhost:8080/notice/list?page=0&size=10
      * */
-    const getNoticesData = () => {
+    const getNoticesData = (e) => {
         console.log("[getNoticesData]");
-
-        axios.get(`${baseURL}${API}/list?size=${itemsPerPage}&page=${currentPage}`)
+        axios.get(`${baseURL}${API}/list?size=${itemsPerPage}&page=${currentPage}&sort=noticeIdx,desc`)
             .then((response) => {
               console.log('게시글 선택 (size, page) successful : ', response.data);
               setPostList(response.data);
@@ -50,23 +46,6 @@ const AnnounceUserViewPage = ({page, size}) => {
             });
     };
 
-    /**
-     * 1-2. 전체 공지사항 [get]
-     * http://localhost:8080/notice/list?page=0&size=10
-     * */
-    // const getNoticesAllData = () => {
-    //     console.log("[getNoticesAllData]");
-    //
-    //     axios.get(`${baseURL}${API}/list`)
-    //         .then((response) => {
-    //             console.log('게시글 전체 (All) successful : ', response.data);
-    //             setPostList(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error('게시글 전체 (All) fail : ', error);
-    //         });
-    //
-    // };
     /**
      * 2. 공지사항 자세하게 보기 [get]
      * http://localhost:8080/notice/2
@@ -97,7 +76,7 @@ const AnnounceUserViewPage = ({page, size}) => {
 
     function isPostGetSuccess() {
         try {
-            if (postList.totalElements === 0) {
+            if(postList.length === 0) {
                 return true;
             }
             return false;
@@ -123,6 +102,7 @@ const AnnounceUserViewPage = ({page, size}) => {
                     </div>
                     :
                     (
+                        postList.content &&
                         size <= 3
                         ?
                         postList.content.map((post) => (

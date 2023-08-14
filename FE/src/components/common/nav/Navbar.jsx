@@ -51,18 +51,6 @@ export default function Navbar() {
       dispatch(fetchUserInfoThunk(idx))
     }
   }, [isLoggedIn])
-  // const handleClickOutside = (event) => {
-  //   if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-  //     showSidebar();
-  //   }
-  // }
-  // useEffect(() => {
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
-  // }, [])
 
   const user_nickname = user?.nickname || 'james'
   const user_email = user?.email || 'jimmy@raynersraiders.com'
@@ -79,7 +67,7 @@ export default function Navbar() {
         <SidebarNav sidebar={sidebar} ref={sidebarRef}>
           <nav className="nav_bar">
 
-            <div className="nav_bar2">
+            <div className="nav_bar2" onClick={showSidebar}>
               <div onClick={handlePageHome} >
                 <img src={logo_white} alt="LOGO" className="logo"/>
               </div>
@@ -105,7 +93,7 @@ export default function Navbar() {
               <div className="nav_btn_group">
                 <div>
                   <Link to='/mypage' className="link_txt" >
-                    <button className="nav_button" >
+                    <button className="nav_button">
                       <img src={btn_deco} alt="이미지 존재하지 않음" className="button_deco"/>
                       <p>MY PAGE</p>
                     </button>
@@ -120,7 +108,7 @@ export default function Navbar() {
                   </Link>
                 </div>
                 <div>
-                  <Link to='/friend' className="link_txt">
+                  <Link to='/project/locker' className="link_txt">
                     <button className="nav_button" >
                       <img src={btn_deco} alt="이미지 존재하지 않음" className="button_deco"/>
                       <p>CAPSULE BOX</p>

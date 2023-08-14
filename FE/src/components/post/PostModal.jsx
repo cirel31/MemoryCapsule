@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import axios from "axios";
 import "../../styles/AnnounceStyle.scss"
-import {StyledSearchBar} from "../../styles/searchBarStyle";
 
 const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
@@ -10,14 +9,24 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
     Modal.setAppElement("#root");
 
+    const [post, setPost] = useState(selectedPost);
     const [state, setState] = useState(false);
     const [disabledTitle, setDisabledTitle] = useState(false);
     const [disabledContent, setDisabledContent] = useState(false);
 
+    const [file, setFile] = useState(null);
+
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+    };
+
     useEffect(() => {
         console.log("[PostModal]");
+        console.log("selectedPost :", selectedPost);
+        setPost(selectedPost);
         setState(selectedPost &&(selectedPost.noticeIdx === 0 || state));
-    });
+    }, [selectedPost]);
 
     // 공지사항 데이터 접근자가 관리자인지 확인
     function checkUserRole() {
@@ -41,37 +50,39 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      *  "noticeImgurl" : null
      *}  
      */
+    console.log(sessionStorage);
+    const createPost = () => {
+        console.log("[createPost]")
 
-    const [formData, setFormData] = useState({
-        title: '',
-        content: '',
-        imgurl: '',
-    });
+        const insertDto = {
+            title: "test Title",
+            content: "test Content",
+        };
 
-    const postNoticesDataCreateServer = (e) => {
         const accessToken = sessionStorage.getItem("accessToken")
-        const user_id = sessionStorage.getItem("userIdx")*1;
 
-        console.log("[postNoticesDataCreateServer]");
-        e.preventDefault();
+        const formData = new FormData();
+        //formData.append("insertDto", JSON.stringify(insertDto));
+        formData.append("insertDto", new Blob([JSON.stringify(insertDto)], { type: "application/json" }));
+        formData.append("file", null);
 
+        console.log("formData : ", formData);
+        console.log("insertDto : ", insertDto);
         if (checkUserRole()) {
-            // 실제 배포는 8000
-            // 테스트 및 개발 서버는 7000
-            axios.post(`${API}`,
+            axios.post(`${baseURL}${API}`, formData,
                 {
                     headers: {
-                        Authorization: `Bearer ${accessToken}`,
+                        "Content-Type": "multipart/form-data",
+                         Authorization: `Bearer ${accessToken}`
                     },
-                    params: {}
-
-                })
-                .then((response) => {
-                    console.log('게시글 작성 POST successful : ', response.data);
-                })
-                .catch((error) => {
-                    console.error('게시글 작성 POST fail : ', error);
-                });
+            })
+            .then((response) => {
+                console.log('게시글 작성 POST successful : ', response.data);
+                closeModal()
+            })
+            .catch((error) => {
+                console.error('게시글 작성 POST fail : ', error);
+            });
         }
     }
 
@@ -79,22 +90,24 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      * 4. 공지사항 삭제 [delete]
      *http://localhost:8080/notice/2
      */
-    const deletePost = (e) => {
+    const deletePost = () => {
         const accessToken = sessionStorage.getItem("accessToken")
         console.log("[deletePost]");
-        e.preventDefault();
 
         if (checkUserRole()) {
-            console.log("게시글 삭제 (제작중)");
-            axios.delete(`${API}//${selectedPost.noticeIdx}`,
-                {
+            console.log("게시글 삭제 (제작중)", selectedPost.noticeIdx);
+            console.log("게시글 삭제 (제작중)", selectedPost.noticeIdx);
+            axios.delete(`${baseURL}${API}/${selectedPost.noticeIdx}`
+                ,{
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     },
-                })
+                }
+                )
                 .then((response) => {
                     console.log('게시글 삭제 (Delete) successful : ', response.data);
                     setSelectedPost([]);
+                    closeModal()
                 })
                 .catch((error) => {
                     console.error('게시글 삭제 (Delete) fail : ', error);
@@ -112,117 +125,139 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      *  "noticeImgurl" : null
      * }
      */
-    const putNoticesDataEditServer = (e) => {
-        const accessToken = sessionStorage.getItem("accessToken")
-        // console.log("[putNoticesDataEditServer]");
-        // e.preventDefault();
-        //
-        // if (checkUserRole()) {
-        //     axios.put(`${API}/`, formData)
-        //         .then((response) => {
-        //             console.log('게시글 수정 PUT successful : ', response.data);
-        //         })
-        //         .catch((error) => {
-        //             console.error('게시글 수정 PUT fail : ', error);
-        //         });
-        // }
+    const putPostDataEdit = (e) => {
+        e.preventDefault();
+        console.log("[putPostDataEdit]");
+
+        const modifyDto = {
+            idx: 1,
+            title: "test Title",
+            content: "test Content",
+        };
+
+        //formData 생성 및 데이터 input
+        const formData = new FormData();
+        formData.append("modifyDto", new Blob([JSON.stringify(modifyDto)], { type: "application/json" }));
+        formData.append("file", null);
+
+        const accessToken = sessionStorage.getItem("accessToken");
+
+        if (checkUserRole()) {
+            axios.put(`${baseURL}${API}`, formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
+                .then((response) => {
+                    console.log('게시글 수정 성공');
+                    closeModal()
+                })
+                .catch((error) => {
+                    console.error("게시글 수정 실패", error);
+                    console.error(error.code);
+                });
+        }
     }
 
-
-    const closeModal = () => {
+    const closeModal = (e) => {
+        e.preventDefault();
         setModalIsOpen(false);
         setState(false);
+
+
+        const nextForm = {
+            "noticeTitle" : "",
+            "noticeContent" : "",
+        };
+        setPost(nextForm);
     }
 
-    const editPost = () => {
+    const addPost = (e) => {
+        e.preventDefault();
+        createPost()
+    }
+
+    const editPost = (e) => {
+        e.preventDefault();
         setState(true);
     }
 
+    const titleChange = (e) => {
+        const { value } = e.target;
+        const nextForm = {
+            ...post,
+            "noticeTitle" : value
+        };
+        setPost(nextForm);
+        console.log("valueChangePost : ", post); // 수정된 값 로그로 확인
+        console.log("valueChangeNextForm : ", nextForm); // 수정된 값 로그로 확인
+    };
+
+    const contentChange = (e) => {
+        const { value } = e.target;
+        const nextForm = {
+            ...post,
+            "noticeContent" : value,
+        };
+        setPost(nextForm);
+        console.log("valueChangePost : ", post); // 수정된 값 로그로 확인
+        console.log("valueChangeNextForm : ", nextForm); // 수정된 값 로그로 확인
+    };
+
     return (
         <>
-            {/*<Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="notice_modal_part">*/}
-            {/*    {*/}
-            {/*        selectedPost &&(*/}
-            {/*        <div className="modal_contents_box">*/}
-            {/*            {*/}
-            {/*                state*/}
-            {/*                ? <input disabled={disabledTitle} value={selectedPost.noticeTitle} className="modal_inner_title_input"/>*/}
-            {/*                : <h2 className="modal_inner_title">*/}
-            {/*                    selectedPost.noticeTitle <hr/>*/}
-            {/*                </h2>*/}
-            {/*            }*/}
-            {/*            <p className="modal_inner_contents">*/}
-            {/*                {*/}
-            {/*                    state*/}
-            {/*                    ? <input disabled={disabledContent} value={selectedPost.noticeContent}/>*/}
-            {/*                    : selectedPost.noticeContent*/}
-            {/*                }*/}
-            {/*            </p>*/}
-            {/*            {*/}
-            {/*                state*/}
-            {/*                ?*/}
-            {/*                <div>*/}
-            {/*                    <button onClick={closeModal}>닫기</button>*/}
-            {/*                    <button onClick={closeModal}>등록</button>*/}
-            {/*                </div>*/}
-            {/*                :*/}
-            {/*                <div>*/}
-            {/*                    <button onClick={closeModal}>닫기</button>*/}
-            {/*                    <button onClick={editPost}>수정</button>*/}
-            {/*                    <button onClick={deletePost}>삭제</button>*/}
-            {/*                </div>*/}
-            {/*            }*/}
-            {/*        </div>*/}
-            {/*        )*/}
-            {/*    }*/}
-            {/*    </Modal>*/}
-
-
-
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="notice_modal">
                 {
-                    selectedPost &&(
+                    post &&(
                         <form className="modal_contents_box">
                             {
                                 state
-                                    ? <input
-                                        disabled={disabledTitle}
-                                         value={selectedPost.noticeTitle}
-                                         // onChange={postChange}
-                                         className="modal_inner_title_input"
-                                    />
-                                    : <h2 className="modal_inner_title">
-                                        selectedPost.noticeTitle <hr/>
-                                    </h2>
+                                ? <input
+                                    disabled={disabledTitle}
+                                    value={post.noticeTitle}
+                                    className="modal_inner_title_input"
+                                    onChange={titleChange}
+                                />
+                                : <h2 className="modal_inner_title">
+                                    {post.noticeTitle} <hr/>
+                                </h2>
                             }
                             {
                                 state
                                 ?
-                                <input
+                                <textarea
+                                    type="textarea"
                                     disabled={disabledContent}
-                                    value={selectedPost.noticeContent}
-                                    // onChange={postChange}
+                                    value={post.noticeContent}
                                     className="modal_inner_contents_input"
+                                    onChange={contentChange}
                                 />
                                 :
                                 <p className="modal_inner_contents">
-                                    selectedPost.noticeContent
+                                    {post.noticeContent}
                                 </p>
                             }
-
+                            {/*몇 개의 글자를 사용했는지 표시*/}
+                            {
+                                post.noticeContent.length <= 5000
+                                ?<div className="buttonList">{post.noticeContent.length}/5000</div>
+                                :<div className="buttonList text_styled_red">{post.noticeContent.length}/5000</div>
+                            }
                             {
                                 state
-                                    ?
-                                    <div className="buttonList">
-                                        <button onClick={closeModal}>닫기</button>
-                                        <button onClick={closeModal}>등록</button>
-                                    </div>
-                                    :
-                                    <div className="buttonList">
-                                        <button onClick={closeModal}>닫기</button>
-                                        <button onClick={editPost}>수정</button>
-                                        <button onClick={deletePost}>삭제</button>
-                                    </div>
+                                ?
+                                <div className="buttonList">
+                                    <button onClick={closeModal}>닫기</button>
+                                    {checkUserRole()&&<button onClick={addPost}>등록</button>}
+                                </div>
+                                :
+                                <div className="buttonList">
+                                    <button onClick={closeModal}>닫기</button>
+                                    {checkUserRole()&&<button onClick={editPost}>수정</button>}
+                                    {checkUserRole()&&<button onClick={deletePost}>삭제</button>}
+                                </div>
                             }
                         </form>
                     )

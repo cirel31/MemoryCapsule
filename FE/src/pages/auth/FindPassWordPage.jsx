@@ -6,19 +6,43 @@ import findpw_bg from "../../assets/images/signup/Sign_up.svg"
 import {useNavigate} from "react-router-dom";
 
 import back_btn from "../../assets/images/signup/go_back.svg";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 
 const FindPassWordPage = ({ form, setForm }) => {
   const dispatch = useDispatch()
   const formRef = useRef(null)
   const navigate = useNavigate()
-  const findPassword = async ({email, phone}) => {
-    try {
-      await dispatch(findPassThunk({email, phone}));
-      console.log({email, phone})
-    } catch (err) {
-      console.error("패스워드 탐색 에러 발생", err);
+  const findPassword = ({email, phone}) => {
+    const findData = {
+      "email": email,
+      "phone": phone,
     }
+    axios.post(`https://i9a608.p.ssafy.io:8000/user/find_password`, findData, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(() => {
+        Swal.fire({
+          text: "임시 비밀번호가 발송되었습니다."
+        })
+      })
+      .catch((error) => {
+        if (error.response.status === 406 && error.response.data === "핸드폰 번호가 알맞지 않습니다.") {
+          Swal.fire({
+            text: "핸드폰 번호가 일치하지 않습니다.",
+            icon: "error"
+          })
+        }
+        else if (error.response.status === 406 && error.response.data === '카카오로 가입한 유저입니다.') {
+          Swal.fire({
+            text: error.response.data,
+            icon: "warning"
+          })
+        }
+      })
   }
   const sendFindPassData = async (e) => {
     e.preventDefault();

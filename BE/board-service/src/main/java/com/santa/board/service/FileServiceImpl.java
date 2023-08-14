@@ -30,7 +30,7 @@ public class FileServiceImpl implements FileService {
     private final AmazonS3 amazonS3;
 
     public String getFileName(MultipartFile file) throws Exception  {
-        if (file.isEmpty()) return null;
+        if (file == null || file.isEmpty()) return null;
         return defaultUrl + upload(file);
     }
 
