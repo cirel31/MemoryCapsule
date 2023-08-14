@@ -34,6 +34,13 @@ public class UtilQuerys {
         this.articleRepository = articleRepository;
         this.registerRepository = registerRepository;
     }
+    public Long findOwner(Long projectId){
+        return queryFactory
+                .select(qRegister.user.id)
+                .from(qRegister)
+                .where(qRegister.project.id.eq(projectId), qRegister.type.eq(true))
+                .fetchOne();
+    }
 
     public UserInfo userInfo(Long userId){
         return new UserInfo(articleRepository.countAllByUserId(userId), registerRepository.countAllByUser_Id(userId));

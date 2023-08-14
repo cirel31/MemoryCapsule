@@ -20,11 +20,6 @@ const NoticeListPage = () => {
         }
     )
 
-    // 처음 한 번 실행해서, 모든 공지사항 불러오기
-    useEffect(() => {
-        console.log('[useEffect] 페이지 로딩 시 한 번만 실행되는 함수')
-     }, []);
-
     const openModal = () => {
         setIsModal(true)
     }
@@ -56,7 +51,6 @@ const NoticeListPage = () => {
                     setModalIsOpen={setIsModal}
                 />
             </div>
-
         </div>
     )
 }

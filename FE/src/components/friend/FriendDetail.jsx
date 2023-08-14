@@ -12,6 +12,10 @@ const FriendDetail = ({select, setSelect, closeFriendDetail}) => {
         console.log(select)
     }, [curStatus]);
 
+    useEffect(() => {
+        setCurStatus(select.status)
+    }, [select])
+
     return (
         <div className="friend_detail_guide">
             <div className="friend_detail_item">

@@ -9,6 +9,7 @@ import com.example.userservice.util.Oauth2Client;
 import com.example.userservice.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpEntity;
@@ -34,21 +35,22 @@ public class Oauth2Service {
     private final UserRepository userRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final TokenProvider tokenProvider;
-
+    private final Environment env;
+    private final UserService userService;
     public UserDto.ResponseLogin setKakao(String code) throws Exception {
         KakaoDto.KakaoTokenResponse token = getToken(code);
         KakaoDto.KakaoUserResponse userInfo = getUserInfo(token);
 
         //TODO 가입된 회원 체크
-        log.debug("User 가입처리 Processing");
         Optional<User> byEmail = userRepository.findByEmail(userInfo.getKakaoAccount().getEmail());
         User user = null;
         if(!byEmail.isPresent()){
+        log.debug("User 가입처리 Processing");
             user = userRepository.save(User.builder()
                     .name(userInfo.getProperties().getNickname())
                     .nickName("kakao-" + userInfo.getId())
                     .email(userInfo.getKakaoAccount().getEmail())
-                    .point(0L)
+                    .point(Long.parseLong(env.getProperty("point.init")))
                     .passWord("")
                     .imgUrl(userInfo.getKakaoAccount().getProfile().getProfileImageUrl())
                     .oAuthUser(true)
@@ -61,27 +63,11 @@ public class Oauth2Service {
             if(!user.isOAuthUser()) throw new IllegalStateException("자체 회원가입으로 등록된 유저입니다.");
         }
 
-        //TODO AccessToekn/RefreshToekn 처리
-        ValueOperations<String, String> opsForValue = redisTemplate.opsForValue();
-        String redisRefresh = opsForValue.get(String.valueOf(user.getIdx()));
-        String refreshToken;
-        String accessToken;
-        if (redisRefresh != null) {
-            log.info("RefreshToken hit from redis");
-            // refresh validation
-            refreshToken = tokenProvider.refreshCheckExpire(redisRefresh, user.getIdx());
-            accessToken = tokenProvider.createAccessToken(user.getIdx());
-        } else {
-            refreshToken = tokenProvider.createRefreshToken(user.getIdx());
-            accessToken = tokenProvider.createAccessToken(user.getIdx());
-        }
-        opsForValue.set(String.valueOf(user.getIdx()), refreshToken);
-
-        return UserDto.ResponseLogin.builder()
-                .userIdx(user.getIdx())
-                .refreshToken(refreshToken)
-                .accessToken(accessToken)
-                .build();
+        return userService.login(UserDto.RequestLogin.builder()
+                .email(user.getEmail())
+                .password(user.getPassWord())
+                .build()
+        );
     }
 
     public KakaoDto.KakaoUserResponse getUserInfo(final KakaoDto.KakaoTokenResponse response) throws Exception {
