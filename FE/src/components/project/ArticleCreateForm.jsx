@@ -233,10 +233,10 @@ const ArticleCreateForm = () => {
                 name="content"
                 value={text}
                 onChange={handleTextChange}
-                maxLength={150}
+                maxLength={100}
                 style={{ width:'300px', height:'200px' }}
               />
-              <div>글자 수 : {text.length} / 150</div>
+              <div>글자 수 : {text.length} / 100</div>
             </div>
           </div>
           <button type="submit">게시물 등록</button>
