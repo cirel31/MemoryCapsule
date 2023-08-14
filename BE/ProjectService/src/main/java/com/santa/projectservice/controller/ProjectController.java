@@ -124,7 +124,8 @@ public class ProjectController {
             ProjectDto projectDto = projectService.findProjectByProjectIdAndUserId(userId, projectId);
             List<UserVo> userVos = utilQuerys.projectUserVos(projectId);
             Long articleNum = utilQuerys.getProjectArticleCount(projectId);
-            ProjectInfo projectInfo = projectDto.toInfo(userVos, articleNum);
+            Long owner = utilQuerys.findOwner(projectId);
+            ProjectInfo projectInfo = projectDto.toInfo(userVos,owner, articleNum);
             return ResponseEntity.status(HttpStatus.OK).body(projectInfo);
         } catch (NullPointerException e) {
             throw new UserNotFoundException("인증정보를 가져올 수 없습니다 내가 참여하고 있는게 아닌듯요");

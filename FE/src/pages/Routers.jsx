@@ -43,7 +43,7 @@ export default function Routers() {
       <Route path='/project/present/:giftUrl' element={<SendPresentPage />} />
       <Route path='/friend' element={<FriendPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
-      <Route path='/notice/postcreate' element={<PostCreatePage />} />
+      {/*<Route path='/review' element={<ReviewPage />} />*/}
       
 
       <Route path='/mypage' element={<MyPage />} />

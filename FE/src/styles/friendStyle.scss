@@ -114,7 +114,12 @@
                 padding: 0px 0px 0px 10px;
                 height: 40px;
                 border-radius: 40px;
-                border: solid var(--brand3_main) 3pt;
+                border: none;
+                outline: 4px solid var(--brand3_main);
+
+                &:focus {
+                  outline-color: var(--point1_3);
+                }
               }
             }
           }
@@ -186,12 +191,16 @@
             color: var(--brand2_main);
             .styled_search_bar{
               width: 100%;
-              background-color: var(--backGround_1);
               color: var(--font_gray_main);
               padding: 0px 0px 0px 10px;
               height: 40px;
+              border : none;
               border-radius: 40px;
-              border: solid var(--brand3_main) 3pt;
+              outline: 4px solid var(--brand3_main);
+
+              &:focus {
+                outline-color: var(--point1_3);
+              }
             }
           }
         }
