@@ -114,8 +114,8 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
 
             <div className="announce_pagenation_buttons">
                 {
+                    pageIndex() &&
                     Array.from(pageIndex()).map((index) => (
-                        currentPage &&
                         currentPage===index
                         ?
                         <button key={index + 1} className="selected_announce_pagenation_button">

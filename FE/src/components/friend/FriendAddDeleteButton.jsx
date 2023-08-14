@@ -6,6 +6,7 @@ import follower from "../../assets/images/frield/follower.svg";
 import following from "../../assets/images/frield/following.svg";
 import add_friend from "../../assets/images/frield/add_friend.svg";
 import person from "../../assets/images/frield/person.svg";
+import Swal from "sweetalert2";
 
 
 const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) => {
@@ -48,11 +49,12 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             .then((response) => {
                 console.log('서버로부터 친구 추가 성공');
                 console.log("friend.status : ", friend.status)
+                showAlert("success", "친구 추가되었습니다.", "success");
                 setCurStatus(2);
-                setFriendModalIsOpen(1);
             })
             .catch((error) => {
                 console.error("서버로부터 친구 추가 실패", error);
+                showAlert("error", "친구 실패입니다.", "error");
                 console.error(error.code);
             });
     }
@@ -93,11 +95,12 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             .then((response) => {
                 console.log('서버로부터 친구 추가 요청 취소 성공');
                 console.log("friend.status : ", friend.status);
+                showAlert("success", "친구 추가 요청 취소 성공입니다.", "success");
                 setCurStatus(0);
-                setFriendModalIsOpen(1);
             })
             .catch((error) => {
                 console.error("서버로부터 친구 추가 요청 취소 실패", error);
+                showAlert("error", "친구 추가 요청 취소  실패입니다.", "error");
                 console.error(error.code);
             });
     }
@@ -138,11 +141,12 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             .then((response) => {
                 console.log('서버로부터 친구 추가 요청 거절 성공');
                 console.log("friend.status : ", friend.status);
+                showAlert("success", "친구 추가 요청 거절 성공입니다.", "success");
                 setCurStatus(0);
-                setFriendModalIsOpen(1);
             })
             .catch((error) => {
                 console.error("서버로부터 친구 추가 요청 거절 실패", error);
+                showAlert("error", "친구 추가 요청 거절 실패입니다.", "error");
                 console.error(error.code);
             });
     }
@@ -179,11 +183,12 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             .then((response) => {
                 console.log('친구 추가 성공');
                 console.log("friend.status : ", friend.status)
+                showAlert("success", "친구 추가 성공입니다.", "success");
                 setCurStatus(1);
-                setFriendModalIsOpen(1);
             })
             .catch((error) => {
                 console.error("친구 추가 실패", error);
+                showAlert("error", "친구 추가 실패입니다.", "error");
                 console.error(error.code);
             });
     }
@@ -232,6 +237,14 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
                 console.error(error.code);
             });
     }
+
+    const showAlert = (title, text, icon) => {
+        Swal.fire({
+            title,
+            text,
+            icon,
+        });
+    };
 
     function statusButton() {
         console.log("from : ", from);
@@ -285,18 +298,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
                     statusButton()
                 }
             </div>
-            {/* 모달 창 */}
-            <Modal isOpen={friendModalIsOpen !== 0}>
-                {
-                    <div style={{width:'100%', height:'100%'}} onClick={() => setFriendModalIsOpen(0)}>
-                        {
-                            friendModalIsOpen === 1
-                                ?"친구 추가 요청이 처리되었습니다."
-                                :"친구 삭제 요청이 처리되었습니다."
-                        }
-                    </div>
-                }
-            </Modal>
         </>
     );
 };

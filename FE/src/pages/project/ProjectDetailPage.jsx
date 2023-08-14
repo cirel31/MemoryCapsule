@@ -16,6 +16,8 @@ import write from "../../assets/images/projectdetail/write.svg";
 import discard from "../../assets/images/projectdetail/discard.svg";
 import before from "../../assets/images/projectdetail/before.svg";
 import after from "../../assets/images/projectdetail/after.svg";
+import heart from "../../assets/images/projectdetail/heart.svg";
+import tag from "../../assets/images/projectdetail/tag.svg";
 
 const baseURL = 'https://i9a608.p.ssafy.io:8000'
 const subURL = '/project'
@@ -57,7 +59,7 @@ const ProjectDetailPage = () => {
   const [imgNum, setImgNum] = useState([])
   const [selectedPost, setSelectedPost] = useState(null)
   const [isHovered, setIsHovered] = useState(null)
-  
+
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${projectId}`
       , {
@@ -94,12 +96,12 @@ const ProjectDetailPage = () => {
 
   // 프로젝트 인원 수 따라서 싱글 프로젝트인지 구분하기 위한 함수
   function isSoloProject() {
-    if (1 <= 1) {
+    if (project.userList && (project.userList.length <= 1)) {
       // 혼자서 하는 프로젝트인 경우
-      return true;
+      return false;
     } else {
       // 여러명이서 하는 프로젝트인 경우
-      return false;
+      return true;
     }
   }
 
@@ -107,7 +109,7 @@ const ProjectDetailPage = () => {
   const handleBack = () => {
     window.history.back()
   }
-  
+
   const handleImgPlus = (id) => {
     setImgNum(prevNums => {
       const prevValue = prevNums[id] || 0;
@@ -128,6 +130,8 @@ const ProjectDetailPage = () => {
         <div className="detail_project_top_content">
           <div className="detail_project_title">
             <h1>{project.title}</h1>
+            <img src={tag} alt="어떤 프로젝트" className="detail_project_title_tag"/>
+            <img src={heart} alt="어떤 프로젝트" className="detail_project_title_heart"/>
           </div>
           <div className="detail_project_back">
             <div onClick={handleBack} className="detail_project_back_button">
@@ -152,7 +156,7 @@ const ProjectDetailPage = () => {
             </div>
             <div className="detail_project_shorts_info_percentage">
               <div className="detail_project_shorts_info_percentage_text">
-                <p>{((project.artielcNum / 365) * 100).toFixed()}%</p>
+                <p>{((project.artielcNum / 350) * 100).toFixed()}%</p>
               </div>
               <svg className="detail_project_shorts_info_percentage_graph">
                 <circle
@@ -222,7 +226,7 @@ const ProjectDetailPage = () => {
                   key={id}
                 >
                   {article.created && (
-                      <h3 className="detail_project_history_title">{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
+                      <h3 className="detail_project_history_date">{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
                   )}
                   <div className="detail_project_history_article">
                     {/*수정 필요 현재 이미지 pos 따라서 좌우 버튼 생성*/}

@@ -17,6 +17,7 @@ const FriendPage = () => {
             userId:0
         }
     ]);
+
     const [selectPage, setSelectPage] = useState(false);
     const [select, setSelect] = useState({
         id: "",
