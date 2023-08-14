@@ -116,8 +116,7 @@ const ArticleCreateForm = () => {
   const createArticle = (e) => {
     e.preventDefault();
     const needPoint = (photos.length - 1) * 50
-    console.log("제출버튼 누름")
-    if (needPoint < point) {
+    if (needPoint <= point) {
       const formData = new FormData(e.target)
       // photos.forEach((photo, index) => {
       //   formData.append(`files`, photo)
