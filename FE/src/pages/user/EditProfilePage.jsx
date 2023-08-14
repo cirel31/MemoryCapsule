@@ -121,8 +121,6 @@ const EditProfilePage = () => {
                 })
             })
             .catch((error) => {
-              console.log(baseURL,subURL,'_password')
-              console.log(user.userId, currentPassword, newPassword, accessToken)
               if (error.response.status === 304) {
                 Swal.fire({
                   icon: 'warning',

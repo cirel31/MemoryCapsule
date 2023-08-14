@@ -41,7 +41,7 @@ const friendSlice = createSlice({
       state.selectedPeople.push(action.payload)
     },
     removeFriends: (state, action) => {
-      state.selectedPeople = state.selectedPeople.filter((userId) => userId !== action.payload)
+      state.selectedPeople = state.selectedPeople.filter((user) => user.userId !== action.payload)
     },
     removeAll: (state) => {
       state.selectedPeople = []
