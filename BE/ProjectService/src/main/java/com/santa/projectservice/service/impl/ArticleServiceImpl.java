@@ -10,11 +10,15 @@ import com.santa.projectservice.service.ArticleService;
 import com.santa.projectservice.service.FileUploadService;
 import com.santa.projectservice.repository.util.UtilQuerys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +59,6 @@ public class ArticleServiceImpl implements ArticleService {
         if(!utilQuerys.userProjectValidate(articleDto.getUserId(), articleDto.getProjectId()))
             throw new ProjectNotAuthorizedException("권한이 없는 프로젝트이거나 없는 프로젝트입니다");
         User writer = userRepository.findById(articleDto.getUserId()).get();
-
         Article writeArticle = articleRepository.save(Article.builder()
                 .project(projectRepository.getReferenceById(articleDto.getProjectId()))
                 .user(writer)
@@ -79,7 +82,6 @@ public class ArticleServiceImpl implements ArticleService {
         } catch (IOException e) {
             throw new RuntimeException("게시글 작성을 실패했습니다. ", e);
         }
-
         return true;
     }
 
