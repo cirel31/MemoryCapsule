@@ -8,6 +8,7 @@ import com.santa.board.Enum.ServiceNameEnum;
 import com.santa.board.entity.Liked;
 import com.santa.board.entity.LikedId;
 import com.santa.board.entity.Review;
+import com.santa.board.entity.User;
 import com.santa.board.exception.DataException;
 import com.santa.board.repository.LikeRepository;
 import com.santa.board.repository.ReviewRepository;
@@ -78,7 +79,7 @@ public class ReviewServiceImpl implements ReviewService {
     public Long insertReview(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
         log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, insertDto, userIdx));
         Review review = Review.builder()
-                .reviewIdx(userIdx)
+                .user(User.builder().userIdx(userIdx).build())
                 .reviewTitle(insertDto.getTitle())
                 .reviewContent(insertDto.getContent())
                 .reviewImgUrl(fileService.getFileName(file))

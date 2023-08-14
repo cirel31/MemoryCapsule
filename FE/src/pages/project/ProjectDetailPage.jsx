@@ -56,6 +56,9 @@ const ProjectDetailPage = () => {
   const { projectId } = useParams()
   const [project, setProject] = useState([])
   const [myArticles, setMyArticles] = useState([])
+  const [imgNum, setImgNum] = useState([])
+  const [selectedPost, setSelectedPost] = useState(null)
+  const [isHovered, setIsHovered] = useState(null)
 
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${projectId}`
@@ -66,13 +69,10 @@ const ProjectDetailPage = () => {
     }
     )
       .then((response) => {
-        console.log('성공')
-        console.log(response.data)
         setProject(response.data);
       })
       .catch((error) => {
         console.error("서버로부터 프로젝트 세부사항 실패", error);
-        console.error(error.code)
       });
   }, []);
 
@@ -85,7 +85,6 @@ const ProjectDetailPage = () => {
         }
     )
         .then((response) => {
-          console.log('성공', user.userId)
           console.log(response.data)
           setMyArticles(response.data);
         })
@@ -111,6 +110,19 @@ const ProjectDetailPage = () => {
     window.history.back()
   }
 
+  const handleImgPlus = (id) => {
+    setImgNum(prevNums => {
+      const prevValue = prevNums[id] || 0;
+      const maxValue = myArticles[id]?.images?.length - 1 || 0;
+      return { ...prevNums, [id]: Math.min(prevValue + 1, maxValue) };
+    });
+  }
+  const handleImgMinus = (id) => {
+    setImgNum(prevNums => {
+      const prevValue = prevNums[id] || 0;
+      return { ...prevNums, [id]: Math.max(prevValue - 1, 0) };
+    });
+  }
   return (
     <div className="big_body">
       <div className="detail_project_layout">
@@ -162,7 +174,7 @@ const ProjectDetailPage = () => {
                     fill="none"
                     stroke="#FF8CA1FF"
                     strokeWidth="8"
-                    strokeDasharray={`${2 * Math.PI * 30 * (project.artielcNum / 350)} ${2 * Math.PI * 30 * (1-(project.artielcNum / 350))}`}
+                    strokeDasharray={`${2 * Math.PI * 30 * (project.artielcNum / 365)} ${2 * Math.PI * 30 * (1-(project.artielcNum / 365))}`}
                     strokeDashoffset={2 * Math.PI * 30 * 0.25}
                 />
               </svg>
@@ -209,10 +221,12 @@ const ProjectDetailPage = () => {
             }
           </div>
           <div className="detail_project_history_format">
-            {myArticles.map((article, idx) => (
-                <div key={idx}>
+            {myArticles.map((article, id) => (
+                <div
+                  key={id}
+                >
                   {article.created && (
-                      <h3 className="detail_project_history_date">{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
+                      <h3 className="detail_project_history_title">{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
                   )}
                   <div className="detail_project_history_article">
                     {/*수정 필요 현재 이미지 pos 따라서 좌우 버튼 생성*/}
@@ -221,16 +235,21 @@ const ProjectDetailPage = () => {
                       article.images.length <= 1
                       ? <div></div>
                       : <div className="detail_project_history_article_beforeafter_btn">
-                          <img src={before} alt="이전 사진" className="detail_project_history_article_beforeafter_img"/>
+                          <img
+                            src={before}
+                            alt="이전 사진"
+                            onClick={() => handleImgMinus(id)}
+                            className="detail_project_history_article_beforeafter_img"
+                          />
                         </div>
                     }
                     <div className="detail_project_history_article_imgbox">
                       {article.images ? (
                           <img
-                              src={`${article.images[0]}`}
-                              alt="서버 이미지를 불러올 수 없습니다"
-                              className="detail_project_history_article_img"
-                              onError={(e) => {e.target.src = kokona}}
+                            src={article.images[imgNum[id] || 0]}
+                            alt="서버 이미지를 불러올 수 없습니다"
+                            onError={(e) => {e.target.src = kokona}}
+                            className="detail_project_history_article_img"
                           />
                       ) : <img src={kokona} alt="클라이언트 이미지를 불러올 수 없습니다"  className="detail_project_history_article_img"/>
                       }
@@ -241,7 +260,11 @@ const ProjectDetailPage = () => {
                       article.images.length <= 1
                           ? <div></div>
                           : <div className="detail_project_history_article_beforeafter_btn">
-                            <img src={after} alt="다음 사진" className="detail_project_history_article_beforeafter_img"/>
+                            <img
+                              src={after}
+                              alt="다음 사진"
+                              onClick={() => handleImgPlus(id)}
+                              className="detail_project_history_article_beforeafter_img"/>
                           </div>
                     }
                     <div className="detail_project_history_article_body">

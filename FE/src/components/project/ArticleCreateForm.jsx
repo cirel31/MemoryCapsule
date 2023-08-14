@@ -9,7 +9,12 @@ import stamp_wow from "../../assets/images/stamp/stamp_wow.svg"
 import Modal from "react-modal";
 import axios from "axios"
 import {useSelector} from "react-redux";
+
+import article_bg from "../../assets/images/projectcreate/Projectcreate.svg"
+import "../../styles/ArticleCreate.scss"
+
 import Swal from "sweetalert2";
+
 
 const ArticleCreateForm = () => {
   const formRef = useRef(null)
@@ -111,8 +116,7 @@ const ArticleCreateForm = () => {
   const createArticle = (e) => {
     e.preventDefault();
     const needPoint = (photos.length - 1) * 50
-    console.log("제출버튼 누름")
-    if (needPoint < point) {
+    if (needPoint <= point) {
       const formData = new FormData(e.target)
       // photos.forEach((photo, index) => {
       //   formData.append(`files`, photo)
@@ -157,90 +161,100 @@ const ArticleCreateForm = () => {
 
   return (
     <>
-      <div>
-        <h3>게시물 생성 페이지</h3>
-        <form ref={formRef} onSubmit={createArticle} >
-          <div style={{display: "flex" }}>
-            <div>
-              <p>현재 업로드 된 사진 수 : {photos.length} </p>
-              <label>
-                이미지 업로드:
-                <br/>
-                <input
-                  name="files"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImage}
-                />
-              </label>
-              {/*<div>*/}
-              {/*  {photos.map((photo, index) => (*/}
-              {/*    <div key={index}>*/}
-              {/*      <img*/}
-              {/*        src={photo}*/}
-              {/*        alt={`미리보기 이미지 ${index+1}`}*/}
-              {/*        style={{ width: '300px', height: '300px', objectFit: 'cover' }}*/}
-              {/*      />*/}
-              {/*      <button type="button" onClick={() => deletePhoto(index)}>삭제</button>*/}
-              {/*    </div>*/}
-              {/*  ))}*/}
-              {/*</div>*/}
-              <div>
-                {photos.length > 0 && (
+      <div className="article_create_body">
+        <img src={article_bg} className="article_create_back"/>
+        <div className="article_create_forms_body">
+          <h3>게시물 생성 페이지</h3>
+          <form ref={formRef} onSubmit={createArticle} >
+            <div >
+              <div className="img_article_createupload">
+                {/* 시간되면 지금 몇번째 사진인지 확인할 수 있어야 함.*/}
+
+
+                <div>
+                  {photos.length > 0 && (
                     <div>
+                      <div className="number_cnt">
+                        <p>{photos.length}/4</p>
+                      </div>
                       <img
-                          src={photos[currentImageIndex]}
-                          alt={`미리보기 이미지 ${currentImageIndex + 1}`}
-                          style={{ width: '300px', height: '300px', objectFit: 'cover' }}
+                        src={photos[currentImageIndex]}
+                        alt={`미리보기 이미지 ${currentImageIndex + 1}`}
                       />
-                      <button type="button" onClick={() => deletePhoto(currentImageIndex)}>삭제</button>
-                      <button type="button" disabled={currentImageIndex === 0} onClick={() => setCurrentImageIndex(prev => prev - 1)}>이전</button>
-                      <button type="button" disabled={currentImageIndex === photos.length - 1} onClick={() => setCurrentImageIndex(prev => prev + 1)}>다음</button>
+                      <div className="photoUI_btn">
+                        <button type="button" disabled={currentImageIndex === 0} onClick={() => setCurrentImageIndex(prev => prev - 1)}>이전</button>
+                        <button type="button" disabled={currentImageIndex === photos.length - 1} onClick={() => setCurrentImageIndex(prev => prev + 1)}>다음</button>
+                        <button type="button" onClick={() => deletePhoto(currentImageIndex)} className="delete_btn">삭제</button>
+                      </div>
                     </div>
-                )}
+                  )}
+                </div>
+                <label>
+                  사진 추가하기
+                  <br/>
+                  <input
+                    name="files"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImage}
+                  />
+                </label>
+
               </div>
-            </div>
-            <div>
-              <div>
-                {feelingStamp && (
-                  <div>
-                    <img src={feelingStamp[1]} alt="" style={{width:"50px"}}/>
+              <div className="article_contents_createupload">
+                <div>
+                  <h4>오늘의 기분 도장 찍기</h4>
+                  <div className="stamp_groups">
+                    {feelingStamp && (
+                      <div className="stamp_preview">
+                        <img src={feelingStamp[1]} alt=""/>
+                      </div>
+                    )}
+                    <div>
+                      <button type="button" onClick={openStampModal}>
+                        도장찍기
+                      </button>
+                    </div>
+
                   </div>
-                )}
-                <button type="button" onClick={openStampModal}>
-                  백점만점
-                </button>
-                <h4>오늘의 기분 도장 찍기</h4>
-                <Modal isOpen={stampModalOpen}>
-                  {stamps.map((stamp) => (
-                    <div key={stamp.id} onClick={() => appendStamp(stamp)}>
-                      <img src={stamp.stamp} alt={stamp.id} style={{width:"50px"}} />
+
+
+                  <Modal isOpen={stampModalOpen} className="article_stamp_modal">
+                    <h2>오늘의 기분스탬프를 골라주세요!</h2>
+                    <div>
+                      {stamps.map((stamp) => (
+                        <div key={stamp.id} onClick={() => appendStamp(stamp)}>
+                          <img src={stamp.stamp} alt={stamp.id}/>
+                        </div>
+                      ))}
+                      <button type="button" onClick={closeStampModal}>
+                        닫기
+                      </button>
                     </div>
-                  ))}
-                  <button type="button" onClick={closeStampModal}>
-                    닫기
-                  </button>
-                </Modal>
-                <input
-                  name="stamp"
-                  style={{display:"none"}}
-                  type="number"
-                  value={feelingStamp[0]}
+
+
+                  </Modal>
+                  <input
+                    name="stamp"
+                    style={{display:"none"}}
+                    type="number"
+                    value={feelingStamp[0]}
+                  />
+                </div>
+                <textarea
+                  name="content"
+                  className="article_text"
+                  value={text}
+                  onChange={handleTextChange}
+                  maxLength={100}
                 />
+                <div className="cnt_word">{text.length} / 100</div>
               </div>
-              <textarea
-                name="content"
-                value={text}
-                onChange={handleTextChange}
-                maxLength={100}
-                style={{ width:'300px', height:'200px' }}
-              />
-              <div>글자 수 : {text.length} / 100</div>
             </div>
-          </div>
-          <button type="submit">게시물 등록</button>
-        </form>
+            <button type="submit" className="article_submit">게시물 등록</button>
+          </form>
+        </div>
       </div>
     </>
   )

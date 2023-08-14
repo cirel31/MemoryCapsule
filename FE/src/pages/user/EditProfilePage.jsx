@@ -100,10 +100,13 @@ const EditProfilePage = () => {
         const newPassword = result.value.newPassword
         if (currentPassword &&  newPassword) {
           const passwordData = new FormData()
-          passwordData.append('currentPassword', result.value.currentPassword)
-          passwordData.append('newPassword', result.value.newPassword)
-          axios.put(`${baseURL}${subURL}`, passwordData, {
-            "Authorization": `Bearer ${accessToken}`,
+          passwordData.append('password', currentPassword)
+          passwordData.append('newPassword', newPassword)
+          passwordData.append('userId', user.userId)
+          axios.put(`${baseURL}${subURL}_password`, passwordData, {
+            headers: {
+              "Authorization": `Bearer ${accessToken}`,
+            }
           })
             .then(() => {
               Swal.fire({
@@ -118,7 +121,9 @@ const EditProfilePage = () => {
                 })
             })
             .catch((error) => {
-              if (error.response.status === 506) {
+              console.log(baseURL,subURL,'_password')
+              console.log(user.userId, currentPassword, newPassword, accessToken)
+              if (error.response.status === 304) {
                 Swal.fire({
                   icon: 'warning',
                   text: "현재 비밀번호가 일치하지 않습니다.",
@@ -172,7 +177,7 @@ const EditProfilePage = () => {
             <button onClick={handelPassWord}>비밀번호 변경하기</button>
           </div>
         </form>
-        <button onClick={handleMyPage}><img src={goback_btn}/></button>
+        <button onClick={handleMyPage} className="go_back"><img src={goback_btn}/></button>
       </div>
     </>
   )

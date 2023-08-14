@@ -6,7 +6,6 @@ import com.example.userservice.model.dto.UserDto;
 import com.example.userservice.model.entity.User;
 import com.example.userservice.service.UserService;
 import com.example.userservice.util.RegexUtil;
-import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -51,8 +50,6 @@ public class UserController {
         return "Hello user-service with locked";
     }
 
-
-    @Timed(description = "user.status", longTask = true)
     @GetMapping("/health-check")
     public String getHealth() {
         return "Hello user-service";
@@ -145,8 +142,8 @@ public class UserController {
 
     @PostMapping("/find_password")
     public ResponseEntity findPwd(@RequestBody UserDto.RequestFindPass userInfo) {
-
-        if (userService.checkEmailDuplicated(userInfo)) {
+        try {
+            userService.checkEmailDuplicated(userInfo);
             String tmp_pwd = userService.generateRandomCode();
             ResponseEntity<String> response = new RestTemplate().postForEntity(
                     "http://notification-service:8081/email/tmp_pwd/" + userInfo.getEmail() + "/" + tmp_pwd,
@@ -158,8 +155,21 @@ public class UserController {
             }
             userService.modifyPassword(userInfo.getEmail(), tmp_pwd);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("임시 비밀번호: " + tmp_pwd);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("이메일과 일치하는 유저가 없습니다.");
+    }
+
+    @PutMapping("/change_password")
+    public ResponseEntity changePwd(@ModelAttribute UserDto.modifyPwd modifyPwd) {
+        try {
+            userService.checkPassword(modifyPwd);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{userId}/detail")

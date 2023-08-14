@@ -80,6 +80,11 @@ public class User {
         this.registerList = registerList;
         this.articleList = articleList;
     }
+
+    public void giveArticlePoint(){
+        this.point += 50;
+    }
+
     public UserVo toVo(){
         return  UserVo.builder()
                 .nickname(this.nickname)
