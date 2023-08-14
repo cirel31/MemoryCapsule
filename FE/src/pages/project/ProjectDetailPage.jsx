@@ -226,7 +226,7 @@ const ProjectDetailPage = () => {
                   key={id}
                 >
                   {article.created && (
-                      <h3 className="detail_project_history_title">{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
+                      <h3 className="detail_project_history_date">{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
                   )}
                   <div className="detail_project_history_article">
                     {/*수정 필요 현재 이미지 pos 따라서 좌우 버튼 생성*/}
