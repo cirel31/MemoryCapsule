@@ -286,6 +286,7 @@ public class UserServiceImpl implements UserService {
                 null,
                 String.class
         );
+        log.info("이메일 전송 결과" + response.getStatusCodeValue());
         if (response.getStatusCodeValue() != HttpStatus.OK.value()) {
             throw new IllegalStateException("이메일 전송 실패");
         }
