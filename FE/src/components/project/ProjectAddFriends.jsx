@@ -2,24 +2,30 @@ import { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchResult, addFriends, removeFriends } from "../../store/selectFriendSlice";
+import Swal from "sweetalert2";
 
 const ProjectAddFriends = () => {
   const dispatch = useDispatch()
-  const searchUsers = ''
+  const user = useSelector((state) => state.userState.user) || null
+  const searchUsers = user.userId
   const [searchQuery, setSearchQuery] = useState("");
-  const baseURL = 'http://i9a608.p.ssafy.io:8000'
+  const baseURL = 'https://i9a608.p.ssafy.io:8000'
+  const subURL = '/friend/find'
   const handleSearchFriends = async () => {
     try {
       const accessToken = sessionStorage.getItem("accessToken")
-      const response = await axios.get(`${baseURL}${searchUsers}?query=${searchQuery}`, {
+      const response = await axios.get(`${baseURL}${subURL}/${searchQuery}?host_id=${searchUsers}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         },
       });
-      const searchResultsData = response.data
-      dispatch(setSearchResult(searchResultsData))
+      dispatch(setSearchResult(response.data))
     } catch (error) {
       console.error("서버에서 유저 검색에 실패했습니다", error)
+      Swal.fire({
+        icon: "error",
+        text: "해당 유저가 존재하지 않습니다."
+      })
     }
   }
   const addFriendsList = (userId) => {
@@ -30,7 +36,7 @@ const ProjectAddFriends = () => {
   }
 
   const selectedUsers = useSelector((state) => state.friend.selectedPeople)
-  const searchResults = useSelector((state) => state.friend.searchResults)
+  const searchResult = useSelector((state) => state.friend.searchResults)
 
   return (
     <div>
@@ -44,11 +50,9 @@ const ProjectAddFriends = () => {
         <button onClick={handleSearchFriends}>검 색</button>
       </div>
       <div>
-        {searchResults.map((user, index) => (
-          <div key={user.id} onClick={() => addFriendsList(user.id)}>
-            <p>{user.nickname}({user.id})</p>
-          </div>
-        ))}
+        <div onClick={() => addFriendsList(searchResult.userId)}>
+          <p>{searchResult.nickname}</p>
+        </div>
       </div>
       <div>
         <h2>선택한 유저 리스트</h2>
@@ -58,7 +62,6 @@ const ProjectAddFriends = () => {
               <p>{userId}    </p>
               <button onClick={() => removeFriendsList(userId)}>제외하기</button>
             </div>
-            
           ))}
         </div>
       </div>

@@ -32,7 +32,6 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const sidebarRef = useRef()
   const LogoutUser = () => {
-    console.log('로그아웃 버튼 작동 테스트', sessionStorage)
     dispatch(logoutUserThunk());
   }
   const showSidebar = () => setSidebar(!sidebar)
@@ -47,7 +46,6 @@ export default function Navbar() {
     setIsLoggedIn(loginCheck)
     if (isLoggedIn) {
       const idx = sessionStorage.getItem("userIdx")
-      console.log(idx)
       dispatch(fetchUserInfoThunk(idx))
     }
   }, [isLoggedIn])
@@ -56,7 +54,7 @@ export default function Navbar() {
   const user_email = user?.email || 'jimmy@raynersraiders.com'
   const user_point = user?.point || 0
   const user_img = user?.imgUrl || profile_img
-  console.log(user_img)
+  console.log(user)
   return (
       <>
         {isLoggedIn && (
