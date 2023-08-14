@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import AnnounceUserViewPage from "./AnnounceUserViewPage";
 import PostModal from "../../components/post/PostModal";
-import Modal from "react-modal";
+import {useSelector} from "react-redux";
 
 const NoticeListPage = () => {
-    Modal.setAppElement("#root");
+    const user = useSelector((state) => state.userState.user)
+    const admin = user?.admin || false
 
     const [isModal, setIsModal] = useState(false)
-
     const [post, setPost] = useState(
         /** Notice Data Format*/
         {
@@ -28,16 +28,18 @@ const NoticeListPage = () => {
         <div className="big_body">
             <div className="content_body">
                 <AnnounceUserViewPage/>
-                <div className="create_post">
-                    <button
-                        className="create_post_button"
-                        key={post.id}
-                    // onClick={() => openModal(post.id)}
-                        onClick={() => openModal(post.title)}
-                    >
-                        글작성
-                    </button>
-                </div>
+                {
+                    admin &&
+                    <div className="create_post">
+                        <button
+                            className="create_post_button"
+                            key={post.id}
+                            onClick={() => openModal(post.title)}
+                        >
+                            글작성
+                        </button>
+                    </div>
+                }
                 <PostModal
                     selectedPost={{
                         noticeIdx : 0,

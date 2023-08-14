@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import axios from "axios";
 import "../../styles/AnnounceStyle.scss"
 import Swal from "sweetalert2";
+import {useSelector} from "react-redux";
 
 const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
@@ -15,6 +16,9 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     const [state, setState] = useState(false);
     const [disabledTitle, setDisabledTitle] = useState(false);
     const [disabledContent, setDisabledContent] = useState(false);
+
+    const user = useSelector((state) => state.userState.user)
+    const admin = user?.admin || false
 
     const [file, setFile] = useState(null);
 
@@ -34,7 +38,8 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     function checkUserRole() {
         console.log("[checkUserRole]");
         // 관리자 권한 확인
-        if (true) {
+        console.log(admin)
+        if (admin) {
             console.log("관리자로 확인되었습니다.");
             return true;
         } else {
