@@ -16,6 +16,8 @@ import write from "../../assets/images/projectdetail/write.svg";
 import discard from "../../assets/images/projectdetail/discard.svg";
 import before from "../../assets/images/projectdetail/before.svg";
 import after from "../../assets/images/projectdetail/after.svg";
+import heart from "../../assets/images/projectdetail/heart.svg";
+import tag from "../../assets/images/projectdetail/tag.svg";
 
 const baseURL = 'https://i9a608.p.ssafy.io:8000'
 const subURL = '/project'
@@ -116,6 +118,8 @@ const ProjectDetailPage = () => {
         <div className="detail_project_top_content">
           <div className="detail_project_title">
             <h1>{project.title}</h1>
+            <img src={tag} alt="어떤 프로젝트" className="detail_project_title_tag"/>
+            <img src={heart} alt="어떤 프로젝트" className="detail_project_title_heart"/>
           </div>
           <div className="detail_project_back">
             <div onClick={handleBack} className="detail_project_back_button">
@@ -140,7 +144,7 @@ const ProjectDetailPage = () => {
             </div>
             <div className="detail_project_shorts_info_percentage">
               <div className="detail_project_shorts_info_percentage_text">
-                <p>{((project.artielcNum / 365) * 100).toFixed()}%</p>
+                <p>{((project.artielcNum / 350) * 100).toFixed()}%</p>
               </div>
               <svg className="detail_project_shorts_info_percentage_graph">
                 <circle
@@ -158,7 +162,7 @@ const ProjectDetailPage = () => {
                     fill="none"
                     stroke="#FF8CA1FF"
                     strokeWidth="8"
-                    strokeDasharray={`${2 * Math.PI * 30 * (project.artielcNum / 365)} ${2 * Math.PI * 30 * (1-(project.artielcNum / 365))}`}
+                    strokeDasharray={`${2 * Math.PI * 30 * (project.artielcNum / 350)} ${2 * Math.PI * 30 * (1-(project.artielcNum / 350))}`}
                     strokeDashoffset={2 * Math.PI * 30 * 0.25}
                 />
               </svg>
@@ -208,7 +212,7 @@ const ProjectDetailPage = () => {
             {myArticles.map((article, idx) => (
                 <div key={idx}>
                   {article.created && (
-                      <h3 className="detail_project_history_title">{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
+                      <h3 className="detail_project_history_date">{article.created.slice(2,4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</h3>
                   )}
                   <div className="detail_project_history_article">
                     {/*수정 필요 현재 이미지 pos 따라서 좌우 버튼 생성*/}

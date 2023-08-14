@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import axios from "axios";
 import "../../styles/AnnounceStyle.scss"
+import Swal from "sweetalert2";
 
 const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
@@ -10,6 +11,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     Modal.setAppElement("#root");
 
     const [post, setPost] = useState(selectedPost);
+    const [imageList, setImageList] = useState([]);
     const [state, setState] = useState(false);
     const [disabledTitle, setDisabledTitle] = useState(false);
     const [disabledContent, setDisabledContent] = useState(false);
@@ -52,26 +54,27 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      */
     console.log(sessionStorage);
     const createPost = () => {
-        console.log("[createPost]")
+        console.log("[createPost]", post)
 
         const insertDto = {
-            title: "test Title",
-            content: "test Content",
+            title: post.noticeTitle,
+            content: post.noticeContent
         };
 
         const accessToken = sessionStorage.getItem("accessToken")
 
         const formData = new FormData();
-        //formData.append("insertDto", JSON.stringify(insertDto));
         formData.append("insertDto", new Blob([JSON.stringify(insertDto)], { type: "application/json" }));
-        formData.append("file", null);
 
-        console.log("formData : ", formData);
-        console.log("insertDto : ", insertDto);
+        imageList && imageList.forEach(image => {
+            formData.append('file', image);
+        });
+
         if (checkUserRole()) {
             axios.post(`${baseURL}${API}`, formData,
                 {
                     headers: {
+                        // "Content-Type": "application/json",
                         "Content-Type": "multipart/form-data",
                          Authorization: `Bearer ${accessToken}`
                     },
@@ -125,15 +128,16 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
      *  "noticeImgurl" : null
      * }
      */
-    const putPostDataEdit = (e) => {
-        e.preventDefault();
-        console.log("[putPostDataEdit]");
+    const putPostDataEdit = () => {
+        console.log("[putPostDataEdit]", post);
 
         const modifyDto = {
-            idx: 1,
-            title: "test Title",
-            content: "test Content",
+            idx: parseInt(post.noticeIdx, 10),
+            title: post.noticeTitle,
+            content: post.noticeContent
         };
+
+        console.log(modifyDto)
 
         //formData 생성 및 데이터 input
         const formData = new FormData();
@@ -152,6 +156,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                 })
                 .then((response) => {
                     console.log('게시글 수정 성공');
+                    showAlert("게시글이 수정되었습니다.");
                     closeModal()
                 })
                 .catch((error) => {
@@ -161,8 +166,13 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         }
     }
 
-    const closeModal = (e) => {
-        e.preventDefault();
+    const showAlert = (text) => {
+        Swal.fire({
+            text,
+        });
+    };
+
+    const closeModal = () => {
         setModalIsOpen(false);
         setState(false);
 
@@ -176,7 +186,14 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
     const addPost = (e) => {
         e.preventDefault();
-        createPost()
+
+        if (post.noticeIdx === 0) {
+            createPost();
+        } else {
+            putPostDataEdit();
+        }
+        console.log(post);
+
     }
 
     const editPost = (e) => {
@@ -242,7 +259,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                             }
                             {/*몇 개의 글자를 사용했는지 표시*/}
                             {
-                                post.noticeContent.length <= 5000
+                                post.noticeContent.length < 5000
                                 ?<div className="buttonList">{post.noticeContent.length}/5000</div>
                                 :<div className="buttonList text_styled_red">{post.noticeContent.length}/5000</div>
                             }
