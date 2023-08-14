@@ -15,6 +15,7 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
         search : 'id',
     });
 
+    const [curStatus, setCurStatus] = useState(0)
     const [isValidSearch, setIsValidSearch] = useState(true);
 
     // 처음 한 번 실행 시, 내 친구리스트 초기화
@@ -22,6 +23,12 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
         setFriends([]);
         setSelect("");
     }, []);
+
+
+    useEffect(() => {
+        console.log("[useEffect] friends" , friends);
+        console.log(friends)
+    }, [curStatus]);
 
     /**
      * 1. 전체 친구 목록 중 검색한 것 불러오기
@@ -51,6 +58,7 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
                 console.log(API);
                 console.log(response.data);
                 setFriends([response.data]);
+                setCurStatus(response.data.status);
             })
             .catch((error) => {
                 console.error("서버로부터 친구목록 가져오기 실패", error);
@@ -124,18 +132,16 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
                                 </div>
                             </div>
                             // 스크롤 구현해야 하는 부분
-                            :<div className="search_friend_list_item">
-                                {
-                                    friends.map((friend) => (
-                                        <FriendInfo
-                                            select={select}
-                                            setSelect={setSelect}
-                                            key={friend.userId}
-                                            friend={friend}
-                                            imageUrl={friend.imgUrl}
-                                        />
-                                    ))
-                                }
+                            :<div>
+                                <FriendInfo
+                                    select={select}
+                                    setSelect={setSelect}
+                                    key={friends[0].userId}
+                                    friend={friends[0]}
+                                    curStatus={curStatus}
+                                    setCurStatus={setCurStatus}
+                                    imageUrl={friends[0].imgUrl}
+                                />
                             </div>
                     }
                 </div>

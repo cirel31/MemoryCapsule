@@ -35,39 +35,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     }, []);
 
     /**
-     * 1. 전체 내 친구 목록 불러오기
-     *
-     * Method : get
-     * URL : /friend/search/{user_id}
-     * */
-    // function getFriends() {
-    //     console.log("[getFriends]");
-    //     const accessToken = sessionStorage.getItem("accessToken")
-    //     const host_id = Number(sessionStorage.getItem("userIdx"));
-    //     // 서버로부터 내 친구목록 가져오기
-    //     // axios.get(`${API}/search/${user_id}`,
-    //
-    //     axios.get(`${baseURL}${API}/search/${host_id}`,
-    //         {
-    //             headers: {
-    //                 Authorization: `Bearer ${accessToken}`
-    //             },
-    //         })
-    //         .then((response) => {
-    //             console.log('서버로부터 친구목록 가져오기 성공');
-    //             console.log(API);
-    //             console.log("response.data : ", response.data);
-    //             setRowFriends(response.data);
-    //             setFriends(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.error("서버로부터 친구목록 가져오기 실패", error);
-    //             console.error(error.code);
-    //         });
-    // }
-
-
-    /**
      5. 친구 상세목록 불러오기
      /friend/getDetailedFriendList/{userId}	친구들의 글목록/작성글수/프로젝트수 조회
      * 토큰 필요 *
@@ -116,21 +83,22 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     const handleFriendData = (e) => {
         console.log("[handleFriendData]");
         e.preventDefault();
+        console.log(form.id);
         const id = form.id.toLowerCase();
         const search = form.search;
 
-        console.log("sendId", id);
         if (id === "") {
             for (let i = 0; i < rowFriends.length; i++) {
                 console.log(rowFriends[i].name);
             }
             setFriends(rowFriends);
         } else {
-            let searchFriend = rowFriends.filter((rowFriend) =>
-                rowFriend.email.toLowerCase().includes(id)
+            setFriends([]);
+            var curFriend = rowFriends.filter((rowFriend) =>
+                rowFriend.nickname.toLowerCase().includes(form.id)
             )
-            console.log(searchFriend);
-            setFriends(searchFriend);
+            console.log(curFriend);
+            setFriends(curFriend)
         }
     };
 
@@ -206,7 +174,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                         </div>
                         :
                         <FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
-
                     }
                 </div>
             </div>
