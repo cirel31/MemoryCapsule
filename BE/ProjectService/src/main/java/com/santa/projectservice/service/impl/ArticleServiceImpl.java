@@ -54,14 +54,17 @@ public class ArticleServiceImpl implements ArticleService {
     public Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) throws ProjectNotAuthorizedException {
         if(!utilQuerys.userProjectValidate(articleDto.getUserId(), articleDto.getProjectId()))
             throw new ProjectNotAuthorizedException("권한이 없는 프로젝트이거나 없는 프로젝트입니다");
+        User writer = userRepository.findById(articleDto.getUserId()).get();
 
         Article writeArticle = articleRepository.save(Article.builder()
                 .project(projectRepository.getReferenceById(articleDto.getProjectId()))
-                .user(userRepository.getReferenceById(articleDto.getUserId()))
+                .user(writer)
                 .content(articleDto.getContent())
                 .stamp(articleDto.getStamp())
                 .build()
         );
+        writer.giveArticlePoint();
+        userRepository.save(writer);
         int order = 0;
         try {
             for (int i = 0; i < images.size(); i++) {
@@ -76,6 +79,7 @@ public class ArticleServiceImpl implements ArticleService {
         } catch (IOException e) {
             throw new RuntimeException("게시글 작성을 실패했습니다. ", e);
         }
+
         return true;
     }
 
