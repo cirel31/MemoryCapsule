@@ -170,7 +170,7 @@ public class UserController {
             userService.checkPassword(modifyPwd);
         } catch (Exception e) {
             log.info(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

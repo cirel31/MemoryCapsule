@@ -225,6 +225,9 @@ public class UserServiceImpl implements UserService {
         if (!passwordEncoder.matches(modifyPwd.getPassword(), user.getPassWord())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+        if (user.isOAuthUser()) {
+            throw new IllegalStateException("카카오로 가입한 유저는 비밀번호를 변경할 수 없습니다.");
+        }
         user.modifyPassword(passwordEncoder.encode(modifyPwd.getNewPassword()));
     }
 
