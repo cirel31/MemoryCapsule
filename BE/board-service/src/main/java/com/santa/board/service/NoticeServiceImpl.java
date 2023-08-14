@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -69,17 +68,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Long insertNotice(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
         log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.NOTICE, insertDto, userIdx));
-        Notice notice = Notice.builder()
-                .noticeCreatorIdx(userIdx)
-                .noticeTitle(insertDto.getTitle())
-                .noticeContent(insertDto.getContent())
-                .noticeImgurl(fileService.getFileName(file))
-                .noticeDeleted(false)
-                .noticeCreated(new Date())
-                .noticeUpdated(new Date())
-                .noticeHit(0)
-                .build();
-        log.info("notice 정보" + notice);
+        Notice notice = new Notice();
+
+        notice.newNotice(userIdx, insertDto.getTitle(), insertDto.getContent(), fileService.getFileName(file));
         return noticeRepository.save(notice).getNoticeIdx();
     }
 

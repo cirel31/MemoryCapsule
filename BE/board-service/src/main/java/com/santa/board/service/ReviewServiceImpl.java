@@ -8,7 +8,6 @@ import com.santa.board.Enum.ServiceNameEnum;
 import com.santa.board.entity.Liked;
 import com.santa.board.entity.LikedId;
 import com.santa.board.entity.Review;
-import com.santa.board.entity.User;
 import com.santa.board.exception.DataException;
 import com.santa.board.repository.LikeRepository;
 import com.santa.board.repository.ReviewRepository;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -78,17 +76,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Long insertReview(InsertDto insertDto, Long userIdx, MultipartFile file) throws Exception {
         log.info(LogMessageEnum.INSERT_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, insertDto, userIdx));
-        Review review = Review.builder()
-                .user(User.builder().userIdx(userIdx).build())
-                .reviewTitle(insertDto.getTitle())
-                .reviewContent(insertDto.getContent())
-                .reviewImgUrl(fileService.getFileName(file))
-                .reviewDeleted(false)
-                .reviewCreated(new Date())
-                .reviewUpdated(new Date())
-                .reviewHit(0)
-                .build();
-        log.info("review 저장할 내용" + review);
+        Review review = new Review(userIdx, insertDto.getTitle(), insertDto.getContent(), fileService.getFileName(file));
         return reviewRepository.save(review).getReviewIdx();
     }
 
