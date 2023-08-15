@@ -42,6 +42,7 @@ const MyPage = () => {
             <br/>
             <h1 className="mypage_notice_h1">공지사항</h1>
             <div className="parting_line"></div>
+            <AnnounceList page={0} size={3}/>
             <div>
             </div>
             <br/>
@@ -53,10 +54,11 @@ const MyPage = () => {
             <br/>
             <br/>
             <h1 className="mypage_notice_h1">보관함</h1>
+            <div className="parting_line"></div>
             <div>
               <ProjectLockerPage />
             </div>
-            <div className="parting_line"></div>
+
         </div>
     </div>
   )
