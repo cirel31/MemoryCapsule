@@ -11,13 +11,9 @@ import goback_btn from "../../assets/images/signup/go_back.svg";
 
 const SignupForm = ({ form, setForm,  }) => {
   const formRef = useRef(null)
-  const validationCodeRef = useRef()
   const navigate = useNavigate()
   const [policyModalIsOpen, setPolicyModalIsOpen] = useState(false)
-  const [emailModalIsOpen, setEmailModalIsOpen] = useState(false)
-  const [emailChecking, setEmailChecking] = useState(false)
   const [isAuthentication, setIsAuthentication] = useState(false)
-  const [validationCode, setValidationCode] = useState('')
   const {
     isChecked,
     isValidEmail,
@@ -25,7 +21,6 @@ const SignupForm = ({ form, setForm,  }) => {
     validateEmail,
     handleCheckBoxChange,
     passwordChecking,
-    sendSignupDataServer,
   } = useSignup()
 
   const [imgFile, setImgFile] = useState(null);
@@ -59,77 +54,121 @@ const SignupForm = ({ form, setForm,  }) => {
   }
   const emailCheckPaper = (e) => {
     e.preventDefault();
-    setEmailModalIsOpen(true);
+    const emailInput = Swal.mixin({
+      input: 'email',
+      confirmButtonText: '이메일 중복 확인',
+      showCancelButton: true,
+      cancelButtonText: '닫기',
+      inputAttributes: {
+        placeholder: 'example@example.com',
+        name: 'email',
+        id: 'id'
+      },
+      inputValidator: (value) => {
+        if (!value) {
+          return '이메일을 입력해주세요!';
+        }
+      }
+    });
+    emailInput.fire({
+      title: '사용할 이메일을 입력해주세요.'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        form.id = result.value
+        authorizeEmail(result.value)
+      }
+    });
   }
-  const emailCheckServer = (e) => {
-    e.preventDefault()
-    const emailData = form.id
-    axios.post(`${baseURL}${authorizationURL}${emailData}`)
-      .then((response) => {
-        if (response?.status === 209) {
-          Swal.fire({
-            text: response.data,
-            showCloseButton: true,
-            showCancelButton: true,
-            focusConfirm: false,
-            confirmButtonText: '확인',
-            cancelButtonText: '취소'
-          })
-            .then((result) => {
-              if (result.isConfirmed) {
-                console.log('확인 버튼 클릭!');
-                axios.post(`${baseURL}${deletedCheck}${emailData}`)
-                  .then((response) => {
-                    Swal.fire("사용 가능한 이메일입니다.")
-                    setEmailChecking(true)
-                    setValidationCode(response.data)
-                  })
-                  .catch((error) => {
-                    console.log(error)
-                    console.log(error.response.status)
-                    if (error.response?.status === 406) {
-                      Swal.fire(error.response.data.message)
-                    }
-                  })
-              } else if (result.isDismissed) {
-                console.log('취소 버튼 클릭!');
-              }
 
-            })
+  const authorizeEmail = async (emailData) => {
+    try {
+      const response = await axios.post(`${baseURL}${authorizationURL}${emailData}`);
+      if (response?.status === 209) {
+        const result = await Swal.fire({
+          text: response.data,
+          showCloseButton: true,
+          showCancelButton: true,
+          focusConfirm: false,
+          confirmButtonText: '확인',
+          cancelButtonText: '취소'
+        });
+
+        if (result.isConfirmed) {
+          await handleDeletedCheck(emailData);
+        } else {
+          console.log('취소 버튼 클릭!');
         }
-        else {
-          Swal.fire("사용 가능한 이메일입니다.")
-          setEmailChecking(true)
-          setValidationCode(response.data)
-        }
-      })
-      .catch((error) => {
-        if (error.response?.status === 406) {
-          Swal.fire(error.response.data.message)
-        }
-      })
-    console.log(emailData)
-  }
-  const emailAuthentication = (e) => {
-    e.preventDefault()
-    const authenticationCode = validationCodeRef.current.value
-    console.log(validationCode, authenticationCode)
-    if (validationCode === authenticationCode) {
-      Swal.fire("이메일 인증에 성공하였습니다.")
-      setIsAuthentication(true)
-      setEmailModalIsOpen(false)
-    } else {
-      Swal.fire("입력하신 코드가 올바르지 않습니다.")
+      } else {
+        setEmailSuccess(response);
+      }
+    } catch (error) {
+      handleErrorResponse(error);
     }
+  }
+
+  const handleDeletedCheck = async (emailData) => {
+    try {
+      const response = await axios.post(`${baseURL}${deletedCheck}${emailData}`);
+      setEmailSuccess(response);
+    } catch (error) {
+      handleErrorResponse(error);
+    }
+  }
+
+  const setEmailSuccess = (response) => {
+    const validationCode = response.data
+    Swal.fire({
+      text: "사용 가능한 이메일입니다.",
+      icon: "info",
+      focusConfirm: false,
+      confirmButtonText: '확인',
+    })
+      .then((result) => {
+        emailAuthentication(validationCode)
+      })
+  }
+
+  const handleErrorResponse = (error) => {
+    if (error.response?.status === 406) {
+      Swal.fire(error.response.data.message);
+    } else {
+      console.log(error);
+    }
+  }
+  const emailAuthentication = (validationCode) => {
+    Swal.fire({
+      title: "인증 코드를 입력해주세요.",
+      html: `
+        <input type="text" id="authenticationCode" class="swal2-input" placeholder="인 증 코 드">
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: '확인',
+      cancelButtonText: '취소',
+      preConfirm: () => {
+        let authenticationCode = document.getElementById('authenticationCode').value;
+        return {
+          authenticationCode: authenticationCode,
+        };
+      }
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          const authenticationCode = result.value.authenticationCode
+          if (validationCode === authenticationCode) {
+            Swal.fire("이메일 인증에 성공하였습니다.")
+            setIsAuthentication(true)
+          } else {
+            Swal.fire("입력하신 코드가 올바르지 않습니다.")
+          }
+        }
+      })
   }
 
   const sendSignupData = (e) => {
     e.preventDefault()
     const formData = new FormData(formRef.current);
-    // console.log(formRef.current)
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+
     if (
       (form.id.length > 0 && isValidEmail) &&
       (form.nickname.length > 1) &&
@@ -142,8 +181,7 @@ const SignupForm = ({ form, setForm,  }) => {
           "Content-Type": "multipart/form-data",
         }
       })
-        .then(res => {
-          console.log('회원가입 성공', res)
+        .then(() => {
           navigate('/login')
         })
         .catch(err => {
@@ -154,11 +192,6 @@ const SignupForm = ({ form, setForm,  }) => {
             Swal.fire('에러에러')
           }
           Swal.fire('서버에서 회원가입 실패')
-          console.log('서버에서 회원가입 실패', err)
-          console.log(err.response)
-          for (const [key, value] of formData.entries()) {
-            console.log(`왜 안 되 는 건 데.... : ${key}: ${value}`);
-          }
         })
     } else {
       console.log('데이터 오류')
@@ -305,36 +338,6 @@ const SignupForm = ({ form, setForm,  }) => {
           본 과정은 삼성 청년 소프트웨어 아카데미(SSAFY)의 일환으로 만들어진 것입니다.
         </div>
       </Modal>
-      <Modal isOpen={emailModalIsOpen}>
-        <div>
-          <label>
-            E-mail :
-          </label>
-          <input
-            name="email"
-            id="id"
-            type="email"
-            placeholder="example@example.com"
-            value={form.id}
-            onChange={handleChange}
-          />
-          <button onClick={emailCheckServer}>이메일 중복 확인</button>
-        </div>
-        {emailChecking &&
-          <div>
-            <label>인 증 코 드 : </label>
-            <input
-              type="text"
-              ref={validationCodeRef}
-            />
-            <button onClick={emailAuthentication}>이메일 인증하기</button>
-          </div>
-        }
-        
-        <button onClick={() => setEmailModalIsOpen(false)}>닫기</button>
-      </Modal>
-      
-      
     </div>
 
   )
