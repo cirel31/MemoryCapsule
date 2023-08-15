@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import PostModal from "../../components/post/PostModal";
 import {useSelector} from "react-redux";
 import ReviewListPage from "./ReviewListPage";
+import ReviewModal from "../../components/post/ReviewModal";
 
-const NoticeListPage = () => {
+const ReviewPage = () => {
     const user = useSelector((state) => state.userState.user)
-    const admin = user?.admin || false
 
     const [isModal, setIsModal] = useState(false)
     const [post, setPost] = useState(
@@ -29,7 +28,6 @@ const NoticeListPage = () => {
             <div className="content_body">
                 <ReviewListPage/>
                 {
-                    admin &&
                     <div className="create_post">
                         <button
                             className="create_post_button"
@@ -40,13 +38,11 @@ const NoticeListPage = () => {
                         </button>
                     </div>
                 }
-                <PostModal
+                <ReviewModal
                     selectedPost={{
-                        noticeIdx : 0,
-                        noticeHit : 0,
-                        noticeTitle : "",
-                        noticeContent : "",
-                        noticeCreated : "",
+                        reviewIdx : 0,
+                        reviewTitle : "",
+                        reviewContent : "",
                     }}
                     setSelectedPost={setPost}
                     modalIsOpen={isModal}
@@ -57,4 +53,4 @@ const NoticeListPage = () => {
     )
 }
 
-export default NoticeListPage;
+export default ReviewPage;

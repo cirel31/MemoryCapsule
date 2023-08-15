@@ -1,9 +1,9 @@
+import axios from "axios";
 import Modal from "react-modal";
 import React, {useEffect, useState} from "react";
 import "../../styles/ReviewStyle.scss"
-import PostModal from "../post/PostModal";
-import Pagination from "../common/Pagination";
-import axios from "axios";
+import ReviewModal from "../post/ReviewModal";
+import ReviewPagination from "../post/ReviewPagination";
 
 const ReviewList = ({page, size}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
@@ -17,28 +17,30 @@ const ReviewList = ({page, size}) => {
 
     const [selectedPost, setSelectedPost] = useState(null)
     const [isModal, setIsModal] = useState(false)
-
     const [postList, setPostList] = useState(null)
 
     useEffect(() => {
-        console.log('[reviewUserViewPage] 페이지 로딩 시 한 번만 실행되는 함수');
-        getNoticesData(page, size);
+        console.log('[reviewList] 페이지 로딩 시 한 번만 실행되는 함수');
+        getReviewsData(page, size);
     }, []);
 
     useEffect(() => {
         console.log('[reviewUserViewPage]');
-        getNoticesData(page, size);
+        getReviewsData(page, size);
     }, [currentPage]); // currentPage 변경시에만 실행
 
     /**
      * 1. 전체 공지사항 [get]
-     * http://localhost:8080/notice/list?page=0&size=10
+     * http://localhost:8080/review/list?page=0&size=10
      * */
-    const getNoticesData = (e) => {
-        console.log("[getNoticesData]");
+    const getReviewsData = (e) => {
+        console.log("[getReviewsData]");
         const accessToken = sessionStorage.getItem("accessToken")
 
-        axios.get(`${baseURL}${API}/list`, {
+
+        // 리뷰 역순 정렬
+        // axios.get(`${baseURL}${API}/list?size=${itemsPerPage}&page=${currentPage}&sort=reviewIdx,desc`, {
+        axios.get(`${baseURL}${API}/list?size=${itemsPerPage}&page=${currentPage}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             },
@@ -54,10 +56,10 @@ const ReviewList = ({page, size}) => {
 
     /**
      * 2. 공지사항 자세하게 보기 [get]
-     * http://localhost:8080/notice/2
+     * http://localhost:8080/review/2
      * */
-    const getNoticesDataDetail = () => {
-        console.log("[getNoticesDataDetail]", selectedPost);
+    const getReviewsDataDetail = () => {
+        console.log("[getReviewsDataDetail]", selectedPost);
 
         const index = selectedPost.id;
 
@@ -73,13 +75,13 @@ const ReviewList = ({page, size}) => {
     };
 
     const openModal = (idx) => {
-        getNoticesDataDetail(idx);
+        getReviewsDataDetail(idx);
         setIsModal(true)
     }
 
     function isPostGetSuccess() {
         try {
-            if(postList.number === 0) {
+            if(postList.length === 0) {
                 return true;
             }
             return false;
@@ -88,9 +90,9 @@ const ReviewList = ({page, size}) => {
         }
     }
 
-    const isUpdateNotice = (updatedNotice) => {
-        console.log("[isUpdateNotice]");
-        getNoticesData();
+    const isUpdateReview = (updatedReview) => {
+        console.log("[isUpdateReview]");
+        getReviewsData();
         isPostGetSuccess();
     }
 
@@ -105,31 +107,31 @@ const ReviewList = ({page, size}) => {
                     </div>
                     :
                     (
-                        postList.content &&
+                        postList &&
                         size <= 3
                         ?
-                        postList.content.map((post) => (
+                        postList.map((post) => (
                             <div
-                                className="mypage_notice_part"
-                                key={post.noticeIdx}
-                                onClick={() => openModal(post.noticeIdx)}
+                                className="mypage_review_part"
+                                key={post.reviewIdx}
+                                onClick={() => openModal(post.reviewIdx)}
                             >
-                                <p>{post.noticeTitle}</p>
+                                <p>{post.reviewTitle}</p>
                             </div>
                         ))
                         :
-                        <Pagination
+                        <ReviewPagination
                             postList={postList}
-                            setPostList={setPostList}
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
-                            onChange={isUpdateNotice}
+                            itemsPerPage={itemsPerPage}
+                            onChange={isUpdateReview}
                         />
                     )
                 }
             </div>
             {/*모달 창*/}
-            <PostModal
+            <ReviewModal
                 selectedPost={selectedPost}
                 setSelectedPost={setSelectedPost}
                 modalIsOpen={isModal}

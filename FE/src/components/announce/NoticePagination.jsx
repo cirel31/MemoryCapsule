@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import PostModal from "../post/PostModal";
+import NoticeModal from "../post/NoticeModal";
 import Modal from "react-modal";
 
-const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
+const NoticePagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
     //페이지네이션 처리해야 함
     const totalPages = postList.totalPages;
     Modal.setAppElement("#root");
@@ -128,7 +128,7 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
                     ))
                 }
             </div>
-            <PostModal
+            <NoticeModal
                 selectedPost={selectedPost}
                 setSelectedPost={setSelectedPost}
                 modalIsOpen={isModal}
@@ -138,4 +138,4 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
     );
 };
 
-export default Pagination;
+export default NoticePagination;

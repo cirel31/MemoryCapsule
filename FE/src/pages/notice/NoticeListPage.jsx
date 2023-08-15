@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AnnounceUserViewPage from "./AnnounceUserViewPage";
-import PostModal from "../../components/post/PostModal";
+import NoticeModal from "../../components/post/NoticeModal";
 import {useSelector} from "react-redux";
 
 const NoticeListPage = () => {
@@ -40,7 +40,7 @@ const NoticeListPage = () => {
                         </button>
                     </div>
                 }
-                <PostModal
+                <NoticeModal
                     selectedPost={{
                         noticeIdx : 0,
                         noticeHit : 0,

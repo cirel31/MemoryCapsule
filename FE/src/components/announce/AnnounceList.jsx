@@ -1,8 +1,8 @@
 import Modal from "react-modal";
 import React, {useEffect, useState} from "react";
 import "../../styles/AnnounceStyle.scss"
-import PostModal from "../post/PostModal";
-import Pagination from "../common/Pagination";
+import NoticeModal from "../post/NoticeModal";
+import NoticePagination from "./NoticePagination";
 import axios from "axios";
 
 const AnnounceUserViewPage = ({page, size}) => {
@@ -112,7 +112,7 @@ const AnnounceUserViewPage = ({page, size}) => {
                             </div>
                         ))
                         :
-                        <Pagination
+                        <NoticePagination
                             postList={postList}
                             setPostList={setPostList}
                             currentPage={currentPage}
@@ -123,7 +123,7 @@ const AnnounceUserViewPage = ({page, size}) => {
                 }
             </div>
             {/*모달 창*/}
-            <PostModal
+            <NoticeModal
                 selectedPost={selectedPost}
                 setSelectedPost={setSelectedPost}
                 modalIsOpen={isModal}

@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import "../../styles/AnnounceStyle.scss"
+import "../../styles/ReviewStyle.scss"
 import Swal from "sweetalert2";
 import {useSelector} from "react-redux";
+import ReviewList from "../review/ReviewList";
 
-const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
+const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
-    const API = '/notice';
+    const API = '/review';
 
     Modal.setAppElement("#root");
 
@@ -28,18 +29,18 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     };
 
     useEffect(() => {
-        console.log("[PostModal]");
+        console.log("[ReviewModal]");
         console.log("selectedPost :", selectedPost);
         setPost(selectedPost);
-        setState(selectedPost &&(selectedPost.noticeIdx === 0 || state));
+        setState(selectedPost &&(selectedPost.reviewIdx === 0 || state));
     }, [modalIsOpen]);
 
-    // 공지사항 데이터 접근자가 관리자인지 확인
+    // 리뷰 데이터 접근자가 관리자인지 확인
     function checkUserRole() {
         console.log("[checkUserRole]");
         // 관리자 권한 확인
         console.log(admin)
-        if (admin) {
+        if (true || admin) {
             console.log("관리자로 확인되었습니다.");
             return true;
         } else {
@@ -49,21 +50,21 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     }
 
     /**
-     * 3. 공지사항 작성 [post]
-     * http://localhost:8080/notice
+     * 3. 리뷰 작성 [post]
+     * http://localhost:8080/review
      *{
-     *  "noticeTitle" : "테스트",
-     *  "noticeContent" : "테스트content",
-     *  "noticeImgurl" : null
+     *  "reviewTitle" : "테스트",
+     *  "reviewContent" : "테스트content",
+     *  "reviewImgurl" : null
      *}  
      */
     console.log(sessionStorage);
-    const createPost = () => {
-        console.log("[createPost]", post)
+    const createReview = () => {
+        console.log("[createReview]", post)
 
         const insertDto = {
-            title: post.noticeTitle,
-            content: post.noticeContent
+            title: post.reviewTitle,
+            content: post.reviewContent
         };
 
         const accessToken = sessionStorage.getItem("accessToken")
@@ -71,17 +72,12 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         const formData = new FormData();
         formData.append("insertDto", new Blob([JSON.stringify(insertDto)], { type: "application/json" }));
 
-        imageList && imageList.forEach(image => {
-            formData.append('file', image);
-        });
+        console.log("post.reviewTitle && post.reviewContent : ", insertDto)
 
-        console.log("post.noticeTitle && post.noticeContent : ", post.noticeTitle && post.noticeContent)
-
-        if (checkUserRole() && post.noticeTitle && post.noticeContent) {
+        if (checkUserRole() && post.reviewTitle && post.reviewContent) {
             axios.post(`${baseURL}${API}`, formData,
                 {
                     headers: {
-                        // "Content-Type": "application/json",
                         "Content-Type": "multipart/form-data",
                          Authorization: `Bearer ${accessToken}`
                     },
@@ -101,17 +97,16 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     }
 
     /**
-     * 4. 공지사항 삭제 [delete]
-     *http://localhost:8080/notice/2
+     * 4. 리뷰 삭제 [delete]
+     *http://localhost:8080/review/2
      */
-    const deletePost = () => {
+    const deleteReview = () => {
         const accessToken = sessionStorage.getItem("accessToken")
-        console.log("[deletePost]");
+        console.log("[deleteReview]");
 
         if (checkUserRole()) {
-            console.log("게시글 삭제 (제작중)", selectedPost.noticeIdx);
-            console.log("게시글 삭제 (제작중)", selectedPost.noticeIdx);
-            axios.delete(`${baseURL}${API}/${selectedPost.noticeIdx}`
+            console.log("게시글 삭제 (제작중)", selectedPost.reviewIdx);
+            axios.delete(`${baseURL}${API}/${selectedPost.reviewIdx}`
                 ,{
                     headers: {
                         Authorization: `Bearer ${accessToken}`
@@ -130,22 +125,22 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     }
 
     /**
-     * 5. 공지사항 수정 [put]
-     *http://localhost:8080/notice
+     * 5. 리뷰 수정 [put]
+     *http://localhost:8080/review
      * {
      *  "idx" : "3",
-     *  "noticeTitle" : "테스트수정",
-     *  "noticeContent" : "테스트content",
-     *  "noticeImgurl" : null
+     *  "reviewTitle" : "테스트수정",
+     *  "reviewContent" : "테스트content",
+     *  "reviewImgurl" : null
      * }
      */
     const putPostDataEdit = () => {
         console.log("[putPostDataEdit]", post);
 
         const modifyDto = {
-            idx: parseInt(post.noticeIdx, 10),
-            title: post.noticeTitle,
-            content: post.noticeContent
+            idx: parseInt(post.reviewIdx, 10),
+            title: post.reviewTitle,
+            content: post.reviewContent
         };
 
         console.log(modifyDto)
@@ -189,8 +184,8 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
 
         const nextForm = {
-            "noticeTitle" : "",
-            "noticeContent" : "",
+            "reviewTitle" : "",
+            "reviewContent" : "",
         };
         setPost(nextForm);
     }
@@ -198,8 +193,8 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     const addPost = (e) => {
         e.preventDefault();
 
-        if (post.noticeIdx === 0) {
-            createPost();
+        if (post.reviewIdx === 0) {
+            createReview();
         } else {
             putPostDataEdit();
         }
@@ -216,7 +211,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         const { value } = e.target;
         const nextForm = {
             ...post,
-            "noticeTitle" : value
+            "reviewTitle" : value
         };
         setPost(nextForm);
         console.log("valueChangePost : ", post); // 수정된 값 로그로 확인
@@ -227,7 +222,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         const { value } = e.target;
         const nextForm = {
             ...post,
-            "noticeContent" : value,
+            "reviewContent" : value,
         };
         setPost(nextForm);
         console.log("valueChangePost : ", post); // 수정된 값 로그로 확인
@@ -236,7 +231,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
 
     return (
         <>
-            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="notice_modal">
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="review_modal">
                 {
                     post &&(
                         <form className="modal_contents_box">
@@ -244,12 +239,12 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                                 state
                                 ? <input
                                     disabled={disabledTitle}
-                                    value={post.noticeTitle}
+                                    value={post.reviewTitle}
                                     className="modal_inner_title_input"
                                     onChange={titleChange}
                                 />
                                 : <h2 className="modal_inner_title">
-                                    {post.noticeTitle} <hr/>
+                                    {post.reviewTitle} <hr/>
                                 </h2>
                             }
                             {
@@ -258,34 +253,34 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                                 <textarea
                                     type="textarea"
                                     disabled={disabledContent}
-                                    value={post.noticeContent}
+                                    value={post.reviewContent}
                                     className="modal_inner_contents_input"
                                     onChange={contentChange}
                                     maxLength={5000}
                                 />
                                 :
                                 <p className="modal_inner_contents">
-                                    {post.noticeContent}
+                                    {post.reviewContent}
                                 </p>
                             }
                             {/*몇 개의 글자를 사용했는지 표시*/}
                             {
-                                post.noticeContent.length < 5000
-                                ?<div className="buttonList">{post.noticeContent.length}/5000</div>
-                                :<div className="buttonList text_styled_red">{post.noticeContent.length}/5000</div>
+                                post.reviewContent.length < 5000
+                                ?<div className="buttonList">{post.reviewContent.length}/5000</div>
+                                :<div className="buttonList text_styled_red">{post.reviewContent.length}/5000</div>
                             }
                             {
                                 state
                                 ?
                                 <div className="buttonList">
                                     <button onClick={closeModal}>닫기</button>
-                                    {checkUserRole()&&<button onClick={addPost}>등록</button>}
+                                    <button onClick={addPost}>등록</button>
                                 </div>
                                 :
                                 <div className="buttonList">
                                     <button onClick={closeModal}>닫기</button>
-                                    {checkUserRole()&&<button onClick={editPost}>수정</button>}
-                                    {checkUserRole()&&<button onClick={deletePost}>삭제</button>}
+                                    <button onClick={editPost}>수정</button>
+                                    <button onClick={deleteReview}>삭제</button>
                                 </div>
                             }
                         </form>
@@ -296,4 +291,4 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     )
 }
 
-export default PostModal;
+export default ReviewModal;

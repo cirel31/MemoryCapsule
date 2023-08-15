@@ -112,16 +112,18 @@
             height: 70px;
 
             .review_list_item{
+              font-family: "IBM Plex Sans KR", sans-serif;
+              color: var(--font_burgundy_100);
+              font-size: 14px;
+              font-weight: bold;
+
               width: 100%;
               height: 50px;
-              background-color: var(--brand3_main);
+              background-color: var(--brand3_1);
+              border: solid 2px var(--brand3_main);
               border-radius: 10px;
               margin: 5px;
               padding: 0px 0px 0px 10px;
-
-              color: var(--white);
-              font-size: 14px;
-              font-weight: bold;
             }
 
             .review_list_alarm{
@@ -188,7 +190,7 @@
   }
 }
 
-.notice_modal {
+.review_modal {
   position: fixed;
   top: 0;
   bottom: 0;
