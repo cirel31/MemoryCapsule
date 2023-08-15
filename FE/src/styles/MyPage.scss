@@ -344,3 +344,104 @@
 
 }
 
+.wip_project_card {
+  width: 820px;
+  height: 400px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+
+  & > div {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      height: 10px;  /* 스크롤바의 너비 */
+      cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      height: 5px; /* 스크롤바의 길이 */
+      width: 5px;
+      background: var(--brand3_4); /* 스크롤바의 색상 */
+      border-radius: 4rem;
+      cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--backGround_main);  /*스크롤바 뒷 배경 색상*/
+      border-radius: 4rem;
+    }
+    .capsule_cards{
+      width: 200px;
+      height: 300px;
+      background-color: var(--backGround_0);
+      border-radius: 1rem;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      perspective: 500px;
+      margin: 3%;
+      filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+      text-align: center;
+      text-decoration: none;
+      color: var(--font_burgundy_100);
+    }
+  }
+}
+
+.card_contents{
+
+  & > img{
+    width: 200px;
+    height: 220px;
+    object-fit: cover;
+  }
+
+  .card_title {
+    position: absolute;
+    width: 150px;
+    height: 40px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--brand3_main);
+    border-radius: 4rem;
+    top: -15px;
+    left: -20px;
+    & > p {
+      font-family: "IBM Plex Sans KR",sans-serif;
+      font-weight: 600;
+      color: white;
+      margin: 0;
+    }
+  }
+  .card_contents_info{
+    font-family: "IBM Plex Sans KR",sans-serif;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 110px 70px;
+    align-items: center;
+    justify-content: center;
+    margin: 5% 0 0 0;
+    & > p {
+      font-family: "IBM Plex Sans KR",sans-serif;
+      font-weight: 600;
+      margin: 0;
+      color: var(--font_gray_main);
+    }
+    & > h2 {
+      font-family: "IBM Plex Sans KR",sans-serif;
+      font-weight: 700;
+      margin: 0;
+    }
+
+  }
+}
+
