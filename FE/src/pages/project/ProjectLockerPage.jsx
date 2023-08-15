@@ -2,28 +2,37 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import axios from "axios";
 import Modal from "react-modal";
-import {Link} from "react-router-dom";
-import "../../styles/MainPage.scss"
+import {Link, useNavigate} from "react-router-dom";
+import "../../styles/EndPage.scss"
 import main_bg from "../../assets/images/mainpage/Mainback.svg"
 import search_picto from "../../assets/images/mainpage/search.svg"
 import clamp from "../../assets/images/mainpage/clamp.svg"
-import plus_btn from "../../assets/images/mainpage/plus.svg"
 import right_btn from "../../assets/images/mainpage/right.svg"
 import left_btn from "../../assets/images/mainpage/left.svg"
 import start_btn from "../../assets/images/mainpage/start.svg"
 import end_btn from "../../assets/images/mainpage/end.svg"
-import tag_label from "../../assets/images/mainpage/Tag.svg"
 import kokona from "../../assets/images/kokona.png";
 
 const ProjectLockerPage = () => {
-  const [isHovered, setIsHovered] = useState(null)
+  const navigate = useNavigate()
+
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const subURL = '/project/myproject/done'
+
+  const [isHovered, setIsHovered] = useState(null)
   const [projects, setProjects] = useState([]);
-  const user = useSelector((state) => state.userState.user) || null
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProjects, setFilteredProjects] = useState([])
-  
+
+  const user = useSelector((state) => state.userState.user) || null
+
+  useEffect(() => {
+    const accessToken = sessionStorage?.getItem("accessToken")
+    if (!accessToken) {
+      navigate('/login')
+    }
+  }, [user])
+
   useEffect(() => {
     const userId = user?.userId || ''
     console.log(userId)

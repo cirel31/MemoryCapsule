@@ -21,7 +21,6 @@ const UserProfilePage = () => {
   const user = useSelector((state) => state.userState.user)
   const user_nickname = user?.nickname || 'james'
   const user_email = user?.email || 'jimmy@raynersraiders.com'
-  const user_point = user?.point
   const user_img = user?.imgUrl || defaultImg
 
   return (

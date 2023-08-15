@@ -1,15 +1,16 @@
 import {useLocation} from "react-router-dom";
 import axios from "axios";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {fetchUserInfoThunk} from "../../store/userSlice";
 import {useDispatch} from "react-redux";
 import Swal from "sweetalert2";
+import LoadingPage from "../LoadingPage";
 
 const KakaoLoginPage = () => {
   const { search } = useLocation();
   const dispatch = useDispatch()
   const params = new URLSearchParams(search);
-  // const state = params.get("state");
+  const [isLoading, setIsLoading] = useState(true);
   const code = params.get("code");
   const baseURL = 'https://i9a608.p.ssafy.io:8000';
   const subURL = '/login/kakao';
@@ -18,17 +19,16 @@ const KakaoLoginPage = () => {
     if(code) {
       axios.get(`${baseURL}${subURL}?code=${code}`)
         .then((response) => {
-          console.log("서버로부터 받음", response);
+          setIsLoading(false)
           sessionStorage.setItem("userIdx", response.data.userIdx)
           sessionStorage.setItem("accessToken", response.data.accessToken)
           sessionStorage.setItem("refreshToken", response.data.refreshToken)
-          console.log(sessionStorage)
           const userIdx = sessionStorage.getItem("userIdx");
           dispatch(fetchUserInfoThunk(userIdx))
           window.location.href ='/main'
         })
         .catch((error) => {
-          console.log("서버로부터 받지 못함", error);
+          setIsLoading(false)
           if (error.response.status === 500 && error.response.data === "자체 회원가입으로 등록된 유저입니다.") {
             Swal.fire({
               text: error.response.data,
@@ -37,7 +37,6 @@ const KakaoLoginPage = () => {
             })
                 .then((result) => {
                   if (result.isConfirmed) {
-                    console.log('확인 버튼 클릭!');
                     window.location.href ='/login'
                   }
                 })
@@ -45,6 +44,10 @@ const KakaoLoginPage = () => {
         });
     }
   }, [code]);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <>

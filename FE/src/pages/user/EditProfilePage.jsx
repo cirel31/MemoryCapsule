@@ -12,11 +12,13 @@ import Swal from "sweetalert2";
 
 
 const EditProfilePage = () => {
+  const baseURL = 'https://i9a608.p.ssafy.io:8000'
+  const subURL = '/user/change'
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const baseURL = 'https://i9a608.p.ssafy.io:8000'
-  const subURL = '/user/change'
+
 
   const accessToken = sessionStorage.getItem("accessToken")
   const user = useSelector((state) => state.userState.user) || null
@@ -64,12 +66,10 @@ const EditProfilePage = () => {
           dispatch(fetchUserInfoThunk(userId))
           window.location.href ='/mypage'
         })
-        .catch((error) => {
-          console.log("프로필 데이터 갱신 실패", error)
+        .catch(() => {
         })
     }
-    catch (err) {
-      console.log("정보수정 서버에 전달도 안됐다고....", err)
+    catch (error) {
     }
 
   };
@@ -137,6 +137,7 @@ const EditProfilePage = () => {
         console.log('서버에 제출하기 전에 에러 발생', error)
       });
   }
+  
   return (
     <>
       <div className="profile_edit_body">

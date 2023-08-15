@@ -14,6 +14,8 @@ import group_w from "../../assets/images/projectcreate/Group_white.svg";
 import Swal from "sweetalert2";
 
 const ProjectForm = () => {
+  const baseURL = "https://i9a608.p.ssafy.io:8000"
+  const subURL = '/project/create'
   const formRef = useRef(null)
   const navigate = useNavigate()
   const [photos, setPhotos] = useState([])
@@ -23,7 +25,7 @@ const ProjectForm = () => {
   const [endDate, setEndDate] = useState(null);
   const dispatch = useDispatch()
   const user = useSelector((state) => state.userState.user) || null
-  const SubmitURL = "https://i9a608.p.ssafy.io:8000/project/create"
+
   const selectedUsers = useSelector((state) => state.friend.selectedPeople)
   const [coworker, setCoworker] = useState([])
 
@@ -32,6 +34,7 @@ const ProjectForm = () => {
       user.userId
     )))
   }, [selectedUsers])
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const users = selectedUsers.map(user => Number(user.userId)) || null
@@ -44,7 +47,7 @@ const ProjectForm = () => {
     formData.append('type', 1)
     // const accessToken = sessionStorage.getItem("accessToken")
     try {
-      axios.post(`${SubmitURL}`, formData, {
+      axios.post(`${baseURL}${subURL}`, formData, {
         headers: {
           // Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data",
@@ -52,15 +55,12 @@ const ProjectForm = () => {
         },
       })
         .then((res) => {
-          console.log(res, "프로젝트 생성 성공")
           window.location.href = '/project'
         })
-        .catch((err) => {
-          console.log(err, "프로젝트 생성 실패")
-          console.log(err.config)
+        .catch(() => {
+
         })
     } catch (error) {
-      console.log(error, "오류 발생");
     }
   }
   const handleStartDateChange = (date) => {

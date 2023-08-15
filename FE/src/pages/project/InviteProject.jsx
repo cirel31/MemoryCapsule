@@ -6,7 +6,9 @@ import {useSelector} from "react-redux";
 const InviteProject = () => {
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const inviteURL = '/project/invite'
+
   const [inviteLists, setInviteLists] = useState([])
+
   const user = useSelector((state) => state.userState.user) || null
 
   useEffect(() => {
@@ -19,15 +21,12 @@ const InviteProject = () => {
             "userId": user.userId
           }
         })
-          .then((res) => {
-            console.log(res.data)
-            setInviteLists(res.data)
+          .then((response) => {
+            setInviteLists(response.data)
           })
-          .catch((err) => {
-            console.log(err.response)
+          .catch(() => {
           })
       } catch (error) {
-        console.error('로그아웃 중 에러 발생:', error)
       }
     }
     searchInvite()
@@ -42,16 +41,12 @@ const InviteProject = () => {
           "userId": `${userId}`,
         }
       })
-        .then((res) => {
-          console.log(res.data)
+        .then(() => {
           window.location.reload()
         })
-        .catch((err) => {
-          console.log(userId, inviteId)
-          console.log('제출 형식이 잘못되었을지도...', err.response)
+        .catch(() => {
         })
     } catch (error) {
-      console.error('초대 승인 에러 발생:', error)
     }
   }
   
@@ -65,15 +60,11 @@ const InviteProject = () => {
         }
       })
         .then((res) => {
-          console.log(res.data)
           window.location.reload()
         })
-        .catch((err) => {
-          console.log(userId, inviteId)
-          console.log('제출 형식이 잘못되었을지도...', err.response)
+        .catch(() => {
         })
     } catch (error) {
-      console.error('초대 거절 에러 발생:', error)
     }
   }
   const showAlert = (content) => {
@@ -88,17 +79,16 @@ const InviteProject = () => {
       showCloseButton: true,
       showCancelButton: true,
       focusConfirm: false,
-      confirmButtonText: '확인',
-      cancelButtonText: '취소',
+      confirmButtonText: '수락하기',
+      cancelButtonText: '거절하기',
     })
       .then((result) => {
       if (result.isConfirmed) {
-        console.log('확인 버튼 클릭!');
         const userId = content.userId
         const inviteId = content.id
         acceptInvite({userId, inviteId})
-      } else if (result.isDismissed) {
-        console.log('취소 버튼 클릭!');
+      }
+      else if (result.dismiss === Swal.DismissReason.cancel) {
         const userId = content.userId
         const inviteId = content.id
         dismissInvite({userId, inviteId})

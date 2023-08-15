@@ -1,32 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  searchResults: [
-    {
-      id: '1',
-      nickname: '태경'
-    },
-    {
-      id: '2',
-      nickname: '도현'
-    },
-    {
-      id: '3',
-      nickname: '재현'
-    },
-    {
-      id: '4',
-      nickname: '영도'
-    },
-    {
-      id: '5',
-      nickname: '명진'
-    },
-    {
-      id: '6',
-      nickname: '정명'
-    }
-  ],
+  searchResults: [],
   selectedPeople: [],
 }
 
