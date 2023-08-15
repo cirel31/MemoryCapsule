@@ -172,6 +172,74 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
         }
     }
 
+    /**
+     * 6. 리뷰 좋아요 누르기 [post]
+     *http://localhost:8080/review/like
+     * {
+     *  "idx" : "3"
+     * }
+     */
+    const likeReviewAdd = () => {
+        console.log("[putPostDataEdit]", post);
+        const idx = parseInt(post.reviewIdx, 10);
+
+        const accessToken = sessionStorage.getItem("accessToken");
+
+        console.log(idx, accessToken)
+
+        if (checkUserRole()) {
+            axios.post(`${baseURL}${API}/liked/${idx}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
+                .then((response) => {
+                    console.log('리뷰 좋아요 누르기 성공');
+                    showAlert("리뷰 좋아요 누르기 성공되었습니다.");
+                    closeModal()
+                })
+                .catch((error) => {
+                    console.error("리뷰 좋아요 누르기 실패", error);
+                    console.error(error.code);
+                });
+        }
+    }
+
+    /**
+     * 7. 리뷰 좋아요 누르기 취소 [Delete]
+     *http://localhost:8080/review/like
+     * {
+     *  "idx" : "3"
+     * }
+     */
+    const likeReviewDelete = () => {
+        console.log("[putPostDataEdit]", post);
+        const idx = parseInt(post.reviewIdx, 10);
+
+        const accessToken = sessionStorage.getItem("accessToken");
+
+        console.log(idx, accessToken)
+
+        if (checkUserRole()) {
+            axios.delete(`${baseURL}${API}/liked/${idx}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
+                .then((response) => {
+                    console.log('리뷰 좋아요 취소 성공');
+                    showAlert("리뷰 좋아요 취소 성공되었습니다.");
+                    closeModal()
+                })
+                .catch((error) => {
+                    console.error("리뷰 좋아요 취소 실패", error);
+                    console.error(error.code);
+                });
+        }
+    };
+
     const showAlert = (text) => {
         Swal.fire({
             text,
@@ -229,6 +297,16 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
         console.log("valueChangeNextForm : ", nextForm); // 수정된 값 로그로 확인
     };
 
+    const likeAdd = (e) => {
+        e.preventDefault()
+        likeReviewAdd();
+    }
+
+    const likeDelete = (e) => {
+        e.preventDefault()
+        likeReviewDelete();
+    }
+
     return (
         <>
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="review_modal">
@@ -244,7 +322,12 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                                     onChange={titleChange}
                                 />
                                 : <h2 className="modal_inner_title">
-                                    {post.reviewTitle} <hr/>
+                                    <div>
+                                        <button onClick={likeAdd}>좋아요</button>
+                                        {post.reviewTitle}
+                                        <button onClick={likeDelete}>좋아요 취소</button>
+                                    </div>
+                                    <hr/>
                                 </h2>
                             }
                             {

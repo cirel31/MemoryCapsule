@@ -1,4 +1,3 @@
-import {Link} from "react-router-dom";
 import ProjectListPage from "./project/ProjectListPage";
 
 const MainPage = () => {

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import {useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const loginUserThunk = createAsyncThunk(
@@ -12,22 +11,16 @@ export const loginUserThunk = createAsyncThunk(
         const response = await axios.post(`${loginURL}`, loginData, {
           headers: { "Content-Type": "application/json" }
         })
-        console.log(response.data)
-        console.log(loginURL)
         sessionStorage.setItem("userIdx", response.data.userIdx)
         sessionStorage.setItem("accessToken", response.data.accessToken)
         sessionStorage.setItem("refreshToken", response.data.refreshToken)
-        console.log(sessionStorage)
         const userIdx = sessionStorage.getItem("userIdx");
-        console.log(userIdx)
         dispatch(fetchUserInfoThunk(userIdx))
         window.location.href ='/profile'
       } catch (error) {
-        console.error("서버와 통신 실패로 로그인 에러 발생", error)
         if (error.response?.status === 409) {
           Swal.fire(error.response.data)
         }
-        console.log(loginURL)
         return rejectWithValue(error)
       }
     }
@@ -37,15 +30,13 @@ export const fetchUserInfoThunk = createAsyncThunk(
     'user/fetchUserInfo',
     async (userIdx, { rejectWithValue }) => {
       const accessToken = sessionStorage.getItem("accessToken")
-      console.log(accessToken)
       try {
         const response = await axios.get(`https://i9a608.p.ssafy.io:8000/user/${userIdx}/detail`, {
           headers: { Authorization: `Bearer ${accessToken}` }
         })
-        console.log(response.data)
         return response.data;
       } catch (error) {
-        console.log(error)
+        return rejectWithValue(error)
       }
     }
 )
@@ -59,10 +50,8 @@ export const logoutUserThunk = createAsyncThunk(
           headers: { Authorization: `Bearer ${accessToken}` }
         });
         sessionStorage.clear();
-        console.log('이메일 로그아웃 성공');
-        return
       } catch (error) {
-        console.error('로그아웃 중 에러 발생:', error)
+        return rejectWithValue(error)
       }
     }
 )
@@ -75,14 +64,12 @@ export const findPassThunk = createAsyncThunk(
       "phone" : {phone},
     }
     try {
-      const response = await axios.post(`https://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
+      await axios.post(`https://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
         headers: {
           "Content-Type": "application/json"
         }
       })
-      console.log(response.data)
     } catch (error) {
-      console.error("서버와 통신 실패로 패스워드 재발급 에러 발생", error)
       return rejectWithValue(error)
     }
   }
@@ -97,15 +84,11 @@ const userSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
-      console.log('이메일 로그인 성공')
-      console.log(sessionStorage)
     },
     logout: (state) => {
       sessionStorage.clear()
-      console.log('이메일 로그아웃 성공');
     },
     setUser: (state, action) => {
-      console.log('유저 정보 저장 됨 : ', state.user)
       sessionStorage.setItem('userInfo', state.user)
     },
     renewToken: (state, action) => {
@@ -123,7 +106,6 @@ const userSlice = createSlice({
         .addCase(fetchUserInfoThunk.fulfilled, (state, action) => {
           state.status = 'succeeded';
           state.user = action.payload;
-          console.log(state.user)
         })
         .addCase(logoutUserThunk.fulfilled, (state, action) => {
           state.isLoggedIn = false

@@ -21,6 +21,7 @@ const ArticleCreateForm = () => {
   const [photos, setPhotos] = useState([])
   const [text, setText] = useState("");
   const articleId = window.location.href.replace(window.location.origin, "")
+  const moving = window.location.href.replace(window.location.origin, "").replace('/article', '')
   const [stampModalOpen, setStampModalOpen] = useState(false)
   const [feelingStamp, setFellingStamp] = useState([])
   const baseURL = "https://i9a608.p.ssafy.io:8000"
@@ -118,17 +119,6 @@ const ArticleCreateForm = () => {
     const needPoint = (photos.length - 1) * 50
     if (needPoint <= point) {
       const formData = new FormData(e.target)
-      // photos.forEach((photo, index) => {
-      //   formData.append(`files`, photo)
-      // });
-      //
-      // formData.append('content', text)
-      // if (feelingStamp[0]) {
-      //   formData.append('stamp', feelingStamp[0])
-      // }
-      for (let [name, value] of formData.entries()) {
-        console.log(`${name}: ${value}`);
-      }
       axios.post(`${baseURL}${subURL}`, formData, {
         headers : {
           "userId": user.userId,
@@ -136,13 +126,16 @@ const ArticleCreateForm = () => {
       })
           .then(response => {
             // axios.put(`${baseURL}${pointURL}${user.userId}?point=${point-needPoint}`)
-            window.location.href ='/project'
+            window.location.href =`${moving}`
           })
           .catch(error => {
             console.log(baseURL,subURL, user.userId)
             console.log("게시글 등록 실패", error)
-            if (error.response.status === 401 && error.response.data === 'false') {
-              Swal.fire("오늘의 추억은 이미 등록되었습니다.")
+            if (error.response.status === 401 && error.response.data === false) {
+              Swal.fire({
+                text: "오늘의 추억은 이미 등록되었습니다.",
+                icon: "error",
+              })
             }
           })
     }

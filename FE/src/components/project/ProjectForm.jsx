@@ -1,21 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Calendar from "react-calendar";
 import '../../styles/Calendar.scss'
 import Modal from "react-modal";
 import axios from "axios";
-import ProjectAddFriends from "../../components/project/ProjectAddFriends";
 import {useDispatch, useSelector} from "react-redux";
-import {removeAll} from "../../store/selectFriendSlice";
+import {addFriends, removeAll, removeFriends} from "../../store/selectFriendSlice";
 import moment from "moment";
 import photo_picto from "../../assets/images/signup/upload.svg";
 import solo_w from "../../assets/images/projectcreate/solo_white.svg";
 import create_w from "../../assets/images/projectcreate/write.svg";
 import group_w from "../../assets/images/projectcreate/Group_white.svg";
-import group_r from "../../assets/images/projectcreate/Group_red.svg";
-import def_img from "../../assets/images/stamp/stamp_best.svg"
+import Swal from "sweetalert2";
 
 const ProjectForm = () => {
+  const baseURL = "https://i9a608.p.ssafy.io:8000"
+  const subURL = '/project/create'
   const formRef = useRef(null)
   const navigate = useNavigate()
   const [photos, setPhotos] = useState([])
@@ -23,15 +23,21 @@ const ProjectForm = () => {
   const [showEndDateModal, setShowEndDateModal] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [multiplayModal, setMultiplayModal] = useState(false);
   const dispatch = useDispatch()
-  const selectedUsers = useSelector((state) => state.friend.selectedPeople)
   const user = useSelector((state) => state.userState.user) || null
-  const SubmitURL = "https://i9a608.p.ssafy.io:8000/project/create"
+
+  const selectedUsers = useSelector((state) => state.friend.selectedPeople)
+  const [coworker, setCoworker] = useState([])
+
+  useEffect(() => {
+    setCoworker(selectedUsers.map((user) => (
+      user.userId
+    )))
+  }, [selectedUsers])
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    const users = selectedUsers.map(user => Number(user)) || null
-    console.log(users)
+    const users = selectedUsers.map(user => Number(user.userId)) || null
     const formData = new FormData(formRef.current)
     formData.append('started', moment(startDate).format("YYYY-MM-DD[T]00:00:00"))
     formData.append('ended', moment(endDate).format("YYYY-MM-DD[T]00:00:00"))
@@ -39,13 +45,9 @@ const ProjectForm = () => {
       formData.append('userList', JSON.stringify(users))
     }
     formData.append('type', 1)
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-    console.log(user)
     // const accessToken = sessionStorage.getItem("accessToken")
     try {
-      axios.post(`${SubmitURL}`, formData, {
+      axios.post(`${baseURL}${subURL}`, formData, {
         headers: {
           // Authorization: `Bearer ${accessToken}`,
           "Content-Type": "multipart/form-data",
@@ -53,15 +55,12 @@ const ProjectForm = () => {
         },
       })
         .then((res) => {
-          console.log(res, "프로젝트 생성 성공")
-          navigate('/project')
+          window.location.href = '/project'
         })
-        .catch((err) => {
-          console.log(err, "프로젝트 생성 실패")
-          console.log(err.config)
+        .catch(() => {
+
         })
     } catch (error) {
-      console.log(error, "오류 발생");
     }
   }
   const handleStartDateChange = (date) => {
@@ -74,10 +73,7 @@ const ProjectForm = () => {
   };
   
   const handleImage = (e) => {
-    // 현재 선택된 파일의 목록을 가져옵니다.
     const imageLists = Array.from(e.target.files);
-    
-    // 이미 선택된 이미지 URL 목록을 가져옵니다.
     const newImageUrlLists = [...photos];
     
     imageLists.forEach((file) => {
@@ -96,6 +92,52 @@ const ProjectForm = () => {
     const imageInput = document.getElementById('image');
     if (imageInput) imageInput.value = '';
   };
+
+  const clickFriends = () => {
+    Swal.fire({
+      title: "함께 할 친구",
+      html: `
+        ${selectedUsers?.map((user) => (
+        `${user.nickname}\n`
+        )).join('')}
+        <input type="email" id="friendId" class="swal2-input" placeholder="친구 아이디">
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: '추가',
+      cancelButtonText: '취소',
+      preConfirm: () => {
+        let friendId = document.getElementById('friendId').value;
+        return {
+          friendId: friendId,
+        };
+      }
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          const accessToken = sessionStorage.getItem("accessToken")
+          axios.get(`https://i9a608.p.ssafy.io:8000/friend/find/${result.value.friendId}?host_id=${user.userId}`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          })
+            .then((response) => {
+              console.log(response.data)
+              dispatch(addFriends(response.data))
+            })
+            .catch(() => {
+              Swal.fire({
+                icon: "error",
+                text: "해당 유저가 존재하지 않습니다."
+              })
+            })
+        }
+      })
+  }
+  const removeFriendsList = (id) => {
+    console.log(id)
+    dispatch(removeFriends(id))
+  }
   
   return (
     <div className="project_create_forms_body">
@@ -210,7 +252,7 @@ const ProjectForm = () => {
             <input
               // name="userList"
               className="selectedUsers"
-              value={selectedUsers}
+              value={coworker}
             />
           </div>
         </form>
@@ -223,13 +265,10 @@ const ProjectForm = () => {
             </button>
           </div>
           <div className="project_create_group_button">
-            <button onClick={() => setMultiplayModal(true)}>
+            <button onClick={clickFriends}>
               <img src={group_w}/>
               <p>여러명이서 할게요!</p>
             </button>
-            <Modal isOpen={multiplayModal} onRequestClose={() => setMultiplayModal(false)}>
-              <ProjectAddFriends />
-            </Modal>
           </div>
         </div>
       </div>
@@ -237,10 +276,11 @@ const ProjectForm = () => {
       <div className="friends_with">
         <p className="friends_with_titles">함께 하는 친구들</p>
         <div className="friends_with_profile_imgs">
-          {selectedUsers.map((userId) => (
+          {selectedUsers.map((user, index) => (
             <img
-              key={userId}
-              src={def_img}
+              key={index}
+              src={user.imgUrl}
+              onClick={() => removeFriendsList(user.userId)}
             />
           ))}
         </div>

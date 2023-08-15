@@ -1,7 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
-import icon01 from "../../../assets/images/nav_icon_test_01.png";
 import logo_white from "../../../assets/images/resource/Logo&text_white.svg";
 import "../../../styles/NavBar.scss";
 import nav_line from "../../../assets/images/resource/nav_bar_line.svg"
@@ -20,7 +19,7 @@ const SidebarNav = styled.nav`
   justify-content: center;
   position: fixed;
   top: 0;
-  left: ${({ sidebar }) => (sidebar ? "0" : "-100%")};
+  left: ${({ $isSidebarVisible }) => ($isSidebarVisible ? "0" : "-100%")};
   transition: 350ms;
   z-index: 10;
 `;
@@ -32,7 +31,6 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const sidebarRef = useRef()
   const LogoutUser = () => {
-    console.log('로그아웃 버튼 작동 테스트', sessionStorage)
     dispatch(logoutUserThunk());
   }
   const showSidebar = () => setSidebar(!sidebar)
@@ -42,12 +40,12 @@ export default function Navbar() {
     navigate('/')
   }
   const user = useSelector((state) => state.userState.user)
+
   useEffect(() => {
     const loginCheck = !!accessToken
     setIsLoggedIn(loginCheck)
     if (isLoggedIn) {
       const idx = sessionStorage.getItem("userIdx")
-      console.log(idx)
       dispatch(fetchUserInfoThunk(idx))
     }
   }, [isLoggedIn])
@@ -56,7 +54,7 @@ export default function Navbar() {
   const user_email = user?.email || 'jimmy@raynersraiders.com'
   const user_point = user?.point || 0
   const user_img = user?.imgUrl || profile_img
-  console.log(user_img)
+
   return (
       <>
         {isLoggedIn && (
@@ -64,7 +62,7 @@ export default function Navbar() {
             <button onClick={showSidebar} className="nav_bar_active_btn"><img src={navbar_activate} className="navbar_pictogram"/></button>
           </div>
         )}
-        <SidebarNav sidebar={sidebar} ref={sidebarRef}>
+        <SidebarNav $isSidebarVisible={sidebar} ref={sidebarRef}>
           <nav className="nav_bar">
 
             <div className="nav_bar2" onClick={showSidebar}>

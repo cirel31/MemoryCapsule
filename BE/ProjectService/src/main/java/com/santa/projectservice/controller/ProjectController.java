@@ -213,6 +213,9 @@ public class ProjectController {
                                                 @RequestParam(value = "stamp") Integer stamp,
                                                 HttpServletRequest request) throws IOException, ArticleException {
         Long userId = Long.valueOf(String.valueOf(request.getHeader("userId")));
+        if(utilQuerys.existsArticleCreatedToday(userId, projectId)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
         articleValidate(content, "content");
         articleValidate(stamp, "stamp");
         return ResponseEntity.status(HttpStatus.CREATED).body(

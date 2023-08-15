@@ -60,10 +60,8 @@ const ProjectDetailPage = () => {
   const [project, setProject] = useState([])
   const [myArticles, setMyArticles] = useState([])
   const [imgNum, setImgNum] = useState([])
-  const [selectedPost, setSelectedPost] = useState(null)
-  const [isHovered, setIsHovered] = useState(null)
   const [endCondition, setEndCondition] = useState(false)
-
+  
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${projectId}`
       , {
@@ -77,12 +75,10 @@ const ProjectDetailPage = () => {
         const today = new Date()
         const endedDate = new Date(response.data.ended)
         if (today.getTime() > endedDate.getTime()) {
-          console.log("종료조건 만족")
           setEndCondition(true)
         }
       })
-      .catch((error) => {
-        console.error("서버로부터 프로젝트 세부사항 실패", error);
+      .catch(() => {
       });
   }, []);
 
@@ -98,9 +94,7 @@ const ProjectDetailPage = () => {
           console.log(response.data)
           setMyArticles(response.data.reverse());
         })
-        .catch((error) => {
-          console.error("서버로부터 게시물 가져오기 실패", user.userId);
-          console.error(error)
+        .catch(() => {
         });
   }, []);
 
@@ -190,11 +184,7 @@ const ProjectDetailPage = () => {
             </div>
             <div className="detail_project_shorts_info_percentage">
               <div className="detail_project_shorts_info_percentage_text">
-                {
-                  curPeriod / fullPeriod < 0
-                  ?<p>100%</p>
-                  :<p>{curPeriod && fullPeriod && ((1 - curPeriod / fullPeriod) * 100).toFixed(1)}%</p>
-                }
+                <p>{((project.artielcNum / 350) * 100).toFixed()}%</p>
               </div>
               <svg className="detail_project_shorts_info_percentage_graph">
                 <circle
@@ -212,7 +202,7 @@ const ProjectDetailPage = () => {
                     fill="none"
                     stroke="#FF8CA1FF"
                     strokeWidth="8"
-                    strokeDasharray={`${2 * Math.PI * 30 * (1 - curPeriod / fullPeriod)} ${2 * Math.PI * 30 * (curPeriod / fullPeriod)}`}
+                    strokeDasharray={`${2 * Math.PI * 30 * (project.artielcNum / 365)} ${2 * Math.PI * 30 * (1-(project.artielcNum / 365))}`}
                     strokeDashoffset={2 * Math.PI * 30 * 0.25}
                 />
               </svg>
