@@ -29,8 +29,8 @@ const CalendarForm = () => {
   },[]);
   
   useEffect(() => {
-    const countCapsuleURL = 'https://i9a608.p.ssafy.io:8000/project/myproject'
-    let counts = 0
+    const countCapsuleURL = 'https://i9a608.p.ssafy.io:8000/project/myinfo/info'
+    
     try {
       axios.get(`${countCapsuleURL}`, {
         headers: {
@@ -38,10 +38,8 @@ const CalendarForm = () => {
         }
       })
         .then((response) => {
-          const finishedCapsules = response.data.length || 0
-          response.data.map(project => {
-            counts += project.artielcNum
-          })
+          const finishedCapsules = response.data.doneNum || 0
+          const counts = response.data.articleNum
           setFinishedProject(finishedCapsules)
           setCountMemory(counts)
         })

@@ -5,7 +5,6 @@ import CurrentProjectsPage from "./CurrentProjectsPage";
 import InviteProject from "../project/InviteProject";
 import {Link, useNavigate} from "react-router-dom"
 import AnnounceList from "../../components/announce/AnnounceList";
-import ProjectLockerPage from "../project/ProjectLockerPage";
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
 

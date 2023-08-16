@@ -511,7 +511,28 @@
       border-radius: 4rem;
     }
 
-    & > .letters:not(:first-child){
+    .letters:not(:first-child){
+      width: 350px;
+      height: 200px;
+      background-image: url("../assets/images/box/ticket.svg");
+      background-size: cover;
+      background-position: center;
+      display: grid;
+      margin: 0 -50px 0 0;
+      justify-items: center;
+      justify-content: center;
+      align-items: end;
+      filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+      border-radius: 0.5rem;
+      rotate: 8deg;
+      cursor: pointer;
+      &:hover {
+        width: 400px;
+        height: 230px;
+        z-index: 8;
+      }
+    }
+    .letters{
       width: 350px;
       height: 200px;
       background-image: url("../assets/images/box/ticket.svg");

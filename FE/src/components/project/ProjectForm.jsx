@@ -186,6 +186,7 @@ const ProjectForm = () => {
               id="title"
               name="title"
               className="title"
+              maxLength="10"
               // required
             />
 
