@@ -122,6 +122,7 @@ public class UtilQuerys {
     public List<ProjectDto> currentProjects(Long userId){
         return queryFactory.select(qRegister.project).from(qRegister)
                 .where(qRegister.user.id.eq(userId), qRegister.project.state.isFalse())
+                .orderBy(qRegister.project.updated.desc())
                 .fetch()
                 .stream().map(Project::toDto).collect(Collectors.toList());
     }
