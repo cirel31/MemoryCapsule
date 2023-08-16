@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -125,14 +126,17 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional(rollbackFor={Exception.class})
     @Override
     public boolean likedReviewByReviewId(Long reviewIdx, Long userIdx) {
+        Optional<Liked> likedOptional = likeRepository.findByIdLikedReviewIdxAndIdLikedUsrIdx(reviewIdx, userIdx);
+        if (likedOptional.isPresent()) {
+            return false;
+        }
         LikedId likedId = new LikedId();
         likedId.setLikedReviewIdx(reviewIdx);
         likedId.setLikedUsrIdx(userIdx);
-
         Liked liked = new Liked();
         liked.setId(likedId);
-        reviewRepository.incrementReviewLike(reviewIdx);
         likeRepository.save(liked);
+        reviewRepository.incrementReviewLike(reviewIdx);
         log.info(LogMessageEnum.LIKE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
         return true;
     }
@@ -146,8 +150,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional(rollbackFor={Exception.class})
     @Override
     public boolean unlikedReviewByReviewId(Long reviewIdx, Long userIdx) {
-        reviewRepository.reductionReviewLike(reviewIdx);
         likeRepository.deleteByIdLikedReviewIdxAndIdLikedUsrIdx(reviewIdx, userIdx);
+        reviewRepository.reductionReviewLike(reviewIdx);
         log.info(LogMessageEnum.UNLIKE_ITEM_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, reviewIdx, userIdx));
         return true;
     }
