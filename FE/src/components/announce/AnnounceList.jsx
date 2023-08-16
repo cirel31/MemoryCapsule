@@ -20,27 +20,21 @@ const AnnounceUserViewPage = ({page, size}) => {
     const [postList, setPostList] = useState(null)
 
     useEffect(() => {
-        console.log('[AnnounceUserViewPage] 페이지 로딩 시 한 번만 실행되는 함수');
         getNoticesData(page, size);
     }, []);
 
     useEffect(() => {
-        console.log('[AnnounceUserViewPage]');
         getNoticesData(page, size);
     }, [currentPage]); // currentPage 변경시에만 실행
-
-    useEffect(() => {
-    }, [selectedPost]);
 
     /**
      * 1. 전체 공지사항 [get]
      * http://localhost:8080/notice/list?page=0&size=10
      * */
     const getNoticesData = (e) => {
-        console.log("[getNoticesData]");
         axios.get(`${baseURL}${API}/list?size=${itemsPerPage}&page=${currentPage}&sort=noticeIdx,desc`)
             .then((response) => {
-              console.log('게시글 선택 (size, page) successful : ', response.data);
+              console.log('게시글 선택 (size, page)');
               setPostList(response.data);
             })
             .catch((error) => {
@@ -53,16 +47,12 @@ const AnnounceUserViewPage = ({page, size}) => {
      * http://localhost:8080/notice/2
      * */
     const getNoticesDataDetail = (idx) => {
-        console.log("[getNoticesDataDetail]", selectedPost);
-
         const index = idx;
 
-        console.log(index);
         axios.get(`${baseURL}${API}/${index}`)
             .then((response) => {
-                console.log('게시글 자세하게 (Detail) successful : ', response.data);
+                console.log('게시글 자세하게 (Detail)');
                 setSelectedPost(response.data); 
-                setIsModal(true)
             })
             .catch((error) => {
                 console.error('게시글 자세하게 (Detail) fail : ', error);
@@ -70,7 +60,10 @@ const AnnounceUserViewPage = ({page, size}) => {
     };
 
     const openModal = (idx) => {
-        getNoticesDataDetail(idx);
+        // const index = postList.findIndex((post => post.id === id))
+        const index = postList.content.findIndex((post => post.noticeIdx === idx))
+        setSelectedPost(postList.content[index]);
+        setIsModal(true);
     }
 
     function isPostGetSuccess() {
@@ -85,7 +78,6 @@ const AnnounceUserViewPage = ({page, size}) => {
     }
 
     const isUpdateNotice = (updatedNotice) => {
-        console.log("[isUpdateNotice]");
         getNoticesData();
         isPostGetSuccess();
     }

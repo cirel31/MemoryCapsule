@@ -28,39 +28,15 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
     };
 
     useEffect(() => {
-        console.log("[PostModal]");
-        console.log("selectedPost :", selectedPost);
         setPost(selectedPost);
         setState(selectedPost &&(selectedPost.noticeIdx === 0 || state));
     }, [modalIsOpen]);
 
-    // 공지사항 데이터 접근자가 관리자인지 확인
-    function checkUserRole() {
-        console.log("[checkUserRole]");
-        // 관리자 권한 확인
-        console.log(admin)
-        if (admin) {
-            console.log("관리자로 확인되었습니다.");
-            return true;
-        } else {
-            console.log("관리자 권한이 없습니다.");
-            return false;
-        }
-    }
-
     /**
      * 3. 공지사항 작성 [post]
      * http://localhost:8080/notice
-     *{
-     *  "noticeTitle" : "테스트",
-     *  "noticeContent" : "테스트content",
-     *  "noticeImgurl" : null
-     *}  
      */
-    console.log(sessionStorage);
     const createPost = () => {
-        console.log("[createPost]", post)
-
         const insertDto = {
             title: post.noticeTitle,
             content: post.noticeContent
@@ -75,9 +51,7 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
             formData.append('file', image);
         });
 
-        console.log("post.noticeTitle && post.noticeContent : ", post.noticeTitle && post.noticeContent)
-
-        if (checkUserRole() && post.noticeTitle && post.noticeContent) {
+        if (admin && post.noticeTitle && post.noticeContent) {
             axios.post(`${baseURL}${API}`, formData,
                 {
                     headers: {
@@ -87,7 +61,7 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                     },
             })
             .then((response) => {
-                console.log('게시글 작성 POST successful : ', response.data);
+                console.log('게시글 작성 POST');
                 setSelectedPost([]);
                 showAlert("게시글이 등록되었습니다.");
                 closeModal()
@@ -106,11 +80,8 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
      */
     const deletePost = () => {
         const accessToken = sessionStorage.getItem("accessToken")
-        console.log("[deletePost]");
 
-        if (checkUserRole()) {
-            console.log("게시글 삭제 (제작중)", selectedPost.noticeIdx);
-            console.log("게시글 삭제 (제작중)", selectedPost.noticeIdx);
+        if (admin) {
             axios.delete(`${baseURL}${API}/${selectedPost.noticeIdx}`
                 ,{
                     headers: {
@@ -119,7 +90,7 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                 }
                 )
                 .then((response) => {
-                    console.log('게시글 삭제 (Delete) successful : ', response.data);
+                    console.log('게시글 삭제 (Delete)');
                     showAlert("게시글이 삭제되었습니다.");
                     closeModal()
                 })
@@ -140,15 +111,13 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
      * }
      */
     const putPostDataEdit = () => {
-        console.log("[putPostDataEdit]", post);
+        console.log("[putPostDataEdit]");
 
         const modifyDto = {
             idx: parseInt(post.noticeIdx, 10),
             title: post.noticeTitle,
             content: post.noticeContent
         };
-
-        console.log(modifyDto)
 
         //formData 생성 및 데이터 input
         const formData = new FormData();
@@ -157,7 +126,7 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
 
         const accessToken = sessionStorage.getItem("accessToken");
 
-        if (checkUserRole()) {
+        if (admin) {
             axios.put(`${baseURL}${API}`, formData,
                 {
                     headers: {
@@ -203,8 +172,6 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
         } else {
             putPostDataEdit();
         }
-        console.log(post);
-
     }
 
     const editPost = (e) => {
@@ -219,8 +186,6 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
             "noticeTitle" : value
         };
         setPost(nextForm);
-        console.log("valueChangePost : ", post); // 수정된 값 로그로 확인
-        console.log("valueChangeNextForm : ", nextForm); // 수정된 값 로그로 확인
     };
 
     const contentChange = (e) => {
@@ -230,8 +195,6 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
             "noticeContent" : value,
         };
         setPost(nextForm);
-        console.log("valueChangePost : ", post); // 수정된 값 로그로 확인
-        console.log("valueChangeNextForm : ", nextForm); // 수정된 값 로그로 확인
     };
 
     return (
@@ -279,13 +242,13 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                                 ?
                                 <div className="buttonList">
                                     <button onClick={closeModal}>닫기</button>
-                                    {checkUserRole()&&<button onClick={addPost}>등록</button>}
+                                    {admin&&<button onClick={addPost}>등록</button>}
                                 </div>
                                 :
                                 <div className="buttonList">
                                     <button onClick={closeModal}>닫기</button>
-                                    {checkUserRole()&&<button onClick={editPost}>수정</button>}
-                                    {checkUserRole()&&<button onClick={deletePost}>삭제</button>}
+                                    {admin&&<button onClick={editPost}>수정</button>}
+                                    {admin&&<button onClick={deletePost}>삭제</button>}
                                 </div>
                             }
                         </form>

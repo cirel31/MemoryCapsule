@@ -3,6 +3,7 @@ import FriendForm from "./FriendForm";
 import FriendInfo from "./FriendInfo";
 import axios from "axios";
 import searchIcon from "../../assets/images/frield/searchIcon.svg";
+import Swal from "sweetalert2";
 
 const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
@@ -15,6 +16,13 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
 
     const [curStatus, setCurStatus] = useState(0)
     const [isValidSearch, setIsValidSearch] = useState(true);
+
+    const showAlert = (title, text) => {
+        Swal.fire({
+            title,
+            text,
+        });
+    };
 
     useEffect(() => {
         setFriends([]);
@@ -43,7 +51,9 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
             })
             .catch((error) => {
                 console.error("서버로부터 친구목록 가져오기 실패", error);
+                showAlert("error", "가입되지 않은 친구입니다.");
                 console.error(error.code);
+
             });
     }
 
