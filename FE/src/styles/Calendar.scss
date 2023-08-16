@@ -65,7 +65,7 @@
 }
 
 .react-calendar__navigation button:disabled {
-  background: var(--point1_2);
+  background: var(--backGround_2);
   border-radius: 3rem;
   transition: background-color 0.5s;
 }
@@ -171,7 +171,7 @@
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-  background: var(--point1_4);
+  background: var(--backGround_3);
   border-radius: 3rem;
   color: white;;
 }

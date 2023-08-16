@@ -105,7 +105,7 @@
       border-radius: 1rem;
       justify-items: center;
       justify-content: center;
-
+      cursor: pointer;
       filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
       & > p {
         font-family: "IBM Plex Sans KR",sans-serif;
@@ -156,6 +156,7 @@
       grid-template-columns: 1fr;
       justify-items: center;
       justify-content: center;
+      cursor: pointer;
       filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
       & > .deco_clamp {
         position: absolute;
@@ -192,7 +193,7 @@
 
       & > .deco_clamp {
         position: absolute;
-        width: 1.5vw;
+        width: 2.0vw;
         top: -4.3vw;
         filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
       }
@@ -219,7 +220,7 @@
   position: absolute;
   display: grid;
   left: 41%;
-  top: 75.5%;
+  top: 80.5%;
 
 
   & > a {
@@ -320,7 +321,7 @@
 }
 .footerbar{
   position: absolute;
-  height: 27%;
+  height: 23%;
   width: 40%;
   border-radius: 5rem 5rem 0 0;
   background-color: var(--brand3_1);

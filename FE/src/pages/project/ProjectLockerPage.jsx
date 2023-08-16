@@ -129,7 +129,7 @@ const ProjectLockerPage = () => {
               </Link>
             ))}
           </div>
-        )
+
       </div>
       <div className="move_btn">
         <div className="move_btn_group_1">
