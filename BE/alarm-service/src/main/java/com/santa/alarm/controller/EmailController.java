@@ -28,11 +28,10 @@ public class EmailController {
         return ResponseEntity.status(HttpStatus.OK).body("Hello alarm-service");
     }
 
-    @ApiOperation(value = "회원 가입 인증 메일", notes = "이메일 전송 결과 메시지를 반환한다.", response = String.class)
     @PostMapping("/register_verify/{user_email}/{code}")
     public ResponseEntity<String> sendCheckMail
-            (@PathVariable("user_email") @ApiParam(value = "회원가입한 유저의 이메일", required = true) String user_email,
-                @PathVariable("code") @ApiParam(value = "인증 번호", required = true)  String code) {
+            (@PathVariable("user_email") String user_email,
+                @PathVariable("code") String code) {
         System.out.println(user_email + " " + code);
         Map<String, String> contextDataMap = new HashMap<>();
         contextDataMap.put(EmailContextDataType.code.name(), code);
@@ -43,11 +42,10 @@ public class EmailController {
         return emailService.sendMail(emailDto, EmailType.Register_verify);
     }
 
-    @ApiOperation(value = "임시 비밀번호 발송 메일", notes = "이메일 전송 결과 메시지를 반환한다.", response = String.class)
     @PostMapping("/tmp_pwd/{user_email}/{tmp_pwd}")
     public ResponseEntity<String> sendFindTmpPwd
-            (@PathVariable("user_email") @ApiParam(value = "회원가입한 유저의 이메일", required = true) String user_email,
-             @PathVariable("tmp_pwd") @ApiParam(value = "임시 비밀번호", required = true)  String tmp_pwd) {
+            (@PathVariable("user_email") String user_email,
+             @PathVariable("tmp_pwd") String tmp_pwd) {
         Map<String, String> contextDataMap = new HashMap<>();
         contextDataMap.put(EmailContextDataType.tmpPwd.name(), tmp_pwd);
         EmailDto emailDto = EmailDto.builder()
