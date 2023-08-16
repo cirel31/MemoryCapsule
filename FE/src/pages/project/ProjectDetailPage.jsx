@@ -116,11 +116,6 @@ const ProjectDetailPage = () => {
     }
   }
 
-  // 뒤로가기
-  const handleBack = () => {
-    window.history.back()
-  }
-
   const handleImgPlus = (id) => {
     setImgNum(prevNums => {
       const prevValue = prevNums[id] || 0;
@@ -162,9 +157,11 @@ const ProjectDetailPage = () => {
             <img src={heart} alt="어떤 프로젝트" className="detail_project_title_heart"/>
           </div>
           <div className="detail_project_back">
-            <div onClick={handleBack} className="detail_project_back_button">
-              <img src={go_back} alt="뒤로가기이미지" className="detail_project_back_button_img"/>
-            </div>
+            <Link to="/project">
+              <div className="detail_project_back_button">
+                <img src={go_back} alt="뒤로가기이미지" className="detail_project_back_button_img"/>
+              </div>
+            </Link>
           </div>
         </div>
         <div className="detail_project_order">
@@ -183,8 +180,11 @@ const ProjectDetailPage = () => {
               }
             </div>
             <div className="detail_project_shorts_info_percentage">
-              <div className="detail_project_shorts_info_percentage_text">
-                <p>{((project.artielcNum / 350) * 100).toFixed()}%</p>
+              <div className="detail_project_shorts_info_percentage_text">                {
+                curPeriod / fullPeriod < 0
+                    ?<p>100%</p>
+                    :<p>{curPeriod && fullPeriod && ((1 - curPeriod / fullPeriod) * 100).toFixed(1)}%</p>
+              }
               </div>
               <svg className="detail_project_shorts_info_percentage_graph">
                 <circle
@@ -202,7 +202,7 @@ const ProjectDetailPage = () => {
                     fill="none"
                     stroke="#FF8CA1FF"
                     strokeWidth="8"
-                    strokeDasharray={`${2 * Math.PI * 30 * (project.artielcNum / 365)} ${2 * Math.PI * 30 * (1-(project.artielcNum / 365))}`}
+                    strokeDasharray={`${2 * Math.PI * 30 * (1 - curPeriod / fullPeriod)} ${2 * Math.PI * 30 * (curPeriod / fullPeriod)}`}
                     strokeDashoffset={2 * Math.PI * 30 * 0.25}
                 />
               </svg>

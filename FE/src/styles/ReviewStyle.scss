@@ -196,6 +196,20 @@
   justify-content: right;
   align-items: center;
 
+  .reviewHit{
+    width: 30px;
+    height: 30px;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    border-radius: 100%;
+    border : none;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
 
   .heartCnt{
     font-family: "IBM Plex Sans KR", sans-serif;
@@ -249,6 +263,9 @@
 
   backdrop-filter: blur(10px);
   //margin-left: 15%;
+
+  outline-color: var(--point1_main);
+
   .modal_contents_box{
     width: 700px;
     height: 650px;

@@ -9,16 +9,6 @@ const FriendForm = ({form, setForm, setIsValidSearch}) => {
         };
     }, true);
 
-    // const handleChange = (e) => {
-    //     const { value } = e.target;
-    //         const nextForm = {
-    //         ...form,
-    //         "search" : value,
-    //     };
-    //     setForm(nextForm);
-    //     console.log("handleChange : ", form);
-    // };
-
     const valueChange = (e) => {
         const { value } = e.target;
         const nextForm = {
@@ -26,7 +16,6 @@ const FriendForm = ({form, setForm, setIsValidSearch}) => {
             "id" : value?value:"",
         };
         setForm(nextForm);
-        console.log("valueChange : ", form);
         setIsValidSearch(true);
     };
 

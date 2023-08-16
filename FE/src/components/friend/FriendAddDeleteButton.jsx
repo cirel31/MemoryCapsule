@@ -19,12 +19,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
 
     /**
      * 1. 친구 추가
-     *
-     * Method : post
-     * URL : /friend/add
-     * param : * 토큰 필요 *
-             - 추가하는 사람(host_id) : Number
-             - 추가받는 사람(guest_id) : Number
      * */
     const addRequestFriend = () => {
         console.log("[addRequestFriend]");
