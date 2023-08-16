@@ -12,7 +12,7 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
 
     Modal.setAppElement("#root");
 
-    const [post, setPost] = useState(selectedPost);
+    const [post, setPost] = useState([]);
     const [imageList, setImageList] = useState([]);
     const [state, setState] = useState(false);
     const [disabledTitle, setDisabledTitle] = useState(false);
@@ -33,7 +33,8 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
         console.log("selectedPost :", selectedPost);
         setPost(selectedPost);
         setState(selectedPost &&(selectedPost.reviewIdx === 0 || state));
-    }, [modalIsOpen]);
+    }, [selectedPost]);
+
 
     // 리뷰 데이터 접근자가 관리자인지 확인
     function checkUserRole() {
@@ -99,27 +100,27 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
     /**
      * 4. 리뷰 삭제 [delete]
      *http://localhost:8080/review/2
-                        */
-                        const deleteReview = () => {
-                        const accessToken = sessionStorage.getItem("accessToken")
-                        console.log("[deleteReview]");
+    */
+    const deleteReview = () => {
+    const accessToken = sessionStorage.getItem("accessToken")
+    console.log("[deleteReview]");
 
-                        if (checkUserRole()) {
-                        axios.delete(`${baseURL}${API}/${selectedPost.reviewIdx}`
-            ,{
-            headers: {
-            Authorization: `Bearer ${accessToken}`
-                    },
-                }
-                )
-                .then((response) => {
-                    console.log('게시글 삭제 (Delete) successful : ', response.data);
-                    showAlert("게시글이 삭제되었습니다.");
-                    closeModal()
-                })
-                .catch((error) => {
-                    console.error('게시글 삭제 (Delete) fail : ', error);
-                });
+    if (checkUserRole()) {
+    axios.delete(`${baseURL}${API}/${selectedPost.reviewIdx}`
+        ,{
+        headers: {
+        Authorization: `Bearer ${accessToken}`
+                },
+            }
+            )
+            .then((response) => {
+                console.log('게시글 삭제 (Delete) successful : ', response.data);
+                showAlert("게시글이 삭제되었습니다.");
+                closeModal()
+            })
+            .catch((error) => {
+                console.error('게시글 삭제 (Delete) fail : ', error);
+            });
         }
     }
 
@@ -323,7 +324,8 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
         <>
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="review_modal">
                 {
-                    post &&(
+                    post && post.reviewContent &&
+                    (
                         <form className="modal_contents_box">
                             {
                                 state

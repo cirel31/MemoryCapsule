@@ -21,12 +21,12 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
      * http://localhost:8080/review/2
      * */
     const getReviewsDataDetail = (idx) => {
-        console.log("[getReviewsDataDetail]", selectedPost);
+        console.log("[getReviewsDataDetail]", selectedPost, idx);
 
         const index = parseInt(idx);
         const accessToken = sessionStorage.getItem("accessToken")
 
-        console.log(idx);
+        console.log(index);
         axios.get(`${baseURL}${API}/${index}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -34,7 +34,7 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
         })
             .then((response) => {
                 console.log('게시글 자세하게 (Detail) successful : ', response.data);
-                setSelectedPost(idx);
+                setSelectedPost(response.data);
                 setIsModal(true)
             })
             .catch((error) => {
@@ -44,10 +44,8 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
 
     const openModal = (id) => {
         // const index = postList.findIndex((post => post.id === id))
-        const index = postList.content.findIndex((post => post.reviewIdx === id))
-        // getReviewsDataDetail(index);
+        getReviewsDataDetail(id);
         console.log("selectedPost : ", selectedPost);
-        console.log("index : ", index);
         setIsModal(true);
     }
 
@@ -133,9 +131,9 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
                     <div className="review_list_heart">
                         <p className="heartCnt">
                             {/*function으로 return 값을 date.getDate() 같은거 써서 return*/}
-                            {post.reviewLike}
+                            {post.reviewHit}
                         </p>
-                        <div className="heartButton liked">
+                        <div className="reviewHit">
                             <img src={heart} alt="heart"/>
                         </div>
                     </div>
