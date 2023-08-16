@@ -180,11 +180,17 @@ const ProjectDetailPage = () => {
               }
             </div>
             <div className="detail_project_shorts_info_percentage">
-              <div className="detail_project_shorts_info_percentage_text">                {
-                curPeriod / fullPeriod < 0
+              <div className="detail_project_shorts_info_percentage_text">
+                {
+                  curPeriod / fullPeriod < 0
                     ?<p>100%</p>
-                    :<p>{curPeriod && fullPeriod && ((1 - curPeriod / fullPeriod) * 100).toFixed(1)}%</p>
-              }
+                    :
+                    <p>{
+                      curPeriod / fullPeriod >= 1
+                      ?0
+                      :curPeriod && fullPeriod && ((1 - curPeriod / fullPeriod) * 100).toFixed(1)
+                    }%</p>
+                }
               </div>
               <svg className="detail_project_shorts_info_percentage_graph">
                 <circle
@@ -195,16 +201,19 @@ const ProjectDetailPage = () => {
                     stroke="#E7E1DBFF"
                     strokeWidth="8"
                 />
-                <circle
-                    cx="50%"
-                    cy="50%"
-                    r="30"
-                    fill="none"
-                    stroke="#FF8CA1FF"
-                    strokeWidth="8"
-                    strokeDasharray={`${2 * Math.PI * 30 * (1 - curPeriod / fullPeriod)} ${2 * Math.PI * 30 * (curPeriod / fullPeriod)}`}
-                    strokeDashoffset={2 * Math.PI * 30 * 0.25}
-                />
+                {
+                  curPeriod / fullPeriod < 1 &&
+                  <circle
+                      cx="50%"
+                      cy="50%"
+                      r="30"
+                      fill="none"
+                      stroke="#FF8CA1FF"
+                      strokeWidth="8"
+                      strokeDasharray={`${2 * Math.PI * 30 * (1 - curPeriod / fullPeriod)} ${2 * Math.PI * 30 * (curPeriod / fullPeriod)}`}
+                      strokeDashoffset={2 * Math.PI * 30 * 0.25}
+                  />
+                }
               </svg>
             </div>
             <div className="detail_project_shorts_info_period">

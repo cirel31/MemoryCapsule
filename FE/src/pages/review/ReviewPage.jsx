@@ -41,8 +41,9 @@ const ReviewPage = () => {
                 <ReviewModal
                     selectedPost={{
                         reviewIdx : 0,
-                        reviewTitle : "",
-                        reviewContent : "",
+                        reviewTitle : " ",
+                        reviewContent : " ",
+                        isWriter : true
                     }}
                     setSelectedPost={setPost}
                     modalIsOpen={isModal}

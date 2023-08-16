@@ -20,6 +20,7 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
 
     const user = useSelector((state) => state.userState.user)
     const admin = user?.admin || false
+    const userId = user?.userId || false
 
     const [file, setFile] = useState(null);
 
@@ -36,16 +37,18 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
     }, [selectedPost]);
 
 
-    // 리뷰 데이터 접근자가 관리자인지 확인
+    // 리뷰 데이터 접근자가 유저본인 혹은 관리자인지 확인
     function checkUserRole() {
         console.log("[checkUserRole]");
         // 관리자 권한 확인
         console.log(admin)
-        if (true || admin) {
-            console.log("관리자로 확인되었습니다.");
+        console.log(userId, post.isWriter)
+
+        if (post.isWriter || admin) {
+            console.log("글쓴이로 확인되었습니다.");
             return true;
         } else {
-            console.log("관리자 권한이 없습니다.");
+            console.log("글쓴이 권한이 없습니다.");
             return false;
         }
     }
@@ -138,7 +141,7 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
 
         const accessToken = sessionStorage.getItem("accessToken");
 
-        if (checkUserRole()) {
+        if (checkUserRole() && post.reviewTitle && post.reviewContent) {
             axios.put(`${baseURL}${API}`, formData,
                 {
                     headers: {
@@ -160,10 +163,6 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
 
     /**
      * 6. 리뷰 좋아요 누르기 [post]
-     *http://localhost:8080/review/like
-     * {
-     *  "idx" : "3"
-     * }
      */
     const likeReviewAdd = () => {
         const idx = parseInt(post.reviewIdx, 10);
@@ -200,10 +199,6 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
 
     /**
      * 7. 리뷰 좋아요 누르기 취소 [Delete]
-     *http://localhost:8080/review/like
-     * {
-     *  "idx" : "3"
-     * }
      */
     const likeReviewDelete = () => {
         console.log("[putPostDataEdit]", post);
@@ -310,7 +305,7 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
         <>
             <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className="review_modal">
                 {
-                    post && post.reviewContent &&
+                    post &&
                     (
                         <form className="modal_contents_box">
                             {
@@ -362,6 +357,7 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                             }
                             {/*몇 개의 글자를 사용했는지 표시*/}
                             {
+                                post.reviewContent &&
                                 post.reviewContent.length < 5000
                                 ?<div className="buttonList">{post.reviewContent.length}/5000</div>
                                 :<div className="buttonList text_styled_red">{post.reviewContent.length}/5000</div>
@@ -371,13 +367,13 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                                 ?
                                 <div className="buttonList">
                                     <button onClick={closeModal}>닫기</button>
-                                    <button onClick={addPost}>등록</button>
+                                    {checkUserRole() && <button onClick={addPost}>등록</button>}
                                 </div>
                                 :
                                 <div className="buttonList">
                                     <button onClick={closeModal}>닫기</button>
-                                    <button onClick={editPost}>수정</button>
-                                    <button onClick={deleteReview}>삭제</button>
+                                    {checkUserRole() && <button onClick={editPost}>수정</button>}
+                                    {checkUserRole() && <button onClick={deleteReview}>삭제</button>}
                                 </div>
                             }
                         </form>
