@@ -28,6 +28,7 @@ const ProjectForm = () => {
 
   const selectedUsers = useSelector((state) => state.friend.selectedPeople)
   const [coworker, setCoworker] = useState([])
+  const [isActive, setIsActive] = useState(false)
   const today = new Date()
   const monthFromNow = moment().add(1, 'months').toDate()
   const oneYearFromNow = moment().add(1, 'years').toDate()
@@ -96,7 +97,13 @@ const ProjectForm = () => {
     if (imageInput) imageInput.value = '';
   };
 
+  const clickSolo = () => {
+    setIsActive(false)
+    dispatch(removeAll())
+  }
+  
   const clickFriends = () => {
+    setIsActive(true)
     Swal.fire({
       title: "함께 할 친구",
       html: `
@@ -271,13 +278,13 @@ const ProjectForm = () => {
         <div>
           {/* 버튼이 눌린상태로 유지되어야 함. */}
           <div className="project_create_solo_button">
-            <button onClick={() => dispatch(removeAll())}>
+            <button onClick={clickSolo} className={!isActive ? 'active' : ''}>
               <img src={solo_w}/>
               <p>혼자 할게요!</p>
             </button>
           </div>
           <div className="project_create_group_button">
-            <button onClick={clickFriends}>
+            <button onClick={clickFriends} className={isActive ? 'active' : ''}>
               <img src={group_w}/>
               <p>여러명이서 할게요!</p>
             </button>
