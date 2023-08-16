@@ -35,7 +35,6 @@ const ProjectLockerPage = () => {
 
   useEffect(() => {
     const userId = user?.userId || ''
-    console.log(userId)
     axios.get(`${baseURL}${subURL}`, {
       headers: {
         "userId": userId,
@@ -44,8 +43,7 @@ const ProjectLockerPage = () => {
       .then((response) => {
         setProjects(response.data);
       })
-      .catch((error) => {
-        console.error(error.code)
+      .catch(() => {
       });
   }, []);
   

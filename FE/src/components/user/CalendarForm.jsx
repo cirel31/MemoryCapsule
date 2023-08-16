@@ -8,25 +8,10 @@ import goodstamp from "../../assets/images/stamp/stamp_best.svg"
 // import {useNavigate} from "react-router-dom";
 
 const CalendarForm = () => {
-  // const navigate = useNavigate()
-  const isLoggedIn = useSelector((state) => state.userState.isLoggedIn)
   const attend = useSelector((state) => state.userState.user?.accessList)
   const userId = useSelector((state) => state.userState.user?.userId)
   const [finishedProject, setFinishedProject] = useState('')
   const [countMemory, setCountMemory] = useState(0)
-  console.log('로그인 상태 : ', isLoggedIn)
-  console.log(attend)
-
-  // 로그인 되지 않은 상태에서는 접근할 수 없는 페이지
-  // 추후 로그인 기능 활성화 시 주석 해제할 것
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     console.log('로그인 상태')
-  //   } else {
-  //     console.log('로그아웃 상태')
-  //     navigate('/login')
-  //   }
-  // }, [isLoggedIn, navigate])
 
   const [attendanceDates, setAttendanceDates] = useState([
     "2023-06-28",
@@ -53,7 +38,6 @@ const CalendarForm = () => {
         }
       })
         .then((response) => {
-          console.log('결과', response.data)
           const finishedCapsules = response.data.length || 0
           response.data.map(project => {
             counts += project.artielcNum
@@ -67,7 +51,6 @@ const CalendarForm = () => {
         })
     }
     catch (error) {
-      console.log('에러에러 : ', error)
     }
   },[]);
 
@@ -85,7 +68,6 @@ const CalendarForm = () => {
           value={value}
           tileClassName={({ date, view }) => {
             if (attendanceDates.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
-              console.log(date)
               return "highlight2"
             }
           }}
