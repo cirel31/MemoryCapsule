@@ -43,24 +43,18 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             .then((response) => {
                 console.log('서버로부터 친구 추가 성공');
                 console.log("friend.status : ", friend.status)
-                showAlert("success", "친구 추가되었습니다.", "success");
+                showAlert("success", "친구 추가되었습니다.");
                 setCurStatus(2);
             })
             .catch((error) => {
                 console.error("서버로부터 친구 추가 실패", error);
-                showAlert("error", "친구 실패입니다.", "error");
+                showAlert("error", "친구 실패입니다.");
                 console.error(error.code);
             });
     }
 
     /**
      * 2. 친구 추가 요청 취소
-     *
-     * Method : delete
-     * URL : /friend/add
-     * param : * 토큰 필요 *
-     - 추가하는 사람(host_id) : Number
-     - 추가받는 사람(guest_id) : Number
      * */
     const addRequestDiscardFriend = () => {
         console.log("[addRequestFriend]");
@@ -89,24 +83,18 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             .then((response) => {
                 console.log('서버로부터 친구 추가 요청 취소 성공');
                 console.log("friend.status : ", friend.status);
-                showAlert("success", "친구 추가 요청 취소 성공입니다.", "success");
+                showAlert("success", "친구 추가 요청 취소 성공입니다.");
                 setCurStatus(0);
             })
             .catch((error) => {
                 console.error("서버로부터 친구 추가 요청 취소 실패", error);
-                showAlert("error", "친구 추가 요청 취소  실패입니다.", "error");
+                showAlert("error", "친구 추가 요청 취소  실패입니다.");
                 console.error(error.code);
             });
     }
 
     /**
      * 2. 친구 추가 요청 거절
-     *
-     * Method : delete
-     * URL : /friend/request
-     * param : * 토큰 필요 *
-     - 추가하는 사람(host_id) : Number
-     - 추가받는 사람(guest_id) : Number
      * */
     const addRequestRejectFriend = () => {
         console.log("[addRequestFriend]");
@@ -135,24 +123,18 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             .then((response) => {
                 console.log('서버로부터 친구 추가 요청 거절 성공');
                 console.log("friend.status : ", friend.status);
-                showAlert("success", "친구 추가 요청 거절 성공입니다.", "success");
+                showAlert("success", "친구 추가 요청 거절 성공입니다.");
                 setCurStatus(0);
             })
             .catch((error) => {
                 console.error("서버로부터 친구 추가 요청 거절 실패", error);
-                showAlert("error", "친구 추가 요청 거절 실패입니다.", "error");
+                showAlert("error", "친구 추가 요청 거절 실패입니다.");
                 console.error(error.code);
             });
     }
 
     /**
      * 3. 친구 추가
-     *
-     * Method : put
-     * URL : /friend/request
-     * param : * 토큰 필요 *
-     - 추가하는 사람(host_id) : Number
-     - 추가받는 사람(guest_id) : Number
      * */
     const addFriend = () => {
         console.log("[addRequestFriend]");
@@ -177,28 +159,20 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             .then((response) => {
                 console.log('친구 추가 성공');
                 console.log("friend.status : ", friend.status)
-                showAlert("success", "친구 추가 성공입니다.", "success");
+                showAlert("success", "친구 추가 성공입니다.");
                 setCurStatus(1);
             })
             .catch((error) => {
                 console.error("친구 추가 실패", error);
-                showAlert("error", "친구 추가 실패입니다.", "error");
+                showAlert("error", "친구 추가 실패입니다.");
                 console.error(error.code);
             });
     }
 
     /**
      * 4. 친구 삭제
-     *
-     * Method : delete
-     * URL : /friend/delete
-     * param : * 토큰 필요 *
-     - 삭제하는 사람(host_id) : Number
-     - 삭제 할 사람(guest_id) : Number
      * */
     const discardFriend = () => {
-        console.log("[discardFriend]");
-
         const accessToken = sessionStorage.getItem("accessToken")
         const host_id = parseInt(sessionStorage.getItem("userIdx"), 10);
 
@@ -209,11 +183,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             guest_id = parseInt(friend.idx, 10);
         }
 
-        console.log("accessToken", accessToken);
-        console.log("host_id", host_id);
-        console.log("guest_id", guest_id);
-
-        //https://i9a608.p.ssafy.io:8000/friend/delete?guest_id=1014&host_id=5
         axios.delete(`https://i9a608.p.ssafy.io:8000/friend/delete?host_id=${host_id}&guest_id=${guest_id}`,
             {
                 headers: {
@@ -232,11 +201,10 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             });
     }
 
-    const showAlert = (title, text, icon) => {
+    const showAlert = (title, text) => {
         Swal.fire({
             title,
             text,
-            icon,
         });
     };
 

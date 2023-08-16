@@ -15,14 +15,10 @@ const NoticePagination = ({ postList, currentPage, setCurrentPage, updatePage })
         // const index = postList.findIndex((post => post.id === id))
         const index = postList.content.findIndex((post => post.noticeIdx === id))
         setSelectedPost(postList.content[index]);
-        console.log("selectedPost : ", selectedPost);
-        console.log("index : ", index);
         setIsModal(true);
     }
 
     const handlePageChange = (pageNumber) => {
-        console.log("currentPage:", currentPage);
-        console.log("pageNumber:", pageNumber);
         setCurrentPage(pageNumber);
     };
 
@@ -40,8 +36,6 @@ const NoticePagination = ({ postList, currentPage, setCurrentPage, updatePage })
             indexOfMinPage = (totalPages - (range*2+1) >= 0 ? totalPages - (range*2+1) : 0);
         }
 
-        console.log(indexOfMinPage, indexOfMaxPage);
-
         // 보여줄 페이지 리스트
         const showIndexList = [];
 
@@ -49,8 +43,6 @@ const NoticePagination = ({ postList, currentPage, setCurrentPage, updatePage })
         for (let i = indexOfMinPage ; i < indexOfMaxPage ; i++) {
             showIndexList.push(i);
         }
-
-        console.log("showIndexList : ", totalPages);
         return showIndexList;
     }
 
@@ -80,9 +72,6 @@ const NoticePagination = ({ postList, currentPage, setCurrentPage, updatePage })
 
     return (
         <div className="announce_pagenation">
-            {
-                console.log("totalPages", totalPages)
-            }
             {
             postList.content &&
             postList.content.map((post) => (
