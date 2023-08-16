@@ -38,13 +38,13 @@ public class EmailServiceImpl implements EmailService {
      *  알람 서비스 -> 스케줄러로 실행함
      *  매일 23시 59분에 알람 보낼 유저들에게 이메일을 보낸다.
      */
-    @Override
-    @Scheduled(cron = "0 59 23 * * *")
-    public void dailyTaskAlarm() {
-        for (EmailDto emailDto : userRepository.findUsersAndProjectsWithCriteria()) {
-            sendMail(emailDto, EmailType.Alarm);
-        }
-    }
+//    @Override
+//    @Scheduled(cron = "0 59 23 * * *")
+//    public void dailyTaskAlarm() {
+//        for (EmailDto emailDto : userRepository.findUsersAndProjectsWithCriteria()) {
+//            sendMail(emailDto, EmailType.Alarm);
+//        }
+//    }
 
     /**
      * 이메일을 보내는 함수
