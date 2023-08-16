@@ -1,0 +1,32 @@
+@import "theme.css";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
+
+.present_body {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-items: center;
+
+  //.present_bg{
+  //  width: 100%;
+  //  height: 100%;
+  //  position: absolute;
+  //}
+  .present_contents_0{
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/images/present/present_bg1.svg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    & > div {
+      width: 50vw;
+      height: 20vw;
+      background-color: var(--white);
+    }
+  }
+}
