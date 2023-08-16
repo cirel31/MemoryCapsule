@@ -33,6 +33,7 @@ const SendPresentPage = () => {
     Kakao.Share.createScrapButton({
       container: '#kakao-share',
       requestUrl: `https://memorycapsule.site/project/present/${giftUrl.giftUrl}`,
+      templateId: 97142,
     })
   }, []);
   
