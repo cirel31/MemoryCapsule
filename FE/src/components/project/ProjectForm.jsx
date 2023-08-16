@@ -28,7 +28,10 @@ const ProjectForm = () => {
 
   const selectedUsers = useSelector((state) => state.friend.selectedPeople)
   const [coworker, setCoworker] = useState([])
-
+  const today = new Date()
+  const monthFromNow = moment().add(1, 'months').toDate()
+  const oneYearFromNow = moment().add(1, 'years').toDate()
+  
   useEffect(() => {
     setCoworker(selectedUsers.map((user) => (
       user.userId
@@ -65,7 +68,7 @@ const ProjectForm = () => {
   }
   const handleStartDateChange = (date) => {
     setStartDate(date);
-    setEndDate(new Date(date.getTime() + 86400000))
+    setEndDate(moment(date).add(1, 'days').toDate())
   };
 
   const handleEndDateChange = (date) => {
@@ -193,11 +196,16 @@ const ProjectForm = () => {
                   // required
                   readOnly
                 />
-                <Modal isOpen={showStartDateModal} onRequestClose={() => setShowStartDateModal(false)}>
+                <Modal
+                  isOpen={showStartDateModal}
+                  onRequestClose={() => setShowStartDateModal(false)}
+                >
                   <Calendar
                     value={startDate}
                     onChange={handleStartDateChange}
                     onClickDay={() => setShowStartDateModal(false)}
+                    minDate={today}
+                    maxDate={monthFromNow}
                     dateFormat="yyyy-MM-dd"
                   />
                 </Modal>
@@ -214,12 +222,16 @@ const ProjectForm = () => {
                   // required
                   readOnly
                 />
-                <Modal isOpen={showEndDateModal} onRequestClose={() => setShowEndDateModal(false)}>
+                <Modal
+                  isOpen={showEndDateModal}
+                  onRequestClose={() => setShowEndDateModal(false)}
+                >
                   <Calendar
                     value={endDate}
                     onChange={handleEndDateChange}
                     onClickDay={() => setShowEndDateModal(false)}
                     minDate={startDate ? new Date(startDate.getTime() + 86400000) : undefined}
+                    maxDate={oneYearFromNow}
                     dateFormat="yyyy-MM-dd"
                   />
                 </Modal>

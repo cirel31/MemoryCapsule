@@ -2,6 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
+import kokona from "../../assets/images/kokona.png"
 
 const SendPresentPage = () => {
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
@@ -43,10 +44,18 @@ const SendPresentPage = () => {
           <div key={index}>
             <p>{article.content}</p>
             
-            <img src={article.images[0]} />
+            <img
+              src={article.images[0]}
+              onError={(e) => {e.target.src = kokona}}
+            />
             
-            {article.images.slice(1).map((image) => (
-              <img src={image} alt=""/>
+            {article.images.slice(1).map((image, index) => (
+              <img
+                key={index+1}
+                src={image}
+                alt="이미지 없음"
+                onError={(e) => {e.target.src = kokona}}
+              />
             ))}
             
           </div>
