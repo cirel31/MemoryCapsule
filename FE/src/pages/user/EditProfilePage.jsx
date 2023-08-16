@@ -62,7 +62,6 @@ const EditProfilePage = () => {
         }
       })
         .then((response) => {
-          console.log("프로필 데이터 갱신 성공", response)
           dispatch(fetchUserInfoThunk(userId))
           window.location.href ='/mypage'
         })
@@ -167,6 +166,7 @@ const EditProfilePage = () => {
               <input
                 name="nickName"
                 type="text"
+                maxLength="15"
                 value={originNickname}
                 onChange={saveNickname}
                 ref={nickRef}
