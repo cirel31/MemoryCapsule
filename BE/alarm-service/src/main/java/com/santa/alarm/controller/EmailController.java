@@ -4,8 +4,6 @@ import com.santa.alarm.Enum.EmailContextDataType;
 import com.santa.alarm.Enum.EmailType;
 import com.santa.alarm.dto.EmailDto;
 import com.santa.alarm.service.EmailService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
