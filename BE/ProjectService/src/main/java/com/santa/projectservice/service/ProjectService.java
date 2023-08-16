@@ -73,7 +73,6 @@ public interface ProjectService {
 
     @Transactional
     List<ProjectDto> findProjectByUserIdAndState(Long userId, ProjectState projectState);
-
     Long projectNum(Long userId);
 
     void createRegister(Long userId, Long projectId);

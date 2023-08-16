@@ -20,6 +20,7 @@ public class ProjectDto {
     private Date started;
     private Date ended;
     private Date created;
+    private Date updated;
     private String imgUrl;
     private String shareUrl;
     private int type;
@@ -29,14 +30,16 @@ public class ProjectDto {
     private Boolean deleted;
     private int alarmType;
     private int alarm;
+
     @Builder
-    public ProjectDto(Long id, String title, String content, Date started, Date ended, Date created, String imgUrl, String shareUrl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm) {
+    public ProjectDto(Long id, String title, String content, Date started, Date ended, Date created, Date updated, String imgUrl, String shareUrl, int type, Boolean state, String giftUrl, int limit, Boolean deleted, int alarmType, int alarm) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.started = started;
         this.ended = ended;
         this.created = created;
+        this.updated = updated;
         this.imgUrl = imgUrl;
         this.shareUrl = shareUrl;
         this.type = type;
@@ -48,8 +51,7 @@ public class ProjectDto {
         this.alarm = alarm;
     }
 
-
-    public ProjectInfo toInfo(List<UserVo> userList,Long owner, Long num){
+    public ProjectInfo toInfo(List<UserVo> userList, Long owner, Long num){
         return new ProjectInfo(this,owner, userList, num);
     }
 }

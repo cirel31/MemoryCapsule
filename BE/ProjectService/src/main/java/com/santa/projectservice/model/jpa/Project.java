@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import javax.ws.rs.DefaultValue;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,8 @@ public class Project {
     @Column(name = "pjt_created")
     @CreationTimestamp
     private Date created;
+    @Column(name = "pjt_updated")
+    private Date updated;
 
     @Column(name = "pjt_imgurl", length = 2048)
     private String imgUrl;
@@ -115,7 +118,9 @@ public class Project {
                 .alarm(this.alarm)
                 .build();
     }
-
+    public void update(){
+        this.updated = Date.from(Instant.now());
+    }
     public void delete() {
         this.deleted = true;
     }
