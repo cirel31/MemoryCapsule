@@ -1,22 +1,25 @@
 import CalendarForm from "../../components/user/CalendarForm";
 import UserInfoHeaderForm from "../../components/user/UserInfoHeaderForm";
-import {useDispatch} from "react-redux";
-import {logoutUserThunk} from "../../store/userSlice";
 import "../../styles/MyPage.scss";
 import CurrentProjectsPage from "./CurrentProjectsPage";
 import InviteProject from "../project/InviteProject";
-import locker_img from "../../assets/images/present_box.jpg";
-import {Link} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 import AnnounceList from "../../components/announce/AnnounceList";
 import ProjectLockerPage from "../project/ProjectLockerPage";
+import {useEffect} from "react";
+import {useSelector} from "react-redux";
 
 
 const MyPage = () => {
-  const dispatch = useDispatch();
-  const LogoutUser = () => {
-    console.log('로그아웃 버튼 작동 테스트', sessionStorage)
-    dispatch(logoutUserThunk());
-  }
+  const navigate = useNavigate()
+  const user = useSelector((state) => state.userState.user) || null
+
+  useEffect(() => {
+    const accessToken = sessionStorage?.getItem("accessToken")
+    if (!accessToken) {
+      navigate('/login')
+    }
+  }, [user])
 
   return (
     <div className="big_body">

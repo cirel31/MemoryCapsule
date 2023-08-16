@@ -21,7 +21,8 @@ import InviteProject from "./project/InviteProject";
 import KakaoLoginPage from "./auth/KakaoLoginPage";
 import ProjectLockerPage from "./project/ProjectLockerPage";
 import SendPresentPage from "./project/SendPresentPage";
-import KakaoSharePage from "./user/KakaoSharePage";
+
+import LoadingPage from "./LoadingPage";
 
 export default function Routers() {
 
@@ -45,9 +46,9 @@ export default function Routers() {
       <Route path='/notice' element={<NoticeListPage />} />
       {/*<Route path='/review' element={<ReviewPage />} />*/}
       
+      <Route path='/loading' element={<LoadingPage />} />
 
       <Route path='/mypage' element={<MyPage />} />
-      <Route path='/share' element={<KakaoSharePage />} />
 
       <Route path='/calendar' element={<CalendarForm />} />
       

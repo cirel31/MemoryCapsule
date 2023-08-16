@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Modal from "react-modal";
 import {useSelector} from "react-redux";
 import "../../styles/MainPage.scss"
@@ -14,36 +14,51 @@ import start_btn from "../../assets/images/mainpage/start.svg"
 import end_btn from "../../assets/images/mainpage/end.svg"
 import tag_label from "../../assets/images/mainpage/Tag.svg"
 import kokona from "../../assets/images/kokona.png";
+import Swal from "sweetalert2";
 
 const ProjectListPage = () => {
+  const navigate = useNavigate()
+
+  const baseURL = 'https://i9a608.p.ssafy.io:8000'
+  const subURL = '/project/myproject/current'
+
   const [isHovered, setIsHovered] = useState(null)
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
-  const baseURL = 'https://i9a608.p.ssafy.io:8000'
-  const subURL = '/project/myproject/current'
-  const user = useSelector((state) => state.userState.user) || null
-  const [projects, setProjects] = useState([
-
-  ]);
+  const [projects, setProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProjects, setFilteredProjects] = useState([])
-  
-  
+
+  const user = useSelector((state) => state.userState.user) || null
+
+  useEffect(() => {
+    const isLoggedIn = sessionStorage?.accessToken
+    if (!isLoggedIn) {
+      Swal.fire({
+        iconColor: "red",
+        icon: "warning",
+        title: "로그인이 필요한 페이지 입니다.",
+        confirmButtonText: "확인",
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            navigate('/login')
+          }
+        })
+    }
+  }, [user])
+
   useEffect(() => {
     const userId = user?.userId || ''
-    console.log(userId)
     axios.get(`${baseURL}${subURL}`, {
       headers: {
         "userId": userId,
       }
     })
         .then((response) => {
-          console.log('프로젝트 리스트 가져오기 : ', response.data)
           setProjects(response.data);
         })
-        .catch((error) => {
-          console.error("프로젝트 리스트 가져오기 실패", error);
-          console.error(error.code)
+        .catch(() => {
         });
   }, []);
   
@@ -108,7 +123,7 @@ const ProjectListPage = () => {
             type="text"
             value={searchTerm}
             onChange={handleSearchChange}
-            placeholder="프로젝트 검색..."
+            placeholder="진행 중인 프로젝트 검색..."
           />
           <button onClick={handleSearchChange}><img src={search_picto}/></button>
         </div>
@@ -130,7 +145,6 @@ const ProjectListPage = () => {
             </div>
           ) : (
             <div className="pjt_lst_body">
-
               {currentPosts.map((project) => (
                 <div
                   key={project.id}

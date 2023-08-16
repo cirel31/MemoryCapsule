@@ -57,8 +57,6 @@ const ProjectDetailPage = () => {
   const [project, setProject] = useState([])
   const [myArticles, setMyArticles] = useState([])
   const [imgNum, setImgNum] = useState([])
-  const [selectedPost, setSelectedPost] = useState(null)
-  const [isHovered, setIsHovered] = useState(null)
   const [endCondition, setEndCondition] = useState(false)
   
   useEffect(() => {
@@ -74,12 +72,10 @@ const ProjectDetailPage = () => {
         const today = new Date()
         const endedDate = new Date(response.data.ended)
         if (today.getTime() > endedDate.getTime()) {
-          console.log("종료조건 만족")
           setEndCondition(true)
         }
       })
-      .catch((error) => {
-        console.error("서버로부터 프로젝트 세부사항 실패", error);
+      .catch(() => {
       });
   }, []);
 
@@ -92,12 +88,9 @@ const ProjectDetailPage = () => {
         }
     )
         .then((response) => {
-          console.log(response.data)
           setMyArticles(response.data);
         })
-        .catch((error) => {
-          console.error("서버로부터 게시물 가져오기 실패", user.userId);
-          console.error(error)
+        .catch(() => {
         });
   }, []);
 

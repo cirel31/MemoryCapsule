@@ -37,10 +37,8 @@ const CurrentProjectsPage = () => {
     })
       .then((response) => {
         setProjects(response.data);
-        console.log("현재 진행 중인 프로젝트 받아오기 성공")
       })
-      .catch((error) => {
-        console.error(error.code)
+      .catch(() => {
       });
   }, [JSON.parse(sessionStorage.getItem("loginData"))?.userId]);
 
