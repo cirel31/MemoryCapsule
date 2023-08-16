@@ -223,9 +223,10 @@ http://i9a608.p.ssafy.io:8001
 
 ## DB 덤프파일 최신본
 
-```[DB ERD Diagram]```
+![schema](https://lab.ssafy.com/yimo22/test/uploads/bd12d0699e6286ac9358a6b5324dd48f/schema.png)
 
-```[DB schema dump]```
+[santa.sql](https://lab.ssafy.com/yimo22/test/uploads/46b72ef31364131797a50a6e15d404c3/santa.sql)
+
 
 ## 시연 시나리오
 
