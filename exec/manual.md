@@ -1,15 +1,19 @@
 
 # 포팅 매뉴얼 상세
-Detail Porting Manual for Team. Santa production.
+Detail Porting Manual for Team. Santa production.(A.K.A MemoryCapsule)
+You can enjoy MemoryCapsule service with WEB envrionment. 
+Visit websize, enjoy your memory!
+[MemoryCapsule](www.memorycapsule.site).
+
+
 
 ## 빌드/배포 시나리오
 
 - 전체 프로젝트 구조
 
-``` [도커 올라간 사진 넣기] ```
 ![docker-ver](https://lab.ssafy.com/yimo22/test/uploads/bfebd65f423ab98e6cf2e401ec751d14/docker-ver.jpg)
 
-``` [시스템 아키텍쳐 넣기] ```
+
 ![archi_internal](https://lab.ssafy.com/yimo22/test/uploads/f50a31b7d624b93cc5c945e51bace7ac/archi_internal.png)
 
 
@@ -234,7 +238,7 @@ http://i9a608.p.ssafy.io:8001
 
 안녕하세요~ 메모리캡슐에 오신것을 환영합니다.!
 
-메모리캡슐을 ~~~블라블라
+메모리캡슐은 사용자들의 과정의 추억을 종합하여 고객에게 최고의 감동을 선사하는 서비스입니다.
 
 제가 직접 메모리캡슐을 시연 및 이미지를 통해서 보여드리겠습니다.
 
@@ -263,12 +267,6 @@ http://i9a608.p.ssafy.io:8001
 
 
 ### Main Page
-```
-[Main Page]
-. 현재 내가 진행한 프로젝트 목록을 볼수 있음
-. nav 바를 통해서 다른 프로젝트들도 확인 할 수 있음
-. 프로젝트 검색창을 통해서 내가 진행했던 프로젝트를 검색할 수 있음
-```
 
 ![로그인성공](https://lab.ssafy.com/yimo22/test/uploads/6a9224b118ff7a8eb9a0bdedbc061f0e/로그인성공.png)
 
