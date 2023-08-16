@@ -54,10 +54,7 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
      * 3. 리뷰 작성 [post]
      * http://localhost:8080/review
      */
-    console.log(sessionStorage);
     const createReview = () => {
-        console.log("[createReview]", post)
-
         const insertDto = {
             title: post.reviewTitle,
             content: post.reviewContent

@@ -13,7 +13,7 @@ import {useSelector} from "react-redux";
 import "../../styles/ProjectDetailSytle.scss";
 import go_back from "../../assets/images/frield/go_back.svg";
 import write from "../../assets/images/projectdetail/write.svg";
-import discard from "../../assets/images/projectdetail/discard.svg";
+import projectExport from "../../assets/images/projectdetail/export.svg";
 import before from "../../assets/images/projectdetail/before.svg";
 import after from "../../assets/images/projectdetail/after.svg";
 import heart from "../../assets/images/projectdetail/heart.svg";
@@ -218,9 +218,9 @@ const ProjectDetailPage = () => {
             </div>
           </div>
           {(endCondition && user.userId === project.owner) &&
-            <div className="detail_project_project_delete">
-              <button className="detail_project_project_delete_btn" onClick={finishProject}>
-                <img src={discard} alt="삭제" className="detail_project_project_delete_btn_img"/>
+          <div className="detail_project_project_export">
+              <button className="detail_project_project_export_btn" onClick={finishProject}>
+                <img src={projectExport} alt="프로젝트 완성" className="detail_project_project_export_btn_img"/>
               </button>
             </div>
           }
