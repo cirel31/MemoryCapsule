@@ -118,7 +118,8 @@ const ProjectListPage = () => {
   };
   
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
+    event.preventDefault()
+    // setSearchTerm(event.target.value);
   };
   
   Modal.setAppElement("#root");
