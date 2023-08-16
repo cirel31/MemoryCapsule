@@ -92,7 +92,7 @@ public class ReviewController {
         if (reviewService.likedReviewByReviewId(review_idx, user_idx)) {
             return new ResponseEntity(com.santa.board.Enum.ResponseStatus.SUCCESS, HttpStatus.OK);
         }
-        return new ResponseEntity(ResponseStatus.FAIL, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("이미 좋아요를 누른 글이거나 잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
     }
 
     @ApiOperation(value = "좋아요 취소하기", notes = "좋아요를 취소한다. 성공 유무 반환", response = String.class)
