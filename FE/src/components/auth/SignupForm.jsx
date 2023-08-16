@@ -12,7 +12,6 @@ import goback_btn from "../../assets/images/signup/go_back.svg";
 const SignupForm = ({ form, setForm,  }) => {
   const formRef = useRef(null)
   const navigate = useNavigate()
-  const [policyModalIsOpen, setPolicyModalIsOpen] = useState(false)
   const [isAuthentication, setIsAuthentication] = useState(false)
   const {
     isChecked,
@@ -50,7 +49,12 @@ const SignupForm = ({ form, setForm,  }) => {
   };
   const policyPaper = (e) => {
     e.preventDefault();
-    setPolicyModalIsOpen(true);
+    Swal.fire({
+      iconColor: "lightpink",
+      icon: "info",
+      title: "회원 가입 약관 페이지",
+      html: "본 과정은 삼성 청년 소프트웨어 아카데미(SSAFY)의<br>일환으로 만들어진 것입니다.",
+    })
   }
   const emailCheckPaper = (e) => {
     e.preventDefault();
@@ -332,13 +336,6 @@ const SignupForm = ({ form, setForm,  }) => {
           <button onClick={handleLoginPage} className="goback_button"><img src={goback_btn}/></button>
         </div>
       </div>
-      <Modal isOpen={policyModalIsOpen}>
-        <div onClick={() => setPolicyModalIsOpen(false)}>
-          회원 가입 약관 페이지
-
-          본 과정은 삼성 청년 소프트웨어 아카데미(SSAFY)의 일환으로 만들어진 것입니다.
-        </div>
-      </Modal>
     </div>
 
   )
