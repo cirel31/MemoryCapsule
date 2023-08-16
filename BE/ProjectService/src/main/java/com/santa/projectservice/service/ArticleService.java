@@ -1,5 +1,6 @@
 package com.santa.projectservice.service;
 
+import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.model.dto.ArticleDto;
 import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
 import com.santa.projectservice.model.jpa.Article;
@@ -18,7 +19,7 @@ public interface ArticleService {
      * @return - 아티클의 ID
      */
     // 아티클을 작성하는데 아티클을 생성하고 그 아이디로 사진을 전부 넣어줘야 함
-    Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) throws IOException;
+    Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) throws IOException, ProjectNotFoundException;
 
     /**
      * 한 아티클의 이미지 리스트를 가져옴
@@ -32,7 +33,7 @@ public interface ArticleService {
      * @param id - 유저
      * @return - 그 사람이 작성한 모든 아티클
      */
-    List<Article> articleList(Long id);
+    List<ArticleDto> articleList(Long id);
 
     List<ArticleDto> allProjectArticleList(Long userId, Long projectId);
 

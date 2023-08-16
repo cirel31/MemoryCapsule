@@ -50,6 +50,7 @@ public class Register {
     @DefaultValue("0")
     private Boolean alarm;
 
+    // 생성 목적
     @Builder
     public Register(long id, User user, Project project, Boolean type, Boolean confirm, Boolean alarm) {
         this.id = id;
@@ -60,6 +61,17 @@ public class Register {
         this.alarm = alarm;
     }
 
+    public static Register OwnerRegister(User owner, Project project){
+        return Register.builder()
+                .user(owner)
+                .project(project)
+                .type(true)
+                .confirm(true)
+                .alarm(false)
+                .build();
+    }
+
+    // 변환 목적
     public RegisterDto toDto(){
         return RegisterDto.builder()
                 .id(this.id)
