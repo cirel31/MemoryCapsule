@@ -1,9 +1,9 @@
 
 # 포팅 매뉴얼 상세
-Detail Porting Manual for Team. Santa production.(A.K.A MemoryCapsule)
-You can enjoy MemoryCapsule service with WEB envrionment. 
-Visit websize, enjoy your memory!
-[MemoryCapsule](www.memorycapsule.site).
+Detail Porting Manual for Team. Santa production.(A.K.A MemoryCapsule) <br>
+You can enjoy MemoryCapsule service with WEB envrionment. <br>
+Visit and enjoy your memory! <br>
+[MemoryCapsule](www.memorycapsule.site). <br>
 
 
 
