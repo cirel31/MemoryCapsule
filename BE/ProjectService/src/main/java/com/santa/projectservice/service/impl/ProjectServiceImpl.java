@@ -2,6 +2,7 @@ package com.santa.projectservice.service.impl;
 
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.santa.projectservice.exception.User.UserNotFoundException;
 import com.santa.projectservice.model.dto.ProjectDto;
 import com.santa.projectservice.model.dto.ProjectState;
 import com.santa.projectservice.model.dto.RegisterDto;
@@ -94,7 +95,7 @@ public class ProjectServiceImpl implements ProjectService {
         // 내가 주인인 레지스터 만들고
         // 초대 생성
         final Project regiProject = project;
-        User user = userRepository.findById(Owner).get();
+        User user = userRepository.findById(Owner).orElseThrow(() -> new UserNotFoundException("유저가 안찾아지네요"));
         registerRepository.save(Register.OwnerRegister(user, project));
         Optional.ofNullable(userList).ifPresent(
                 list -> list.forEach(id -> inviteService.createInvite(user, regiProject, id))
