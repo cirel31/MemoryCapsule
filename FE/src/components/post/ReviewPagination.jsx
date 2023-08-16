@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import Modal from "react-modal";
 import ReviewModal from "../post/ReviewModal";
+import heart from "../../assets/images/review/heart.svg";
+import axios from "axios";
 
 const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
+    const baseURL = 'https://i9a608.p.ssafy.io:8000';
+    const API = '/review';
+
     //페이지네이션 처리해야 함
     const totalPages = postList.totalPages;
     Modal.setAppElement("#root");
@@ -11,10 +16,36 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
     const [selectedPost, setSelectedPost] = useState(null)
     const [isModal, setIsModal] = useState(false)
 
+    /**
+     * 2. 공지사항 자세하게 보기 [get]
+     * http://localhost:8080/review/2
+     * */
+    const getReviewsDataDetail = (idx) => {
+        console.log("[getReviewsDataDetail]", selectedPost);
+
+        const index = parseInt(idx);
+        const accessToken = sessionStorage.getItem("accessToken")
+
+        console.log(idx);
+        axios.get(`${baseURL}${API}/${index}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            },
+        })
+            .then((response) => {
+                console.log('게시글 자세하게 (Detail) successful : ', response.data);
+                setSelectedPost(idx);
+                setIsModal(true)
+            })
+            .catch((error) => {
+                console.error('게시글 자세하게 (Detail) fail : ', error);
+            });
+    };
+
     const openModal = (id) => {
         // const index = postList.findIndex((post => post.id === id))
         const index = postList.content.findIndex((post => post.reviewIdx === id))
-        setSelectedPost(postList.content[index]);
+        // getReviewsDataDetail(index);
         console.log("selectedPost : ", selectedPost);
         console.log("index : ", index);
         setIsModal(true);
@@ -99,15 +130,19 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
                         <div> </div>
                     }
 
-                    <div>
-                        <p>
+                    <div className="review_list_heart">
+                        <p className="heartCnt">
                             {/*function으로 return 값을 date.getDate() 같은거 써서 return*/}
-                            {post && getTime(post.reviewCreated)}
+                            {post.reviewLike}
                         </p>
+                        <div className="heartButton liked">
+                            <img src={heart} alt="heart"/>
+                        </div>
                     </div>
                 </div>
                 ))
             }
+
 
             <div className="review_pagenation_buttons">
                 {

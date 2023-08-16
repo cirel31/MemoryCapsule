@@ -4,7 +4,7 @@ import axios from "axios";
 import "../../styles/ReviewStyle.scss"
 import Swal from "sweetalert2";
 import {useSelector} from "react-redux";
-import ReviewList from "../review/ReviewList";
+import heart from "../../assets/images/review/heart.svg";
 
 const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
@@ -99,17 +99,16 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
     /**
      * 4. 리뷰 삭제 [delete]
      *http://localhost:8080/review/2
-     */
-    const deleteReview = () => {
-        const accessToken = sessionStorage.getItem("accessToken")
-        console.log("[deleteReview]");
+                        */
+                        const deleteReview = () => {
+                        const accessToken = sessionStorage.getItem("accessToken")
+                        console.log("[deleteReview]");
 
-        if (checkUserRole()) {
-            console.log("게시글 삭제 (제작중)", selectedPost.reviewIdx);
-            axios.delete(`${baseURL}${API}/${selectedPost.reviewIdx}`
-                ,{
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
+                        if (checkUserRole()) {
+                        axios.delete(`${baseURL}${API}/${selectedPost.reviewIdx}`
+            ,{
+            headers: {
+            Authorization: `Bearer ${accessToken}`
                     },
                 }
                 )
@@ -180,7 +179,6 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
      * }
      */
     const likeReviewAdd = () => {
-        console.log("[putPostDataEdit]", post);
         const idx = parseInt(post.reviewIdx, 10);
 
         const accessToken = sessionStorage.getItem("accessToken");
@@ -188,7 +186,7 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
         console.log(idx, accessToken)
 
         if (checkUserRole()) {
-            axios.post(`${baseURL}${API}/liked/${idx}`,
+            axios.post(`${baseURL}${API}/liked/${idx}`, null,
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
@@ -197,7 +195,14 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                 .then((response) => {
                     console.log('리뷰 좋아요 누르기 성공');
                     showAlert("리뷰 좋아요 누르기 성공되었습니다.");
-                    closeModal()
+
+                    const nextPost = {
+                        ...post,
+                        "liked" : true,
+                        "reviewLike": (post.reviewLike + 1)
+                    };
+
+                    setPost(nextPost);
                 })
                 .catch((error) => {
                     console.error("리뷰 좋아요 누르기 실패", error);
@@ -231,7 +236,14 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                 .then((response) => {
                     console.log('리뷰 좋아요 취소 성공');
                     showAlert("리뷰 좋아요 취소 성공되었습니다.");
-                    closeModal()
+
+                    const nextPost = {
+                        ...post,
+                        "liked" : false,
+                        "reviewLike": (post.reviewLike - 1)
+                    };
+
+                    setPost(nextPost);
                 })
                 .catch((error) => {
                     console.error("리뷰 좋아요 취소 실패", error);
@@ -323,9 +335,23 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                                 />
                                 : <h2 className="modal_inner_title">
                                     <div>
-                                        <button onClick={likeAdd}>좋아요</button>
                                         {post.reviewTitle}
-                                        <button onClick={likeDelete}>좋아요 취소</button>
+                                    </div>
+                                    <div className="review_list_heart">
+                                        <p className="heartCnt">
+                                            {post.reviewLike}
+                                        </p>
+                                        {
+                                            post.liked
+                                            ?
+                                            <button onClick={likeDelete} className="heartButton liked">
+                                                <img src={heart} alt="heart"/>
+                                            </button>
+                                            :
+                                            <button onClick={likeAdd} className="heartButton unliked">
+                                                <img src={heart} alt="heart"/>
+                                            </button>
+                                        }
                                     </div>
                                     <hr/>
                                 </h2>

@@ -190,6 +190,44 @@
   }
 }
 
+.review_list_heart{
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+
+
+  .heartCnt{
+    font-family: "IBM Plex Sans KR", sans-serif;
+    margin-right: 10px;
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  .heartButton{
+    width: 40px;
+    height: 40px;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    border-radius: 100%;
+    border : none;
+
+    img {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  .liked {
+    background-color: var(--brand1_main);
+  }
+
+  .unliked {
+    background-color: var(--brand1_3);
+  }
+}
+
 .review_modal {
   position: fixed;
   top: 0;

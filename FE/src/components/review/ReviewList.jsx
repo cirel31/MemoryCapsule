@@ -30,17 +30,15 @@ const ReviewList = ({page, size}) => {
     }, [currentPage]); // currentPage 변경시에만 실행
 
     /**
-     * 1. 전체 공지사항 [get]
+     * 1. 전체 리뷰 [get]
      * http://localhost:8080/review/list?page=0&size=10
      * */
     const getReviewsData = (e) => {
         console.log("[getReviewsData]");
         const accessToken = sessionStorage.getItem("accessToken")
 
-
         // 리뷰 역순 정렬
-        // axios.get(`${baseURL}${API}/list?size=${itemsPerPage}&page=${currentPage}&sort=reviewIdx,desc`, {
-        axios.get(`${baseURL}${API}/list?size=${itemsPerPage}&page=${currentPage}`, {
+        axios.get(`${baseURL}${API}/list?size=${itemsPerPage}&page=${currentPage}&sort=reviewIdx,desc`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             },
@@ -53,31 +51,6 @@ const ReviewList = ({page, size}) => {
               console.error('게시글 전체 (size, page) fail : ', error);
             });
     };
-
-    /**
-     * 2. 공지사항 자세하게 보기 [get]
-     * http://localhost:8080/review/2
-     * */
-    const getReviewsDataDetail = () => {
-        console.log("[getReviewsDataDetail]", selectedPost);
-
-        const index = selectedPost.id;
-
-        console.log(index);
-        axios.get(`${baseURL}${API}/${index}`)
-            .then((response) => {
-                console.log('게시글 자세하게 (Detail) successful : ', response.data);
-                setSelectedPost(response.data);
-            })
-            .catch((error) => {
-                console.error('게시글 자세하게 (Detail) fail : ', error);
-            });
-    };
-
-    const openModal = (idx) => {
-        getReviewsDataDetail(idx);
-        setIsModal(true)
-    }
 
     function isPostGetSuccess() {
         try {
@@ -114,7 +87,6 @@ const ReviewList = ({page, size}) => {
                             <div
                                 className="mypage_review_part"
                                 key={post.reviewIdx}
-                                onClick={() => openModal(post.reviewIdx)}
                             >
                                 <p>{post.reviewTitle}</p>
                             </div>
