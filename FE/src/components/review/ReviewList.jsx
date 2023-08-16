@@ -54,7 +54,7 @@ const ReviewList = ({page, size}) => {
 
     function isPostGetSuccess() {
         try {
-            if(postList.length === 0) {
+            if(postList.content.length === 0) {
                 return true;
             }
             return false;

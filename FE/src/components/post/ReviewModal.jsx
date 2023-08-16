@@ -41,10 +41,10 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
     function checkUserRole() {
         console.log("[checkUserRole]");
         // 관리자 권한 확인
-        console.log(admin)
-        console.log(userId, post.isWriter)
+        console.log(selectedPost)
+        console.log(userId, post.writerIdx)
 
-        if (post.isWriter || admin) {
+        if (userId === post.writerIdx || admin) {
             console.log("글쓴이로 확인되었습니다.");
             return true;
         } else {
@@ -358,9 +358,7 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                             {/*몇 개의 글자를 사용했는지 표시*/}
                             {
                                 post.reviewContent &&
-                                post.reviewContent.length < 5000
-                                ?<div className="buttonList">{post.reviewContent.length}/5000</div>
-                                :<div className="buttonList text_styled_red">{post.reviewContent.length}/5000</div>
+                                <div className="buttonList">{post.reviewContent.length}/5000</div>
                             }
                             {
                                 state

@@ -22,6 +22,9 @@ const ProjectListPage = () => {
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const subURL = '/project/myproject/current'
 
+  const date = new Date;
+  const [curPeriod, setCurPeriod] = useState(null);
+  const [fullPeriod, setFullPeriod] = useState(null);
   const [isHovered, setIsHovered] = useState(null)
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModal, setIsModal] = useState(false)
@@ -68,7 +71,16 @@ const ProjectListPage = () => {
     );
     setFilteredProjects(results);
   }, [searchTerm, projects])
-  
+
+  useEffect(() => {
+    console.log(selectedPost);
+
+    if (selectedPost && selectedPost.started && selectedPost.ended) {
+      setFullPeriod(new Date(selectedPost.ended).getTime() - new Date(selectedPost.started).getTime());
+      setCurPeriod(new Date(selectedPost.ended).getTime() - date);
+    }
+  }, [selectedPost])
+
   const handleMouseEnter = (id) => {
     setIsHovered(id)
   };
@@ -187,12 +199,60 @@ const ProjectListPage = () => {
                 <p>현재까지 등록된 추억 : {selectedPost.artielcNum}</p>
                 <h3>
                   <hr/>
-                  내용 : {selectedPost.content}
+                  {selectedPost.content}
                   <hr/>
                   시작 :  {selectedPost.started.slice(2,4)}년 {selectedPost.started.slice(5, 7)}월 {selectedPost.started.slice(8, 10)}일
                   <hr/>
                   종료 :  {selectedPost.ended.slice(2,4)}년 {selectedPost.ended.slice(5, 7)}월 {selectedPost.ended.slice(8, 10)}일
                 </h3>
+                <div className="project_shorts_info_percentage">
+                  <div className="project_shorts_info_percentage_text">
+                    {
+                      curPeriod / fullPeriod < 0
+                          ?<p>100%</p>
+                          :
+                          <p>{
+                            curPeriod / fullPeriod >= 1
+                                ?0
+                                :curPeriod && fullPeriod && ((1 - curPeriod / fullPeriod) * 100).toFixed(1)
+                          }%</p>
+                    }
+                  </div>
+                  <svg className="project_shorts_info_percentage_graph">
+                    <circle
+                        cx="50%"
+                        cy="50%"
+                        r="50"
+                        fill="none"
+                        stroke="#E7E1DBFF"
+                        strokeWidth="12"
+                    />
+                    {
+                      curPeriod / fullPeriod < 1 &&
+                      <circle
+                          cx="50%"
+                          cy="50%"
+                          r="50"
+                          fill="none"
+                          stroke="#FF8CA1FF"
+                          strokeWidth="12"
+                          strokeDasharray={`${2 * Math.PI * 50 * (1 - curPeriod / fullPeriod)} ${2 * Math.PI * 50 * (curPeriod / fullPeriod)}`}
+                          strokeDashoffset={2 * Math.PI * 50 * 0.25}
+                      />
+                    }
+                  </svg>
+                </div>
+                <div className="project_order">
+                  <div className="project_users_layout">
+                    <div className="project_content_userImgs">
+                      {
+                        selectedPost.userList && selectedPost.userList.map((user) => (
+                            <img src={user.imgUrl} alt={user.nickname} className="detail_project_content_userImg"/>
+                        ))
+                      }
+                    </div>
+                  </div>
+                </div>
               </div>
               <Link to={`/project/${selectedPost.id}`} className="go_detail">이 캡슐에 추억쌓기</Link>
             </div>
