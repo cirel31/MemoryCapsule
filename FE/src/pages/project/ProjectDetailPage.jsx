@@ -91,7 +91,6 @@ const ProjectDetailPage = () => {
         }
     )
         .then((response) => {
-          console.log(response.data)
           setMyArticles(response.data.reverse());
         })
         .catch(() => {

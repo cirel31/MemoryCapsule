@@ -12,10 +12,10 @@ const InviteProject = () => {
   const [inviteLists, setInviteLists] = useState([])
   
   const user = useSelector((state) => state.userState.user) || null
+  const accessToken = sessionStorage.getItem("accessToken")
   
   useEffect(() => {
     const searchInvite = async () => {
-      // const accessToken = sessionStorage.getItem("accessToken")
       try {
         await axios.get(`${baseURL}${inviteURL}`, {
           headers: {
@@ -27,12 +27,13 @@ const InviteProject = () => {
             setInviteLists(response.data)
           })
           .catch(() => {
+          
           })
       } catch (error) {
       }
     }
     searchInvite()
-  }, [])
+  }, [accessToken])
   
   const acceptInvite = ({userId, inviteId}) => {
     const formData = new FormData()
@@ -104,9 +105,13 @@ const InviteProject = () => {
      <>
        <div className="invite_body">
          <div>
+           {inviteLists.length === 0 && (
+             <p>초대가 없어요....</p>
+           )
+           }
            {inviteLists.map((content, idx) => (
-             <div key={idx + 1} onClick={() => showAlert(content)} className="letters">
-
+             <div key={idx+1} onClick={() => showAlert(content)} className="letters">
+                asdasdasdasd
              </div>
            ))}
          </div>

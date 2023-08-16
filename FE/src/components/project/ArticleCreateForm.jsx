@@ -101,6 +101,8 @@ const ArticleCreateForm = () => {
     URL.revokeObjectURL(photos[idx])
     const newPhotos = photos.filter((photo, index) => index !== idx)
     setPhotos(newPhotos)
+    const newPhotoData = photoFiles.filter((photo, index) => index !== idx)
+    setPhotoFiles(newPhotoData)
     const imageInput = document.getElementById('image');
     if (imageInput) imageInput.value = '';
     setCurrentImageIndex(0)
