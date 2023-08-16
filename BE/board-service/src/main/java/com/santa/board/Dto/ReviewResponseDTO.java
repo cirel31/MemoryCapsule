@@ -24,7 +24,7 @@ public class ReviewResponseDTO {
     private boolean isLiked;
     private boolean isWriter;
 
-    public ReviewResponseDTO(Long reviewIdx, String reviewTitle, String reviewContent, String reviewImgUrl, int reviewHit, int reviewLike, Date reviewCreated, String writerNickname, boolean isLiked) {
+    public ReviewResponseDTO(Long reviewIdx, String reviewTitle, String reviewContent, String reviewImgUrl, int reviewHit, int reviewLike, Date reviewCreated, String writerNickname, boolean isLiked, boolean isWriter) {
         this.reviewIdx = reviewIdx;
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
@@ -34,6 +34,7 @@ public class ReviewResponseDTO {
         this.reviewCreated = reviewCreated;
         this.writerNickname = writerNickname;
         this.isLiked = isLiked;
+        this.isWriter = isWriter;
     }
 
     public ReviewResponseDTO() {
