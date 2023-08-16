@@ -17,9 +17,9 @@
     top: 17%;
     left: 16%;
     height: 67%;
-    width: 27.5vw;
+    width: 28vw;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
     grid-template-rows: 85% 15%;
     justify-items: center;
     text-align: center;
@@ -29,7 +29,7 @@
     .login_profile_form {
       margin: 10% 0 0 0;
       height: 90%;
-      width: 85%;
+      width: 95%;
       background-color: var(--brand3_main);
       font-family: "Inconsolata", sans-serif;
       font-weight: 600;
@@ -60,7 +60,7 @@
       }
 
       & > h1 {
-        width: 90%;
+        width: 20vw;
         font-family: "IBM Plex Sans KR", sans-serif;
         color: var(--white);
         font-weight: 700;

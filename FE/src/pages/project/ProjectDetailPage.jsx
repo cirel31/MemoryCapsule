@@ -61,7 +61,7 @@ const ProjectDetailPage = () => {
   const [myArticles, setMyArticles] = useState([])
   const [imgNum, setImgNum] = useState([])
   const [endCondition, setEndCondition] = useState(false)
-  
+  const [dateCheck, setDateCheck] = useState(true)
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${projectId}`
       , {
@@ -131,18 +131,15 @@ const ProjectDetailPage = () => {
   }
   const finishProject = (e) => {
     e.preventDefault()
-    console.log("종료조건 만족함!!!")
     axios.get(`${baseURL}${subURL}/finish/${projectId}`, {
       headers: {
         "userId": user.userId
       }
     })
       .then((response) => {
-        console.log(response)
         window.location.href ='/project'
       })
-      .catch((error) => {
-        console.log(error)
+      .catch(() => {
       })
   }
   
@@ -323,13 +320,15 @@ const ProjectDetailPage = () => {
                 </div>
             ))}
           </div>
-          <div className="detail_project_write">
-            <Link to={`/project/${projectId}/article`}>
-              <button className="detail_project_write_btn">
-                <img src={write} alt="write" className="detail_project_write_btn_img"/>
-              </button>
-            </Link>
-          </div>
+          {!endCondition &&
+            <div className="detail_project_write">
+              <Link to={`/project/${projectId}/article`}>
+                <button className="detail_project_write_btn">
+                  <img src={write} alt="write" className="detail_project_write_btn_img"/>
+                </button>
+              </Link>
+            </div>
+          }
         </div>
       </div>
     </div>

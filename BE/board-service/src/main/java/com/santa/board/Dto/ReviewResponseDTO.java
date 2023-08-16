@@ -22,8 +22,9 @@ public class ReviewResponseDTO {
     private Date reviewCreated;
     private String writerNickname;
     private boolean isLiked;
+    private boolean isWriter;
 
-    public ReviewResponseDTO(Long reviewIdx, String reviewTitle, String reviewContent, String reviewImgUrl, int reviewHit, int reviewLike, Date reviewCreated, String writerNickname, boolean isLiked) {
+    public ReviewResponseDTO(Long reviewIdx, String reviewTitle, String reviewContent, String reviewImgUrl, int reviewHit, int reviewLike, Date reviewCreated, String writerNickname, boolean isLiked, boolean isWriter) {
         this.reviewIdx = reviewIdx;
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
@@ -33,6 +34,7 @@ public class ReviewResponseDTO {
         this.reviewCreated = reviewCreated;
         this.writerNickname = writerNickname;
         this.isLiked = isLiked;
+        this.isWriter = isWriter;
     }
 
     public ReviewResponseDTO() {
@@ -52,7 +54,7 @@ public class ReviewResponseDTO {
                 .build()).stream().collect(Collectors.toList());
     }
 
-    public ReviewResponseDTO toDto(Review review, boolean isLiked) {
+    public ReviewResponseDTO toDto(Review review, boolean isLiked, boolean isWriter) {
         return ReviewResponseDTO.builder()
                 .reviewIdx(review.getReviewIdx())
                 .reviewTitle(review.getReviewTitle())
@@ -63,6 +65,7 @@ public class ReviewResponseDTO {
                 .reviewCreated(review.getReviewCreated())
                 .writerNickname(review.getUser().getUserName())
                 .isLiked(isLiked)
+                .isWriter(isWriter)
                 .build();
     }
 }

@@ -472,3 +472,82 @@
   }
 }
 
+.invite_body {
+  width: 800px;
+  height: 400px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  & > div {
+    width: 700px;
+    height: 400px;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(auto-fill, auto);
+    grid-auto-flow: column;
+    overflow-x: scroll;
+    align-items: center;
+    align-content: center;
+    padding: 0 50px 0 50px;
+
+
+    &::-webkit-scrollbar {
+      height: 10px;
+      cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      height: 5px;
+      width: 5px;
+      background: var(--brand3_4);
+      border-radius: 4rem;
+      cursor: pointer;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--backGround_main);  /*스크롤바 뒷 배경 색상*/
+      border-radius: 4rem;
+    }
+
+    & > .letters:not(:first-child){
+      width: 350px;
+      height: 200px;
+      background-image: url("../assets/images/box/ticket.svg");
+      background-size: cover;
+      background-position: center;
+      display: grid;
+      margin: 0 -50px 0 0;
+      justify-items: center;
+      justify-content: center;
+      align-items: end;
+      filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+      border-radius: 0.5rem;
+      rotate: 8deg;
+      cursor: pointer;
+      &:hover {
+        width: 400px;
+        height: 230px;
+        z-index: 8;
+      }
+    }
+
+
+
+    & > div > button {
+      border: none;
+      background: none;
+      position: absolute;
+      top: 38.5%;
+
+      & > .cill {
+
+        width: 70px;
+        top: 0;
+      }
+    }
+
+  }
+
+}
