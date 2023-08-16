@@ -3,6 +3,7 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import kokona from "../../assets/images/kokona.png"
+import "../../styles/ProjectPresent.scss"
 
 const SendPresentPage = () => {
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
@@ -39,14 +40,11 @@ const SendPresentPage = () => {
   
   return (
     <>
-      <div>
-        선물 제작 진행 중
-      </div>
-      <div>
+      <div className="present_body">
         {datas.map((article, index) => (
-          <div key={index}>
+          <div key={index} className={`present_contents_${index}`}>
             <p>{article.content}</p>
-            
+
             <img
               src={article.images[0]}
               onError={(e) => {e.target.src = kokona}}

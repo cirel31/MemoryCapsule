@@ -132,7 +132,6 @@ const ProjectForm = () => {
             }
           })
             .then((response) => {
-              console.log(response.data)
               dispatch(addFriends(response.data))
             })
             .catch(() => {
@@ -148,7 +147,7 @@ const ProjectForm = () => {
     console.log(id)
     dispatch(removeFriends(id))
   }
-  
+
   return (
     <div className="project_create_forms_body">
       <div>
@@ -207,6 +206,24 @@ const ProjectForm = () => {
                 <Modal
                   isOpen={showStartDateModal}
                   onRequestClose={() => setShowStartDateModal(false)}
+                  style={{
+                    content: {
+                      width: '450px',
+                      height: '450px',
+                      margin: 'auto',
+                      top: '0',
+                      left: '0',
+                      right: '0',
+                      bottom: '0',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: '30px',
+                    },
+                    overlay: {
+                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    },
+                  }}
                 >
                   <Calendar
                     value={startDate}
@@ -233,6 +250,24 @@ const ProjectForm = () => {
                 <Modal
                   isOpen={showEndDateModal}
                   onRequestClose={() => setShowEndDateModal(false)}
+                  style={{
+                    content: {
+                      width: '450px',
+                      height: '450px',
+                      margin: 'auto',
+                      top: '0',
+                      left: '0',
+                      right: '0',
+                      bottom: '0',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: '30px',
+                    },
+                    overlay: {
+                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    },
+                  }}
                 >
                   <Calendar
                     value={endDate}

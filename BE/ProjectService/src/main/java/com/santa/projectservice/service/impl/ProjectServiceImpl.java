@@ -1,6 +1,8 @@
 package com.santa.projectservice.service.impl;
 
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.santa.projectservice.exception.User.UserNotFoundException;
 import com.santa.projectservice.model.dto.ProjectDto;
 import com.santa.projectservice.model.dto.ProjectState;
 import com.santa.projectservice.model.dto.RegisterDto;
@@ -41,7 +43,6 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserRepository userRepository;
     private final RegisterRepository registerRepository;
     private final ProjectRepository projectRepository;
-    private final ModelMapper mapper;
     private final ArticleRepository articleRepository;
     private final FileUploadService fileUploadService;
     private final InviteServiceImpl inviteService;
@@ -61,8 +62,6 @@ public class ProjectServiceImpl implements ProjectService {
         this.inviteService = inviteService;
         this.queryFactory = queryFactory;
         this.utilQuerys = utilQuerys;
-
-        this.mapper = new ModelMapper();
         this.registerRepository = registerRepository;
         this.projectRepository = projectRepository;
         PropertyMap<Register, RegisterDto> replyMapping = new PropertyMap<Register, RegisterDto>() {
@@ -72,7 +71,6 @@ public class ProjectServiceImpl implements ProjectService {
                 map().setUserId(source.getUser().getId());
             }
         };
-        this.mapper.addMappings(replyMapping);
         this.userRepository = userRepository;
     }
 
@@ -80,7 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(rollbackOn =  RegisterMakeException.class)
     public Long createProject(ProjectDto projectDto, List<Long> userList, Long Owner, MultipartFile image) throws RegisterMakeException, ProjectNotFullfillException, IOException {
         // 이미지를 올린 다음에
-        String url = fileUploadService.upload(image);
+        String url = Optional.of(fileUploadService.upload(image)).orElseThrow(() -> new AmazonS3Exception("사진이 안올라갔음"));
         // 프로젝트를  만들고
         Project project = null;
         try {
@@ -95,31 +93,13 @@ public class ProjectServiceImpl implements ProjectService {
             throw new ProjectNotFullfillException("Title 혹은 Content가 비었습니다. ", e, e.getPropertyName());
         }
         // 내가 주인인 레지스터 만들고
-        try{
-            registerRepository.save(Register.builder()
-                    .user(userRepository.getReferenceById(Owner))
-                    .project(project)
-                    .type(true)
-                    .confirm(true)
-                    .alarm(false)
-                    .build());
-            final Project regiProject = project;
-            // 사용자에 대해서 프로젝트 초대를 만듭니다
-            Optional<User> user = userRepository.findById(Owner);
-            if(userList != null) {
-                userList.forEach(id -> {
-                    inviteService.createInvite(Invite.builder()
-                            .userId(id)
-                            .projectId(regiProject.getId())
-                            .inviter(user.get().getNickname())
-                            .projectTitle(regiProject.getTitle())
-                            .build()
-                    );
-                });
-            }
-        } catch (DataAccessException e){
-            throw new RegisterMakeException("프로젝트 유저들을 초기화하는데 문제가 발생했습니다", e);
-        }
+        // 초대 생성
+        final Project regiProject = project;
+        User user = userRepository.findById(Owner).orElseThrow(() -> new UserNotFoundException("유저가 안찾아지네요"));
+        registerRepository.save(Register.OwnerRegister(user, project));
+        Optional.ofNullable(userList).ifPresent(
+                list -> list.forEach(id -> inviteService.createInvite(user, regiProject, id))
+        );
         return project.getId();
     }
     @Override

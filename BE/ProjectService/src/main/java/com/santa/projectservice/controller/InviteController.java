@@ -16,27 +16,29 @@ import java.util.List;
 public class InviteController {
     InviteServiceImpl inviteService;
     ProjectService projectService;
+
     public InviteController(InviteServiceImpl inviteService, ProjectService projectService) {
         this.inviteService = inviteService;
         this.projectService = projectService;
     }
 
     @PostMapping("/accept")
-    public ResponseEntity<String> Accept(@RequestHeader Long userId,@RequestParam String inviteId){
+    public ResponseEntity<String> Accept(@RequestHeader Long userId, @RequestParam String inviteId) {
         Invite invite = inviteService.getInviteById(inviteId);
         log.info("invite info : userId : {}, invite :  {}, project :  {}", userId, invite.toString(), invite.getProjectId());
         projectService.createRegister(userId, invite.getProjectId());
         inviteService.deleteInviteById(inviteId);
         return ResponseEntity.status(HttpStatus.OK).body("수락 성공");
     }
+
     @PostMapping("/reject")
-    public ResponseEntity<String> Reject(@RequestHeader Long userId, @RequestParam String inviteId){
+    public ResponseEntity<String> Reject(@RequestHeader Long userId, @RequestParam String inviteId) {
         inviteService.deleteInviteById(inviteId);
         return ResponseEntity.status(HttpStatus.OK).body("삭제 성공");
     }
 
     @GetMapping()
-    public ResponseEntity<List<Invite>> InviteList(@RequestHeader Long userId){
+    public ResponseEntity<List<Invite>> InviteList(@RequestHeader Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(inviteService.getInvitesByUserId(userId));
     }
 
