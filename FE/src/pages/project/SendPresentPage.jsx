@@ -18,6 +18,8 @@ const SendPresentPage = () => {
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${giftUrl.giftUrl}`)
       .then((response) => {
+        console.log(`${baseURL}${subURL}/${giftUrl.giftUrl}`)
+        console.log(response)
         setDatas(response.data.articleVos)
       })
       .catch(() => {
@@ -30,7 +32,7 @@ const SendPresentPage = () => {
     }
     Kakao.Share.createScrapButton({
       container: '#kakao-share',
-      requestUrl: `https://i9a608.p.ssafy.io/project/present/${giftUrl.giftUrl}`,
+      requestUrl: `https://memorycapsule.site/project/present/${giftUrl.giftUrl}`,
     })
   }, []);
   
