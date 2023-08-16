@@ -2,6 +2,8 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 import {useSelector} from "react-redux";
+import letter from "../../assets/images/box/ticket.svg"
+import cilling from "../../assets/images/box/ciling.svg"
 
 const InviteProject = () => {
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
@@ -57,6 +59,8 @@ const InviteProject = () => {
       axios.post(`${baseURL}${inviteURL}/reject`, formData, {
         headers: {
           "userId": `${userId}`,
+
+
         }
       })
         .then((res) => {
@@ -97,19 +101,18 @@ const InviteProject = () => {
   }
   
   return (
-    <>
-      <div>
-        <h1>초대받은 프로젝트</h1>
-      </div>
-      <div>
-        {inviteLists.map((content, idx) => (
-          <div key={idx + 1}>
-            <h2>초 대 장</h2>
-            <button onClick={() => showAlert(content)}>초대 확인하기</button>
-          </div>
-        ))}
-      </div>
-    </>
+     <>
+       <div className="invite_body">
+         <div>
+           {inviteLists.map((content, idx) => (
+             <div key={idx + 1} onClick={() => showAlert(content)} className="letters">
+
+             </div>
+           ))}
+         </div>
+
+       </div>
+     </>
   )
 }
 
