@@ -1,30 +1,56 @@
-import Modal from "react-modal";
-import React from "react";
-import "../../styles/AnnounceStyle.scss"
-import go_back from "../../assets/images/frield/go_back.svg";
-import AnnounceList from "../../components/announce/AnnounceList";
+import React, { useState } from "react";
+import {useSelector} from "react-redux";
+import ReviewListPage from "./ReviewListPage";
+import ReviewModal from "../../components/post/ReviewModal";
 
 const ReviewPage = () => {
-    // 뒤로가기
-    const handleBack = () => {
-        window.history.back()
+    const user = useSelector((state) => state.userState.user)
+
+    const [isModal, setIsModal] = useState(false)
+    const [post, setPost] = useState(
+        /** Notice Data Format*/
+        {
+            noticeIdx : 0,
+            noticeHit : 0,
+            noticeTitle : "",
+            noticeContent : "",
+            noticeImgurl : "",
+            noticeCreated : "",
+        }
+    )
+
+    const openModal = () => {
+        setIsModal(true)
     }
 
-  return (
-      <>
-          <div className="announce_top"/>
-          <div className="announce_body">
-              <div className="announce_top_content">
-                  <div className="announce_title">공지사항</div>
-                  <div className="announce_back">
-                      <div onClick={handleBack} className="announce_back_button">
-                          <img src={go_back} alt="뒤로가기이미지" className="announce_back_button_img"/>
-                      </div>
-                  </div>
-              </div>
-              <AnnounceList page={0} size={10}/>
-          </div>
-      </>
-  )
+    return (
+        <div className="big_body">
+            <div className="content_body">
+                <ReviewListPage/>
+                {
+                    <div className="create_post">
+                        <button
+                            className="create_post_button"
+                            key={post.id}
+                            onClick={() => openModal(post.title)}
+                        >
+                            글작성
+                        </button>
+                    </div>
+                }
+                <ReviewModal
+                    selectedPost={{
+                        reviewIdx : 0,
+                        reviewTitle : "",
+                        reviewContent : "",
+                    }}
+                    setSelectedPost={setPost}
+                    modalIsOpen={isModal}
+                    setModalIsOpen={setIsModal}
+                />
+            </div>
+        </div>
+    )
 }
+
 export default ReviewPage;

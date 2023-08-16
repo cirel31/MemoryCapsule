@@ -59,6 +59,11 @@
             height: 40px;
             border-radius: 100%;
             background-color: var(--backGround_0);
+
+            &:hover {
+              background-color: var(--backGround_1);
+            }
+
             .friend_back_button_img {
               width: 20px;
               height: 20px;

@@ -53,6 +53,9 @@ const ProjectDetailPage = () => {
       "stamp": stamp_wow,
     },
   ]
+  const date = new Date;
+  const [curPeriod, setCurPeriod] = useState(null);
+  const [fullPeriod, setFullPeriod] = useState(null);
   const { projectId } = useParams()
   const [project, setProject] = useState([])
   const [myArticles, setMyArticles] = useState([])
@@ -88,11 +91,19 @@ const ProjectDetailPage = () => {
         }
     )
         .then((response) => {
-          setMyArticles(response.data);
+          console.log(response.data)
+          setMyArticles(response.data.reverse());
         })
         .catch(() => {
         });
   }, []);
+
+  useEffect(() => {
+    if (project.started && project.ended) {
+      setFullPeriod(new Date(project.ended).getTime() - new Date(project.started).getTime());
+      setCurPeriod(new Date(project.ended).getTime() - date);
+    }
+  }, [project])
 
   // 프로젝트 인원 수 따라서 싱글 프로젝트인지 구분하기 위한 함수
   function isSoloProject() {

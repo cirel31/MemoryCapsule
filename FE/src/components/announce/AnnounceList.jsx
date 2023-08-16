@@ -1,8 +1,8 @@
 import Modal from "react-modal";
 import React, {useEffect, useState} from "react";
 import "../../styles/AnnounceStyle.scss"
-import PostModal from "../post/PostModal";
-import Pagination from "../common/Pagination";
+import NoticeModal from "../post/NoticeModal";
+import NoticePagination from "./NoticePagination";
 import axios from "axios";
 
 const AnnounceUserViewPage = ({page, size}) => {
@@ -50,13 +50,10 @@ const AnnounceUserViewPage = ({page, size}) => {
      * 2. 공지사항 자세하게 보기 [get]
      * http://localhost:8080/notice/2
      * */
-    const getNoticesDataDetail = (e) => {
-        console.log("[getNoticesDataDetail]");
+    const getNoticesDataDetail = () => {
+        console.log("[getNoticesDataDetail]", selectedPost);
 
-        const index = e;
-
-        // 실제 배포는 8000
-        // 테스트 및 개발 서버는 7000
+        const index = selectedPost.id;
 
         console.log(index);
         axios.get(`${baseURL}${API}/${index}`)
@@ -115,7 +112,7 @@ const AnnounceUserViewPage = ({page, size}) => {
                             </div>
                         ))
                         :
-                        <Pagination
+                        <NoticePagination
                             postList={postList}
                             setPostList={setPostList}
                             currentPage={currentPage}
@@ -126,7 +123,7 @@ const AnnounceUserViewPage = ({page, size}) => {
                 }
             </div>
             {/*모달 창*/}
-            <PostModal
+            <NoticeModal
                 selectedPost={selectedPost}
                 setSelectedPost={setSelectedPost}
                 modalIsOpen={isModal}
