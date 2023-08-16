@@ -102,7 +102,7 @@
       height: 30vw;
       background-color: var(--white);
       display: grid;
-
+      border-radius: 1rem;
       justify-items: center;
       justify-content: center;
 
@@ -148,6 +148,7 @@
     }
     .project_shortcut{
       margin: 0 5% 0 5%;
+      border-radius: 1rem;
       width: 20vw;
       height: 30vw;
       background-color: var(--white);
@@ -179,6 +180,7 @@
       }
     }
     .project_shortcut_hovered{
+      border-radius: 1rem;
       width: 22vw;
       height: 32vw;
       background-color: var(--white);

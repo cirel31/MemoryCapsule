@@ -76,9 +76,12 @@ const CurrentProjectsPage = () => {
   return (
     <div>
       {/* 모양 때문에 일단 정렬만 해둠 */}
-      <div style={{display: "flex", alignItems:"center"}}>
-        <button onClick={startBTN}>◀◀</button>
-        <button onClick={leftBTN}>◀</button>
+      <div className="wip_project_card">
+        {/*<div>*/}
+        {/*  <button onClick={startBTN}>◀◀</button>*/}
+        {/*  <button onClick={leftBTN}>◀</button>*/}
+        {/*</div>*/}
+
         <div>
           {projects.length === 0 ? (
             <p>
@@ -86,33 +89,32 @@ const CurrentProjectsPage = () => {
             </p>
           ) : (
             <div style={{display:'flex', alignItems:'center'}}>
-              {currentPosts.map((project) => (
+              {projects.map((project) => (
                 
                 <Link
                   to={`/project/${project.id}`}
                   key={project.id}
+                  className="capsule_cards"
+                  style={{
+
+                    transform: `rotateX(${project.rotationX}deg) rotateY(${project.rotationY}deg)`,
+                    transition: 'transform 0.1s'
+                  }}
                 >
                   <div
                     onMouseEnter={() => handleMouseEnter(project.id)}
                     onMouseLeave={() => handleMouseLeave(project)}
                     onMouseMove={(event) => handleMouseMove(project.id, event)}
-                    style={{
-                        width: '200px',
-                        height: '250px',
-                        margin: '1rem',
-                        background: 'lightblue',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        perspective: '1000px',
-                        transform: `rotateX(${project.rotationX}deg) rotateY(${project.rotationY}deg)`,
-                        transition: 'transform 0.1s'
-                      }}
+
+
                   >
-                    <div style={{width:'200px', height:"300px"}}>
-                      <p>{project.title}</p>
-                      <img src={project.imgUrl} alt="아로나" style={{width:'200px'}}/>
-                      <p>기록한 추억 : {project.artielcNum || 0}</p>
+                    <div className="card_contents">
+                      <div className="card_title"><p>{project.title}</p></div>
+                      <img src={project.imgUrl} alt="아로나"/>
+                      <div className="card_contents_info">
+                        <p>기록한 추억 </p>
+                        <h2> {project.artielcNum || 0}</h2>
+                      </div>
                     </div>
                     
                   </div>
@@ -122,16 +124,12 @@ const CurrentProjectsPage = () => {
             </div>
           )}
         </div>
-        <button onClick={rightBTN}>▶</button>
-        <button onClick={endBTN}>▶▶</button>
+        {/*<div>*/}
+        {/*  <button onClick={rightBTN}>▶</button>*/}
+        {/*  <button onClick={endBTN}>▶▶</button>*/}
+        {/*</div>*/}
       </div>
-      <div>
-        <Link to='/project/create'>
-          <button>
-            새로운 추억 생성
-          </button>
-        </Link>
-      </div>
+
     </div>
   );
 }
