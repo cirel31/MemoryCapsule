@@ -21,19 +21,16 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
      * http://localhost:8080/review/2
      * */
     const getReviewsDataDetail = (idx) => {
-        console.log("[getReviewsDataDetail]", selectedPost, idx);
-
         const index = parseInt(idx);
         const accessToken = sessionStorage.getItem("accessToken")
 
-        console.log(index);
         axios.get(`${baseURL}${API}/${index}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             },
         })
             .then((response) => {
-                console.log('게시글 자세하게 (Detail) successful : ', response.data);
+                console.log('게시글 자세하게 (Detail)');
                 setSelectedPost(response.data);
                 setIsModal(true)
             })
@@ -45,13 +42,10 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
     const openModal = (id) => {
         // const index = postList.findIndex((post => post.id === id))
         getReviewsDataDetail(id);
-        console.log("selectedPost : ", selectedPost);
         setIsModal(true);
     }
 
     const handlePageChange = (pageNumber) => {
-        console.log("currentPage:", currentPage);
-        console.log("pageNumber:", pageNumber);
         setCurrentPage(pageNumber);
     };
 
@@ -69,8 +63,6 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
             indexOfMinPage = (totalPages - (range*2+1) >= 0 ? totalPages - (range*2+1) : 0);
         }
 
-        console.log(indexOfMinPage, indexOfMaxPage);
-
         // 보여줄 페이지 리스트
         const showIndexList = [];
 
@@ -79,7 +71,6 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
             showIndexList.push(i);
         }
 
-        console.log("showIndexList : ", totalPages);
         return showIndexList;
     }
 

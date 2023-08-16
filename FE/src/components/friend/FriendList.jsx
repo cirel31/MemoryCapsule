@@ -11,7 +11,9 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
     const API = '/friend';
 
+    const [toggle, setToggle] = useState(false);
     const [friends, setFriends] = useState([]);
+    const [newFriends, setNewFriends] = useState([]);
 
     const [form, setForm] = useState({
         id: "",
@@ -32,6 +34,21 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     useEffect(() => {
         getDetailedFriendList();
     }, [select]);
+
+    useEffect(() => {
+        setNewFriends(rowFriends.filter((curFriend) => {
+            return curFriend.status !== 1;
+        }));
+    }, [rowFriends])
+
+    useEffect(() => {
+        console.log(toggle)
+        if (toggle) {
+            setFriends(newFriends)
+        } else {
+            setFriends(rowFriends)
+        }
+    }, [toggle]);
 
     /**
      5. 친구 상세목록 불러오기
@@ -85,6 +102,14 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
         setForm(updatedForm);
     };
 
+    const toggleState = () => {
+        if (toggle) {
+            setToggle(false)
+        } else {
+            setToggle(true)
+        }
+    }
+
     // searchPage로 이동
     const searchPage = () => {
         setSelectPage(true);
@@ -116,7 +141,7 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                     </button>
                 </div>
             </div>
-            <input type="checkbox" id="toggle" hidden/>
+            <input type="checkbox" id="toggle" onChange={() => toggleState()} hidden/>
             <label htmlFor="toggle" className="toggleSwitch">
                 <span className="toggleButton"></span>
             </label>

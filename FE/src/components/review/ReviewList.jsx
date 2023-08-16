@@ -20,12 +20,10 @@ const ReviewList = ({page, size}) => {
     const [postList, setPostList] = useState(null)
 
     useEffect(() => {
-        console.log('[reviewList] 페이지 로딩 시 한 번만 실행되는 함수');
         getReviewsData(page, size);
     }, []);
 
     useEffect(() => {
-        console.log('[reviewUserViewPage]');
         getReviewsData(page, size);
     }, [currentPage]); // currentPage 변경시에만 실행
 
@@ -34,7 +32,6 @@ const ReviewList = ({page, size}) => {
      * http://localhost:8080/review/list?page=0&size=10
      * */
     const getReviewsData = (e) => {
-        console.log("[getReviewsData]");
         const accessToken = sessionStorage.getItem("accessToken")
 
         // 리뷰 역순 정렬
@@ -44,7 +41,7 @@ const ReviewList = ({page, size}) => {
             },
         })
             .then((response) => {
-              console.log('게시글 선택 (size, page) successful : ', response.data);
+              console.log('게시글 선택 (size, page)');
               setPostList(response.data);
             })
             .catch((error) => {
@@ -64,7 +61,6 @@ const ReviewList = ({page, size}) => {
     }
 
     const isUpdateReview = (updatedReview) => {
-        console.log("[isUpdateReview]");
         getReviewsData();
         isPostGetSuccess();
     }
