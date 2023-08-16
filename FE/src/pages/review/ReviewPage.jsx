@@ -5,6 +5,7 @@ import ReviewModal from "../../components/post/ReviewModal";
 
 const ReviewPage = () => {
     const user = useSelector((state) => state.userState.user)
+    const userId = user?.userId || false
 
     const [isModal, setIsModal] = useState(false)
     const [post, setPost] = useState(
@@ -41,8 +42,9 @@ const ReviewPage = () => {
                 <ReviewModal
                     selectedPost={{
                         reviewIdx : 0,
-                        reviewTitle : "",
-                        reviewContent : "",
+                        reviewTitle : " ",
+                        reviewContent : " ",
+                        writerIdx: userId,
                     }}
                     setSelectedPost={setPost}
                     modalIsOpen={isModal}

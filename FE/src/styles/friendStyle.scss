@@ -135,7 +135,6 @@
             justify-content: space-between;
             align-items: center;
 
-
             .search_friends_button{
               display: grid;
               justify-items: center;
@@ -246,6 +245,42 @@
   }
 }
 
+
+.toggleSwitch {
+  width: 60px;
+  height: 30px;
+  margin-left: 10px;
+  display: block;
+  position: relative;
+  border-radius: 30px;
+  background-color: #fff;
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+  cursor: pointer;
+}
+
+.toggleSwitch .toggleButton {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  border-radius: 100%;
+  background: var(--brand3_2);
+}
+
+#toggle:checked ~ .toggleSwitch {
+  background: var(--brand3_main);
+}
+
+#toggle:checked ~ .toggleSwitch .toggleButton {
+  left: calc(100% - 30px);
+  background: #fff;
+}
+
+.toggleSwitch, .toggleButton {
+  transition: all 0.2s ease-in;
+}
 
 
 .friendList {

@@ -13,7 +13,7 @@ import {useSelector} from "react-redux";
 import "../../styles/ProjectDetailSytle.scss";
 import go_back from "../../assets/images/frield/go_back.svg";
 import write from "../../assets/images/projectdetail/write.svg";
-import discard from "../../assets/images/projectdetail/discard.svg";
+import projectExport from "../../assets/images/projectdetail/export.svg";
 import before from "../../assets/images/projectdetail/before.svg";
 import after from "../../assets/images/projectdetail/after.svg";
 import heart from "../../assets/images/projectdetail/heart.svg";
@@ -176,11 +176,17 @@ const ProjectDetailPage = () => {
               }
             </div>
             <div className="detail_project_shorts_info_percentage">
-              <div className="detail_project_shorts_info_percentage_text">                {
-                curPeriod / fullPeriod < 0
+              <div className="detail_project_shorts_info_percentage_text">
+                {
+                  curPeriod / fullPeriod < 0
                     ?<p>100%</p>
-                    :<p>{curPeriod && fullPeriod && ((1 - curPeriod / fullPeriod) * 100).toFixed(1)}%</p>
-              }
+                    :
+                    <p>{
+                      curPeriod / fullPeriod >= 1
+                      ?0
+                      :curPeriod && fullPeriod && ((1 - curPeriod / fullPeriod) * 100).toFixed(1)
+                    }%</p>
+                }
               </div>
               <svg className="detail_project_shorts_info_percentage_graph">
                 <circle
@@ -191,16 +197,19 @@ const ProjectDetailPage = () => {
                     stroke="#E7E1DBFF"
                     strokeWidth="8"
                 />
-                <circle
-                    cx="50%"
-                    cy="50%"
-                    r="30"
-                    fill="none"
-                    stroke="#FF8CA1FF"
-                    strokeWidth="8"
-                    strokeDasharray={`${2 * Math.PI * 30 * (1 - curPeriod / fullPeriod)} ${2 * Math.PI * 30 * (curPeriod / fullPeriod)}`}
-                    strokeDashoffset={2 * Math.PI * 30 * 0.25}
-                />
+                {
+                  curPeriod / fullPeriod < 1 &&
+                  <circle
+                      cx="50%"
+                      cy="50%"
+                      r="30"
+                      fill="none"
+                      stroke="#FF8CA1FF"
+                      strokeWidth="8"
+                      strokeDasharray={`${2 * Math.PI * 30 * (1 - curPeriod / fullPeriod)} ${2 * Math.PI * 30 * (curPeriod / fullPeriod)}`}
+                      strokeDashoffset={2 * Math.PI * 30 * 0.25}
+                  />
+                }
               </svg>
             </div>
             <div className="detail_project_shorts_info_period">
@@ -214,9 +223,9 @@ const ProjectDetailPage = () => {
             </div>
           </div>
           {(endCondition && user.userId === project.owner) &&
-            <div className="detail_project_project_delete">
-              <button className="detail_project_project_delete_btn" onClick={finishProject}>
-                <img src={discard} alt="삭제" className="detail_project_project_delete_btn_img"/>
+          <div className="detail_project_project_export">
+              <button className="detail_project_project_export_btn" onClick={finishProject}>
+                <img src={projectExport} alt="프로젝트 완성" className="detail_project_project_export_btn_img"/>
               </button>
             </div>
           }
