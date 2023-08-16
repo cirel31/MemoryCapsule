@@ -67,16 +67,6 @@ public class ProjectController {
     }
 
 
-    @GetMapping("/all")
-    @Operation(summary = "모든 프로젝트를 가져옵니다", deprecated = true, description = "테스트용 함수이니 사용하지 않는것을 권장합니다")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "가져오기 성공",
-                    content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProjectDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "해당 ID를 가진 사용자 혹은 프로젝트를 찾을 수 없음", content = @Content) })
-    public ResponseEntity<List<ProjectDto>> getAllProject() {
-        return ResponseEntity.status(HttpStatus.OK).body(projectService.getAll());
-    }
-
     @GetMapping("/myproject")
     @Operation(summary = "아이디로 내 프로젝트를 가져옵니다")
     public ResponseEntity<List<ProjectInfo>> getMyProject(
@@ -104,13 +94,6 @@ public class ProjectController {
         List<ProjectInfo> projectInfos = projectService.projectDtosToInfos(projectDtos);
         return ResponseEntity.status(HttpStatus.OK).body(projectInfos);
     }
-    @GetMapping("/root/{projectid}")
-    @Operation(summary = "루트 권한으로 프로젝트를 가져옵니다", description = "모든 프로젝트 가져옵니다")
-    public ResponseEntity<ProjectDto> getProjectByRoot(@PathVariable Integer projectid) throws ProjectNotFoundException {
-        Long projectId = Long.valueOf(projectid.toString());
-        ProjectDto projectDto = projectService.findProjectByProjectId(projectId);
-        return ResponseEntity.status(HttpStatus.OK).body(projectDto);
-    }
 
 
     @GetMapping("/{projectid}")
@@ -132,12 +115,15 @@ public class ProjectController {
         }
     }
 
+    private Date stringToDate(String date){
+        return Date.from(LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
+    }
 
     @PostMapping("/create")
     @Operation(summary = "프로젝트를 생성합니다 ", description = "프로젝트를 생성합니다")
     public ResponseEntity<Object> createProject(
             @Parameter(description = "유저 아이디", required = true, in = ParameterIn.HEADER)
-            @RequestHeader("userId") Long userId,
+            @RequestHeader("userId") Long owner,
             @RequestParam MultipartFile image,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
@@ -151,22 +137,18 @@ public class ProjectController {
                     .map(Long::valueOf)
                     .collect(Collectors.toList());
         }
-        LocalDateTime starts = LocalDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME);
-        LocalDateTime ends = LocalDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME);
-        Date started = Date.from(starts.atZone(ZoneId.systemDefault()).toInstant());
-        Date ended = Date.from(ends.atZone(ZoneId.systemDefault()).toInstant());
         if (title == null || content == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("title 혹은 content가 비어있습니다");
         }
-        ProjectDto projectDto = ProjectDto.builder()
-                    .content(content)
-                    .title(title)
-                    .started(started)
-                    .ended(ended)
-                    .type(type)
-                    .build();
-        Long owner = userId;
-        Long projectId = projectService.createProject(projectDto, userList, owner, image);
+        Long projectId = projectService.createProject(
+                ProjectDto.builder()
+                        .content(content)
+                        .title(title)
+                        .started(stringToDate(start))
+                        .ended(stringToDate(end))
+                        .type(type)
+                        .build(),
+                userList, owner, image);
         return ResponseEntity.status(HttpStatus.OK).body(projectId);
     }
 
@@ -236,6 +218,12 @@ public class ProjectController {
         Long projectId = Long.valueOf(projectid.toString());
         List<ArticleDto> articleDtos = articleService.allProjectArticleList(userId, projectId);
         return ResponseEntity.status(HttpStatus.OK).body(articleDtos);
+    }
+
+    @GetMapping("/allarticles")
+    @Operation(summary = "내가 작성한 모든 게시글 리스트 조회")
+    public ResponseEntity<List<ArticleDto>> getAllArticleList(@RequestHeader("userId") Long userId){
+        return ResponseEntity.status(HttpStatus.OK).body(articleService.articleList(userId));
     }
 
 

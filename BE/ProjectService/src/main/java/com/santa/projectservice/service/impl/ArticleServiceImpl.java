@@ -1,6 +1,8 @@
 package com.santa.projectservice.service.impl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.santa.projectservice.exception.User.UserNotFoundException;
+import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.model.dto.ArticleDto;
 import com.santa.projectservice.exception.article.ArticleProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotAuthorizedException;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,14 +58,14 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) throws ProjectNotAuthorizedException {
+    public Boolean writeArticle(ArticleDto articleDto, List<MultipartFile> images) throws ProjectNotAuthorizedException, ProjectNotFoundException {
         if(!utilQuerys.userProjectValidate(articleDto.getUserId(), articleDto.getProjectId()))
             throw new ProjectNotAuthorizedException("권한이 없는 프로젝트이거나 없는 프로젝트입니다");
-        Project project = projectRepository.findById(articleDto.getProjectId()).get();
+        Project project = projectRepository.findById(articleDto.getProjectId()).orElseThrow(() -> new ProjectNotFoundException("없네요?"));
         project.update();
         projectRepository.save(project);
 
-        User writer = userRepository.findById(articleDto.getUserId()).get();
+        User writer = userRepository.findById(articleDto.getUserId()).orElseThrow(() -> new UserNotFoundException("유저가 없네요 뭐죠"));
         Article writeArticle = articleRepository.save(Article.builder()
                 .project(projectRepository.getReferenceById(articleDto.getProjectId()))
                 .user(writer)
@@ -72,13 +75,12 @@ public class ArticleServiceImpl implements ArticleService {
         );
         writer.giveArticlePoint();
         userRepository.save(writer);
-        int order = 0;
         try {
             for (int i = 0; i < images.size(); i++) {
                 String url = fileUploadService.upload(images.get(i));
                 articleImgRepository.save(ArticleImg.builder()
                         .article(writeArticle)
-                        .order(order++)
+                        .order(i)
                         .imgUrl(url)
                         .build()
                 );
@@ -97,13 +99,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> articleList(Long id) {
+    public List<ArticleDto> articleList(Long id) {
         // 특정 유저가 적은 모든 아티클을 가져옵니다
-        List<Article> allByUser_id = articleRepository.findAllByUser_Id(id);
-        return allByUser_id;
+        return articleRepository.findAllByUser_Id(id).stream().map(Article::toDto).collect(Collectors.toList());
     }
 
-    @Override
+
+        @Override
     public List<ArticleDto> allProjectArticleList(Long userId, Long projectId) {
         List<Article> articleList = articleRepository.findByUser_IdAndProject_Id(userId, projectId);
         List<ArticleDto> results = articleList.stream().map(Article::toDto).collect(Collectors.toList());

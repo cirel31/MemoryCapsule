@@ -1,6 +1,6 @@
 package com.santa.projectservice.exception.project;
 
-public class ProjectNotFoundException extends Exception{
+public class ProjectNotFoundException extends RuntimeException{
     public ProjectNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
