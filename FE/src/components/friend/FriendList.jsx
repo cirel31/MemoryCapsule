@@ -1,4 +1,3 @@
-import { NoFriendList, AuthFormGrid, CustomButton } from "../../styles/friendStyle";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import FriendForm from "./FriendForm";
@@ -7,7 +6,6 @@ import FriendDetail from "./FriendDetail";
 import "../../styles/friendStyle.scss";
 import brand_gradation from "../../assets/images/frield/brand_gradation.svg"
 import searchIcon from "../../assets/images/frield/searchIcon.svg"
-import {login} from "../../store/userSlice";
 
 const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
@@ -26,44 +24,23 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
         setSelect({id : ""});
     }
 
-    // 처음 한 번 실행 시, 내 친구 전부 불러오기
     useEffect(() => {
-        console.log("[useEffect]");
         setSelect("");
         getDetailedFriendList();
-        console.log("login : ", login);
     }, []);
 
     useEffect(() => {
-        console.log("[useEffect : select]");
         getDetailedFriendList();
     }, [select]);
 
     /**
      5. 친구 상세목록 불러오기
-     /friend/getDetailedFriendList/{userId}	친구들의 글목록/작성글수/프로젝트수 조회
-     * 토큰 필요 *
-     사용자고유ID(userId) : Number
-
-     [{
-     "idx": Number,
-     "name": String,
-     "nickname": String,
-     "imgUrl": String,
-     "totalWriteCnt": Number ,      //작성한 Article 총수
-     "totalInProjectCnt": Number,   //진행중인 프로젝트 총수
-     "totalProjectCnt": Number      //총 프로젝트 수
-     }]
-     - idx: user id
-     - name: user
      */
 
     const getDetailedFriendList = () => {
-        console.log("[addFriend]");
         const accessToken = sessionStorage.getItem("accessToken")
         const user_id = parseInt(sessionStorage.getItem("userIdx"), 10);
 
-        console.log(user_id)
         ///friend/getDetailedFriendList/{userId}
         axios.get(`${baseURL}${API}/getDetailedFriendList/${user_id}`,
             {
@@ -73,8 +50,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
             })
             .then((response) => {
                 console.log('친구 상세목록 불러오기 성공');
-                console.log("friend.status : ", response)
-                console.log("response.data : ", response.data);
                 setRowFriends(response.data);
                 setFriends(response.data);
             })
@@ -88,7 +63,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     const handleFriendData = (e) => {
         console.log("[handleFriendData]");
         e.preventDefault();
-        console.log(form.id);
         const id = form.id.toLowerCase();
         const search = form.search;
 
@@ -102,7 +76,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
             var curFriend = rowFriends.filter((rowFriend) =>
                 rowFriend.nickname.toLowerCase().includes(form.id)
             )
-            console.log(curFriend);
             setFriends(curFriend)
         }
     };
@@ -170,15 +143,15 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                 </div>
                 <div className="friendDetailItems">
                     {
-                        !select.idx
-                        ?
-                        <div className="no_friend_list">
-                            <div className="textBlock">
-                                <img src={brand_gradation} alt="로고" className="brand_logo"/>
-                            </div>
+                    !select.idx
+                    ?
+                    <div className="no_friend_list">
+                        <div className="textBlock">
+                            <img src={brand_gradation} alt="로고" className="brand_logo"/>
                         </div>
-                        :
-                        <FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
+                    </div>
+                    :
+                    <FriendDetail select={select} setSelect={setSelect} closeFriendDetail={closeFriendDetail}/>
                     }
                 </div>
             </div>

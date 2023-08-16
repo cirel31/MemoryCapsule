@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from "react-modal";
 import ReviewModal from "../post/ReviewModal";
-import heart from "../../assets/images/review/heart.svg";
+import pill from "../../assets/images/review/pill.svg";
 import axios from "axios";
 
 const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
@@ -134,7 +134,7 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
                             {post.reviewHit}
                         </p>
                         <div className="reviewHit">
-                            <img src={heart} alt="heart"/>
+                            <img src={pill} alt="pill"/>
                         </div>
                     </div>
                 </div>

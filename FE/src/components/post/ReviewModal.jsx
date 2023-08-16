@@ -53,11 +53,6 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
     /**
      * 3. 리뷰 작성 [post]
      * http://localhost:8080/review
-     *{
-     *  "reviewTitle" : "테스트",
-     *  "reviewContent" : "테스트content",
-     *  "reviewImgurl" : null
-     *}  
      */
     console.log(sessionStorage);
     const createReview = () => {
@@ -127,12 +122,6 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
     /**
      * 5. 리뷰 수정 [put]
      *http://localhost:8080/review
-     * {
-     *  "idx" : "3",
-     *  "reviewTitle" : "테스트수정",
-     *  "reviewContent" : "테스트content",
-     *  "reviewImgurl" : null
-     * }
      */
     const putPostDataEdit = () => {
         console.log("[putPostDataEdit]", post);

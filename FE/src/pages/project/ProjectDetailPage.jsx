@@ -116,11 +116,6 @@ const ProjectDetailPage = () => {
     }
   }
 
-  // 뒤로가기
-  const handleBack = () => {
-    window.history.back()
-  }
-
   const handleImgPlus = (id) => {
     setImgNum(prevNums => {
       const prevValue = prevNums[id] || 0;
@@ -162,9 +157,11 @@ const ProjectDetailPage = () => {
             <img src={heart} alt="어떤 프로젝트" className="detail_project_title_heart"/>
           </div>
           <div className="detail_project_back">
-            <div onClick={handleBack} className="detail_project_back_button">
-              <img src={go_back} alt="뒤로가기이미지" className="detail_project_back_button_img"/>
-            </div>
+            <Link to="/project">
+              <div className="detail_project_back_button">
+                <img src={go_back} alt="뒤로가기이미지" className="detail_project_back_button_img"/>
+              </div>
+            </Link>
           </div>
         </div>
         <div className="detail_project_order">

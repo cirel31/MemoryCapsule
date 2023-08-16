@@ -17,7 +17,6 @@ const AnnounceUserViewPage = ({page, size}) => {
 
     const [selectedPost, setSelectedPost] = useState(null)
     const [isModal, setIsModal] = useState(false)
-
     const [postList, setPostList] = useState(null)
 
     useEffect(() => {
@@ -29,6 +28,9 @@ const AnnounceUserViewPage = ({page, size}) => {
         console.log('[AnnounceUserViewPage]');
         getNoticesData(page, size);
     }, [currentPage]); // currentPage 변경시에만 실행
+
+    useEffect(() => {
+    }, [selectedPost]);
 
     /**
      * 1. 전체 공지사항 [get]
@@ -50,16 +52,17 @@ const AnnounceUserViewPage = ({page, size}) => {
      * 2. 공지사항 자세하게 보기 [get]
      * http://localhost:8080/notice/2
      * */
-    const getNoticesDataDetail = () => {
+    const getNoticesDataDetail = (idx) => {
         console.log("[getNoticesDataDetail]", selectedPost);
 
-        const index = selectedPost.id;
+        const index = idx;
 
         console.log(index);
         axios.get(`${baseURL}${API}/${index}`)
             .then((response) => {
                 console.log('게시글 자세하게 (Detail) successful : ', response.data);
-                setSelectedPost(response.data);
+                setSelectedPost(response.data); 
+                setIsModal(true)
             })
             .catch((error) => {
                 console.error('게시글 자세하게 (Detail) fail : ', error);
@@ -68,7 +71,6 @@ const AnnounceUserViewPage = ({page, size}) => {
 
     const openModal = (idx) => {
         getNoticesDataDetail(idx);
-        setIsModal(true)
     }
 
     function isPostGetSuccess() {
