@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 const ArticleCreateForm = () => {
   const formRef = useRef(null)
   const [photos, setPhotos] = useState([])
+  const [photoFiles, setPhotoFiles] = useState([])
   const [text, setText] = useState("");
   const articleId = window.location.href.replace(window.location.origin, "")
   const moving = window.location.href.replace(window.location.origin, "").replace('/article', '')
@@ -67,11 +68,12 @@ const ArticleCreateForm = () => {
   const closeStampModal = () => {
     setStampModalOpen(false)
   }
-
+  
   const handleImage = (e) => {
     const imageLists = [...e.target.files];
     const newImageUrlLists = [...photos];
-
+    const newImageFiles = [...photoFiles]
+    
     if (newImageUrlLists.length + imageLists.length > 4) {
       Swal.fire({
         title: '경고',
@@ -80,15 +82,21 @@ const ArticleCreateForm = () => {
       });
       return;
     }
-
+    
     imageLists.forEach((key) => {
       if (!newImageUrlLists.some((photo) => photo === URL.createObjectURL(key))) {
         newImageUrlLists.push(URL.createObjectURL(key));
       }
     });
+    imageLists.forEach((file) => {
+      if (!newImageFiles.includes(file)) {
+        newImageFiles.push(file);
+      }
+    });
     setPhotos(newImageUrlLists);
+    setPhotoFiles(newImageFiles)
   };
-
+  
   const deletePhoto = (idx) => {
     URL.revokeObjectURL(photos[idx])
     const newPhotos = photos.filter((photo, index) => index !== idx)
@@ -97,7 +105,7 @@ const ArticleCreateForm = () => {
     if (imageInput) imageInput.value = '';
     setCurrentImageIndex(0)
   }
-
+  
   const handleTextChange = (e) => {
     if (e.target.value.length > 150) {
       setText(e.target.value.slice(0, 150));
@@ -119,30 +127,35 @@ const ArticleCreateForm = () => {
     e.preventDefault();
     const needPoint = (photos.length - 1) * 50
     if (needPoint <= point) {
-      const formData = new FormData(e.target)
+      const formData = new FormData()
+      photoFiles.forEach((file) => {
+        formData.append(`files`, file);
+      });
+      formData.append("stamp", e.target.stamp.value)
+      formData.append("content", e.target.content.value)
       axios.post(`${baseURL}${subURL}`, formData, {
         headers : {
           "userId": user.userId,
         }
       })
-          .then(response => {
-            axios.put(`${baseURL}${pointURL}/${user.userId}?point=${-needPoint}`, null,{
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              }
-            })
-              .then(() => {
-                window.location.href =`${moving}`
-              })
-          })
-          .catch(error => {
-            if (error.response.status === 401 && error.response.data === false) {
-              Swal.fire({
-                text: "오늘의 추억은 이미 등록되었습니다.",
-                icon: "error",
-              })
+        .then(response => {
+          axios.put(`${baseURL}${pointURL}/${user.userId}?point=${-needPoint}`, null,{
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
             }
           })
+            .then(() => {
+              window.location.href =`${moving}`
+            })
+        })
+        .catch(error => {
+          if (error.response.status === 401 && error.response.data === false) {
+            Swal.fire({
+              text: "오늘의 추억은 이미 등록되었습니다.",
+              icon: "error",
+            })
+          }
+        })
     }
     else {
       Swal.fire({
@@ -152,9 +165,9 @@ const ArticleCreateForm = () => {
       });
     }
   }
-
+  
   Modal.setAppElement("#root");
-
+  
   return (
     <>
       <div className="article_create_body">
@@ -165,8 +178,8 @@ const ArticleCreateForm = () => {
             <div >
               <div className="img_article_createupload">
                 {/* 시간되면 지금 몇번째 사진인지 확인할 수 있어야 함.*/}
-
-
+                
+                
                 <div>
                   {photos.length > 0 && (
                     <div>
@@ -196,7 +209,7 @@ const ArticleCreateForm = () => {
                     onChange={handleImage}
                   />
                 </label>
-
+              
               </div>
               <div className="article_contents_createupload">
                 <div>
@@ -212,10 +225,10 @@ const ArticleCreateForm = () => {
                         도장찍기
                       </button>
                     </div>
-
+                  
                   </div>
-
-
+                  
+                  
                   <Modal isOpen={stampModalOpen} className="article_stamp_modal">
                     <h2>오늘의 기분스탬프를 골라주세요!</h2>
                     <div>
@@ -228,8 +241,8 @@ const ArticleCreateForm = () => {
                         닫기
                       </button>
                     </div>
-
-
+                  
+                  
                   </Modal>
                   <input
                     name="stamp"
