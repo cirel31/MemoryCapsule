@@ -190,7 +190,7 @@
     grid-template-rows: 80px 80px 80px;
     .mypage_txt_group1{
       display: grid;
-      width: 100%;
+      width: 90%;
       grid-template-columns: auto auto;
       text-align: left;
       align-items: center;
@@ -211,7 +211,10 @@
       margin-left: 20px;
     }
     .mypage_shorts_highlight{
-      font-size: 2em;
+      width: 100%;
+      word-break: break-all;
+      table-layout: fixed;
+      font-size: 1.6vw;
       color: var(--font_burgundy_100);
       font-weight: 700;
     }
@@ -442,6 +445,30 @@
       margin: 0;
     }
 
+  }
+}
+.capsule_box {
+  width: 100%;
+  height: 400px;
+  background-color: var(--brand3_2);
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  & > a {
+    width: 100%;
+    height: 100%;
+  }
+  & > a > .box_graphic {
+    width: 700px;
+    height: 100%;
+    background-image: url("../assets/images/box/box_close.svg");
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    &:hover{
+      background-image: url("../assets/images/box/box_open.svg");
+    }
   }
 }
 

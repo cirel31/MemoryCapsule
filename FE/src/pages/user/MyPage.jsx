@@ -3,7 +3,7 @@ import UserInfoHeaderForm from "../../components/user/UserInfoHeaderForm";
 import "../../styles/MyPage.scss";
 import CurrentProjectsPage from "./CurrentProjectsPage";
 import InviteProject from "../project/InviteProject";
-import {useNavigate} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import AnnounceList from "../../components/announce/AnnounceList";
 import ProjectLockerPage from "../project/ProjectLockerPage";
 import {useEffect} from "react";
@@ -55,8 +55,16 @@ const MyPage = () => {
             <br/>
             <h1 className="mypage_notice_h1">보관함</h1>
             <div className="parting_line"></div>
+
+            <div className="capsule_box">
+              <Link to="/project/locker">
+                <div className="box_graphic">
+
+                </div>
+              </Link>
+            </div>
             <div>
-              <ProjectLockerPage />
+              {/*<ProjectLockerPage />*/}
             </div>
 
         </div>

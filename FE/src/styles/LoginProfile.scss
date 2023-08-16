@@ -28,7 +28,7 @@
 
     .login_profile_form {
       margin: 10% 0 0 0;
-      height: 85%;
+      height: 90%;
       width: 85%;
       background-color: var(--brand3_main);
       font-family: "Inconsolata", sans-serif;
@@ -42,7 +42,7 @@
       grid-template-rows: 55% 15% 10%;
 
       & > img {
-        margin: 25% 0 0 0;
+        margin: 20% 0 0 0;
         width: 9vw;
         height: 9vw;
         object-fit: cover;
@@ -60,11 +60,14 @@
       }
 
       & > h1 {
+        width: 90%;
         font-family: "IBM Plex Sans KR", sans-serif;
         color: var(--white);
         font-weight: 700;
-        margin: 10% 0 0 0;
-        font-size: 3vw;
+        margin: 10% 0 5% 0;
+        font-size: 2.2vw;
+        table-layout: fixed;
+        word-break: break-all;
       }
 
       & > p {
