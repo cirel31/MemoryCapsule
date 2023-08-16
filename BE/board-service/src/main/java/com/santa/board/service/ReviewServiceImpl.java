@@ -64,6 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = getReviewByIdx(reviewIdx);
         review.incrementReviewHit();
         log.info(LogMessageEnum.FIND_BY_IDX_MESSAGE.getLogMessage(ServiceNameEnum.REVIEW, review));
+        log.info(review.getUser().getUserIdx() + " " + userIdx);
         return new ReviewResponseDTO().toDto(review, likeRepository.existsByIdLikedReviewIdxAndIdLikedUsrIdx(reviewIdx, userIdx), review.getUser().getUserIdx() == userIdx);
     }
 
