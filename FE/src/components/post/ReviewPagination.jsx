@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import PostModal from "../post/PostModal";
 import Modal from "react-modal";
+import ReviewModal from "../post/ReviewModal";
+import pill from "../../assets/images/review/pill.svg";
+import axios from "axios";
 
-const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
+const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
+    const baseURL = 'https://i9a608.p.ssafy.io:8000';
+    const API = '/review';
+
     //페이지네이션 처리해야 함
     const totalPages = postList.totalPages;
     Modal.setAppElement("#root");
@@ -11,12 +16,36 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
     const [selectedPost, setSelectedPost] = useState(null)
     const [isModal, setIsModal] = useState(false)
 
+    /**
+     * 2. 공지사항 자세하게 보기 [get]
+     * http://localhost:8080/review/2
+     * */
+    const getReviewsDataDetail = (idx) => {
+        console.log("[getReviewsDataDetail]", selectedPost, idx);
+
+        const index = parseInt(idx);
+        const accessToken = sessionStorage.getItem("accessToken")
+
+        console.log(index);
+        axios.get(`${baseURL}${API}/${index}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            },
+        })
+            .then((response) => {
+                console.log('게시글 자세하게 (Detail) successful : ', response.data);
+                setSelectedPost(response.data);
+                setIsModal(true)
+            })
+            .catch((error) => {
+                console.error('게시글 자세하게 (Detail) fail : ', error);
+            });
+    };
+
     const openModal = (id) => {
         // const index = postList.findIndex((post => post.id === id))
-        const index = postList.content.findIndex((post => post.noticeIdx === id))
-        setSelectedPost(postList.content[index]);
+        getReviewsDataDetail(id);
         console.log("selectedPost : ", selectedPost);
-        console.log("index : ", index);
         setIsModal(true);
     }
 
@@ -79,56 +108,57 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
     }
 
     return (
-        <div className="announce_pagenation">
-            {
-                console.log("totalPages", totalPages)
-            }
+        <div className="review_pagenation">
             {
             postList.content &&
             postList.content.map((post) => (
-                <div className="announce_list_items">
+                <div className="review_list_items">
                     <div
-                        className="announce_list_item"
-                        key={post.noticeIdx}
-                        onClick={() => post && openModal(post.noticeIdx)}
+                        className="review_list_item"
+                        key={post.reviewIdx}
+                        onClick={() => post && openModal(post.reviewIdx)}
                     >
-                        <p>{post.noticeTitle}</p>
+                        <p>{post.reviewTitle}</p>
                     </div>
                     {
-                        post && isNewAlame(post.noticeCreated)
+                        post && isNewAlame(post.reviewCreated)
                         ?
-                        <div className="announce_list_alarm"/>
+                        <div className="review_list_alarm"/>
                         :
                         <div> </div>
                     }
 
-                    <div>
-                        <p>
+                    <div className="review_list_heart">
+                        <p className="heartCnt">
                             {/*function으로 return 값을 date.getDate() 같은거 써서 return*/}
-                            {post && getTime(post.noticeCreated)}
+                            {post.reviewHit}
                         </p>
+                        <div className="reviewHit">
+                            <img src={pill} alt="pill"/>
+                        </div>
                     </div>
                 </div>
                 ))
             }
 
-            <div className="announce_pagenation_buttons">
+
+            <div className="review_pagenation_buttons">
                 {
                     pageIndex() &&
                     Array.from(pageIndex()).map((index) => (
                         currentPage===index
                         ?
-                        <button key={index + 1} className="selected_announce_pagenation_button">
+                        <button key={index + 1} className="selected_review_pagenation_button">
                             {index + 1}
                         </button>
                         :
-                        <button key={index + 1} onClick={() => handlePageChange(index)} className="announce_pagenation_button">
+                        <button key={index + 1} onClick={() => handlePageChange(index)} className="review_pagenation_button">
                             {index + 1}
                         </button>
                     ))
                 }
             </div>
-            <PostModal
+            <ReviewModal
                 selectedPost={selectedPost}
                 setSelectedPost={setSelectedPost}
                 modalIsOpen={isModal}
@@ -138,4 +168,4 @@ const Pagination = ({ postList, currentPage, setCurrentPage, updatePage }) => {
     );
 };
 
-export default Pagination;
+export default ReviewPagination;

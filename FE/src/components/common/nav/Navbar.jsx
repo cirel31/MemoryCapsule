@@ -115,7 +115,7 @@ export default function Navbar() {
                 </div>
                 <div>
                   {/*리뷰페이지로 router추가해야함*/}
-                  <Link to='/reviews' className="link_txt">
+                  <Link to='/review' className="link_txt">
                     <button className="nav_button" >
                       <img src={btn_deco} alt="이미지 존재하지 않음" className="button_deco"/>
                       <p>REVIEW</p>
@@ -123,7 +123,7 @@ export default function Navbar() {
                   </Link>
                 </div>
                 <div>
-                  <Link to='/announce' className="link_txt">
+                  <Link to='/notice' className="link_txt">
                     <button className="nav_button" >
                       <img src={btn_deco} alt="이미지 존재하지 않음" className="button_deco"/>
                       <p>NOTICE</p>

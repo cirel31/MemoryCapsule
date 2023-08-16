@@ -15,12 +15,6 @@ const PostCreatePage = () => {
 
     /**
      * 3. 공지사항 작성 [post]
-     * http://localhost:8080/notice
-     *{
-     *  "noticeTitle" : "테스트",
-     *  "noticeContent" : "테스트content",
-     *  "noticeImgurl" : null
-     *}
      */
 
     const [formData, setFormData] = useState({
@@ -49,13 +43,6 @@ const PostCreatePage = () => {
 
     /**
      * 5. 공지사항 수정 [put]
-     *http://localhost:8080/notice
-     * {
-     *  "idx" : "3",
-     *  "noticeTitle" : "테스트수정",
-     *  "noticeContent" : "테스트content",
-     *  "noticeImgurl" : null
-     * }
      */
     const putNoticesDataEditServer = (e) => {
         console.log("[putNoticesDataEditServer]");

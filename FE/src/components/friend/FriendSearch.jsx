@@ -1,5 +1,3 @@
-import { NoFriendList, AuthFormGrid, CustomButton } from "../../styles/friendStyle";
-
 import React, {useEffect, useState} from "react";
 import FriendForm from "./FriendForm";
 import FriendInfo from "./FriendInfo";
@@ -18,32 +16,17 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
     const [curStatus, setCurStatus] = useState(0)
     const [isValidSearch, setIsValidSearch] = useState(true);
 
-    // 처음 한 번 실행 시, 내 친구리스트 초기화
     useEffect(() => {
         setFriends([]);
         setSelect("");
     }, []);
 
-
-    useEffect(() => {
-        console.log("[useEffect] friends" , friends);
-        console.log(friends)
-    }, [curStatus]);
-
-    /**
-     * 1. 전체 친구 목록 중 검색한 것 불러오기
-     *
-     * Method : get
-     * URL : /friend/search/{user_id}
-     * */
     function getFriendsByServer(searchId) {
-        console.log("[getFriendsByServer]", searchId);
         const accessToken = sessionStorage.getItem("accessToken")
         const Idx = sessionStorage.getItem("userIdx")
 
         const host_id = parseInt(Idx, 10);
 
-        // 서버로부터 내 친구목록 가져오기
         axios.get(`${baseURL}${API}/find/${searchId}`,
             {
                 headers: {
@@ -55,8 +38,6 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
             })
             .then((response) => {
                 console.log('서버로부터 친구목록 가져오기 성공');
-                console.log(API);
-                console.log(response.data);
                 setFriends([response.data]);
                 setCurStatus(response.data.status);
             })
@@ -68,7 +49,6 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
 
     // 검색
     const sendFriendDataServer = (e) => {
-        console.log("[sendFriendDataServer]");
         e.preventDefault();
 
         const sendId = form.id;
@@ -77,25 +57,11 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
         if (sendId.length > 0) {
             getFriendsByServer(sendId);
         } else {
-            console.log("한 글자 이상 입력해주세요");
             setIsValidSearch(false);
         }
     };
 
-
-    const validateSearchValue = (searchValue) => {
-        console.log("[validateSearchValue]");
-
-        if (!searchValue) {
-            console.log("!searchValue ", searchValue);
-            return false;
-        }
-        const pattern = /^[a-zA-Z0-9._%+-]/;
-        return pattern.test(searchValue);
-    };
-
     const handleChange = (updatedForm) => {
-        console.log("[handleChange]");
         setForm(updatedForm);
     };
 

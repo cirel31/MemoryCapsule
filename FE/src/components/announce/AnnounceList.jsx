@@ -1,8 +1,8 @@
 import Modal from "react-modal";
 import React, {useEffect, useState} from "react";
 import "../../styles/AnnounceStyle.scss"
-import PostModal from "../post/PostModal";
-import Pagination from "../common/Pagination";
+import NoticeModal from "../post/NoticeModal";
+import NoticePagination from "./NoticePagination";
 import axios from "axios";
 
 const AnnounceUserViewPage = ({page, size}) => {
@@ -17,7 +17,6 @@ const AnnounceUserViewPage = ({page, size}) => {
 
     const [selectedPost, setSelectedPost] = useState(null)
     const [isModal, setIsModal] = useState(false)
-
     const [postList, setPostList] = useState(null)
 
     useEffect(() => {
@@ -29,6 +28,9 @@ const AnnounceUserViewPage = ({page, size}) => {
         console.log('[AnnounceUserViewPage]');
         getNoticesData(page, size);
     }, [currentPage]); // currentPage 변경시에만 실행
+
+    useEffect(() => {
+    }, [selectedPost]);
 
     /**
      * 1. 전체 공지사항 [get]
@@ -50,19 +52,17 @@ const AnnounceUserViewPage = ({page, size}) => {
      * 2. 공지사항 자세하게 보기 [get]
      * http://localhost:8080/notice/2
      * */
-    const getNoticesDataDetail = (e) => {
-        console.log("[getNoticesDataDetail]");
+    const getNoticesDataDetail = (idx) => {
+        console.log("[getNoticesDataDetail]", selectedPost);
 
-        const index = e;
-
-        // 실제 배포는 8000
-        // 테스트 및 개발 서버는 7000
+        const index = idx;
 
         console.log(index);
         axios.get(`${baseURL}${API}/${index}`)
             .then((response) => {
                 console.log('게시글 자세하게 (Detail) successful : ', response.data);
-                setSelectedPost(response.data);
+                setSelectedPost(response.data); 
+                setIsModal(true)
             })
             .catch((error) => {
                 console.error('게시글 자세하게 (Detail) fail : ', error);
@@ -71,7 +71,6 @@ const AnnounceUserViewPage = ({page, size}) => {
 
     const openModal = (idx) => {
         getNoticesDataDetail(idx);
-        setIsModal(true)
     }
 
     function isPostGetSuccess() {
@@ -115,7 +114,7 @@ const AnnounceUserViewPage = ({page, size}) => {
                             </div>
                         ))
                         :
-                        <Pagination
+                        <NoticePagination
                             postList={postList}
                             setPostList={setPostList}
                             currentPage={currentPage}
@@ -126,7 +125,7 @@ const AnnounceUserViewPage = ({page, size}) => {
                 }
             </div>
             {/*모달 창*/}
-            <PostModal
+            <NoticeModal
                 selectedPost={selectedPost}
                 setSelectedPost={setSelectedPost}
                 modalIsOpen={isModal}

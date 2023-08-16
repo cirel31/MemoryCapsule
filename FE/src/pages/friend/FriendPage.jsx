@@ -1,9 +1,7 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../../styles/friendStyle.scss";
 import go_back from "../../assets/images/frield/go_back.svg"
 
-import {login, setUser} from '../../store/userSlice';
 import FriendList from "../../components/friend/FriendList";
 import FriendSearch from "../../components/friend/FriendSearch";
 

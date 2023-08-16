@@ -8,11 +8,11 @@ import cilling from "../../assets/images/box/ciling.svg"
 const InviteProject = () => {
   const baseURL = 'https://i9a608.p.ssafy.io:8000'
   const inviteURL = '/project/invite'
-
+  
   const [inviteLists, setInviteLists] = useState([])
-
+  
   const user = useSelector((state) => state.userState.user) || null
-
+  
   useEffect(() => {
     const searchInvite = async () => {
       // const accessToken = sessionStorage.getItem("accessToken")
@@ -33,12 +33,12 @@ const InviteProject = () => {
     }
     searchInvite()
   }, [])
- 
+  
   const acceptInvite = ({userId, inviteId}) => {
     const formData = new FormData()
     formData.append("inviteId", inviteId)
     try {
-       axios.post(`${baseURL}${inviteURL}/accept`, formData, {
+      axios.post(`${baseURL}${inviteURL}/accept`, formData, {
         headers: {
           "userId": `${userId}`,
         }
@@ -76,8 +76,8 @@ const InviteProject = () => {
       title: '초 대 장',
       html: `
       <p>${content.inviter} 님이</p>
-      <p>${content.userId} 에게</p>
-      <p>${content.projectId}에</p>
+      <p>${user.nickname} 님에게</p>
+      <p>${content.projectTitle}에</p>
       <p>초대했어요!</p>
     `,
       showCloseButton: true,
@@ -87,17 +87,17 @@ const InviteProject = () => {
       cancelButtonText: '거절하기',
     })
       .then((result) => {
-      if (result.isConfirmed) {
-        const userId = content.userId
-        const inviteId = content.id
-        acceptInvite({userId, inviteId})
-      }
-      else if (result.dismiss === Swal.DismissReason.cancel) {
-        const userId = content.userId
-        const inviteId = content.id
-        dismissInvite({userId, inviteId})
-      }
-    })
+        if (result.isConfirmed) {
+          const userId = content.userId
+          const inviteId = content.id
+          acceptInvite({userId, inviteId})
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+          const userId = content.userId
+          const inviteId = content.id
+          dismissInvite({userId, inviteId})
+        }
+      })
   }
   
   return (

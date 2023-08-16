@@ -11,23 +11,23 @@
 
   .content_body {
     filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
-    .announce_top{
+    .review_top{
       width: 100%;
       height: 100px;
       background-color: var(--brand1_2);
     }
 
-    .announce_body {
+    .review_body {
       width: 840px;
       display: grid;
 
-      .announce_top_content{
+      .review_top_content{
         display: flex;
         width: 100%;
         height: 100px;
         margin-top: -45px;
 
-        .announce_title{
+        .review_title{
           display: grid;
           justify-items: center;
           align-items: center;
@@ -40,7 +40,7 @@
           border-radius: 45px;
         }
 
-        .announce_back{
+        .review_back{
           filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
           width: 100%;
           height: 100px;
@@ -48,7 +48,7 @@
           flex-direction: row;
           justify-content: right;
 
-          .announce_back_button{
+          .review_back_button{
             display: grid;
             justify-items: center;
             align-items: center;
@@ -63,7 +63,7 @@
               background-color: var(--backGround_1);
             }
 
-            .announce_back_button_img {
+            .review_back_button_img {
               width: 20px;
               height: 20px;
 
@@ -73,14 +73,14 @@
         }
       }
 
-      .announce_list {
+      .review_list {
         width: 740px;
         min-height: 150px;
         filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
         justify-items: center;
         margin : 0px auto;
 
-        .announce_nothing {
+        .review_nothing {
           display: grid;
           align-content: center;
           align-items: center;
@@ -96,14 +96,14 @@
           font-weight: 700;
         }
 
-        .announce_pagenation {
+        .review_pagenation {
           display: grid;
           justify-items: center;
           align-items: center;
 
           width: 100%;
 
-          .announce_list_items{
+          .review_list_items{
             display: grid;
             justify-items: center;
             align-items: center;
@@ -111,20 +111,22 @@
             grid-template-columns: 80% 1% 19%;
             height: 70px;
 
-            .announce_list_item{
+            .review_list_item{
+              font-family: "IBM Plex Sans KR", sans-serif;
+              color: var(--font_burgundy_100);
+              font-size: 14px;
+              font-weight: bold;
+
               width: 100%;
               height: 50px;
-              background-color: var(--brand3_main);
+              background-color: var(--brand3_1);
+              border: solid 2px var(--brand3_main);
               border-radius: 10px;
               margin: 5px;
               padding: 0px 0px 0px 10px;
-
-              color: var(--white);
-              font-size: 14px;
-              font-weight: bold;
             }
 
-            .announce_list_alarm{
+            .review_list_alarm{
               width: 21px;
               height: 21px;
               border-radius: 100%;
@@ -133,7 +135,7 @@
             }
           }
 
-          .announce_pagenation_buttons{
+          .review_pagenation_buttons{
             width: 50%;
             display: flex;
             justify-content: center;
@@ -141,7 +143,7 @@
             color: var(--white);
             margin: 10px;
 
-            .announce_pagenation_button{
+            .review_pagenation_button{
               width: 25px;
               height: 25px;
               border : none;
@@ -151,7 +153,7 @@
               margin: 10px;
             }
 
-            .selected_announce_pagenation_button{
+            .selected_review_pagenation_button{
               width: 30px;
               height: 30px;
               border : none;
@@ -188,7 +190,59 @@
   }
 }
 
-.notice_modal {
+.review_list_heart{
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+
+  .reviewHit{
+    width: 30px;
+    height: 30px;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    border-radius: 100%;
+    border : none;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .heartCnt{
+    font-family: "IBM Plex Sans KR", sans-serif;
+    margin-right: 10px;
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  .heartButton{
+    width: 40px;
+    height: 40px;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    border-radius: 100%;
+    border : none;
+
+    img {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  .liked {
+    background-color: var(--brand1_main);
+  }
+
+  .unliked {
+    background-color: var(--brand1_3);
+  }
+}
+
+.review_modal {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -209,6 +263,9 @@
 
   backdrop-filter: blur(10px);
   //margin-left: 15%;
+
+  outline-color: var(--point1_main);
+
   .modal_contents_box{
     width: 700px;
     height: 650px;

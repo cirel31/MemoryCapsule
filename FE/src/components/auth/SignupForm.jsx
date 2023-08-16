@@ -269,6 +269,7 @@ const SignupForm = ({ form, setForm,  }) => {
                   id="nickname"
                   name="nickName"
                   type="text"
+                  maxLength="15"
                   value={form.nickname}
                   onChange={handleChange}
                   placeholder="닉네임"

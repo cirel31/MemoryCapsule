@@ -3,8 +3,9 @@ import Modal from "react-modal";
 import axios from "axios";
 import "../../styles/AnnounceStyle.scss"
 import Swal from "sweetalert2";
+import {useSelector} from "react-redux";
 
-const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
+const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen}) => {
     const baseURL = 'https://i9a608.p.ssafy.io:8000';
     const API = '/notice';
 
@@ -15,6 +16,9 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     const [state, setState] = useState(false);
     const [disabledTitle, setDisabledTitle] = useState(false);
     const [disabledContent, setDisabledContent] = useState(false);
+
+    const user = useSelector((state) => state.userState.user)
+    const admin = user?.admin || false
 
     const [file, setFile] = useState(null);
 
@@ -28,13 +32,14 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
         console.log("selectedPost :", selectedPost);
         setPost(selectedPost);
         setState(selectedPost &&(selectedPost.noticeIdx === 0 || state));
-    }, [selectedPost]);
+    }, [modalIsOpen]);
 
     // 공지사항 데이터 접근자가 관리자인지 확인
     function checkUserRole() {
         console.log("[checkUserRole]");
         // 관리자 권한 확인
-        if (true) {
+        console.log(admin)
+        if (admin) {
             console.log("관리자로 확인되었습니다.");
             return true;
         } else {
@@ -70,7 +75,9 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
             formData.append('file', image);
         });
 
-        if (checkUserRole()) {
+        console.log("post.noticeTitle && post.noticeContent : ", post.noticeTitle && post.noticeContent)
+
+        if (checkUserRole() && post.noticeTitle && post.noticeContent) {
             axios.post(`${baseURL}${API}`, formData,
                 {
                     headers: {
@@ -81,11 +88,15 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
             })
             .then((response) => {
                 console.log('게시글 작성 POST successful : ', response.data);
+                setSelectedPost([]);
+                showAlert("게시글이 등록되었습니다.");
                 closeModal()
             })
             .catch((error) => {
                 console.error('게시글 작성 POST fail : ', error);
             });
+        } else {
+            showAlert("제목과 내용을 적어주세요.");
         }
     }
 
@@ -109,7 +120,7 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
                 )
                 .then((response) => {
                     console.log('게시글 삭제 (Delete) successful : ', response.data);
-                    setSelectedPost([]);
+                    showAlert("게시글이 삭제되었습니다.");
                     closeModal()
                 })
                 .catch((error) => {
@@ -285,4 +296,4 @@ const PostModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen})
     )
 }
 
-export default PostModal;
+export default NoticeModal;

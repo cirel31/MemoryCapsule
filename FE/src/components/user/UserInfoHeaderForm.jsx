@@ -7,7 +7,6 @@ import {useSelector} from "react-redux";
 const UserInfoHeaderForm = () => {
   const navigate = useNavigate()
   const user = useSelector((state) => state.userState.user)
-  console.log('유저정보확인 : ', user)
   const userNickname = user?.nickname || '김싸피'
   const userEmail = user?.email || 'jdragon@ssafy.com'
   const friendsCount = user?.totalFriend || 0

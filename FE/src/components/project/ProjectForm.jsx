@@ -28,7 +28,11 @@ const ProjectForm = () => {
 
   const selectedUsers = useSelector((state) => state.friend.selectedPeople)
   const [coworker, setCoworker] = useState([])
-
+  const [isActive, setIsActive] = useState(false)
+  const today = new Date()
+  const monthFromNow = moment().add(1, 'months').toDate()
+  const oneYearFromNow = moment().add(1, 'years').toDate()
+  
   useEffect(() => {
     setCoworker(selectedUsers.map((user) => (
       user.userId
@@ -65,7 +69,7 @@ const ProjectForm = () => {
   }
   const handleStartDateChange = (date) => {
     setStartDate(date);
-    setEndDate(new Date(date.getTime() + 86400000))
+    setEndDate(moment(date).add(1, 'days').toDate())
   };
 
   const handleEndDateChange = (date) => {
@@ -93,7 +97,13 @@ const ProjectForm = () => {
     if (imageInput) imageInput.value = '';
   };
 
+  const clickSolo = () => {
+    setIsActive(false)
+    dispatch(removeAll())
+  }
+  
   const clickFriends = () => {
+    setIsActive(true)
     Swal.fire({
       title: "함께 할 친구",
       html: `
@@ -193,11 +203,16 @@ const ProjectForm = () => {
                   // required
                   readOnly
                 />
-                <Modal isOpen={showStartDateModal} onRequestClose={() => setShowStartDateModal(false)}>
+                <Modal
+                  isOpen={showStartDateModal}
+                  onRequestClose={() => setShowStartDateModal(false)}
+                >
                   <Calendar
                     value={startDate}
                     onChange={handleStartDateChange}
                     onClickDay={() => setShowStartDateModal(false)}
+                    minDate={today}
+                    maxDate={monthFromNow}
                     dateFormat="yyyy-MM-dd"
                   />
                 </Modal>
@@ -214,12 +229,16 @@ const ProjectForm = () => {
                   // required
                   readOnly
                 />
-                <Modal isOpen={showEndDateModal} onRequestClose={() => setShowEndDateModal(false)}>
+                <Modal
+                  isOpen={showEndDateModal}
+                  onRequestClose={() => setShowEndDateModal(false)}
+                >
                   <Calendar
                     value={endDate}
                     onChange={handleEndDateChange}
                     onClickDay={() => setShowEndDateModal(false)}
                     minDate={startDate ? new Date(startDate.getTime() + 86400000) : undefined}
+                    maxDate={oneYearFromNow}
                     dateFormat="yyyy-MM-dd"
                   />
                 </Modal>
@@ -259,13 +278,13 @@ const ProjectForm = () => {
         <div>
           {/* 버튼이 눌린상태로 유지되어야 함. */}
           <div className="project_create_solo_button">
-            <button onClick={() => dispatch(removeAll())}>
+            <button onClick={clickSolo} className={!isActive ? 'active' : ''}>
               <img src={solo_w}/>
               <p>혼자 할게요!</p>
             </button>
           </div>
           <div className="project_create_group_button">
-            <button onClick={clickFriends}>
+            <button onClick={clickFriends} className={isActive ? 'active' : ''}>
               <img src={group_w}/>
               <p>여러명이서 할게요!</p>
             </button>

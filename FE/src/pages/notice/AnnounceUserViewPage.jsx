@@ -1,4 +1,3 @@
-import Modal from "react-modal";
 import React from "react";
 import "../../styles/AnnounceStyle.scss"
 import go_back from "../../assets/images/frield/go_back.svg";

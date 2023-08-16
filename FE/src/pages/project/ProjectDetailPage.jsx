@@ -53,12 +53,15 @@ const ProjectDetailPage = () => {
       "stamp": stamp_wow,
     },
   ]
+  const date = new Date;
+  const [curPeriod, setCurPeriod] = useState(null);
+  const [fullPeriod, setFullPeriod] = useState(null);
   const { projectId } = useParams()
   const [project, setProject] = useState([])
   const [myArticles, setMyArticles] = useState([])
   const [imgNum, setImgNum] = useState([])
   const [endCondition, setEndCondition] = useState(false)
-  
+  const [dateCheck, setDateCheck] = useState(true)
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${projectId}`
       , {
@@ -88,11 +91,19 @@ const ProjectDetailPage = () => {
         }
     )
         .then((response) => {
-          setMyArticles(response.data);
+          console.log(response.data)
+          setMyArticles(response.data.reverse());
         })
         .catch(() => {
         });
   }, []);
+
+  useEffect(() => {
+    if (project.started && project.ended) {
+      setFullPeriod(new Date(project.ended).getTime() - new Date(project.started).getTime());
+      setCurPeriod(new Date(project.ended).getTime() - date);
+    }
+  }, [project])
 
   // 프로젝트 인원 수 따라서 싱글 프로젝트인지 구분하기 위한 함수
   function isSoloProject() {
@@ -103,11 +114,6 @@ const ProjectDetailPage = () => {
       // 여러명이서 하는 프로젝트인 경우
       return true;
     }
-  }
-
-  // 뒤로가기
-  const handleBack = () => {
-    window.history.back()
   }
 
   const handleImgPlus = (id) => {
@@ -125,18 +131,15 @@ const ProjectDetailPage = () => {
   }
   const finishProject = (e) => {
     e.preventDefault()
-    console.log("종료조건 만족함!!!")
     axios.get(`${baseURL}${subURL}/finish/${projectId}`, {
       headers: {
         "userId": user.userId
       }
     })
       .then((response) => {
-        console.log(response)
         window.location.href ='/project'
       })
-      .catch((error) => {
-        console.log(error)
+      .catch(() => {
       })
   }
   
@@ -151,9 +154,11 @@ const ProjectDetailPage = () => {
             <img src={heart} alt="어떤 프로젝트" className="detail_project_title_heart"/>
           </div>
           <div className="detail_project_back">
-            <div onClick={handleBack} className="detail_project_back_button">
-              <img src={go_back} alt="뒤로가기이미지" className="detail_project_back_button_img"/>
-            </div>
+            <Link to="/project">
+              <div className="detail_project_back_button">
+                <img src={go_back} alt="뒤로가기이미지" className="detail_project_back_button_img"/>
+              </div>
+            </Link>
           </div>
         </div>
         <div className="detail_project_order">
@@ -172,8 +177,11 @@ const ProjectDetailPage = () => {
               }
             </div>
             <div className="detail_project_shorts_info_percentage">
-              <div className="detail_project_shorts_info_percentage_text">
-                <p>{((project.artielcNum / 350) * 100).toFixed()}%</p>
+              <div className="detail_project_shorts_info_percentage_text">                {
+                curPeriod / fullPeriod < 0
+                    ?<p>100%</p>
+                    :<p>{curPeriod && fullPeriod && ((1 - curPeriod / fullPeriod) * 100).toFixed(1)}%</p>
+              }
               </div>
               <svg className="detail_project_shorts_info_percentage_graph">
                 <circle
@@ -191,7 +199,7 @@ const ProjectDetailPage = () => {
                     fill="none"
                     stroke="#FF8CA1FF"
                     strokeWidth="8"
-                    strokeDasharray={`${2 * Math.PI * 30 * (project.artielcNum / 365)} ${2 * Math.PI * 30 * (1-(project.artielcNum / 365))}`}
+                    strokeDasharray={`${2 * Math.PI * 30 * (1 - curPeriod / fullPeriod)} ${2 * Math.PI * 30 * (curPeriod / fullPeriod)}`}
                     strokeDashoffset={2 * Math.PI * 30 * 0.25}
                 />
               </svg>
@@ -303,13 +311,15 @@ const ProjectDetailPage = () => {
                 </div>
             ))}
           </div>
-          <div className="detail_project_write">
-            <Link to={`/project/${projectId}/article`}>
-              <button className="detail_project_write_btn">
-                <img src={write} alt="write" className="detail_project_write_btn_img"/>
-              </button>
-            </Link>
-          </div>
+          {!endCondition &&
+            <div className="detail_project_write">
+              <Link to={`/project/${projectId}/article`}>
+                <button className="detail_project_write_btn">
+                  <img src={write} alt="write" className="detail_project_write_btn_img"/>
+                </button>
+              </Link>
+            </div>
+          }
         </div>
       </div>
     </div>

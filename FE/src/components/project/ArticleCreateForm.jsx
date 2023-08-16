@@ -28,7 +28,7 @@ const ArticleCreateForm = () => {
   const subURL = articleId
   const pointURL = "/user/point"
   const user = useSelector((state) => state.userState.user) || null
-  const point = user.point || 0
+  const accessToken = sessionStorage?.getItem("accessToken")
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const stamps = [
     {
@@ -115,6 +115,7 @@ const ArticleCreateForm = () => {
     setStampModalOpen(false)
   }
   const createArticle = (e) => {
+    const point = user.point || 0
     e.preventDefault();
     const needPoint = (photos.length - 1) * 50
     if (needPoint <= point) {
@@ -125,12 +126,16 @@ const ArticleCreateForm = () => {
         }
       })
           .then(response => {
-            // axios.put(`${baseURL}${pointURL}${user.userId}?point=${point-needPoint}`)
-            window.location.href =`${moving}`
+            axios.put(`${baseURL}${pointURL}/${user.userId}?point=${-needPoint}`, null,{
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              }
+            })
+              .then(() => {
+                window.location.href =`${moving}`
+              })
           })
           .catch(error => {
-            console.log(baseURL,subURL, user.userId)
-            console.log("게시글 등록 실패", error)
             if (error.response.status === 401 && error.response.data === false) {
               Swal.fire({
                 text: "오늘의 추억은 이미 등록되었습니다.",
@@ -146,8 +151,6 @@ const ArticleCreateForm = () => {
         icon: 'error',
       });
     }
-
-
   }
 
   Modal.setAppElement("#root");
