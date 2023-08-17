@@ -73,8 +73,6 @@ const ProjectListPage = () => {
   }, [searchTerm, projects])
 
   useEffect(() => {
-    console.log(selectedPost);
-
     if (selectedPost && selectedPost.started && selectedPost.ended) {
       setFullPeriod(new Date(selectedPost.ended).getTime() - new Date(selectedPost.started).getTime());
       setCurPeriod(new Date(selectedPost.ended).getTime() - date);
