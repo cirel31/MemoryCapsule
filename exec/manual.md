@@ -10,7 +10,7 @@ Visit and enjoy your memory! <br>
 ## 빌드/배포 시나리오
 
 - 전체 프로젝트 구조
-https://lab.ssafy.com/s09-webmobile2-sub2/S09P12A608
+
 ![docker-ver](![docker-ver](/uploads/11fdd5f1804cba99bb01a6daca655258/docker-ver.jpg))
 
 
