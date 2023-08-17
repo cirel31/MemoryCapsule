@@ -83,24 +83,35 @@ const SendPresentPage = () => {
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${giftUrl.giftUrl}`)
       .then((response) => {
-        console.log(`${baseURL}${subURL}/${giftUrl.giftUrl}`)
-        console.log(response)
         setDatas(response.data.articleVos)
       })
       .catch(() => {
       })
   }, [])
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (!Kakao.isInitialized()) {
+  //     Kakao.init('1af0163235ced24b3f4bc66a23b24509');
+  //   }
+  //   Kakao.Share.createScrapButton({
+  //     container: '#kakao-share',
+  //     requestUrl: `https://memorycapsule.site/project/present/${giftUrl.giftUrl}`,
+  //     // templateId: 97142,
+  //   })
+  // }, []);
+
+  const shareBTN = () => {
     if (!Kakao.isInitialized()) {
       Kakao.init('1af0163235ced24b3f4bc66a23b24509');
     }
-    Kakao.Share.createScrapButton({
-      container: '#kakao-share',
+    Kakao.Share.sendScrap({
       requestUrl: `https://memorycapsule.site/project/present/${giftUrl.giftUrl}`,
       templateId: 97142,
+      templateArgs: {
+        'url' : `project/present/${giftUrl.giftUrl}`,
+      },
     })
-  }, []);
+  }
   
   return (
     <>
@@ -112,7 +123,7 @@ const SendPresentPage = () => {
             {/*<img src={present_bg0} className="present_bg"/>*/}
           
             <div className={`present_content_${randomFunc()}`}>
-              <p className="date">{article.created.slice(0, 4)}년 {article.created.slice(5, 7)}월 {article.created.slice(11, 13)}일</p>
+              <p className="date">{article.created.slice(0, 4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</p>
               <img
                 src={article.images[0]}
                 alt="이미지 없음"
@@ -144,9 +155,8 @@ const SendPresentPage = () => {
             {article.images[1] && (
               <div>
                 {article.images.slice(1).map((image, index) => (
-                  <div className={`photo_${randomFunc()}`}>
+                  <div className={`photo_${randomFunc()}`} key={index+1}>
                     <img
-                      key={index+1}
                       src={image}
                       alt="이미지 없음"
                       onError={(e) => {e.target.src = kokona}}
@@ -157,15 +167,11 @@ const SendPresentPage = () => {
               </div>
             ) }
             
-           
-            
-            
-            
           </div>
         ))}
       </div>
       <div>
-        <button id="kakao-share" className="kakao_share">
+        <button id="kakao-share" className="kakao_share" onClick={shareBTN}>
           <p>카카오톡으로 공유하기</p>
           <img
             src={kakao_1}

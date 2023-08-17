@@ -23,22 +23,20 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
             ServerHttpResponse response = exchange.getResponse();
 
             StringBuilder sb = new StringBuilder();
+            if(request.getPath().toString().contains("/actuator")) return chain.filter(exchange); // /actuator 에 대해서는 filter 해제
             sb.append("\n+-----Global Filter baseMessage: ").append(config.getBaseMessage()).append("\n");
-
-            if(config.isRequestLogger()) {
-                sb.append("|Method: ").append(request.getMethod()).append("\n");
-                sb.append("|URI: ").append(request.getURI()).append("\n");
-                sb.append("|Headers:\n\t").append(request.getHeaders()).append("\n");
-                sb.append("|Cookies:\n\t").append(request.getCookies()).append("\n");
-                sb.append("|Query Params:\n\t").append(request.getQueryParams()).append("\n");
-                sb.append("|Path: ").append(request.getPath()).append("\n");
-                sb.append("|Remote Address: ").append(request.getRemoteAddress()).append("\n");
-                sb.append("|Local Address: ").append(request.getLocalAddress()).append("\n");
-                sb.append("|SslInfo: ").append(request.getSslInfo()).append("\n");
-                sb.append("|Id: ").append(request.getId()).append("\n");
-            }
+            sb.append("|Method: ").append(request.getMethod()).append("\n");
+            sb.append("|URI: ").append(request.getURI()).append("\n");
+            sb.append("|Headers:\n\t").append(request.getHeaders()).append("\n");
+            sb.append("|Cookies:\n\t").append(request.getCookies()).append("\n");
+            sb.append("|Query Params:\n\t").append(request.getQueryParams()).append("\n");
+            sb.append("|Path: ").append(request.getPath()).append("\n");
+            sb.append("|Remote Address: ").append(request.getRemoteAddress()).append("\n");
+            sb.append("|Local Address: ").append(request.getLocalAddress()).append("\n");
+            sb.append("|SslInfo: ").append(request.getSslInfo()).append("\n");
+            sb.append("|Id: ").append(request.getId()).append("\n");
             sb.append("+---------------------------> response : ").append(response.getStatusCode()).append("\n");
-            return chain.filter(exchange).then(Mono.fromRunnable(()->{
+            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
                 log.info("{}", sb.toString());
             }));
         });

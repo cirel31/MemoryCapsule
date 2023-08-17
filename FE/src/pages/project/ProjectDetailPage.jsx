@@ -279,7 +279,7 @@ const ProjectDetailPage = () => {
                         </div>
                     }
                     <div className="detail_project_history_article_imgbox">
-                      {article.images ? (
+                      {article.images.length >= 1 ? (
                           <img
                             src={article.images[imgNum[id] || 0]}
                             alt="서버 이미지를 불러올 수 없습니다"
