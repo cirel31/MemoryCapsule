@@ -159,7 +159,7 @@ const SendPresentPage = () => {
         ))}
       </div>
       <div>
-        <button id="kakao-share" className="kakao_share" onClick={() => window.location.reload()}>
+        <button id="kakao-share" className="kakao_share">
           <p>카카오톡으로 공유하기</p>
           <img
             src={kakao_1}
