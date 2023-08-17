@@ -11,12 +11,35 @@ import stamp_sad from "../../assets/images/stamp/stamp_sad.svg";
 import stamp_sick from "../../assets/images/stamp/stamp_sick.svg";
 import stamp_soso from "../../assets/images/stamp/stamp_soso.svg";
 import stamp_wow from "../../assets/images/stamp/stamp_wow.svg";
-import present_bg0 from "../../assets/images/present/present_bg1.svg"
-import present_bg1 from "../../assets/images/present/present_bg2.svg"
-import present_bg2 from "../../assets/images/present/present_bg3.svg"
-import present_bg3 from "../../assets/images/present/present_bg4.svg"
+import present_bg0 from "../../assets/images/present/present_bg0.svg"
+import present_bg1 from "../../assets/images/present/present_bg1.svg"
+import present_bg2 from "../../assets/images/present/present_bg2.svg"
+import present_bg3 from "../../assets/images/present/present_bg3.svg"
+import present_bg4 from "../../assets/images/present/present_bg4.svg"
+import present_bg5 from "../../assets/images/present/present_bg5.svg"
+import present_bg6 from "../../assets/images/present/present_bg6.svg"
 
 const SendPresentPage = () => {
+  
+  const randomFunc = () => {
+    return Math.floor(Math.random() * 5);
+  }
+  
+  const decos = [present_bg1,present_bg3,present_bg0];
+  
+  function getRandomImage() {
+    const randomIndex1 = Math.floor(Math.random() * decos.length);
+    return decos[randomIndex1];
+  }
+  const decos_2 = [present_bg4,present_bg0,present_bg5,present_bg6];
+  
+  function getRandomDeco() {
+    const randomIndex2 = Math.floor(Math.random() * decos_2.length);
+    return decos_2[randomIndex2];
+  }
+  
+  
+  
   const stamps = [
     {
       "id": 1,
@@ -82,18 +105,21 @@ const SendPresentPage = () => {
   return (
     <>
       <div className="present_body">
+        <img src={present_bg2} className="deco_bg"/>
         {datas.map((article, index) => (
           <div key={index} className="present_contents">
             
             {/*<img src={present_bg0} className="present_bg"/>*/}
             
-            <div className="present_content_0">
+            <div className={`present_content_${randomFunc()}`}>
+              
               <img
                 src={article.images[0]}
                 alt="이미지 없음"
                 className="contents_img"
                 onError={(e) => {e.target.src = kokona}}
               />
+              <img src={getRandomDeco()} className={`deco${randomFunc()}`}/>
               <div className="content_group">
                 <div>
                   <img
@@ -109,22 +135,28 @@ const SendPresentPage = () => {
                   className="stamps"
                 />
                 <p>{article.content}</p>
+                <img src={getRandomImage()} className="deco_1"/>
               </div>
               
             </div>
             
+            {article.images[1] && (
+              <div>
+                {article.images.slice(1).map((image, index) => (
+                  <div className={`photo_${randomFunc()}`}>
+                    <img
+                      key={index+1}
+                      src={image}
+                      alt="이미지 없음"
+                      onError={(e) => {e.target.src = kokona}}
+                    />
+                  </div>
+                  
+                ))}
+              </div>
+            ) }
             
-            
-            {/*<div className="photo_1">*/}
-            {/*  {article.images.slice(1).map((image, index) => (*/}
-            {/*    <img*/}
-            {/*      key={index+1}*/}
-            {/*      src={image}*/}
-            {/*      alt="이미지 없음"*/}
-            {/*      onError={(e) => {e.target.src = kokona}}*/}
-            {/*    />*/}
-            {/*  ))}*/}
-            {/*</div>*/}
+           
             
             
             
