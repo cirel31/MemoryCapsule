@@ -272,28 +272,32 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                                     className="modal_inner_title_input"
                                     onChange={titleChange}
                                 />
-                                : <h2 className="modal_inner_title">
-                                    <div>
-                                        {post.reviewTitle}
-                                    </div>
+                                :
+                                <div>
+                                    <h2 className="modal_inner_title">
+                                        <div>
+                                            {post.reviewTitle}
+                                        </div>
+                                    </h2>
+                                    <div className="review_list_nickname">[ {post.writerNickname} ]</div>
                                     <div className="review_list_heart">
                                         <p className="heartCnt">
                                             {post.reviewLike}
                                         </p>
                                         {
                                             post.liked
-                                            ?
-                                            <button onClick={likeDelete} className="heartButton liked">
-                                                <img src={heart} alt="heart"/>
-                                            </button>
-                                            :
-                                            <button onClick={likeAdd} className="heartButton unliked">
-                                                <img src={heart} alt="heart"/>
-                                            </button>
+                                                ?
+                                                <button onClick={likeDelete} className="heartButton liked">
+                                                    <img src={heart} alt="heart"/>
+                                                </button>
+                                                :
+                                                <button onClick={likeAdd} className="heartButton unliked">
+                                                    <img src={heart} alt="heart"/>
+                                                </button>
                                         }
                                     </div>
                                     <hr/>
-                                </h2>
+                                </div>
                             }
                             {
                                 state
