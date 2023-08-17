@@ -107,12 +107,11 @@ const InviteProject = () => {
        <div className="invite_body">
          <div>
            {inviteLists.length === 0 && (
-             <p>초대가 없어요....</p>
+             <p>아직 초대가 없어요....</p>
            )
            }
            {inviteLists.map((content, idx) => (
              <div key={idx+1} onClick={() => showAlert(content)} className="letters">
-                asdasdasdasd
              </div>
            ))}
          </div>

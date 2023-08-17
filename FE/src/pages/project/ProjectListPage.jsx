@@ -117,7 +117,7 @@ const ProjectListPage = () => {
   
   const handleSearchChange = (event) => {
     event.preventDefault()
-    // setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value);
   };
   
   Modal.setAppElement("#root");
@@ -136,7 +136,7 @@ const ProjectListPage = () => {
             onChange={handleSearchChange}
             placeholder="진행 중인 프로젝트 검색..."
           />
-          <button onClick={handleSearchChange}><img src={search_picto}/></button>
+          <button><img src={search_picto}/></button>
         </div>
         <div className="decoration_1"></div>
         <div className="decoration_2"></div>

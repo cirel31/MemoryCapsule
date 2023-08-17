@@ -492,6 +492,13 @@
     align-content: center;
     padding: 0 50px 0 50px;
 
+    & > p {
+      font-family: "IBM Plex Sans KR", sans-serif;
+      font-size: 1.5vw;
+      font-weight: 600;
+      color: var(--brand3_main);
+      text-align: center;
+    }
 
     &::-webkit-scrollbar {
       height: 10px;

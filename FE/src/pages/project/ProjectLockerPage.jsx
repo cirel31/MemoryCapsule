@@ -102,7 +102,7 @@ const ProjectLockerPage = () => {
           onChange={handleSearchChange}
           placeholder="완료된 프로젝트 검색..."
         />
-        <button onClick={handleSearchChange}><img src={search_picto}/></button>
+        <button><img src={search_picto}/></button>
       </div>
       <div className="decoration_1"></div>
       <div className="decoration_2"></div>
