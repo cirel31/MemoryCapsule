@@ -69,7 +69,7 @@ const ProjectForm = () => {
   }
   const handleStartDateChange = (date) => {
     setStartDate(date);
-    setEndDate(moment(date).add(1, 'days').toDate())
+    setEndDate(moment(date).add(7, 'days').toDate())
   };
 
   const handleEndDateChange = (date) => {
@@ -273,7 +273,7 @@ const ProjectForm = () => {
                     value={endDate}
                     onChange={handleEndDateChange}
                     onClickDay={() => setShowEndDateModal(false)}
-                    minDate={startDate ? new Date(startDate.getTime() + 86400000) : undefined}
+                    minDate={startDate ? new Date(startDate.getTime() + 604800000) : undefined}
                     maxDate={oneYearFromNow}
                     dateFormat="yyyy-MM-dd"
                   />

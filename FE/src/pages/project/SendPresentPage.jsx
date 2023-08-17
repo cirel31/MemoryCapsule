@@ -11,6 +11,10 @@ import stamp_sad from "../../assets/images/stamp/stamp_sad.svg";
 import stamp_sick from "../../assets/images/stamp/stamp_sick.svg";
 import stamp_soso from "../../assets/images/stamp/stamp_soso.svg";
 import stamp_wow from "../../assets/images/stamp/stamp_wow.svg";
+import present_bg0 from "../../assets/images/present/present_bg1.svg"
+import present_bg1 from "../../assets/images/present/present_bg2.svg"
+import present_bg2 from "../../assets/images/present/present_bg3.svg"
+import present_bg3 from "../../assets/images/present/present_bg4.svg"
 
 const SendPresentPage = () => {
   const stamps = [
@@ -79,38 +83,49 @@ const SendPresentPage = () => {
     <>
       <div className="present_body">
         {datas.map((article, index) => (
-          <div key={index} className={`present_contents_${index}`}>
-            <div>
-              <img
-                src={article.userVo.imgUrl}
-                alt="이미지없음"
-              />
-              <p>{article.userVo.nickname}</p>
-
-              
-              <p>{article.content}</p>
-              <img
-                src={stamps[article.stamp-1].stamp}
-                alt="이미지 없음"
-              />
+          <div key={index} className="present_contents">
+            
+            {/*<img src={present_bg0} className="present_bg"/>*/}
+            
+            <div className="present_content_0">
               <img
                 src={article.images[0]}
                 alt="이미지 없음"
+                className="contents_img"
                 onError={(e) => {e.target.src = kokona}}
               />
+              <div className="content_group">
+                <div>
+                  <img
+                    src={article.userVo.imgUrl}
+                    alt="이미지없음"
+                    className="article_profile"
+                  />
+                  <p>{article.userVo.nickname}</p>
+                </div>
+                <img
+                  src={stamps[article.stamp-1].stamp}
+                  alt="이미지 없음"
+                  className="stamps"
+                />
+                <p>{article.content}</p>
+              </div>
               
             </div>
             
-            <div>
-              {article.images.slice(1).map((image, index) => (
-                <img
-                  key={index+1}
-                  src={image}
-                  alt="이미지 없음"
-                  onError={(e) => {e.target.src = kokona}}
-                />
-              ))}
-            </div>
+            
+            
+            {/*<div className="photo_1">*/}
+            {/*  {article.images.slice(1).map((image, index) => (*/}
+            {/*    <img*/}
+            {/*      key={index+1}*/}
+            {/*      src={image}*/}
+            {/*      alt="이미지 없음"*/}
+            {/*      onError={(e) => {e.target.src = kokona}}*/}
+            {/*    />*/}
+            {/*  ))}*/}
+            {/*</div>*/}
+            
             
             
           </div>
