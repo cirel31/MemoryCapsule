@@ -149,7 +149,6 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                 }
             })
             .then((response) => {
-                console.log('리뷰 좋아요 누르기 성공');
                 showAlert("리뷰 좋아요 누르기 성공되었습니다.");
 
                 const nextPost = {
@@ -179,7 +178,6 @@ const ReviewModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                 }
             })
             .then((response) => {
-                console.log('리뷰 좋아요 취소 성공');
                 showAlert("리뷰 좋아요 취소 성공되었습니다.");
 
                 const nextPost = {

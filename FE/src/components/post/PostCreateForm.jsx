@@ -20,19 +20,16 @@ const PostCreateForm = (pageDetail, pageLabel, staus) => {
       }
     });
     setPhotos(newImageUrlLists);
-    console.log(photos)
   };
 
   const deletePhoto = (idx) => {
     URL.revokeObjectURL(photos[idx])
     const newPhotos = photos.filter((photo, index) => index !== idx)
     setPhotos(newPhotos)
-    console.log(photos)
   }
 
   const handleTextChange = (e) => {
     const value = e.target.value;
-    console.log("[handleTextChange] : ", value);
     if (value.length > 5000) {
       setText(value.slice(0, 5000));
     } else {
@@ -42,15 +39,6 @@ const PostCreateForm = (pageDetail, pageLabel, staus) => {
 
   const createArticle = (e) => {
     e.preventDefault();
-    console.log("[createArticle]");
-
-    if (pageLabel.pageLabel === "notice") {
-      console.log("Create notice Post");
-    } else if (pageLabel.pageLabel === "review") {
-      console.log("Create review Post");
-    } else {
-      console.log("잘못된 요청입니다.");
-    }
   }
 
   return (

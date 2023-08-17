@@ -61,7 +61,6 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                     },
             })
             .then((response) => {
-                console.log('게시글 작성 POST');
                 setSelectedPost([]);
                 showAlert("게시글이 등록되었습니다.");
                 closeModal()
@@ -90,7 +89,6 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                 }
                 )
                 .then((response) => {
-                    console.log('게시글 삭제 (Delete)');
                     showAlert("게시글이 삭제되었습니다.");
                     closeModal()
                 })
@@ -111,8 +109,6 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
      * }
      */
     const putPostDataEdit = () => {
-        console.log("[putPostDataEdit]");
-
         const modifyDto = {
             idx: parseInt(post.noticeIdx, 10),
             title: post.noticeTitle,
@@ -135,7 +131,6 @@ const NoticeModal = ({selectedPost, setSelectedPost, modalIsOpen, setModalIsOpen
                     }
                 })
                 .then((response) => {
-                    console.log('게시글 수정 성공');
                     showAlert("게시글이 수정되었습니다.");
                     closeModal()
                 })
