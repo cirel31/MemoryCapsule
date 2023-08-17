@@ -38,8 +38,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
                 }
             })
             .then((response) => {
-                console.log('서버로부터 친구 추가 성공');
-                // console.log("friend.status : ", friend.status)
                 showAlert("success", "친구 추가되었습니다.");
                 setCurStatus(2);
             })
@@ -75,8 +73,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
                 }
             })
             .then((response) => {
-                console.log('서버로부터 친구 추가 요청 취소 성공');
-                // console.log("friend.status : ", friend.status);
                 showAlert("success", "친구 추가 요청 취소 성공입니다.");
                 setCurStatus(0);
             })
@@ -112,8 +108,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
                 }
             })
             .then((response) => {
-                console.log('서버로부터 친구 추가 요청 거절 성공');
-                // console.log("friend.status : ", friend.status);
                 showAlert("success", "친구 추가 요청 거절 성공입니다.");
                 setCurStatus(0);
             })
@@ -145,8 +139,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
                 }
             })
             .then((response) => {
-                console.log('친구 추가 성공');
-                // console.log("friend.status : ", friend.status)
                 showAlert("success", "친구 추가 성공입니다.");
                 setCurStatus(1);
             })
@@ -178,8 +170,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
                 }
             })
             .then((response) => {
-                console.log('친구 삭제 성공');
-                // console.log("friend.status : ", friend.status);
                 setCurStatus(0);
                 setFriendModalIsOpen(2);    //친구 삭제
             })
@@ -205,7 +195,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
         }
 
         if (from === "FriendList"){
-            // console.log("status :", status)
             switch (curStatus) {
                 case 1 :    // 친구 삭제
                     return <button className="status_button discard_friend" value={friend.userId} onClick={discardFriend}> <img src={person} alt="now friend img" className="discard_friend_img"/> </button>

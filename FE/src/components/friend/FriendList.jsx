@@ -61,7 +61,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
                 }
             })
             .then((response) => {
-                console.log('친구 상세목록 불러오기 성공');
                 setRowFriends(response.data);
                 setFriends(response.data);
             })

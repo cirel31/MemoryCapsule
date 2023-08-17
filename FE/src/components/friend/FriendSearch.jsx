@@ -45,7 +45,6 @@ const FriendSearch = ({friends, setFriends, select, setSelect, setSelectPage}) =
                 }
             })
             .then((response) => {
-                console.log('서버로부터 친구목록 가져오기 성공');
                 setFriends([response.data]);
                 setCurStatus(response.data.status);
             })

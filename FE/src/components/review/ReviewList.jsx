@@ -41,7 +41,6 @@ const ReviewList = ({page, size}) => {
             },
         })
             .then((response) => {
-              console.log('게시글 선택 (size, page)');
               setPostList(response.data);
             })
             .catch((error) => {
