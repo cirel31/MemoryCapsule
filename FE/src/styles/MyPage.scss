@@ -572,3 +572,23 @@
   }
 
 }
+.kakao_share {
+  width: 20vw;
+  height: 4vw;
+  margin: 5% 0 15% 0;
+  background-color: #FFC045;
+  border-radius: 4rem;
+  border: none;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: 15vw 5vw;
+  cursor: pointer;
+  & > p {
+    font-family: "IBM Plex Sans KR",sans-serif;
+    color: var(--font_gray_main);
+    font-size: 1.2vw;
+    margin: 0 5% 0 5%;
+    font-weight: 600;
+  }
+}

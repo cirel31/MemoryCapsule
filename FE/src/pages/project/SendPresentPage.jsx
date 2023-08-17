@@ -18,7 +18,7 @@ import present_bg3 from "../../assets/images/present/present_bg3.svg"
 import present_bg4 from "../../assets/images/present/present_bg4.svg"
 import present_bg5 from "../../assets/images/present/present_bg5.svg"
 import present_bg6 from "../../assets/images/present/present_bg6.svg"
-
+import kakao_1 from "../../assets/images/home/kakaotalk_logo.svg"
 const SendPresentPage = () => {
   
   const randomFunc = () => {
@@ -164,9 +164,10 @@ const SendPresentPage = () => {
         ))}
       </div>
       <div>
-        <button id="kakao-share">
+        <button id="kakao-share" className="kakao_share">
+          <p>카카오톡으로 공유하기</p>
           <img
-            src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"
+            src={kakao_1}
             alt="카카오링크 보내기 버튼"
           />
         </button>
