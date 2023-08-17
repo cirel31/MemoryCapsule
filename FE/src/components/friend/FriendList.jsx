@@ -32,17 +32,12 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     }, []);
 
     useEffect(() => {
-        getDetailedFriendList();
-    }, [select]);
-
-    useEffect(() => {
         setNewFriends(rowFriends.filter((curFriend) => {
             return curFriend.status !== 1;
         }));
     }, [rowFriends])
 
     useEffect(() => {
-        console.log(toggle)
         if (toggle) {
             setFriends(newFriends)
         } else {
@@ -78,15 +73,11 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
 
     // 검색
     const handleFriendData = (e) => {
-        console.log("[handleFriendData]");
         e.preventDefault();
         const id = form.id.toLowerCase();
         const search = form.search;
 
         if (id === "") {
-            for (let i = 0; i < rowFriends.length; i++) {
-                console.log(rowFriends[i].name);
-            }
             setFriends(rowFriends);
         } else {
             setFriends([]);
@@ -98,7 +89,6 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
     };
 
     const handleChange = (updatedForm) => {
-        console.log("[handleChange]");
         setForm(updatedForm);
     };
 
@@ -120,7 +110,7 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
             <div className="search_info">
                 <div className="friend_counter">
                     <div className="friend_counter_text">등록된 친구</div>
-                    <div className="friend_counter_text">{friends.length}</div>
+                    <div className="friend_counter_text">{friends.length - newFriends.length}</div>
                 </div>
                 <div className="friend_form">
                     <FriendForm
@@ -143,7 +133,7 @@ const FriendList = ({rowFriends, setRowFriends, select, setSelect, setSelectPage
             </div>
             <input type="checkbox" id="toggle" onChange={() => toggleState()} hidden/>
             <label htmlFor="toggle" className="toggleSwitch">
-                <span className="toggleButton"></span>
+                <span className="toggleButton">{newFriends.length}</span>
             </label>
             <div className="friendList">
                 <div className="friendListItems">

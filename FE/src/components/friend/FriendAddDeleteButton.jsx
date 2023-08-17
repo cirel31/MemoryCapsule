@@ -21,7 +21,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
      * 1. 친구 추가
      * */
     const addRequestFriend = () => {
-        console.log("[addRequestFriend]");
         const accessToken = sessionStorage.getItem("accessToken")
         const host_id = parseInt(sessionStorage.getItem("userIdx"), 10);
 
@@ -32,8 +31,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             guest_id = parseInt(friend.idx, 10);
         }
 
-        console.log(host_id, guest_id)
-        //https://i9a608.p.ssafy.io:8000/friend/add?guest_id=1014&host_id=2
         axios.post(`${baseURL}${API}/add?guest_id=${guest_id}&host_id=${host_id}`, null,
             {
                 headers: {
@@ -42,7 +39,7 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             })
             .then((response) => {
                 console.log('서버로부터 친구 추가 성공');
-                console.log("friend.status : ", friend.status)
+                // console.log("friend.status : ", friend.status)
                 showAlert("success", "친구 추가되었습니다.");
                 setCurStatus(2);
             })
@@ -57,7 +54,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
      * 2. 친구 추가 요청 취소
      * */
     const addRequestDiscardFriend = () => {
-        console.log("[addRequestFriend]");
         const accessToken = sessionStorage.getItem("accessToken")
         const host_id = parseInt(sessionStorage.getItem("userIdx"), 10);
 
@@ -68,8 +64,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             guest_id = parseInt(friend.idx, 10);
         }
 
-        console.log(host_id, guest_id)
-        //
         axios.delete(`${baseURL}${API}/add`,
             {
                 params: {
@@ -82,7 +76,7 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             })
             .then((response) => {
                 console.log('서버로부터 친구 추가 요청 취소 성공');
-                console.log("friend.status : ", friend.status);
+                // console.log("friend.status : ", friend.status);
                 showAlert("success", "친구 추가 요청 취소 성공입니다.");
                 setCurStatus(0);
             })
@@ -97,7 +91,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
      * 2. 친구 추가 요청 거절
      * */
     const addRequestRejectFriend = () => {
-        console.log("[addRequestFriend]");
         const accessToken = sessionStorage.getItem("accessToken")
         const host_id = parseInt(sessionStorage.getItem("userIdx"), 10);
 
@@ -108,8 +101,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             guest_id = parseInt(friend.idx, 10);
         }
 
-        console.log(host_id, guest_id)
-        //
         axios.delete(`${baseURL}${API}/request`,
             {
                 params: {
@@ -122,7 +113,7 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             })
             .then((response) => {
                 console.log('서버로부터 친구 추가 요청 거절 성공');
-                console.log("friend.status : ", friend.status);
+                // console.log("friend.status : ", friend.status);
                 showAlert("success", "친구 추가 요청 거절 성공입니다.");
                 setCurStatus(0);
             })
@@ -137,7 +128,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
      * 3. 친구 추가
      * */
     const addFriend = () => {
-        console.log("[addRequestFriend]");
         const accessToken = sessionStorage.getItem("accessToken")
         const host_id = parseInt(sessionStorage.getItem("userIdx"), 10);
 
@@ -148,8 +138,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             guest_id = parseInt(friend.idx, 10);
         }
 
-        console.log(host_id, guest_id)
-        //https://i9a608.p.ssafy.io:8000/friend/add?guest_id=1014&host_id=2
         axios.put(`${baseURL}${API}/request?guest_id=${guest_id}&host_id=${host_id}`, null,
             {
                 headers: {
@@ -158,7 +146,7 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             })
             .then((response) => {
                 console.log('친구 추가 성공');
-                console.log("friend.status : ", friend.status)
+                // console.log("friend.status : ", friend.status)
                 showAlert("success", "친구 추가 성공입니다.");
                 setCurStatus(1);
             })
@@ -191,7 +179,7 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
             })
             .then((response) => {
                 console.log('친구 삭제 성공');
-                console.log("friend.status : ", friend.status);
+                // console.log("friend.status : ", friend.status);
                 setCurStatus(0);
                 setFriendModalIsOpen(2);    //친구 삭제
             })
@@ -209,8 +197,6 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
     };
 
     function statusButton() {
-        console.log("from : ", from);
-
         const host_id = parseInt(sessionStorage.getItem("userIdx"), 10);
         const guest_id = parseInt(friend.userId, 10);
 
@@ -219,7 +205,7 @@ const FriendAddDeleteButton = ({friend, status, curStatus, setCurStatus, from}) 
         }
 
         if (from === "FriendList"){
-            console.log("status :", status)
+            // console.log("status :", status)
             switch (curStatus) {
                 case 1 :    // 친구 삭제
                     return <button className="status_button discard_friend" value={friend.userId} onClick={discardFriend}> <img src={person} alt="now friend img" className="discard_friend_img"/> </button>

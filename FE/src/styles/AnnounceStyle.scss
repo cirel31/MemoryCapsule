@@ -252,6 +252,7 @@
       font-size: 15pt;
       color: var(--font_gray_main);
       overflow-y: scroll;
+      white-space:pre-line;
 
       scroll-behavior: smooth;
       scrollbar-gutter: stable;
