@@ -83,8 +83,6 @@ const SendPresentPage = () => {
   useEffect(() => {
     axios.get(`${baseURL}${subURL}/${giftUrl.giftUrl}`)
       .then((response) => {
-        console.log(`${baseURL}${subURL}/${giftUrl.giftUrl}`)
-        console.log(response)
         setDatas(response.data.articleVos)
       })
       .catch(() => {
@@ -98,7 +96,7 @@ const SendPresentPage = () => {
     Kakao.Share.createScrapButton({
       container: '#kakao-share',
       requestUrl: `https://memorycapsule.site/project/present/${giftUrl.giftUrl}`,
-      templateId: 97142,
+      // templateId: 97142,
     })
   }, []);
   
@@ -112,7 +110,7 @@ const SendPresentPage = () => {
             {/*<img src={present_bg0} className="present_bg"/>*/}
           
             <div className={`present_content_${randomFunc()}`}>
-              <p className="date">{article.created.slice(0, 4)}년 {article.created.slice(5, 7)}월 {article.created.slice(11, 13)}일</p>
+              <p className="date">{article.created.slice(0, 4)}년 {article.created.slice(5, 7)}월 {article.created.slice(8, 10)}일</p>
               <img
                 src={article.images[0]}
                 alt="이미지 없음"
@@ -157,15 +155,11 @@ const SendPresentPage = () => {
               </div>
             ) }
             
-           
-            
-            
-            
           </div>
         ))}
       </div>
       <div>
-        <button id="kakao-share" className="kakao_share">
+        <button id="kakao-share" className="kakao_share" onClick={() => window.location.reload()}>
           <p>카카오톡으로 공유하기</p>
           <img
             src={kakao_1}
