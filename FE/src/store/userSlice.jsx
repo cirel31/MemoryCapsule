@@ -6,7 +6,6 @@ export const loginUserThunk = createAsyncThunk(
     'user/loginUser',
     async (loginData, { dispatch, rejectWithValue }) => {
       const loginURL = 'https://i9a608.p.ssafy.io:8000/user/login'
-      console.log("로그인 slice 까지는 접근함")
       try {
         const response = await axios.post(`${loginURL}`, loginData, {
           headers: { "Content-Type": "application/json" }
