@@ -10,11 +10,11 @@ Visit and enjoy your memory! <br>
 ## 빌드/배포 시나리오
 
 - 전체 프로젝트 구조
+https://lab.ssafy.com/s09-webmobile2-sub2/S09P12A608
+![docker-ver](![docker-ver](/uploads/11fdd5f1804cba99bb01a6daca655258/docker-ver.jpg))
 
-![docker-ver](https://lab.ssafy.com/yimo22/test/uploads/bfebd65f423ab98e6cf2e401ec751d14/docker-ver.jpg)
 
-
-![archi_internal](https://lab.ssafy.com/yimo22/test/uploads/f50a31b7d624b93cc5c945e51bace7ac/archi_internal.png)
+![archi_internal](![archi_internal](/uploads/ca25801203648e2d14c14cfee4da3fd8/archi_internal.png))
 
 
 - 파일 구조
@@ -227,9 +227,9 @@ http://i9a608.p.ssafy.io:8001
 
 ## DB 덤프파일 최신본
 
-![schema](https://lab.ssafy.com/yimo22/test/uploads/bd12d0699e6286ac9358a6b5324dd48f/schema.png)
+![schema](/uploads/96905064a77476cedf0d0e93e29d43e6/schema.png)
 
-[santa.sql](https://lab.ssafy.com/yimo22/test/uploads/46b72ef31364131797a50a6e15d404c3/santa.sql)
+[santa__1_.sql](/uploads/17ef5e8952ea769a40c282b686826dc5/santa__1_.sql)
 
 
 ## 시연 시나리오
@@ -244,21 +244,22 @@ http://i9a608.p.ssafy.io:8001
 
 클릭을 해서 로그인을 해볼게요
 
-![초기화면](https://lab.ssafy.com/yimo22/test/uploads/eac36179f1bf81a4cbcacae1faada0fb/초기화면.png)
+![초기화면](/uploads/9b5c8d58c84b0958d16de420621820b2/초기화면.png)
 
 
-![로그인](https://lab.ssafy.com/yimo22/test/uploads/1a3f9154170dcdacd2c5ff1be7a0396c/로그인.png)
+![로그인](/uploads/cba78be6da608a2a51b07348c363d792/로그인.png)
+
 
 로그인은 두가지 방법을 사용해서 할 수 있습니다.
 
-![회원가입-2](https://lab.ssafy.com/yimo22/test/uploads/202ac2c4a2d6c6b005a6fe3d60f12771/회원가입-2.png)
+![회원가입-2](/uploads/0e042cba2b25de023149f9eb4e756d47/회원가입-2.png)
 
 자체 회원가입을 해볼겠습니다.!
 
+![이메일인증-1](/uploads/40259008391a2338cb60ecfab8070af1/이메일인증-1.png)
 
-![이메일인증-1](https://lab.ssafy.com/yimo22/test/uploads/543a7f10734b5c961e7afb5b6f71bdde/이메일인증-1.png)
+![이메일인증-2](/uploads/09f07b47cfb8a0526e20ac15165e09bb/이메일인증-2.png)
 
-![이메일인증-2](https://lab.ssafy.com/yimo22/test/uploads/9f01e53e2a8dd7a58ce7d488690cc2c4/이메일인증-2.png)
 
 이메일은 중복체크는 반드시 확인해주세요!
 
@@ -268,20 +269,19 @@ http://i9a608.p.ssafy.io:8001
 
 ### Main Page
 
-![로그인성공](https://lab.ssafy.com/yimo22/test/uploads/6a9224b118ff7a8eb9a0bdedbc061f0e/로그인성공.png)
+![로그인성공](/uploads/8ead561637edeff3bec8302eb100ae24/로그인성공.png)
 
 로그인을 하면 예쁜 메인페이지를 확인할 수 있습니다.
 시작하기 버튼을 통해서 메인페이지를 접속해 보겠습니다.
 
-
-![메인페이지](https://lab.ssafy.com/yimo22/test/uploads/025d0f0baa95d23ea253a2f4559bb6d4/메인페이지.png)
+![메인페이지](/uploads/44623b18941956a01895bb5ff51498b2/메인페이지.png)
 
 메인페이지를 통해서 현재 유저가 진행중인 프로젝트 목록을 확인할 수 있습니다.
 
 
 ### Navi Bar
 
-![네비바](https://lab.ssafy.com/yimo22/test/uploads/9f9d10288463aa32d07717409fb9665b/네비바.png)
+![네비바](/uploads/7059380e0b9a2b530a124e0ff3fac5bb/네비바.png)
 
 네비바를 통해서 다음의 페이지로 이동할 수 있습니다.
    - 마이페이지
@@ -312,7 +312,7 @@ http://i9a608.p.ssafy.io:8001
 
 다시 메인페이지로 돌아와서, "새로운 캡슐 생성하기" 버튼을 통해서 새로운 프로젝트를 생성해보겠습니다.
 
-![프로젝트생성0](https://lab.ssafy.com/yimo22/test/uploads/b02a1383fec7dfcdf4e19a6a80875ae1/프로젝트생성0.png)
+![프로젝트_생성](/uploads/eb2ef3154250207a39140defc59891dd/프로젝트_생성.png)
 
 프로젝트 생성은 대표이미지/제목/기간/설명/프로젝트타입 의 5가지를 설정을 통해서 생성할 수 있습니다. 
 
@@ -324,14 +324,14 @@ http://i9a608.p.ssafy.io:8001
 
 또한 "혼자할게요" 와 "여러명이서 할게요!" 를 통해서 개인/그룹 프로젝트를 설정할 수 있습니다. 
 
-![그룹_친구추가0](https://lab.ssafy.com/yimo22/test/uploads/12aeecb5beaa65bb5821ded4646a3cdc/그룹_친구추가0.png)
+![그룹_친구추가0](/uploads/9f72718e50ffbc7d7bd4b96d9bdfdca3/그룹_친구추가0.png)
 
-![그룹친구추가1](https://lab.ssafy.com/yimo22/test/uploads/e2f776e24f2f3d34a4a169ac68465db9/그룹친구추가1.png)
+![그룹친구추가1](/uploads/73391ae71db2e5f8ed0dfcfa5d0502de/그룹친구추가1.png)
 
 "그룹프로젝트" 로 진행하는 경우, 친구추가(친구 이메일)을 통해서 친구를 추가할 수 있습니다.
 추가한 친구에 대해서 클릭을 통해서 이미 추가한 친구를 삭제하여 그룹생성 이전에 그룹원들을 관리할 수 있습니다.
 
-![달력팝업](https://lab.ssafy.com/yimo22/test/uploads/1279d430306f6b093164a4d4744d8124/달력팝업.png)
+![달력팝업](/uploads/7284bb8d10255a1ed202d0adaba916d0/달력팝업.png)
 
 제작기간을 선택하면 달력이 팝업되는데, 프로젝트의 시작일은 반드시 사용자 기준 오늘날짜 이후부터 설정이 가능하고 종료일은 반드시 시작일 + 1 일 이후로 설정이 가능합니다. 종료일이 시작일보다 앞서는 상황으로 프로젝트를 생성할 수 없습니다!
 
@@ -340,9 +340,9 @@ http://i9a608.p.ssafy.io:8001
 
 ### Project Detail
 
-![상세_페이지1](https://lab.ssafy.com/yimo22/test/uploads/d1ca759093b2ac4b89def901c73d8394/상세_페이지1.png)
+![상세_페이지1](/uploads/243fe4e4c04ae3753456833e93812e9a/상세_페이지1.png)
 
-![상세페이지2](https://lab.ssafy.com/yimo22/test/uploads/2f85078026dab103613f478c9cca9b86/상세페이지2.png)
+![상세페이지2](/uploads/fae80fb605d6d1bfb358661dd46b533e/상세페이지2.png)
 
 프로젝트 목록을 클릭해서 사용자는 프로젝트의 세부 내용을 확인할 수 있습니다. 또한 프로젝트 세부내용 내에서 캡슐의 진행도를 확인할 수 있습니다.
 
@@ -353,24 +353,24 @@ http://i9a608.p.ssafy.io:8001
 
 ### Project 내에 글작성
 
-![글작성1](https://lab.ssafy.com/yimo22/test/uploads/91bbac281f3d1c3f01b94b6a1e9a257d/글작성1.png)
+![글작성1](/uploads/25fc8f23a0ed85d0cbbb7a12489620f3/글작성1.png)
 
 프로젝트 내에서 글작성을 누르면, 위와같은 화면을 확인할 수 있습니다.
 사진추가 를 통해서 기본 사진 1장 업로드 가능하고 그 이상은 일정 포인트를 지불하여 추가 사진의 업로드가 가능합니다.(최대 4장)
 
 현재 SSAFY에서 많은것을 학습하고 있기에, 이미지는 싸피로 사진을 올려보겠습니다.
 
-![글작성2](https://lab.ssafy.com/yimo22/test/uploads/c221d9674b7afd7fad90bc731aec147e/글작성2.png)
+![글작성2](/uploads/f08a2ea5401198800a34f1ae319a7e93/글작성2.png)
 
 이후 오늘의 스탬프 (도장) 을 통해서 그날의 기분을 표현할 수 있습니다. 스탬프는 글 작성을 위해 반드시 필요하니 잊지말고 선택해주세요!
 
-![글작성3](https://lab.ssafy.com/yimo22/test/uploads/5b5de3015fe4315bd1ef287ea1450a9c/글작성3.png)
+![글작성3](/uploads/bf55978176bd5eb396e497ee321df9f1/글작성3.png)
 
-![글작성4](https://lab.ssafy.com/yimo22/test/uploads/67dd6219d84770053dc070611a3e02fe/글작성4.png)
+![글작성4](/uploads/32f7597c92f0b719d01768af74cfe184/글작성4.png)
 
 최종적으로 필자는 위와같은 글을 작성해보았습니다. 글은 최대 100글자까지 작성이 가능하기때문에 반드시 유의해주세요! 이제 이 글을 우측 상단의 "게시글 등록"을 통해서 등록을 진행해보겠습니다.
 
-![글작성5](https://lab.ssafy.com/yimo22/test/uploads/9e003a243254ba3eb7a5b7e5c2263b9c/글작성5.png)
+![글작성5](/uploads/1fb9d3c5d0c1490cf7b4f1685eed80b2/글작성5.png)
 
 게시글이 정상적으로 등록이 되면, 해당 프로젝트 자세히 보기 페이지로 이동이 됩니다.
 해당 페이지내에서 History 영역을 통해서 내가 작성한 글들만 확인을 할 수 있습니다.
@@ -378,11 +378,11 @@ http://i9a608.p.ssafy.io:8001
 
 ### 마이페이지
 
-![마이페이지1](https://lab.ssafy.com/yimo22/test/uploads/0a34bbc82e4fb6d6581d2e973da21ceb/마이페이지1.png)
+![마이페이지1](/uploads/f0dbfab780a644f8c3ea07c5a925e695/마이페이지1.png)
 
-![마이페이지2](https://lab.ssafy.com/yimo22/test/uploads/5edf4688753a5187be31bada691e8f97/마이페이지2.png)
+![마이페이지2](/uploads/4bce628e8f0b1e45848dfb21e7ab2a5b/마이페이지2.png)
 
-![마이페이지3](https://lab.ssafy.com/yimo22/test/uploads/d43321da202bc5e1de21b1247bbd1a66/마이페이지3.png)
+![마이페이지3](/uploads/79bbe1c9bcd1cb1aa7536f03e5bc38a6/마이페이지3.png)
 
 마이페이지를 통해서 유저는 이메일/닉네임, 친구등의 정보를 확인 할 수 있습니다.
 달력에서 내가 접속한 날짜들을 확인할 수 있고, 내가 진행/완료한 캡슐프로젝트들을 브리핑 받을 수 있습니다.
@@ -394,28 +394,29 @@ http://i9a608.p.ssafy.io:8001
 
 ### 친구기능
 
-![친구1](https://lab.ssafy.com/yimo22/test/uploads/dfe241557de9b7383cbbcfae9f8b8d05/친구1.png)
+![친구1](/uploads/fbdf6183d4d506d42c3da749cf9e0080/친구1.png)
 
 마이페이지의 친구목록 버튼을 통해서 친구들을 관리할 수 있습니다. 이떄 친구목록에는 "등록된 친구" 로, 총 몇명의 친구가 등록되어있는지 확인할 수 있습니다. 또한 검색을 통해서 이미 맺어진 친구들을 검색할 수 있습니다.
 
 이제 새로운 친구를 찾아, 친구 추가를 하겠습니다. 우층 상단의 "친구찾기" 버튼을 눌러 친구추가를 합니다.
 
-![친구2](https://lab.ssafy.com/yimo22/test/uploads/cab48eb0fd1673bea498575feb96878b/친구2.png)
+![친구2](/uploads/5dc1bca69432e65f0a15042318a55981/친구2.png)
 
 친구 검색창에 친구의 가입이메일을 검색하여 친구를 검색할 수 있고, 해당 친구에게 친구신청을 보낼 수 있습니다. 지금 상황은 "KJH@ssafy.com" 으로 검색한 유저를 검색하여, 친구신청까지 진행하겠습니다.
 
 
-![친구3](https://lab.ssafy.com/yimo22/test/uploads/fb392a94eaa50a270dfaa0adfa55564b/친구3.png)
+![친구3](/uploads/f66acf377d54c6629737e892f9bb8b20/친구3.png)
 
 친구신청을 성공적으로 수행하면, Success 와 함께 친구신청이 완료된 피드백을 받아볼 수 있습니다. 다시 친구목록으로 돌아가 친구목록을 확인해봅니다.
 
 
-![친구4](https://lab.ssafy.com/yimo22/test/uploads/cfa482afb6ed60e98b7c5e83f8547bc1/친구4.png)
+![친구4](/uploads/4d0e1dac9d0c6f9ad133a59d114666d4/친구4.png)
 
 친구목록에서 기존의 친구 1명과, 새로 친구신청을 한 유저를 확인할 수 있습니다. 친구프로필 우측의 아이콘 상태를 통해서 요청수락/ 요청 등의 상태를 확인할 수 있습니다.
 
 
-![친구5](https://lab.ssafy.com/yimo22/test/uploads/8fd479a96af956c0004cb7fe0239454d/친구5.png)
+
+![친구5](/uploads/fdef73c69c0e21d4f40a325833a4d4b4/친구5.png)
 
 이미 친구로 맺어져 있던, 요청을 수락한 친구의 오른쪽 아이콘을 누르면 위와같은 친구가 작성한 총 게시물 수 와 참여했던/참여중인 프로젝트의 총 수를 확인할 수 있습니다.
 
@@ -426,17 +427,17 @@ http://i9a608.p.ssafy.io:8001
 다음은 프로필 변경을 진행하겠습니다. 프로필 변경은 Navi 바 -> MyPage 로 이동하겠습니다.
 이동후, 우측 상단에 "프로필변경"을 통해 프로필을 변경할 수 있습니다.
 
-![프로필변경1](https://lab.ssafy.com/yimo22/test/uploads/01677f22be36ddf96c45895c85ec7457/프로필변경1.png)
+![프로필변경1](/uploads/7b7112db55b7a9c25a806b6ac091eeb3/프로필변경1.png)
 
 프로필변경을 클릭하여 들어오면, 기존 사용자가 사용하고 있던 프로필 사진과 닉네임이 업로드 됩니다. 이번 변경은 프로필을 "수원킹_after변경" 으로 프로필을 수정해보겠습니다.
 
 
-![프로필변경2](https://lab.ssafy.com/yimo22/test/uploads/76968cca77cfc7f5e7e87036ed657596/프로필변경2.png)
+![프로필변경2](/uploads/7e6ef4741e1577bf2b599ca8b9a0a196/프로필변경2.png)
 
 프로필을 수정한 후, 하단의 "프로필 변경" 을 통해서 프로필을 변경할 수 있습니다. 또한 비밀번호 변경도 진행할 수 있습니다.
 
 
-![프로필변경3](https://lab.ssafy.com/yimo22/test/uploads/edb8f6ab297653978b27bcb1adc0caa8/프로필변경3.png)
+![프로필변경3](/uploads/c112a7b492b9adc3ac0bf03731c9c95b/프로필변경3.png)
 
 프로필 수정을 누르면 자동으로 MyPage로 돌아오게 됩니다. 마이페이지에서 내가 수정한 프로필들이 정상적으로 변경되었음을 확인할 수 있습니다.
 
@@ -445,20 +446,23 @@ http://i9a608.p.ssafy.io:8001
 
 캡슐박스를 통해서 사용자는 지난 프로젝트(이미 완료된 프로젝트) 들을 확인하고 링크를 통해서 공유할 수 있습니다. 이를 확인하기 위해 "Navi Bar" > "Memory Capsule" 로 이동하겠습니다.
 
-![캡슐박스0](https://lab.ssafy.com/yimo22/test/uploads/becf25f1179a2c737998fd07edd4e6f1/캡슐박스0.png)
+![캡슐박스0](/uploads/a6558f380cc78f9dafad025164f5ad32/캡슐박스0.png)
 
 해당 페이지를 통해서 과거의 프로젝트 목록들을 확인할 수 있고, 클릭을 통해서 해당 프로젝트들을 상세히 다시보기를 진행할 수 있습니다.
 
-[여기에는 이제 최종적으로 나온 산출물 보여주기]
 
+![최종산출물1](/uploads/8d8387ace0efe9b3bec9d4e4aa4bac7d/최종산출물1.png)
 
-[여기에는 카카오톡을 통해서 공유하는 장면1 - 버튼 누르기 직전]
+![최종산출물2](/uploads/6e6248bb59d734bf9036d1e6ed702fed/최종산출물2.png)
 
-[여기에는 카카오톡을 통해서 공유하는 장면2 - 버튼 누른후 카카오 로그인]
+![최종산출물3](/uploads/b1c4dccdb08c1f03169947ccafdf9c32/최종산출물3.png)
 
-[여기에는 카카오톡을 통해서 공유하는 장면3 - 채팅방에서 공유]
+![최종산출물4](/uploads/7f124cad2dbe321de0e498eb20b6b953/최종산출물4.png)
 
-[여기에는 카카오톡을 통해서 공유하는 장면4 - 채팅방에서 보여지는 공유글]
+![최종산출물5](/uploads/a9f0eee4a531f75af75e6ee4a8cf9b5e/최종산출물5.png)
+
+![최종산출물6](/uploads/a2d93049031522183626a09c69f1e4a0/최종산출물6.png)
+
 
 해당 url 을 가지고 있는 모든 유저들이 선물페이지를 열람할 수 있습니다. 이미지, 텍스트, gif 등을 시간 순으로 아름답게 나열하여 사용자들이 쌓은 추억을 프로젝트에 참여했거나 공유 url을 받은 모든 유저들이 공감하고 추억할 수 있습니다.
 
@@ -466,8 +470,8 @@ http://i9a608.p.ssafy.io:8001
 
 ### 공지사항 및 리뷰
 
-![공지사항](https://lab.ssafy.com/yimo22/test/uploads/e55549c56e2e0756914cf67a869b981d/공지사항.png)
+![공지사항](/uploads/80921e999930d503a25553969b264b28/공지사항.png)
 
-![review](https://lab.ssafy.com/yimo22/test/uploads/20cce3985608e1c76822d0fe00e0a157/review.png)
+![review](/uploads/022f2f9ce0a6d8fd2b282dc74ec2058c/review.png)
 
 공지사항은 관리자에 의하여 긴급한 패치 소식이나 정보를 확인할 수 있는 게시글 페이지입니다. 또한 리뷰페이지를 통해서 사용자들을 이 서비스를 사용한 후기나 꿀팁등을 사용자들과 공유하며 글을 남길 수 있습니다.
