@@ -8,11 +8,6 @@ const FriendDetail = ({select, setSelect, closeFriendDetail}) => {
     const [curStatus, setCurStatus] = useState(select.status)
 
     useEffect(() => {
-        console.log("[useEffect] friends" , select);
-        console.log(select)
-    }, [curStatus]);
-
-    useEffect(() => {
         setCurStatus(select.status)
     }, [select])
 

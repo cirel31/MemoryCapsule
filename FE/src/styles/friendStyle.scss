@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
 
 .big_body {
+  font-family: "IBM Plex Sans KR", sans-serif;
   position: relative;
   width: 100%;
   display: grid;
@@ -275,6 +276,7 @@
 
 #toggle:checked ~ .toggleSwitch .toggleButton {
   left: calc(100% - 30px);
+  color: var(--brand1_main);
   background: #fff;
 }
 
@@ -282,6 +284,14 @@
   transition: all 0.2s ease-in;
 }
 
+.toggleButton{
+  font-family: "IBM Plex Sans KR", sans-serif;
+  font-weight: 800;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+}
 
 .friendList {
   width: 100%;
