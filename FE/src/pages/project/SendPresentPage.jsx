@@ -110,9 +110,9 @@ const SendPresentPage = () => {
           <div key={index} className="present_contents">
             
             {/*<img src={present_bg0} className="present_bg"/>*/}
-            
+          
             <div className={`present_content_${randomFunc()}`}>
-              
+              <p className="date">{article.created.slice(0, 4)}년 {article.created.slice(5, 7)}월 {article.created.slice(11, 13)}일</p>
               <img
                 src={article.images[0]}
                 alt="이미지 없음"
@@ -135,6 +135,7 @@ const SendPresentPage = () => {
                   className="stamps"
                 />
                 <p>{article.content}</p>
+             
                 <img src={getRandomImage()} className="deco_1"/>
               </div>
               

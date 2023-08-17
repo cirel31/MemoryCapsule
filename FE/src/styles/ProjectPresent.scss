@@ -630,3 +630,21 @@ body::-webkit-scrollbar-track {
   background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
   //display: none;
 }
+.date {
+  width: 13vw;
+  height: 4vw;
+  font-family: "IBM Plex Sans KR", sans-serif;
+  font-size: 1.2vw;
+  font-weight: 500;
+  color: var(--brand3_main);
+  position: absolute;
+  top: -15%;
+  left: 3%;
+  background-color: var(--backGround_main);
+  border-radius: 1rem 1rem 0 0;
+  display: grid;
+  text-align: center;
+  align-items: center;
+  outline: dashed 2px var(--brand3_main);
+  outline-offset: -0.5vw;
+}
