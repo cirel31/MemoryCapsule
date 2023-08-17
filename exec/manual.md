@@ -11,11 +11,9 @@ Visit and enjoy your memory! <br>
 
 - 전체 프로젝트 구조
 
-![docker-ver](![docker-ver](/uploads/11fdd5f1804cba99bb01a6daca655258/docker-ver.jpg))
+![docker-ver](/uploads/c5481466c7a6f1b95fd46bdab59d1ed3/docker-ver.jpg)
 
-
-![archi_internal](![archi_internal](/uploads/ca25801203648e2d14c14cfee4da3fd8/archi_internal.png))
-
+![archi_internal](/uploads/f34d6975a2cea0e2e94a9d733df8dc8c/archi_internal.png)
 
 - 파일 구조
 ```
