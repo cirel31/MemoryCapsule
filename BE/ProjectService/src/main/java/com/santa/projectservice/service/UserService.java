@@ -1,8 +1,7 @@
 package com.santa.projectservice.service;
 
-import com.santa.projectservice.dto.UserDto;
+import com.santa.projectservice.model.dto.UserDto;
 import com.santa.projectservice.exception.User.UserNotFoundException;
-import com.santa.projectservice.jpa.User;
 
 public interface UserService {
     /*

@@ -1,5 +1,5 @@
 server:
-  port: 8001
+  port: 8000
 
 spring:
   application:
@@ -7,9 +7,10 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:33060/santa
-    username: root
-    password: root
+    url: jdbc:mariadb://i9a608.p.ssafy.io:3306/santa?autoReconnect=true&useSSL=false
+    username: dev
+    password: asdf1234
+
   jpa:
     show-sql: true
     properties:
@@ -18,27 +19,24 @@ spring:
   redis:
     host: localhost
     port: 6379
-  security:
-    oauth2:
-      client:
-        registration:
-          kakao:
-            client-id: 50389ab406794f10677cfc8b7e3bcf4d
-            client-secret: bz2JnPOVnr8G9y907sRzdQIWGLcTbAr3
-            redirect-uri: http://localhost:8001/login/oauth2/code/kakao
-            client-authentication-method: POST # 카카오 접근시 고정값
-            authorization-grant-type: authorization_code
-            client-name: Kakao
-            scope:
-              - profile_nickname
-              - profile_image
-              - account_email
-        provider:
-          kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize  # 인가 코드
-            token-uri: https://kauth.kakao.com/oauth/token              # 토큰 받기
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
+
+oauth2:
+  client:
+    registration:
+      kakao:
+        client-id: 50389ab406794f10677cfc8b7e3bcf4d
+        client-secret: bz2JnPOVnr8G9y907sRzdQIWGLcTbAr3
+        redirect-uri: http://localhost:3000/login/kakao
+        authorization-grant-type: authorization_code
+        client-name: Kakao
+        scope:
+          - profile_nickname
+          - profile_image
+          - account_email
+        authorization-uri: https://kauth.kakao.com/oauth/authorize  # 인가 코드
+        token-uri: https://kauth.kakao.com/oauth/token              # 토큰 받기
+        user-info-uri: https://kapi.kakao.com/v2/user/me
+        user-name-attribute: id
 
 
 
@@ -56,8 +54,11 @@ eureka:
 
 logging:
   level:
+#    org.hibernate:
+#      type.descriptor.sql: trace # show parameter binding
+#      SQL: DEBUG
     com.example.user-service.client: DEBUG # Feign Client Logging 설정
-
+    org.springframework.security: DEBUG
 jwt:
   secret: asdfghjklqwertyuiopzxcvbnmasdfasdfweasdfwbzzgoooodItstootireddgdsasdfsawherhdsfbdfsgsadfsadvsvethegwfsdavbdfh
   token-validity-in-milliseconds: 100000000
@@ -68,3 +69,19 @@ management:
     web:
       exposure:
         include: refresh, health, beans, bus-refresh, info, metrics, prometheus # 포함시킬 내용들
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAQPOZGAOT652M75EC
+      secretKey: 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
+    stack:
+      auto: false
+    s3:
+      bucket: ssafysanta
+    region:
+      static: ap-northeast-2
+S3Url: https://ssafysanta.s3.ap-northeast-2.amazonaws.com/
+
+point:
+  init: 500

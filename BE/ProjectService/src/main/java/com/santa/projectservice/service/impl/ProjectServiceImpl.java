@@ -1,29 +1,41 @@
 package com.santa.projectservice.service.impl;
 
-import com.santa.projectservice.dto.ProjectDto;
-import com.santa.projectservice.dto.RegisterDto;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.santa.projectservice.exception.User.UserNotFoundException;
+import com.santa.projectservice.model.dto.ProjectDto;
+import com.santa.projectservice.model.dto.ProjectState;
+import com.santa.projectservice.model.dto.RegisterDto;
 import com.santa.projectservice.exception.project.ProjectNotAuthorizedException;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotFullfillException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
-import com.santa.projectservice.jpa.Project;
-import com.santa.projectservice.jpa.Register;
-import com.santa.projectservice.jpa.User;
-import com.santa.projectservice.repository.ProjectRepository;
-import com.santa.projectservice.repository.RegisterRepository;
-import com.santa.projectservice.repository.UserRepository;
+import com.santa.projectservice.model.jpa.*;
+import com.santa.projectservice.model.mongo.Invite;
+import com.santa.projectservice.repository.*;
+import com.santa.projectservice.service.FileUploadService;
 import com.santa.projectservice.service.ProjectService;
+import com.santa.projectservice.model.vo.ArticleVo;
+import com.santa.projectservice.model.vo.ProjectGiftVo;
+import com.santa.projectservice.model.vo.ProjectInfo;
+import com.santa.projectservice.model.vo.UserVo;
+import com.santa.projectservice.repository.util.UtilQuerys;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.PropertyValueException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,57 +43,76 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserRepository userRepository;
     private final RegisterRepository registerRepository;
     private final ProjectRepository projectRepository;
-    private final ModelMapper mapper;
+    private final ArticleRepository articleRepository;
+    private final FileUploadService fileUploadService;
+    private final InviteServiceImpl inviteService;
+    private final JPAQueryFactory queryFactory;
+    private QProject qProject = QProject.project;
+    private QRegister qRegister = QRegister.register;
+    private QArticle qArticle = QArticle.article;
+    private QUser qUser = QUser.user;
+    private QArticleImg qArticleImg = QArticleImg.articleImg;
+    private UtilQuerys utilQuerys;
 
     public ProjectServiceImpl(RegisterRepository registerRepository,
                               ProjectRepository projectRepository,
-                              UserRepository userRepository) {
-        this.mapper = new ModelMapper();
+                              UserRepository userRepository, ArticleRepository articleRepository, FileUploadService fileUploadService, InviteServiceImpl inviteService, EntityManager em, JPAQueryFactory queryFactory, UtilQuerys utilQuerys) {
+        this.articleRepository = articleRepository;
+        this.fileUploadService = fileUploadService;
+        this.inviteService = inviteService;
+        this.queryFactory = queryFactory;
+        this.utilQuerys = utilQuerys;
         this.registerRepository = registerRepository;
         this.projectRepository = projectRepository;
         PropertyMap<Register, RegisterDto> replyMapping = new PropertyMap<Register, RegisterDto>() {
             @Override
             protected void configure() {
-                map().setPjtId(source.getProject().getId());
+                map().setProjectId(source.getProject().getId());
                 map().setUserId(source.getUser().getId());
             }
         };
-        this.mapper.addMappings(replyMapping);
         this.userRepository = userRepository;
     }
 
     @Override
     @Transactional(rollbackOn =  RegisterMakeException.class)
-    public Long createProject(ProjectDto projectDto, List<Long> userList, Long Owner) throws RegisterMakeException, ProjectNotFullfillException{
-        Project project1 = Project.builder()
-                .content(projectDto.getContent())
-                .title(projectDto.getTitle())
-                .started(projectDto.getStarted())
-                .ended(projectDto.getEnded())
-                .build();
-        log.info(project1.toString());
+    public Long createProject(ProjectDto projectDto, List<Long> userList, Long Owner, MultipartFile image) throws RegisterMakeException, ProjectNotFullfillException, IOException {
+        // 이미지를 올린 다음에
+        String url = Optional.of(fileUploadService.upload(image)).orElseThrow(() -> new AmazonS3Exception("사진이 안올라갔음"));
+        // 프로젝트를  만들고
         Project project = null;
         try {
-            project = projectRepository.save(project1);
+            project = projectRepository.save(Project.builder()
+                    .content(projectDto.getContent())
+                    .title(projectDto.getTitle())
+                    .started(projectDto.getStarted())
+                    .imgUrl(url)
+                    .ended(projectDto.getEnded())
+                    .build());
         } catch (PropertyValueException e){
             throw new ProjectNotFullfillException("Title 혹은 Content가 비었습니다. ", e, e.getPropertyName());
         }
-        try{
-            Register register = new Register(
-                    userRepository.getReferenceById(Owner),
-                    project,
-                    true, false, false
-            );
-            registerRepository.save(register);
-            final Project regiProject = project;
-            userList.forEach(id -> {
-                User user = userRepository.getReferenceById(id);
-                registerRepository.save(new Register(user, regiProject, false, false, false));
-            });
-        } catch (DataAccessException e){
-            throw new RegisterMakeException("프로젝트 유저들을 초기화하는데 문제가 발생했습니다", e);
-        }
+        // 내가 주인인 레지스터 만들고
+        // 초대 생성
+        final Project regiProject = project;
+        User user = userRepository.findById(Owner).orElseThrow(() -> new UserNotFoundException("유저가 안찾아지네요"));
+        registerRepository.save(Register.OwnerRegister(user, project));
+        Optional.ofNullable(userList).ifPresent(
+                list -> list.forEach(id -> inviteService.createInvite(user, regiProject, id))
+        );
         return project.getId();
+    }
+    @Override
+    public void createRegister(Long userId, Long projectId) {
+        log.info("createRegister까지");
+        Register register = Register.builder()
+                .user(userRepository.getReferenceById(userId))
+                .project(projectRepository.getReferenceById(projectId))
+                .confirm(true)
+                .alarm(false)
+                .build();
+        log.info("여기까진댐");
+        registerRepository.save(register);
     }
 
 
@@ -91,12 +122,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     public List<RegisterDto> findRegistersByUserId(Long id){
-        List<Register> registerList = registerRepository.findRegistersByUser_Id(id);
-        List<RegisterDto> registerDtoList = new ArrayList<>();
-        registerList.forEach(r -> {
-            registerDtoList.add(mapper.map(r, RegisterDto.class));
-        });
-        return registerDtoList;
+        return queryFactory
+                .select(qRegister)
+                .from(qRegister)
+                .where(qRegister.user.id.eq(id))
+                .fetch()
+                .stream().map(Register::toDto).collect(Collectors.toList());
     }
 
     @Override
@@ -145,16 +176,7 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<Project> project = projectRepository.findById(id);
         try{
             Project result = project.get();
-            ProjectDto projectDto = ProjectDto.builder()
-                    .title(result.getTitle())
-                    .idx(result.getId())
-                    .content(result.getContent())
-                    .alarm(result.getAlarm())
-                    .alarm_type(result.getAlarmType())
-                    .deleted(result.getDeleted())
-                    .state(result.getState())
-                    .created(result.getCreated())
-                    .build();
+            ProjectDto projectDto = result.toDto();
             return projectDto;
         } catch (Exception e){
             log.info(e.getMessage());
@@ -165,77 +187,89 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDto> getAll() {
         List<Project> list = projectRepository.findAll();
-        List<ProjectDto> resultList = new ArrayList<>();
-        list.forEach(pjt -> {
-            resultList.add(ProjectDto.builder()
-                            .title(pjt.getTitle())
-                            .alarm(pjt.getAlarm())
-                            .alarm_type(pjt.getAlarmType())
-                            .content(pjt.getContent())
-                            .created(pjt.getCreated())
-                            .deleted(pjt.getDeleted())
-                            .ended(pjt.getEnded())
-                            .gifturl(pjt.getGiftUrl())
-                            .idx(pjt.getId())
-                            .started(pjt.getStarted())
-                            .state(pjt.getState())
-                            .type(pjt.getType())
-                            .limit(pjt.getLimit())
-                            .shareurl(pjt.getShareurl())
-                            .imgurl(pjt.getImgurl())
-                    .build());
-        });
-        return resultList;
+        return list.stream().map(Project::toDto).collect(Collectors.toList());
     }
 
     @Override
     public ProjectDto findProjectByProjectId(Long id) throws ProjectNotFoundException {
         Optional<Project> project = projectRepository.findById(id);
-        if(!project.isPresent()) throw new ProjectNotFoundException("해당하는 Id의 프로젝트를 찾을 수 없습니다");
-        ProjectDto projectDto = ProjectDto.builder()
-                .title(project.get().getTitle())
-                .alarm(project.get().getAlarm())
-                .alarm_type(project.get().getAlarmType())
-                .content(project.get().getContent())
-                .created(project.get().getCreated())
-                .deleted(project.get().getDeleted())
-                .ended(project.get().getEnded())
-                .gifturl(project.get().getGiftUrl())
-                .idx(project.get().getId())
-                .started(project.get().getStarted())
-                .state(project.get().getState())
-                .type(project.get().getType())
-                .limit(project.get().getLimit())
-                .shareurl(project.get().getShareurl())
-                .imgurl(project.get().getImgurl())
-                .build();
-        return projectDto;
+        if(!project.isPresent())
+            throw new ProjectNotFoundException("해당하는 Id의 프로젝트를 찾을 수 없습니다");
+        return project.get().toDto();
     }
 
     @Override
     public ProjectDto findProjectByProjectIdAndUserId(Long userId, Long projectId) throws ProjectNotFoundException {
-        Optional<Register> register = registerRepository.findByUser_IdAndProject_Id(userId, projectId);
-        Project project = register.map(Register::getProject).orElse(null);
-        if(project == null) throw new ProjectNotFoundException("프로젝트에 참여하지 않거나 없는 프로젝트입니다");
-        ProjectDto projectDto = ProjectDto.builder()
-                .title(project.getTitle())
-                .alarm(project.getAlarm())
-                .alarm_type(project.getAlarmType())
-                .content(project.getContent())
-                .created(project.getCreated())
-                .deleted(project.getDeleted())
-                .ended(project.getEnded())
-                .gifturl(project.getGiftUrl())
-                .idx(project.getId())
-                .started(project.getStarted())
-                .state(project.getState())
-                .type(project.getType())
-                .limit(project.getLimit())
-                .shareurl(project.getShareurl())
-                .imgurl(project.getImgurl())
-                .build();
-        return projectDto;
+        return utilQuerys.projectByUserIdAndProjectId(userId, projectId);
     }
 
+    @Override
+    @Transactional
+    public List<ProjectInfo> projectDtosToInfos(List<ProjectDto> projectDtos) {
+        List<Long> numList = new ArrayList<>();
+        List<ProjectInfo> projectInfos = new ArrayList<>();
+        projectDtos.forEach(pjt -> {
+            log.info(pjt.toString());
+            numList.add(articleRepository.countByProjectId(pjt.getId()));
+        });
+        for (int i = 0; i < numList.size(); i++) {
+            List<UserVo> userVos = utilQuerys.projectUserVos(projectDtos.get(i).getId());
+            Long owner = utilQuerys.findOwner(projectDtos.get(i).getId());
+            projectInfos.add(projectDtos.get(i).toInfo(userVos,owner, numList.get(i)));
+        }
+        return projectInfos;
+    }
+
+    @Override
+    @Transactional
+    public List<ProjectDto> findProjectByUserIdAndState(Long userId, ProjectState state){
+        switch (state){
+            case DONE: return utilQuerys.doneProjects(userId);
+            case CURRENT:return utilQuerys.currentProjects(userId);
+            case ALL: return utilQuerys.allProjects(userId);
+        }
+        return null;
+    }
+
+    @Override
+    public Long projectNum(Long userId){
+        return registerRepository.countByUser_Id(userId);
+    }
+
+    @Override
+    public ProjectGiftVo gift(String uuid){
+        Project project = queryFactory.select(qProject).from(qProject)
+                .where(qProject.giftUrl.eq(uuid)).fetchFirst();
+        List<ArticleVo> articleVos = articleRepository.findAllByProject_Id(project.getId())
+                .stream().map(Article::toVo).collect(Collectors.toList());
+        List<UserVo> userVos = queryFactory.select(qRegister.user).from(qRegister)
+                .where(qRegister.project.id.eq(project.getId())).fetch().stream()
+                .map(User::toVo).collect(Collectors.toList());
+        return ProjectGiftVo.builder()
+                .title(project.getTitle())
+                .content(project.getContent())
+                .started(project.getStarted())
+                .ended(project.getEnded())
+                .artielcNum(articleVos.size())
+                .articleVos(articleVos)
+                .userVos(userVos)
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public String finishProject(Long userId, Long projectId) throws ProjectNotFoundException {
+        Project project = Optional.ofNullable(queryFactory.select(qRegister.project).from(qRegister)
+                .where(
+                        qRegister.project.id.eq(projectId),
+                        qRegister.user.id.eq(userId),
+                        qRegister.type.eq(true)
+                )
+                .fetchFirst())
+            .orElseThrow(() -> new ProjectNotFoundException("끝낼 수 있는 프로젝트가 존재하지 않는데요?"));
+        project.finish();
+        projectRepository.save(project);
+        return project.getGiftUrl();
+    }
 
 }

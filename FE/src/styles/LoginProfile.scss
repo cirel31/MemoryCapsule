@@ -1,0 +1,93 @@
+@import "theme.css";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
+
+.login_profile_body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  .login_profile_page {
+    width: 100%;
+  }
+
+  .login_profile_box {
+    margin: 0;
+    position: absolute;
+    background-color: var(--white);
+    top: 17%;
+    left: 16%;
+    height: 67%;
+    width: 28vw;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 85% 15%;
+    justify-items: center;
+    text-align: center;
+    justify-content: center;
+    filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.25));
+
+    .login_profile_form {
+      margin: 10% 0 0 0;
+      height: 90%;
+      width: 95%;
+      background-color: var(--brand3_main);
+      font-family: "Inconsolata", sans-serif;
+      font-weight: 600;
+      color: var(--font_gray_main);
+      z-index: 3;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      justify-items: center;
+      grid-template-rows: 55% 15% 10%;
+
+      & > img {
+        margin: 20% 0 0 0;
+        width: 9vw;
+        height: 9vw;
+        object-fit: cover;
+        border: solid 5px var(--point1_2);
+        border-radius: 100%;
+        align-items: center;
+        background-color: var(--white);
+
+        clip-path: circle(8vw);
+        overflow: hidden;
+        justify-content: center;
+        justify-items: center;
+
+        align-content: center;
+      }
+
+      & > h1 {
+        width: 20vw;
+        font-family: "IBM Plex Sans KR", sans-serif;
+        color: var(--white);
+        font-weight: 700;
+        margin: 10% 0 5% 0;
+        font-size: 2.2vw;
+        table-layout: fixed;
+        word-break: break-all;
+      }
+
+      & > p {
+        font-size: 1.5vw;
+        color: var(--white);
+        margin: 10% 0 0 0;
+      }
+    }
+
+    & > a > button {
+      width: 8.5vw;
+      height: 3vw;
+      color: var(--white);
+      background-color: var(--brand3_main);
+      cursor: pointer;
+      border-radius: 4rem;
+      border: none;
+      font-size: 1.4vw;
+      font-family: "IBM Plex Sans KR", sans-serif;
+      font-weight: 600;
+    }
+  }
+}

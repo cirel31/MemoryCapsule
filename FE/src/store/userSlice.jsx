@@ -1,55 +1,123 @@
-import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import Swal from "sweetalert2";
 
-const BASE_URL = ''
-const USER_URL = ''
+export const loginUserThunk = createAsyncThunk(
+    'user/loginUser',
+    async (loginData, { dispatch, rejectWithValue }) => {
+      const loginURL = 'https://i9a608.p.ssafy.io:8000/user/login'
+      try {
+        const response = await axios.post(`${loginURL}`, loginData, {
+          headers: { "Content-Type": "application/json" }
+        })
+        sessionStorage.setItem("userIdx", response.data.userIdx)
+        sessionStorage.setItem("accessToken", response.data.accessToken)
+        sessionStorage.setItem("refreshToken", response.data.refreshToken)
+        const userIdx = sessionStorage.getItem("userIdx");
+        dispatch(fetchUserInfoThunk(userIdx))
+        window.location.href ='/profile'
+      } catch (error) {
+        if (error.response?.status === 409) {
+          Swal.fire(error.response.data)
+        }
+        return rejectWithValue(error)
+      }
+    }
+)
 
-const initialState = {
-  userId: null,
-  accessToken: null,
-  redirectToken: null,
-  isLoggedIn: false,
-  user: null,
-  point: 100,
-}
+export const fetchUserInfoThunk = createAsyncThunk(
+    'user/fetchUserInfo',
+    async (userIdx, { rejectWithValue }) => {
+      const accessToken = sessionStorage.getItem("accessToken")
+      try {
+        const response = await axios.get(`https://i9a608.p.ssafy.io:8000/user/${userIdx}/detail`, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        })
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error)
+      }
+    }
+)
+
+export const logoutUserThunk = createAsyncThunk(
+    'user/logoutUser',
+    async (_, { dispatch, rejectWithValue }) => {
+      const accessToken = sessionStorage.getItem("accessToken")
+      try {
+        await axios.post(`https://i9a608.p.ssafy.io:8000/user/logout`, _, {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
+        sessionStorage.clear();
+      } catch (error) {
+        return rejectWithValue(error)
+      }
+    }
+)
+
+export const findPassThunk = createAsyncThunk(
+  'user/findPass',
+  async ({email, phone}, { dispatch, rejectWithValue }) => {
+    const userData = {
+      "email" : {email},
+      "phone" : {phone},
+    }
+    try {
+      await axios.post(`https://i9a608.p.ssafy.io:8000/user/find_password`, userData, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+    } catch (error) {
+      return rejectWithValue(error)
+    }
+  }
+)
 
 const userSlice = createSlice({
   name: 'userState',
-  initialState,
+  initialState: {
+    isLoggedIn: null,
+    accessToken: null,
+    user: null,
+  },
   reducers: {
     login: (state, action) => {
-      state.isLoggedIn = true;
-      state.accessToken = action.payload.accessToken;
-      state.redirectToken = action.payload.redirectToken;
-      console.log('이메일 로그인 성공', state.accessToken, state.redirectToken);
     },
     logout: (state) => {
-      state.isLoggedIn = false;
-      state.accessToken = null;
-      state.redirectToken = null;
-      console.log('이메일 로그아웃 성공');
-    },ser: (state, action) => {
-      state.user = action.payload
-      console.log(state.user)
+      sessionStorage.clear()
+    },
+    setUser: (state, action) => {
+      sessionStorage.setItem('userInfo', state.user)
+    },
+    renewToken: (state, action) => {
+      state.accessToken = action.payload
     }
+  },
+  extraReducers: (builder) => {
+    builder
+        .addCase(loginUserThunk.fulfilled, (state, action) => {
+          state.isLoggedIn = true
+        })
+        .addCase(fetchUserInfoThunk.pending, (state) => {
+          state.status = 'loading';
+        })
+        .addCase(fetchUserInfoThunk.fulfilled, (state, action) => {
+          state.status = 'succeeded';
+          state.user = action.payload;
+        })
+        .addCase(logoutUserThunk.fulfilled, (state, action) => {
+          state.isLoggedIn = false
+          window.location.href ='/login'
+        })
   }
 })
 
-export const { login, logout  , setUser} = userSlice.actions
-
-// 비동기 액션
-export const fetchUser = (token) => async (dispatch) => {
-  try {
-    const response = await axios.get(USER_URL, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const userData = response.data;
-    dispatch(setUser(userData));
-  } catch (error) {
-    console.error('유저 정보를 가져오지 못함:', error);
-  }
-};
+export const {
+  login,
+  logout  ,
+  setUser,
+  renewToken,
+} = userSlice.actions
 
 export default userSlice.reducer

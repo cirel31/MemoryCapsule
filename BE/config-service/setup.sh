@@ -11,16 +11,14 @@ name="config"
 container_name="$name-service"
 image_name="$name-image"
 tag_name="latest"
-# env file import
-run_option="-dp 8888:8888 --net santa --env-file=/var/jenkins_home/workspace/setup.env"
-
+run_option="-dp 8888:8888 --net santa --log-opt max-size=10m --log-opt max-file=3 --restart=unless-stopped --env-file=/var/jenkins_home/workspace/setup.env"
 
 
 stop_container_command="sudo docker stop $container_name"
 remove_container_command="sudo docker rm $container_name"
 remove_image_command="sudo docker rmi $image_name"
 
-if [ ! "$(docker ps -a -q -f name=$container_name)" ]; then
+if [ "$(sudo docker ps -a -q -f name=$container_name)" ]; then
     ############################################################
     # [stop container by name or container-id]
     ############################################################

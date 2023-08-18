@@ -1,34 +1,39 @@
-import { FriendItem, CustomButtonFriend } from "../../styles/friendStyle";
+import { FriendItem } from "../../styles/friendStyle";
+import FriendAddDeleteButton from "./FriendAddDeleteButton";
+import React, {useEffect, useState} from "react";
+import FriendDetailButton from "./FriendDetailButton";
 
-const FriendInfo = ({id, name, username, email, address, phone, website}) => {
-    const addFriend = (e) => {
-        const {value} = e.target;
-        console.log(value);
-    }
-    const discardFriend = (e) => {
-        const {value} = e.target;
-        console.log(value);
-    }
+const FriendInfo = ({from, select, setSelect, curStatus, setCurStatus, friend, imageUrl}) => {
 
     return (
-        <FriendItem>
-            <div className="FriendItem">
-                <div className="info">
-                    <span className="author_info">
-                        e-mail : {email}<br/>
-                        name : {name}<br/>
-                        nickname : {username}<br/>
-                    </span>
-                    <div>
-                        {
-                            (1 === 1)
-                            ?<CustomButtonFriend className="CustomButtonFriend addFriend" value={email} onClick={addFriend}> + </CustomButtonFriend>
-                            :<CustomButtonFriend className="CustomButtonFriend discardFriend" value={email} onClick={discardFriend}> - </CustomButtonFriend>
-                        }
-                    </div>
+        <div className="friend_list_item">
+            <div className="user_img_setting">
+                <img src={imageUrl} alt="유저 이미지" className="userImg"/>
+            </div>
+            <div className="user_info">
+                <div className="user_info_username">
+                    {friend.nickname}
                 </div>
             </div>
-        </FriendItem>
+            {
+                !(from==="FriendList")
+                ?
+                <FriendAddDeleteButton
+                    friend={friend}
+                    status={friend.status}
+                    curStatus={curStatus}
+                    setCurStatus ={setCurStatus}
+                    from="FriendList"
+                />
+                :
+                // 클릭 시 자세히보기
+                <FriendDetailButton
+                    friend={friend}
+                    select={select}
+                    setSelect={setSelect}
+                />
+            }
+        </div>
     )
 }
 

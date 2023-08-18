@@ -1,20 +1,28 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
-import LoginPage from "./LoginPage";
-import SignupPage from "./SignupPage";
 import MainPage from "./MainPage";
 import NotFound from "./NotFound";
-import FriendListPage from "./FriendListPage";
-import NoticeListPage from "./NoticeListPage";
-import ProjectListPage from "./ProjectListPage";
-import ProjectCreatePage from "./ProjectCreatePage";
-import TestPage from "./TestPage";
-import TestDetailPage from "./TestDetailPage";
-import MyPage from "./MyPage";
-import CalendarPage from "./CalendarPage";
-import ArticleCreatePage from "./ArticleCreatePage";
-import ProjectDetailPage from "./ProjectDetailPage";
+import LoginPage from "./auth/LoginPage";
+import FindPassWordPage from "./auth/FindPassWordPage";
+import SignupPage from "./auth/SignupPage";
+import MyPage from "./user/MyPage";
+import EditProfilePage from "./user/EditProfilePage";
+import UserProfilePage from "./user/UserProfilePage";
+import CalendarForm from "../components/user/CalendarForm";
+import FriendPage from "./friend/FriendPage";
+import NoticeListPage from "./notice/NoticeListPage";
+import ReviewPage from "./review/ReviewPage";
+import ArticleCreatePage from "./project/ArticleCreatePage";
+import ProjectDetailPage from "./project/ProjectDetailPage";
+import ProjectListPage from "./project/ProjectListPage";
+import ProjectCreatePage from "./project/ProjectCreatePage";
+import InviteProject from "./project/InviteProject";
+import KakaoLoginPage from "./auth/KakaoLoginPage";
+import ProjectLockerPage from "./project/ProjectLockerPage";
+import SendPresentPage from "./project/SendPresentPage";
+
+import LoadingPage from "./LoadingPage";
 
 export default function Routers() {
 
@@ -23,18 +31,29 @@ export default function Routers() {
       <Route path='/' element={<HomePage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/signup' element={<SignupPage />} />
+      <Route path='/find-password' element={<FindPassWordPage />} />
+      <Route path='/profile' element={<UserProfilePage />} />
+      <Route path='profile/edit' element={<EditProfilePage />} />
       <Route path='/main' element={<MainPage />} />
       <Route path='/project' element={<ProjectListPage />} />
       <Route path='/project/create' element={<ProjectCreatePage />} />
       <Route path='/project/:projectId' element={<ProjectDetailPage />} />
-      <Route path='/project/:projectId/create' element={<ArticleCreatePage />} />
-      <Route path='/friend' element={<FriendListPage />} />
+      <Route path='/project/:projectId/article' element={<ArticleCreatePage />} />
+      <Route path='/project/invite' element={<InviteProject />}/>
+      <Route path='/project/locker' element={<ProjectLockerPage />} />
+      <Route path='/project/present/:giftUrl' element={<SendPresentPage />} />
+      <Route path='/friend' element={<FriendPage />} />
       <Route path='/notice' element={<NoticeListPage />} />
+      <Route path='/review' element={<ReviewPage />} />
+      
+      <Route path='/loading' element={<LoadingPage />} />
 
       <Route path='/mypage' element={<MyPage />} />
-      <Route path='/test' element={<TestPage />} />
-      <Route path='/test/:postId' element={<TestDetailPage />} />
-      <Route path='/calendar' element={<CalendarPage />} />
+
+      <Route path='/calendar' element={<CalendarForm />} />
+      
+      {/* 카카오 테스트 Router */}
+      <Route path='/login/kakao' element={<KakaoLoginPage />} />
 
       <Route path='/*' element={<NotFound />} />
     </Routes>

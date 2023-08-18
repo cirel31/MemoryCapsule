@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="14a7f0ce-8b70-4401-842a-f9373880695a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/BoardApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/BoardApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/InsertDto$InsertDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/InsertDto$InsertDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/InsertDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/InsertDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/ModifyDto$ModifyDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/ModifyDto$ModifyDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/ModifyDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/ModifyDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/NoticeResponseDto$NoticeResponseDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/NoticeResponseDto$NoticeResponseDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/NoticeResponseDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/NoticeResponseDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/ReviewResponseDTO$ReviewResponseDTOBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/ReviewResponseDTO$ReviewResponseDTOBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/ReviewResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Dto/ReviewResponseDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Enum/LogMessageEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Enum/LogMessageEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Enum/ResponseStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Enum/ResponseStatus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Enum/ServiceNameEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/Enum/ServiceNameEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/config/S3Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/config/S3Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/controller/NoticeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/controller/NoticeController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/controller/ReviewController.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/controller/ReviewController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Liked$LikedBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Liked$LikedBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Liked.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Liked.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/LikedId$LikedIdBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/LikedId$LikedIdBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/LikedId.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/LikedId.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Notice$NoticeBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Notice$NoticeBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Notice.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Notice.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Review$ReviewBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Review$ReviewBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Review.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/Review.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/User$UserBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/User$UserBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/entity/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/exception/DataException.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/exception/DataException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/repository/LikeRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/repository/LikeRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/repository/NoticeRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/repository/NoticeRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/repository/ReviewRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/repository/ReviewRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/FileService.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/FileService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/FileServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/FileServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/NoticeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/NoticeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/NoticeServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/NoticeServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/ReviewService.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/ReviewService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/ReviewServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/board-service/target/classes/com/santa/board/service/ReviewServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/test-classes/com/santa/board/BoardApplicationTests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/test-classes/com/santa/board/service/NoticeServiceTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/board-service/target/test-classes/com/santa/board/service/ReviewServiceTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/target/classes/com/example/userservice/model/dto/UserDto$ResponseLogin$ResponseLoginBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/target/classes/com/example/userservice/model/dto/UserDto$ResponseLogin$ResponseLoginBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/target/classes/com/example/userservice/model/dto/UserDto$ResponseLogin.class" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/target/classes/com/example/userservice/model/dto/UserDto$ResponseLogin.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2TjuTOVFI1E9mfruptAoPYydVHb" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/SSAFY/dev/git/S09P12A608_sub2/BE/user-service",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "spring.configuration.checksum": "93e4829cc95a3e377055f79caae0204a",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="AlarmApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="alarm-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.santa.alarm.AlarmApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="14a7f0ce-8b70-4401-842a-f9373880695a" name="Changes" comment="" />
+      <created>1691568822904</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1691568822904</updated>
+      <workItem from="1691568823997" duration="117000" />
+      <workItem from="1691568951193" duration="31000" />
+      <workItem from="1691569010762" duration="72000" />
+      <workItem from="1691569198650" duration="94000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

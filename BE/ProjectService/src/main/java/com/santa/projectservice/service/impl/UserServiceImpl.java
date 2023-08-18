@@ -1,8 +1,8 @@
 package com.santa.projectservice.service.impl;
 
-import com.santa.projectservice.dto.UserDto;
+import com.santa.projectservice.model.dto.UserDto;
 import com.santa.projectservice.exception.User.UserNotFoundException;
-import com.santa.projectservice.jpa.User;
+import com.santa.projectservice.model.jpa.User;
 import com.santa.projectservice.repository.UserRepository;
 import com.santa.projectservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;

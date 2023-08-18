@@ -1,0 +1,650 @@
+@import "theme.css";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
+body {
+  background-color: var(--backGround_main);
+}
+::before {
+  background: var(--backGround_main);
+}
+.present_body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--backGround_main);
+
+
+
+  .present_contents{
+    width: 100%;
+
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 15% 0 15% 0;
+    z-index: 4;
+    box-sizing: border-box;
+    overflow-block: hidden;
+
+
+
+    //position: relative;
+    .present_bg{
+      width: 100%;
+
+    }
+    & > .present_content_0 {
+      width: 50vw;
+      height: 30vw;
+      outline: dashed 2px var(--brand3_main);
+      outline-offset: -0.5vw;
+      background-color: var(--white);
+      //position: absolute;
+      //top: 10vw;
+      //left: 25%;
+      display: grid;
+      grid-template-columns: 30vw 20vw;
+      border-radius: 1rem;
+      filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+      justify-content: center;
+      justify-items: center;
+      align-items: center;
+      align-items: center;
+      rotate: 3deg;
+      & > .contents_img {
+        width: 28vw;
+        height: 28vw;
+        object-fit: cover;
+        border-radius: 1rem;
+      }
+      & > .content_group {
+        width: 20vw;
+        height: 30vw;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        align-items: start;
+        justify-items: center;
+        align-content: center;
+        grid-template-rows: 5vw 8vw 12vw;
+
+        & > div {
+          width: 18vw;
+          height: 4vw;
+          background-color: var(--brand3_4);
+          border-radius: 4rem;
+          display: grid;
+          grid-template-columns: 4vw 11vw;
+          align-items: center;
+          align-content: center;
+          justify-items: center;
+          justify-content: center;
+          text-align: center;
+
+          .article_profile {
+            width: 3vw;
+            height: 3vw;
+            object-fit: cover;
+            clip-path: circle(1.5vw);
+            outline: solid 2px var(--point1_main);
+          }
+          & > p {
+            font-family: "IBM Plex Sans KR", sans-serif;
+            font-size: 1.4vw;
+            font-weight: 700;
+            color: var(--white);
+
+          }
+        }
+        & > .stamps {
+          margin: 5% 0 0 0;
+          width: 5vw;
+          height: 5vw;
+        }
+        & > p {
+          width: 15vw;
+          table-layout: fixed;
+          word-break: break-all;
+          font-family: "IBM Plex Sans KR", sans-serif;
+          font-size: 1.1vw;
+          font-weight: 600;
+          color: var(--font_gray_main);
+          text-underline-offset: 0.5vw;
+          text-decoration-line: underline;
+          -webkit-text-decoration-color: var(--brand3_main);
+          text-decoration-thickness: 0.1vw;
+          text-decoration-color: var(--brand3_main);
+
+        }
+
+      }
+
+    }
+    & > .present_content_1 {
+      width: 50vw;
+      height: 30vw;
+      outline: dashed 2px var(--brand3_main);
+      outline-offset: -0.5vw;
+      background-color: var(--white);
+      //position: absolute;
+      //top: 10vw;
+      //left: 25%;
+      display: grid;
+      grid-template-columns: 30vw 20vw;
+      border-radius: 1rem;
+      filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+      justify-content: center;
+      justify-items: center;
+      align-items: center;
+      align-items: center;
+      rotate: -4deg;
+      & > .contents_img {
+        width: 28vw;
+        height: 28vw;
+        object-fit: cover;
+        border-radius: 1rem;
+      }
+      & > .content_group {
+        width: 20vw;
+        height: 30vw;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        align-items: start;
+        justify-items: center;
+        align-content: center;
+        grid-template-rows: 5vw 8vw 12vw;
+
+        & > div {
+          width: 18vw;
+          height: 4vw;
+          background-color: var(--brand3_4);
+          border-radius: 4rem;
+          display: grid;
+          grid-template-columns: 4vw 11vw;
+          align-items: center;
+          align-content: center;
+          justify-items: center;
+          justify-content: center;
+          text-align: center;
+
+          .article_profile {
+            width: 3vw;
+            height: 3vw;
+            object-fit: cover;
+            clip-path: circle(1.5vw);
+            outline: solid 2px var(--point1_main);
+          }
+          & > p {
+            font-family: "IBM Plex Sans KR", sans-serif;
+            font-size: 1.4vw;
+            font-weight: 700;
+            color: var(--white);
+
+          }
+        }
+        & > .stamps {
+          margin: 5% 0 0 0;
+          width: 5vw;
+          height: 5vw;
+        }
+        & > p {
+          width: 15vw;
+          table-layout: fixed;
+          word-break: break-all;
+          font-family: "IBM Plex Sans KR", sans-serif;
+          font-size: 1.1vw;
+          font-weight: 600;
+          color: var(--font_gray_main);
+          text-underline-offset: 0.5vw;
+          text-decoration-line: underline;
+          -webkit-text-decoration-color: var(--brand3_main);
+          text-decoration-thickness: 0.1vw;
+          text-decoration-color: var(--brand3_main);
+
+        }
+
+      }
+
+    }
+    & > .present_content_2 {
+      width: 50vw;
+      height: 30vw;
+      outline: dashed 2px var(--brand3_main);
+      outline-offset: -0.5vw;
+      background-color: var(--white);
+      //position: absolute;
+      //top: 10vw;
+      //left: 25%;
+      display: grid;
+      grid-template-columns: 30vw 20vw;
+      border-radius: 1rem;
+      filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+      justify-content: center;
+      justify-items: center;
+      align-items: center;
+      align-items: center;
+      rotate: 5deg;
+      & > .contents_img {
+        width: 28vw;
+        height: 28vw;
+        object-fit: cover;
+        border-radius: 1rem;
+      }
+      & > .content_group {
+        width: 20vw;
+        height: 30vw;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        align-items: start;
+        justify-items: center;
+        align-content: center;
+        grid-template-rows: 5vw 8vw 12vw;
+
+        & > div {
+          width: 18vw;
+          height: 4vw;
+          background-color: var(--brand3_4);
+          border-radius: 4rem;
+          display: grid;
+          grid-template-columns: 4vw 11vw;
+          align-items: center;
+          align-content: center;
+          justify-items: center;
+          justify-content: center;
+          text-align: center;
+
+          .article_profile {
+            width: 3vw;
+            height: 3vw;
+            object-fit: cover;
+            clip-path: circle(1.5vw);
+            outline: solid 2px var(--point1_main);
+          }
+          & > p {
+            font-family: "IBM Plex Sans KR", sans-serif;
+            font-size: 1.4vw;
+            font-weight: 700;
+            color: var(--white);
+
+          }
+        }
+        & > .stamps {
+          margin: 5% 0 0 0;
+          width: 5vw;
+          height: 5vw;
+        }
+        & > p {
+          width: 15vw;
+          table-layout: fixed;
+          word-break: break-all;
+          font-family: "IBM Plex Sans KR", sans-serif;
+          font-size: 1.1vw;
+          font-weight: 600;
+          color: var(--font_gray_main);
+          text-underline-offset: 0.5vw;
+          text-decoration-line: underline;
+          -webkit-text-decoration-color: var(--brand3_main);
+          text-decoration-thickness: 0.1vw;
+          text-decoration-color: var(--brand3_main);
+
+        }
+
+      }
+
+    }
+    & > .present_content_3 {
+      width: 50vw;
+      height: 30vw;
+      outline: dashed 2px var(--brand3_main);
+      outline-offset: -0.5vw;
+      background-color: var(--white);
+      //position: absolute;
+      //top: 10vw;
+      //left: 25%;
+      display: grid;
+      grid-template-columns: 30vw 20vw;
+      border-radius: 1rem;
+      filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+      justify-content: center;
+      justify-items: center;
+      align-items: center;
+      align-items: center;
+      rotate: -2deg;
+      & > .contents_img {
+        width: 28vw;
+        height: 28vw;
+        object-fit: cover;
+        border-radius: 1rem;
+      }
+      & > .content_group {
+        width: 20vw;
+        height: 30vw;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        align-items: start;
+        justify-items: center;
+        align-content: center;
+        grid-template-rows: 5vw 8vw 12vw;
+
+        & > div {
+          width: 18vw;
+          height: 4vw;
+          background-color: var(--brand3_4);
+          border-radius: 4rem;
+          display: grid;
+          grid-template-columns: 4vw 11vw;
+          align-items: center;
+          align-content: center;
+          justify-items: center;
+          justify-content: center;
+          text-align: center;
+
+          .article_profile {
+            width: 3vw;
+            height: 3vw;
+            object-fit: cover;
+            clip-path: circle(1.5vw);
+            outline: solid 2px var(--point1_main);
+          }
+          & > p {
+            font-family: "IBM Plex Sans KR", sans-serif;
+            font-size: 1.4vw;
+            font-weight: 700;
+            color: var(--white);
+
+          }
+        }
+        & > .stamps {
+          margin: 5% 0 0 0;
+          width: 5vw;
+          height: 5vw;
+        }
+        & > p {
+          width: 15vw;
+          table-layout: fixed;
+          word-break: break-all;
+          font-family: "IBM Plex Sans KR", sans-serif;
+          font-size: 1.1vw;
+          font-weight: 600;
+          color: var(--font_gray_main);
+          text-underline-offset: 0.5vw;
+          text-decoration-line: underline;
+          -webkit-text-decoration-color: var(--brand3_main);
+          text-decoration-thickness: 0.1vw;
+          text-decoration-color: var(--brand3_main);
+
+        }
+
+      }
+
+    }
+    & > .present_content_4 {
+      width: 50vw;
+      height: 30vw;
+      outline: dashed 2px var(--brand3_main);
+      outline-offset: -0.5vw;
+      background-color: var(--white);
+      //position: absolute;
+      //top: 10vw;
+      //left: 25%;
+      display: grid;
+      grid-template-columns: 30vw 20vw;
+      border-radius: 1rem;
+      filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+      justify-content: center;
+      justify-items: center;
+      align-items: center;
+      align-items: center;
+      rotate: -6deg;
+      & > .contents_img {
+        width: 28vw;
+        height: 28vw;
+        object-fit: cover;
+        border-radius: 1rem;
+      }
+      & > .content_group {
+        width: 20vw;
+        height: 30vw;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        align-items: start;
+        justify-items: center;
+        align-content: center;
+        grid-template-rows: 5vw 8vw 12vw;
+
+        & > div {
+          width: 18vw;
+          height: 4vw;
+          background-color: var(--brand3_4);
+          border-radius: 4rem;
+          display: grid;
+          grid-template-columns: 4vw 11vw;
+          align-items: center;
+          align-content: center;
+          justify-items: center;
+          justify-content: center;
+          text-align: center;
+
+          .article_profile {
+            width: 3vw;
+            height: 3vw;
+            object-fit: cover;
+            clip-path: circle(1.5vw);
+            outline: solid 2px var(--point1_main);
+          }
+          & > p {
+            font-family: "IBM Plex Sans KR", sans-serif;
+            font-size: 1.4vw;
+            font-weight: 700;
+            color: var(--white);
+
+          }
+        }
+        & > .stamps {
+          margin: 5% 0 0 0;
+          width: 5vw;
+          height: 5vw;
+        }
+        & > p {
+          width: 15vw;
+          table-layout: fixed;
+          word-break: break-all;
+          font-family: "IBM Plex Sans KR", sans-serif;
+          font-size: 1.1vw;
+          font-weight: 600;
+          color: var(--font_gray_main);
+          text-underline-offset: 0.5vw;
+          text-decoration-line: underline;
+          -webkit-text-decoration-color: var(--brand3_main);
+          text-decoration-thickness: 0.1vw;
+          text-decoration-color: var(--brand3_main);
+
+        }
+
+      }
+
+    }
+  }
+}
+.photo_0 {
+  width: 30vw;
+  height: 30vw;
+  background-color: var(--white);
+  border-radius: 1rem;
+  outline: dashed 2px var(--brand3_main);
+  outline-offset: -0.5vw;
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+  rotate: -6deg;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  & > img {
+    width: 28vw;
+    height: 28vw;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+
+}
+.photo_1 {
+  width: 30vw;
+  height: 30vw;
+  background-color: var(--white);
+  border-radius: 1rem;
+  outline: dashed 2px var(--brand3_main);
+  outline-offset: -0.5vw;
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+  rotate: 5deg;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  & > img {
+    width: 28vw;
+    height: 28vw;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+
+}
+.photo_2 {
+  width: 30vw;
+  height: 30vw;
+  background-color: var(--white);
+  border-radius: 1rem;
+  outline: dashed 2px var(--brand3_main);
+  outline-offset: -0.5vw;
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+  rotate: -2deg;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  & > img {
+    width: 28vw;
+    height: 28vw;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+
+}
+.photo_3 {
+  width: 30vw;
+  height: 30vw;
+  background-color: var(--white);
+  border-radius: 1rem;
+  outline: dashed 2px var(--brand3_main);
+  outline-offset: -0.5vw;
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+  rotate: 4deg;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  & > img {
+    width: 28vw;
+    height: 28vw;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+
+}
+.photo_4 {
+  width: 30vw;
+  height: 30vw;
+  background-color: var(--white);
+  border-radius: 1rem;
+  outline: dashed 2px var(--brand3_main);
+  outline-offset: -0.5vw;
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0, 0.15));
+  rotate: -6deg;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  & > img {
+    width: 28vw;
+    height: 28vw;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+
+}
+.deco_1{
+  width: 30vw;
+  position: absolute;
+  top: -20%;
+  left: -50%;
+}
+.deco0{
+  position: absolute;
+  width: 35vw;
+  top: -20%;
+  right: -60%;
+}
+.deco1{
+  position: absolute;
+  width: 37vw;
+  top: 20%;
+  right: -70%;
+  rotate: 60deg;
+}
+.deco2{
+  position: absolute;
+  width: 36vw;
+  top: 90%;
+  right: 10%;
+  rotate: -60deg;
+}
+.deco3{
+  position: absolute;
+  width: 37vw;
+  top: 50%;
+  left: -70%;
+  rotate: 20deg;
+}
+.deco4{
+  position: absolute;
+  width: 34vw;
+  top: -20%;
+  left: 100%;
+  rotate: -20deg;
+  z-index: -2;
+}
+.deco_bg {
+  width: 70vw;
+
+  left: -30%;
+}
+body::-webkit-scrollbar {
+  width: 8px;  /* 스크롤바의 너비 */
+  height: 0px;
+  //display: none;
+}
+body::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: var(--brand3_main); /* 스크롤바의 색상 */
+
+  border-radius: 10px;
+  //display: none;
+}
+body::-webkit-scrollbar-track {
+  background: var(--backGround_2);  /*스크롤바 뒷 배경 색상*/
+  //display: none;
+}
+.date {
+  width: 13vw;
+  height: 4vw;
+  font-family: "IBM Plex Sans KR", sans-serif;
+  font-size: 1.2vw;
+  font-weight: 500;
+  color: var(--brand3_main);
+  position: absolute;
+  top: -15%;
+  left: 3%;
+  background-color: var(--backGround_main);
+  border-radius: 1rem 1rem 0 0;
+  display: grid;
+  text-align: center;
+  align-items: center;
+  outline: dashed 2px var(--brand3_main);
+  outline-offset: -0.5vw;
+}

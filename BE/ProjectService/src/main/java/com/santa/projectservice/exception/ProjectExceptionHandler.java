@@ -1,11 +1,13 @@
 package com.santa.projectservice.exception;
 
 import com.santa.projectservice.exception.User.UserNotFoundException;
+import com.santa.projectservice.exception.project.ProjectException;
 import com.santa.projectservice.exception.project.ProjectNotAuthorizedException;
 import com.santa.projectservice.exception.project.ProjectNotFoundException;
 import com.santa.projectservice.exception.project.ProjectNotFullfillException;
 import com.santa.projectservice.exception.register.RegisterMakeException;
 import com.santa.projectservice.exception.s3.FileUploadFailException;
+import com.santa.projectservice.model.jpa.Project;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,13 @@ public class ProjectExceptionHandler {
     public ResponseEntity<String> projectNotFullfillException(ProjectNotFullfillException e){
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage() + " 원인 : " + e.getPropertyName());
+    }
+
+    @ExceptionHandler(ProjectException.class)
+    public ResponseEntity<String> projectException(ProjectException e){
+        log.error(e.getMessage());
+        log.error(e.getCause().toString());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 
 }

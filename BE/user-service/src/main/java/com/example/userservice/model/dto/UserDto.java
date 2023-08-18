@@ -1,7 +1,12 @@
 package com.example.userservice.model.dto;
 
-import jdk.jfr.SettingDefinition;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 
 public class UserDto {
     @Getter
@@ -10,10 +15,41 @@ public class UserDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SignUp{
+        @Email
         private String email;
+        @NotNull
         private String nickName;
-        private String passWord;
+        @NotNull
+        private String name;
+        @NotNull
+        private String password;
+        @Length(max = 11)
         private String phone;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    public static class modify{
+        @NotNull
+        private Long userId;
+        private String nickName;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    public static class modifyPwd{
+        @NotNull
+        private Long userId;
+        private String password;
+        private String newPassword;
     }
 
     @Getter
@@ -25,4 +61,55 @@ public class UserDto {
         private String email;
         private String password;
     }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RequestFindPass{
+        private String email;
+        private String phone;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResponseLogin{
+        private Long userIdx;
+        private String accessToken;
+        private String refreshToken;
+    }
+
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Basic{
+        private Long idx;
+        private String email;
+        private String nickname;
+        private String name;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Detail{
+        private Long userId;
+        private String email;
+        private String nickname;
+		private String imgUrl;
+        private int totalFriend;
+        private boolean admin;
+        private long point;
+        private List<Date> accessList;
+    }
+
 }

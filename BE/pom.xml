@@ -1,0 +1,43 @@
+<!-- root-project/pom.xml -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>S09P12A608-MemoryCapsule-Backend</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>config-service</module>
+    <module>apigateway-service</module>
+    <module>discovery-service</module>
+    <module>alarm-service</module>
+    <module>board-service</module>
+    <module>ProjectService</module>
+    <module>user-service</module>
+  </modules>
+
+  <!-- 여기에 루트 프로젝트에 대한 설정 추가 -->
+  <!-- 예: 소나큐브 플러그인 추가, 소나큐브 프로젝트 키 설정 등 -->
+  <properties>
+    <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+    <sonar.host.url>https://sonarqube.ssafy.com/</sonar.host.url>
+    <sonar.login>225354b523511b21dedb4442b251f9f288cb9e51</sonar.login>
+    <sonar.projectKey>memory-capsule</sonar.projectKey>
+    <sonar.sources>src</sonar.sources>
+    <sonar.java.binaries>**/*</sonar.java.binaries>
+  </properties>
+
+
+  <build>
+    <plugins>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.4.0.905</version>
+        </plugin>
+    </plugins>
+  </build>
+</project>

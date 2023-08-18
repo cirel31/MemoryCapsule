@@ -1,0 +1,387 @@
+@import "theme.css";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
+
+.main_project_body {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  .main_project_back {
+    width: 100%;
+    filter: blur(3px);
+  }
+}
+.bg_blur{
+  width: 100%;
+  height: 100%;
+  background-color: var(--white);
+  opacity: 25%;
+}
+.search_bar {
+  width: 48vw;
+  position: absolute;
+  top: 7%;
+  left: 26vw;
+  display: grid;
+  grid-template-columns: auto auto;
+  filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+
+  & > input {
+    width: 40vw;
+    height: 3vw;
+    border: none;
+    outline: solid 3px var(--brand3_main);
+    padding: 0 0 0 5%;
+    border-radius: 4rem;
+    font-family: "IBM Plex Sans KR",sans-serif;
+    font-size: 1.1vw;
+    font-weight: 500;
+  }
+  & > button {
+    margin: 0 10% 0 10%;
+    width: 3vw;
+    height: 3vw;
+    border-radius: 4rem;
+    border: none;
+    background-color: var(--brand3_main);
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    & > img {
+      height: 2vw;
+    }
+  }
+
+
+}
+.decoration_1 {
+  position: absolute;
+  top: 20%;
+  width: 100%;
+  left: 0;
+  height: 5px;
+  background-color: var(--brand3_3);
+
+
+}
+.decoration_2 {
+  position: absolute;
+  top: 20.5%;
+  width: 100%;
+  left: 0;
+  height: 3px;
+  background-color: var(--font_burgundy_90);
+  opacity: 70%;
+
+}
+.pjt_lst_body{
+  width: 80vw;
+  display: flex;
+  justify-content: space-around;
+  & > a {
+    text-decoration: none;
+  }
+}
+.main_project_list_body {
+  font-family: "Inconsolata", sans-serif;
+  position: absolute;
+  width: 100%;
+  height: 60%;
+  top: 22%;
+  left: 0;
+  //background: var(--white);
+  filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+  display: flex;
+  grid-template-rows: 1fr;
+  justify-items: center;
+  justify-content: center;
+  & > div {
+    display: flex;
+
+    .project_shortcut{
+      margin: 0 5% 0 5%;
+      border-radius: 1rem;
+      width: 20vw;
+      height: 30vw;
+      background-color: var(--white);
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      justify-content: center;
+      filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+      & > .deco_clamp {
+        position: absolute;
+        width: 1.8vw;
+        top: -4.3vw;
+        filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+      }
+
+      & > .photos {
+        margin: 10% 0 0 0;
+        width: 20vw;
+        height: 20vw;
+        object-fit: cover;
+        background-color: var(--font_gray_70);
+      }
+      & > p {
+        font-family: "IBM Plex Sans KR",sans-serif;
+        font-weight: 600;
+        font-size: 1.3vw;
+        color: var(--font_gray_main);
+        margin: 10% 0 10% 0;
+      }
+    }
+    .project_shortcut_hovered{
+      border-radius: 1rem;
+      width: 22vw;
+      height: 32vw;
+      background-color: var(--white);
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      justify-content: center;
+      filter: drop-shadow(1px 2px 2px rgb(0, 0, 0, 0.15));
+
+      & > .deco_clamp {
+        position: absolute;
+        width: 2.0vw;
+        top: -4.3vw;
+        filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+      }
+
+      & > .photos {
+        margin: 10% 0 0 0;
+        width: 22vw;
+        height: 22vw;
+        object-fit: cover;
+        background-color: var(--font_gray_70);
+      }
+      & > p {
+        font-family: "IBM Plex Sans KR",sans-serif;
+        font-weight: 600;
+        font-size: 2vw;
+        color: var(--font_gray_main);
+        margin: 10% 0 10% 0;
+      }
+    }
+  }
+}
+.create_button_styles {
+  z-index: 7;
+  width: 18vw;
+  height: 2.8vw;
+  background-color: var(--brand3_main);
+  border-radius: 5rem;
+  border: none;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--point1_4);
+  }
+  & > p {
+    width: 100%;
+    font-family: "IBM Plex Sans KR",sans-serif;
+    font-weight: 600;
+    font-size: 1.2vw;
+    text-decoration: none;
+    color: var(--white);
+  }
+  & > img {
+    margin: 0 0 0 120%;
+    height: 1.5vw;
+  }
+}
+
+.move_btn_group_1 {
+  left: 37%;
+  width: 26%;
+  height: 3.5vw;
+  display: flex;
+  position: absolute;
+  top: 92%;
+  justify-content: space-between;
+  z-index: 7;
+  & > button {
+    outline: solid 2px;
+    outline-color: var(--brand3_main);
+    border: none;
+    background-color: var(--backGround_0);
+    cursor: pointer;
+    border-radius: 5rem;
+    width: 3.5vw;
+    height: 3.5vw;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    transition: outline-color 0.3s;
+    &:hover {
+      outline-color: var(--point1_main);
+    }
+    & > img {
+      width: 1.7vw;
+    }
+
+  }
+
+}
+.move_btn_group_2 {
+  left: 33%;
+  width: 34%;
+  height: 3.5vw;
+  display: flex;
+  position: absolute;
+  top: 92%;
+  justify-content: space-between;
+  z-index: 6;
+  & > button {
+    cursor: pointer;
+    border: solid 2px var(--brand3_main);
+    background-color: var(--backGround_0);
+    border-radius: 5rem;
+    width: 3.5vw;
+    height: 3.5vw;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    & > img {
+      width: 1.7vw;
+    }
+  }
+}
+.footerbar{
+  position: absolute;
+  height: 23%;
+  width: 40%;
+  border-radius: 5rem 5rem 0 0;
+  background-color: var(--brand3_1);
+  z-index: 2;
+  bottom: 0;
+  filter: drop-shadow(0px -1px 2px rgb(0, 0, 0, 0.15));
+  opacity: 80%;
+}
+.move_btn {
+  z-index: 6;
+  top: 80%;
+  width: 100%;
+  position: absolute;
+}
+.main_modal_body {
+  position: absolute;
+  filter: drop-shadow(1px 2px 2px rgb(0,0,0,0.15));
+  width: 60vw;
+  height: 85%;
+  border: none;
+  outline: none;
+  background-color: var(--white);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  top: 5%;
+  left: 20%;
+  border-radius: 1rem;
+
+  & > div {
+    width: 60vw;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 55% 45%;
+
+    .go_detail {
+      position: absolute;
+      width: 30%;
+      background-color: var(--brand2_main);
+      font-family: "IBM Plex Sans KR",sans-serif;
+      font-weight: 600;
+      color: var(--white);
+      text-decoration: none;
+      height: 6%;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border-radius: 5rem;
+      cursor: pointer;
+      top: 90%;
+      left: 12.5%;
+      filter: drop-shadow(0px 0px 5px rgb(0,0,0,0.15));
+      transition: background-color 0.3s;
+      &:hover {
+        background-color: var(--brand2_4);
+      }
+    }
+    .detail_shortcut_contents {
+      width: 100%;
+      height: 100%;
+      font-family: "IBM Plex Sans KR",sans-serif;
+      font-weight: 600;
+      color: var(--font_gray_main);
+      margin: 20% 0 0 0%;
+      display: block;
+      justify-content: center;
+      justify-items: center;
+      & > h2 {
+        width: 100%;
+        font-family: "IBM Plex Sans KR",sans-serif;
+        font-weight: 600;
+        font-size: 3vw;
+        text-align: center;
+        text-decoration: underline 2px var(--brand3_4);
+        text-underline-offset : 20%;
+        margin: 10% 0 20% 0;
+      }
+      & > p {
+        text-align: center;
+      }
+      & > h3 {
+
+        width: 100%;
+        margin: 0;
+        text-align: center;
+
+      }
+    }
+
+
+    .tag_lab {
+
+      position: absolute;
+      top: 3%;
+      left: 87%;
+      height: 7%;
+    }
+
+    & > div > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 1rem 0 0 1rem;
+      background-color: var(--font_gray_main);
+
+      left: 0;
+
+    }
+    & > div > .black {
+      position: absolute;
+      width: 55%;
+      height: 100%;
+      background-color: var(--font_gray_main);
+      opacity: 20%;
+      background-blend-mode: multiply;
+      top: 0;
+      left: 0;
+      border-radius: 1rem 0 0 1rem;
+    }
+  }
+
+}

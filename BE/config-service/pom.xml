@@ -17,6 +17,10 @@
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2020.0.1</spring-cloud.version>
+        <sonar.projectName>config-service</sonar.projectName>
+        <sonar.projectVersion>1.0.0</sonar.projectVersion>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
     </properties>
     <dependencies>
 

@@ -1,13 +1,22 @@
 package com.example.userservice.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @Table(name = "access")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Access {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "access_idx")
     private Long idx;
 
@@ -16,5 +25,5 @@ public class Access {
     private User user;
 
     @Column(name = "access_date")
-    private ZonedDateTime accessedAt;
+    private LocalDateTime accessedAt;
 }
