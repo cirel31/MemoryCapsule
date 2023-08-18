@@ -24,12 +24,12 @@ const NoticePagination = ({ postList, currentPage, setCurrentPage, updatePage })
 
     const pageIndex = () => {
         const range = 2; // 앞뒤로 보여줄 페이지 개수
-        let indexOfMinPage = currentPage-range -1 < 0 ? 0 : currentPage-range -1;
+        let indexOfMinPage = currentPage-range < 0 ? 0 : currentPage-range;
         let indexOfMaxPage;
         if (indexOfMinPage === 0) {
             indexOfMaxPage = (totalPages < range*2+1 ? totalPages : range*2+1);
         } else {
-            indexOfMaxPage = (currentPage+range >= totalPages ? totalPages : currentPage+range);
+            indexOfMaxPage = (currentPage+range + 1 >= totalPages ? totalPages : currentPage+range + 1);
         }
 
         if (indexOfMaxPage === totalPages) {

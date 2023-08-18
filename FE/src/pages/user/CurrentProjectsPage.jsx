@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import {useSelector} from "react-redux";
+import kokona from "../../assets/images/kokona.png"
 
 const CurrentProjectsPage = () => {
   const [isHovered, setIsHovered] = useState(null)
@@ -110,7 +111,10 @@ const CurrentProjectsPage = () => {
                   >
                     <div className="card_contents">
                       <div className="card_title"><p>{project.title}</p></div>
-                      <img src={project.imgUrl} alt="아로나"/>
+                      <img src={project.imgUrl}
+                        alt="아로나"
+                        onError={(e) => {e.target.src = kokona}}
+                      />
                       <div className="card_contents_info">
                         <p>기록한 추억 </p>
                         <h2> {project.artielcNum || 0}</h2>

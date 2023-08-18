@@ -76,14 +76,16 @@ public class ArticleServiceImpl implements ArticleService {
         writer.giveArticlePoint();
         userRepository.save(writer);
         try {
-            for (int i = 0; i < images.size(); i++) {
-                String url = fileUploadService.upload(images.get(i));
-                articleImgRepository.save(ArticleImg.builder()
-                        .article(writeArticle)
-                        .order(i)
-                        .imgUrl(url)
-                        .build()
-                );
+            if(images != null) {
+                for (int i = 0; i < images.size(); i++) {
+                    String url = fileUploadService.upload(images.get(i));
+                    articleImgRepository.save(ArticleImg.builder()
+                            .article(writeArticle)
+                            .order(i)
+                            .imgUrl(url)
+                            .build()
+                    );
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException("게시글 작성을 실패했습니다. ", e);

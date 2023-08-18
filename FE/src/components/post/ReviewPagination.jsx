@@ -30,7 +30,6 @@ const ReviewPagination = ({ postList, currentPage, setCurrentPage, updatePage })
             },
         })
             .then((response) => {
-                console.log('게시글 자세하게 (Detail)');
                 setSelectedPost(response.data);
                 setIsModal(true)
             })

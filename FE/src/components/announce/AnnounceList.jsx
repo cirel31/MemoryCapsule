@@ -34,7 +34,6 @@ const AnnounceUserViewPage = ({page, size}) => {
     const getNoticesData = (e) => {
         axios.get(`${baseURL}${API}/list?size=${itemsPerPage}&page=${currentPage}&sort=noticeIdx,desc`)
             .then((response) => {
-              console.log('게시글 선택 (size, page)');
               setPostList(response.data);
             })
             .catch((error) => {
@@ -51,7 +50,6 @@ const AnnounceUserViewPage = ({page, size}) => {
 
         axios.get(`${baseURL}${API}/${index}`)
             .then((response) => {
-                console.log('게시글 자세하게 (Detail)');
                 setSelectedPost(response.data); 
             })
             .catch((error) => {
