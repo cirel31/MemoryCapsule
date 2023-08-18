@@ -60,6 +60,7 @@ const ProjectDetailPage = () => {
   const [project, setProject] = useState([])
   const [myArticles, setMyArticles] = useState([])
   const [imgNum, setImgNum] = useState([])
+  const [startCondition, setStartCondition] = useState(false)
   const [endCondition, setEndCondition] = useState(false)
   const [dateCheck, setDateCheck] = useState(true)
   useEffect(() => {
@@ -73,7 +74,11 @@ const ProjectDetailPage = () => {
       .then((response) => {
         setProject(response.data);
         const today = new Date()
+        const startDate = new Date(response.data.started)
         const endedDate = new Date(response.data.ended)
+        if (today.getTime() >= startDate.getTime()) {
+          setStartCondition(true)
+        }
         if (today.getTime() > endedDate.getTime()) {
           setEndCondition(true)
         }
@@ -236,8 +241,13 @@ const ProjectDetailPage = () => {
               <div className="detail_project_users_layout">
                 <div className="detail_project_content_userImgs">
                   {
-                    project.userList && project.userList.map((user) => (
-                        <img src={user.imgUrl} alt={user.nickname} className="detail_project_content_userImg"/>
+                    project.userList && project.userList.map((user, index) => (
+                        <img
+                          key={index}
+                          src={user.imgUrl}
+                          alt={user.nickname}
+                          className="detail_project_content_userImg"
+                        />
                     ))
                   }
                 </div>
@@ -319,7 +329,7 @@ const ProjectDetailPage = () => {
                 </div>
             ))}
           </div>
-          {!endCondition &&
+          {(startCondition && !endCondition) &&
             <div className="detail_project_write">
               <Link to={`/project/${projectId}/article`}>
                 <button className="detail_project_write_btn">
