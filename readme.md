@@ -222,11 +222,9 @@ http://i9a608.p.ssafy.io:8001
 1. Kakao 공유하기 
 2. Kakao 로그인 
 
-## DB 덤프파일 최신본
+## DB
 
 ![schema](https://github.com/cirel31/MemoryCapsule/assets/122497878/50a4a4c2-a7a2-4f89-847b-3c1827c3aa09)
-
-[santa__1_.sql](/uploads/17ef5e8952ea769a40c282b686826dc5/santa__1_.sql)
 
 
 ## 시연 시나리오
@@ -496,8 +494,6 @@ http://i9a608.p.ssafy.io:8001
 
 다음은 프로필 변경을 진행하겠습니다. 프로필 변경은 Navi 바 -> MyPage 로 이동하겠습니다.
 이동후, 우측 상단에 "프로필변경"을 통해 프로필을 변경할 수 있습니다.
-
-![프로필변경1](/uploads/7b7112db55b7a9c25a806b6ac091eeb3/프로필변경1.png)
 
 프로필변경을 클릭하여 들어오면, 기존 사용자가 사용하고 있던 프로필 사진과 닉네임이 업로드 됩니다. 이번 변경은 프로필을 "수원킹_after변경" 으로 프로필을 수정해보겠습니다.
 
